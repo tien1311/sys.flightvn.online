@@ -1,0 +1,7 @@
+﻿.modal-header .close {
+    margin-top: -20px;
+    color:#fff;
+}
+.radio-inline input[type=radio] {
+    margin-top: 2px !important;
+}

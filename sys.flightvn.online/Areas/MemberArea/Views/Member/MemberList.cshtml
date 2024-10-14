@@ -1,0 +1,395 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+
+@model MemberListViewModel;
+
+
+@{
+    ViewData["Title"] = "Member List";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+
+<title>@ViewData["Title"] </title>
+<h2> Danh Sách Hoàn Vé </h2>
+
+
+@using (Html.BeginForm("DanhSachHoanVe", "HoanVe", FormMethod.Get))
+{
+
+
+
+    <div class="x_panel">
+
+        <div class="x_content">
+
+
+            <div class="row">
+
+                <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+
+
+                    <label class="col-form-label pad-top-6 col-md-3 col-sm-3 col-xs-12 label-align" for="first-name">
+                        Tên đại lý
+                    </label>
+                    <div class="col-md-9 col-sm-6 col-xs-12 ">
+
+                        <input type="text" id="TenDaiLy" name="TenDaiLy" class="form-control " value='@ViewBag.SoVe'>
+                    </div>
+
+
+
+
+
+                </div>
+
+
+                <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+
+
+                    <label class="col-form-label pad-top-6 col-md-3 col-sm-3 col-xs-12 label-align" for="first-name">
+                        Người LH
+                    </label>
+                    <div class="col-md-9 col-sm-6 col-xs-12 ">
+
+                        <input type="text" id="NguoiLienHe" name="nguoilienhe" class="form-control " value='@ViewBag.SoVe'>
+                    </div>
+
+
+                </div>
+
+                <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+
+
+                    <label class="col-form-label pad-top-6 col-md-3 col-sm-3 col-xs-12 label-align" for="first-name">
+                        Mã KH
+                    </label>
+                    <div class="col-md-9 col-sm-6 col-xs-12 ">
+
+                        <input type="text" id="MaKH" name="MaKH" class="form-control " value='@ViewBag.SoVe'>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+
+
+                    <label class="col-form-label pad-top-6 col-md-3 col-sm-3 col-xs-12 label-align" for="first-name">
+                        Email
+                    </label>
+                    <div class="col-md-9 col-sm-6 col-xs-12 ">
+
+                        <input type="text" id="Email" name="Email" class="form-control " value='@ViewBag.SoVe'>
+                    </div>
+
+
+
+
+
+                </div>
+
+
+                <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+
+
+                    <label class="col-form-label pad-top-6 col-md-3 col-sm-3 col-xs-12 label-align" for="first-name">
+                        ĐT
+                    </label>
+                    <div class="col-md-9 col-sm-6 col-xs-12 ">
+
+                        <input type="text" id="DienThoai" name="DienThoai" class="form-control " value='@ViewBag.SoVe'>
+                    </div>
+
+
+                </div>
+
+                <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+
+
+
+                    <div class="col-md-12 col-sm-6 col-xs-12 ">
+
+                        @*@Html.DropDownList("section_id", new SelectList(ViewBag.loaive, "Value", "Text"), new { @Class = "form-control", @ID = "section_id", @onchange = "ChangePlaceHolder()" })*@
+
+                        <select id="sodong" onchange="ThemDong(this)" class="form-control" style=" float:left; margin-right: 5%" name="sodong">
+
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9 </option>
+
+                        </select>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+            <div class="row" style="float:left;margin-left:31px;">
+
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-offset-3 col-md-12">
+                        <button class="btn btn-primary" onclick="myFunction()">Làm mới</button>
+                        <button class="btn btn-primary" onclick="myFunction()">Tìm kiếm</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+}
+
+<div class="x_panel">
+
+    <div class="x_content">
+
+        <div class="table-responsive">
+            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Tên đại lý</th>
+                        <th class="column-title">Người đại diện</th>
+                        <th class="column-title">Tài khoản</th>
+                        <th class="column-title">Email</th>
+                        <th class="column-title">Địa chỉ</th>
+
+                        <th class="bulk-actions" colspan="7">
+                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                        </th>
+                    </tr>
+                </thead>
+
+                @if (Model != null)
+                {
+                    @foreach (var item in Model.MemberList)
+                    {
+
+                        <tbody>
+                            <tr id="@item.ID" class="even pointer">
+
+
+                                <td class="">@item.STT</td>
+                                <td class="">@item.TenDaiLy</td>
+                                <td class="">@item.NguoiDaiDien </td>
+
+                                <td class="">@item.TaiKhoan</td>
+                                <td class="">@item.Email </td>
+                                <td class="">@item.DiaChi </td>
+                                <td class="">
+                                    <a onclick="HuyHoanVe(this);" href="javascript:;"> <img src="/../images/del.gif" /></a>
+                                </td>
+                                <td class="">
+                                    <a onclick="HuyHoanVe(this);" href="javascript:;"> <img src="/../images/del.gif" /></a>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+
+<script type="text/javascript">
+
+
+    $("#gridHoanVe .ThongTinVeHoan").click(function () {
+
+
+
+        var subject_id = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "/@AreaNameConst.AREA_PhongVe/HoanVe/ThongTinVe",
+            data: { khoachinh: subject_id },
+
+
+            success: function (response) {
+
+
+                $('#openPopup').html(response);
+
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+
+                alert(response.responseText);
+            },
+            error: function (response) {
+
+                alert(response.responseText);
+            }
+
+
+        });
+    });
+
+
+
+    function DanhDauTinhTrangVe(obj) {
+        var table = document.getElementById("gridHoanVe");
+        var index = obj.parentNode.parentNode.rowIndex;
+        var subject_id = document.getElementById("gridHoanVe").getElementsByTagName('tr')[index].id;
+
+
+
+        var danhdau = document.getElementById("gridHoanVe").rows[index].cells[7].getElementsByTagName("input")[0].checked;
+
+        if (confirm("Bạn có chắc muốn đánh dấu")) {
+            $.ajax({
+                url: '/@AreaNameConst.AREA_PhongVe/HoanVe/DanhDauTinhTrangVe',
+                data: { id: subject_id, tinhtrang: danhdau },
+                method: 'POST'
+            })
+                .done(function () {
+
+
+                })
+        }
+    }
+
+
+
+
+    function HuyHoanVe(obj) {
+        var table = document.getElementById("gridHoanVe");
+        var index = obj.parentNode.parentNode.rowIndex;
+        var subject_id = document.getElementById("gridHoanVe").getElementsByTagName('tr')[index].id;
+
+        if (confirm("Bạn có chắc muốn hủy")) {
+            $.ajax({ url: '/@AreaNameConst.AREA_PhongVe/HoanVe/HuyHoanVe', data: { id: subject_id }, method: 'POST' })
+                .done(function () {
+                    location.reload(true);
+
+                })
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,22 @@
+﻿@using Manager.Model.Models.PaginationBase
+@model PaginationBase<Manager.Model.Models.VeDoan.YeuCauVeDoan>
+
+@if (Model != null)
+{
+    int soThuTu = (@Model.CurrentPage - 1) * Model.PageSize;
+    foreach (var item in Model.ListProduct)
+    {
+        <tr id="@item.Id">
+            <td style="text-align: center;">@item.RowNum</td>
+            <td style="text-align: center;"><a class="Detail" style="color:blue;" data-toggle="modal" data-id="@item.Code" data-target="#openPopup" href="javascript:;">@item.Code</a></td>
+            <td style="text-align: center;">@item.TripType</td>
+            <td style="text-align: center;">@item.DepartureCode1</td>
+            <td style="text-align: center;">@item.ArrivalCode1</td>
+            <td style="text-align: center;">@item.GroupSize</td>
+            <td style="text-align: center;">@item.ContactCompanyName</td>
+            <td style="text-align: center;">@item.ContactFullName</td>
+            <td style="text-align: center;">@item.ContactPhone</td>
+            <td style="text-align: center;">@item.ContactEmail</td>
+        </tr>
+    }
+}

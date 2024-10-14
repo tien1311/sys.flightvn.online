@@ -1,0 +1,128 @@
+﻿@model List<ImportDoanhSoViewModel>
+
+<style>
+    @@media (min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Doanh số </h1>
+        </div>
+
+        <div class="row" style="margin: 0 10px;">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>Năm</label>
+                    <select class="form-control" name="Nam" id="Nam">
+                        @for (int i = 2020; i <= 2030; i++)
+                        {
+                            if (DateTime.Now.Year == i)
+                            {
+                                <option selected value="@i">@i</option>
+                            }
+                            else
+                            {
+                                <option  value="@i">@i</option>
+                            }
+
+                        }
+                        @*<option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022" selected>2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>*@
+                    </select>
+                    @*@if (Model.Count > 0)
+                    {
+                        <input class="form-control" type="hidden" name="MaKH" id="MaKH" value="@Model[0].MaKH" />
+                    }
+                    else
+                    {
+                        <input class="form-control" type="hidden" name="MaKH" id="MaKH" value="@ViewBag.MAKH" />
+                    }*@
+                    @{ 
+                        string s = ViewBag.MAKH;
+                    }
+                    <input class="form-control" type="hidden" name="MaKH" id="MaKH" value="@ViewBag.MAKH" />
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div id="Doanhso">
+                        <button type="submit" class="btn btn-success btn-block btnDoanhSo" name="Search" value="Search">Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin:0px">
+            <div class="table-responsive">
+                <table id="gridDoanhSo" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title">STT </th>
+                            <th class="column-title">Tháng </th>
+                            <th class="column-title">Mã KH </th>
+                            <th class="column-title">Tổng </th>
+                            <th class="column-title">VN </th>
+                            <th class="column-title">VJ </th>
+                            <th class="column-title">QH </th>
+                            <th class="column-title">IATA </th>
+                            <th class="column-title">Khác </th>
+                            <th class="bulk-actions" colspan="9">
+                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @if (Model != null)
+                        {
+                            if (Model.Count > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr id="@item.MaKH">
+                                        <td class="">@item.STT</td>
+                                        <td class="">@item.Thang/@item.Nam</td>
+                                        <td class="">@item.MaKH</td>
+                                        <td style="font-weight:bold; color: red;">@item.Tong.ToString("#,##0").Replace(".", ",")</td>
+                                        <td class="">@item.VN.ToString("#,##0").Replace(".", ",")</td>
+                                        <td class="">@item.VJ.ToString("#,##0").Replace(".", ",")</td>
+                                        <td class="">@item.QH.ToString("#,##0").Replace(".", ",")</td>
+                                        <td class="">@item.IATA.ToString("#,##0").Replace(".", ",")</td>
+                                        <td class="">@item.Khac.ToString("#,##0").Replace(".", ",")</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9">Đại lý này không có doanh số</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/kinhdoanh/thongtindoanhso.js"></script>
+
+
+

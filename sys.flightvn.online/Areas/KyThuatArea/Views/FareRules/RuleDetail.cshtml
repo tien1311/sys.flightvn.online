@@ -1,0 +1,162 @@
+﻿@model List<Rules_RuleDetails>
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+    .selectBox select {
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+        position: absolute;
+        z-index: 9;
+        background: #fff;
+        width:100%;
+    }
+
+    #checkboxes label {
+        display: block;
+        padding: 0 15px;
+    }
+        #checkboxes input {
+            margin-right:5px;
+        }
+        #checkboxes span {
+            display: inline !important;
+        }
+    #checkboxes label:hover {
+        background-color: #1e90ff;
+        color:#fff;
+    }
+</style>
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">List Rule</h1>
+        </div>
+        <div class="modal-body" style="border-radius:0 0 8px; background-color:#fff;">
+            <div class="row">
+                <div class="table-responsive" style="font-size:12px;">
+                    <table id="gridRules_RuleDetails" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th></th>
+                                <th>STT</th>
+                                <th>AirlineName</th>
+                                <th>CategoryName</th>
+                                <th>SeatClasses</th>
+                                <th>CabinClassCode</th>
+                                <th>CabinClassName_vi</th>
+                                <th>CabinClassName_en</th>
+                                <th>DomesticRules_vi</th>
+                                <th>DomesticRules_en</th>
+                                <th>IntlRules_vi</th>
+                                <th>IntlRules_en</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr id="@item.PartnerDetailID">
+                                        <td style="text-align:center"><a class="Delete" style="color:red;" href="javascript:;"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                                        <td>@i</td>
+                                        <td>@item.AirlineName</td>
+                                        <td>@item.CategoryName</td>
+                                        <td>@item.SeatClasses</td>
+                                        <td>@item.CabinClassCode</td>
+                                        <td>@item.CabinClassName_vi</td>
+                                        <td>@item.CabinClassName_en</td>
+                                        <td class="textarea">@Html.Raw(item.DomesticRules_vi)</td>
+                                        <td class="textarea">@Html.Raw(item.DomesticRules_en)</td>
+                                        <td class="textarea">@Html.Raw(item.IntlRules_vi)</td>
+                                        <td class="textarea">@Html.Raw(item.IntlRules_en)</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script>
+    $(function () {
+        $.fn.limit = function ($n) {
+            this.each(function () {
+                var allText = $(this).html().trim();
+                var tLength = allText.length;
+                var startText = allText.slice(0, $n);
+                if (tLength >= $n) {
+                    $(this).html(startText + '..');
+                } else {
+                    $(this).html(startText);
+                };
+            });
+            return this;
+        }
+        $('.textarea').limit(20);
+    });
+    $("#gridRules_RuleDetails .Delete").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../FareRules/DeleteRules_PartnerDetails",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Xóa thành công");
+                }
+                else {
+                    alert("Xóa không thành công");
+                }
+                window.location.href = "../FareRules/Rules_Partners?&i=12";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

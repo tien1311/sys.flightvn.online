@@ -1,0 +1,137 @@
+﻿@model ImportPartnerDetails
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+        position: absolute;
+        z-index: 9;
+        background: #fff;
+        width: 100%;
+    }
+
+        #checkboxes label {
+            display: block;
+            padding: 0 15px;
+        }
+
+        #checkboxes input {
+            margin-right: 5px;
+        }
+
+        #checkboxes span {
+            display: inline !important;
+        }
+
+        #checkboxes label:hover {
+            background-color: #1e90ff;
+            color: #fff;
+        }
+</style>
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">List Rule</h1>
+        </div>
+        <div class="modal-body" style="border-radius:0 0 8px; background-color:#fff;">
+            <div class="row">
+                <label for="" class="col-sm-12 control-label">Import</label>
+                <input type="hidden" id="PartnerID" name="PartnerID" value="@Model.PartnerID" />
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="multiselect">
+                                <div class="selectBox" onclick="showCheckboxes()">
+                                    <select class="form-control">
+                                        <option>Select an option</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
+                                <div id="checkboxes">
+                                    @if (Model != null)
+                                    {
+                                        <label>
+                                            <input type="checkbox" id="selectall" />Select all
+                                        </label>
+                                        foreach (var item in Model.ListRuleDetails)
+                                        {
+                                            <label>
+                                                <input type="checkbox" id="@item.RuleDetailID" value="@item.CategoryName" />@item.CategoryName
+                                            </label>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <div>
+                                    <button type="submit" class="btn btn-success btn-block" onclick="ImportRule(this);" name="Import" value="Import">Import</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <div>
+                                    <button type="submit" class="btn btn-primary btn-block" onclick="SaveImportRule(this);" name="Save" value="Save">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table id="gridRules_RuleDetails" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th>STT</th>
+                                    <th>CategoryName</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/kythuat/importrule.js"></script>

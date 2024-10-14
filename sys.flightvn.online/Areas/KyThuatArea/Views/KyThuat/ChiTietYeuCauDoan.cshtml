@@ -1,0 +1,156 @@
+﻿@model Manager.Model.Models.VeDoan.YeuCauVeDoan
+
+<style>
+    td.title {
+        font-weight: 700;
+    }
+
+    .modal-content {
+        padding: 22px;
+    }
+
+    td span {
+        line-height: unset; 
+    }
+
+    .createdDateBooking {
+        font-style:italic;
+        font-size:11px;
+    }
+</style>
+
+<div class="modal-dialog modal-lg">
+
+ 
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header" style="background:#2A3F54;color:#fff;">
+            <h5 class="modal-title"><span style="font-weight:bold">@Model.Code </span>  <span class="createdDateBooking">(Ngày gửi: @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"))</span> </h5>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Thông tin hành trình</h5>
+                <div class="table-responsive">
+                    <table class="table jambo_table bulk_action " style="margin-bottom:0">
+                        <tbody>
+                            <tr>
+                                <td class="title">Hành trình: </td>
+                                <td> 
+                                    @if(Model.TripType == "ONEWAY")
+                                    {
+                                        <span>Một chiều</span>
+                                    }    
+                                    else
+                                    {
+                                        <span>Khứ hồi</span>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="title">Ngày đi: </td>
+                                <td>@Model.DepartureDateTime1.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            </tr>
+
+                            @if(Model.TripType == "ROUNDTRIP")
+                            {
+                                <tr>
+                                    <td class="title">Ngày về: </td>
+                                    <td>@Model.DepartureDateTime2.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                </tr>
+                            }
+                           
+                            <tr>
+                                <td class="title">Số lượng: </td>
+                                <td>@Model.GroupSize</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Nơi đi: </td>
+                                <td>@Model.DepartureCode1 (@ViewBag.DepartureAirport) </td>
+                            </tr>
+                            <tr>
+                                <td class="title">Nơi đến: </td>
+                                <td>@Model.ArrivalCode1 (@ViewBag.ArrivalAirport)</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Hãng bay: </td>
+                                <td>@Model.PreferredAirlineCode</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Mã máy bay: </td>
+                                <td>@Model.PreferredFlightNumber</td>
+                            </tr>
+                            <tr>
+                                <td class="title">Hạng ghế: </td>
+                                <td>@Model.TravelClass</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h5>Thông tin khách hàng</h5>
+                <table class="table jambo_table bulk_action " style="margin-bottom:0">
+                    <tbody>
+                        <tr>
+                            <td class="title">Công ty: </td>
+                            <td>@Model.ContactCompanyName</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Diễn giải: </td>
+                            <td>@Model.BriefDescription</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Người đại diện: </td>
+                            <td>@Model.ContactFullName</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Số điện thoại: </td>
+                            <td>@Model.ContactPhone</td>
+                        </tr>
+
+                        @if(!string.IsNullOrEmpty(Model.ContactOtherPhone))
+                        {
+                            <tr>
+                                <td class="title">Số điện thoại khác: </td>
+                                <td>@Model.ContactOtherPhone</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="title">Email: </td>
+                            <td>@Model.ContactEmail</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Thông tin bưu điện</h5>
+                <table class="table jambo_table bulk_action " style="margin-bottom:0">
+                    <tbody>
+                        <tr>
+                            <td class="title">Thành phố: </td>
+                            <td>@Model.CityName</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Địa chỉ: </td>
+                            <td>@Model.StreetLine1</td>
+                        </tr>
+                        @if(!string.IsNullOrEmpty(Model.StreetLine2))
+                        {
+                            <tr>
+                                <td class="title">Địa chỉ khác: </td>
+                                <td>@Model.StreetLine2</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="title">Mã quốc gia: </td>
+                            <td>@Model.CountryCode</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+          
+    </div>
+
+</div>

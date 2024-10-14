@@ -1,0 +1,235 @@
+﻿@model Danhsachmodel
+
+@{
+    ViewData["Title"] = "Danh sách thành viên";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    .all-browsers {
+        margin: 0;
+        border: 1px solid #D3D3D3;
+        background: white;
+    }
+
+    .browser {
+        background: #AAAAAA;
+    }
+
+    .browser {
+        margin: 0;
+        font-size: 100%;
+    }
+
+</style>
+
+<title>@ViewData["Title"]</title>
+<div>
+    <h2>DANH SÁCH THÀNH VIÊN </h2>
+    <div class="x_panel">
+        <div class="x_content">
+
+            @using (Html.BeginForm("DanhSachThanhVien", "Daily", new { i = 12 }, FormMethod.Post))
+            {
+                <div class="row">
+
+                    <div class="col-md-4 form-group">
+                        <div class="row">
+                            <label class="col-xs-4">
+                                Tên đại lí
+                            </label>
+                            <div class="col-xs-8" style="padding-right:0px">
+
+                                <input type="text" value='@ViewBag.TenDL' class="form-control" id="TenDL" name="TenDL" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <div class="row">
+                            <label class="col-xs-4">
+                                Người LH
+                            </label>
+                            <div class="col-xs-8" style="padding-right:0px">
+
+                                <input type="text" value='@ViewBag.NguoiLH' class="form-control" id="NguoiLH" name="NguoiLH" />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4 form-group">
+                        <div class="row">
+                            <label class="col-xs-4">
+                                Mã KH
+                            </label>
+                            <div class="col-xs-8" style="padding-right:0px">
+
+                                <input type="text" value='@ViewBag.MaKH' class="form-control" id="MaKH" name="MaKH" />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4 form-group">
+                        <div class="row">
+                            <label class="col-xs-4">
+                                Email
+                            </label>
+                            <div class="col-xs-8" style="padding-right:0px">
+
+                                <input type="text" value='@ViewBag.Email' class="form-control" id="Email" name="Email" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <div class="row">
+                            <label class="col-xs-4">
+                                Điện thoại
+                            </label>
+                            <div class="col-xs-8" style="padding-right:0px">
+
+                                <input type="text" value='@ViewBag.Phone' class="form-control" id="Phone" name="Phone" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <div class="row">
+                            <label class="col-xs-4">
+                                Kinh doanh
+                            </label>
+                            <div class="col-xs-8" style="padding-right:0px">
+                                <select id="ChuDe" name="ChuDe" asp-for="ChuDe" class="select2_single form-control" onchange="getTo()">
+                                    @foreach (var item in Model.ListTen)
+                                    {
+                                        <option value="@item.RowID" class="tieude">@item.Ten</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="row">
+                            <div style="text-align:right;">
+                                <input type="submit" class="btn btn-primary" value="Tìm Kiếm" name="searchBtn" />
+                                <input type="submit" class="btn btn-success" value="Làm mới" name="resetBtn" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <div class="table-responsive" style="font-size:12px;">
+        <table id="gridTable" class="table table-striped jambo_table bulk_action">
+            <thead>
+                <tr class="headings">
+                    <th class="column-title">STT</th>
+                    <th class="column-title">Ten đại lý</th>
+                    <th class="column-title">Người đại diện</th>
+                    <th class="column-title">Tài khoản</th>
+                    <th class="column-title">Email</th>
+                    <th class="column-title">Địa chỉ</th>
+                    <th class="column-title">
+                        Kích hoạt
+                    </th>
+                    <th class="column-title">
+                        Khôi phục mật khẩu
+                    </th>
+                    <th style="display:none" class="column-title"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @if (Model != null)
+                {
+                    @if (Model.member != null)
+                    {
+                        @foreach (var item in Model.member)
+                        {
+                            <tr id="@item.member_id" class="even pointer">
+                                <td style="text-align:center">@i</td>
+                                <td class=""><a class="Chitiet" data-target="#openPopup" href="javascript:;">@item.member_company</a></td>
+                                <td class="">@item.member_name </td>
+                                <td class="">@item.member_code</td>
+                                <td class="">@item.member_email</td>
+                                <td class="">@item.member_address</td>
+
+                                @if (item.member_isactive == "1")
+                                {
+                                    <td>
+
+                                        <input id="ActiveUser" onclick="CheckActiveMember(this);" type="checkbox" checked="checked">
+
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+
+                                        <input id="ActiveUser" onclick="CheckActiveMember(this);" type="checkbox">
+
+                                    </td>
+                                }
+
+                                <td><input type="checkbox" value="" onclick="Resetpass(this);" class="bi bi-check"></td>
+
+                                <td style="display:none">@item.member_id</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="display:none"></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="display:none"></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        @*@if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+
+                alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+
+        }*@
+    </div>
+</div>
+
+<script src="~/js/daily/danhsachthanhvien.js"></script>

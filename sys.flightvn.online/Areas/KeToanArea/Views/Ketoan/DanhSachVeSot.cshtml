@@ -1,0 +1,210 @@
+﻿@model TongQuatMail
+@{
+    ViewData["Title"] = "Danh sách vé sót đã báo cáo";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2>Danh sách vé sót đã báo cáo</h2>
+<form asp-controller="Ketoan" asp-action="DanhSachVeSot" method="post">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="row">
+                        <div class="form-horizontal">
+                            <div class="item col-sm-4 col-md-3">
+                                <div class="form-group">
+                                    <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                        Từ Ngày
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control has-feedback-right" id="single_cal5" name="cal_from" value='@ViewBag.DateFrom'>
+                                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            @*Muốn cho trường tháng năm rỗng ko lấy ngày hiện tại vào file custom.min.js dòng 1230*@
+                            <div class="item col-sm-4 col-md-3">
+                                <div class="form-group">
+                                    <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                        Đến Ngày
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                        <input type="text" class="form-control has-feedback-right" id="single_cal6" name="cal_to" value='@ViewBag.DateTo'>
+                                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-3">
+                                <div class="form-group">
+                                    <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                        Số vé
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" type="text" id="SoVeSearch" name="SoVeSearch" placeholder="Số vé" value="@ViewBag.SoVe" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary" name="buttonclick" value="search_ve">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="x_panel">
+                    <div class="table-responsive">
+                        <table id="gridVeSot" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>STT</th>
+                                    <th>Mã Hãng</th>
+                                    <th>Mã KH</th>
+                                    <th>Mã KH EFF</th>
+                                    <th>Nhân Viên</th>
+                                    <th>Ngày</th>
+                                    <th>PNR</th>
+                                    <th>Số Vé</th>
+                                    <th>Giá Mua</th>
+                                    <th>Phí DV Mua</th>
+                                    <th>Phí DV Bán</th>
+                                    <th>Phí hoàn</th>
+                                    <th>Chiết khấu</th>
+                                    <th>Ghi chú</th>
+                                    <th>Mã GT</th>
+                                    <th>Người GT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.ListChiTietVe != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var item in Model.ListChiTietVe)
+                                        {
+                                            <tr id="@item.ID">
+                                                <td><a class="VeSot" style="color:blue;" data-toggle="modal" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                                <td>@i</td>
+                                                <td class="MAHHK" id="@item.MAHHK">@item.MAHHK</td>
+                                                <td class="MAKH" id="@item.MAKH">@item.MAKH</td>
+                                                <td>@item.MAKH_EFF</td>
+                                                <td>@item.TenNhanVien</td>
+                                                <td>@item.NGAYSUA</td>
+                                                <td class="PNR" id="@item.PNR">@item.PNR</td>
+                                                <td class="SOVE" id="@item.SoVe">@item.SoVe</td>
+                                                <td class="GIAMUA" id="@item.GiaMua">@item.GiaMua</td>
+                                                <td class="PHIDVMUA" id="@item.PhiDVMua">@item.PhiDVMua</td>
+                                                <td class="PHIDVBAN" id="@item.PhiDVBan">@item.PhiDVBan</td>
+                                                <td class="PHIHOAN" id="@item.PhiHoan">@item.PhiHoan</td>
+                                                <td class="CHIETKHAU" id="@item.ChietKhau">@item.ChietKhau</td>
+                                                <td>@item.GHICHU</td>
+                                                <td class="MAGIOITHIEU" id="@item.MAGIOITHIEU">@item.MAGIOITHIEU</td>
+                                                <td class="NGUOIGIOITHIEU" id="@item.NGUOIGIOITHIEU">@item.NGUOIGIOITHIEU</td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/PhongVe/GuiMailDaiLy.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.msg)');
+    </script>
+} *@
+<script>
+    $("#gridVeSot .VeSot").click(function () {
+        var rowjQuery = $(this).closest("tr");
+        var currentIndex = rowjQuery[0].rowIndex;
+
+        var ID = String($(this).closest('tr').attr('id'));
+        var MAHHK = document.getElementById("gridVeSot").rows[currentIndex].cells[2].innerHTML;
+
+        var MAKH = document.getElementById("gridVeSot").rows[currentIndex].cells[3].innerHTML;
+        var PNR = document.getElementById("gridVeSot").rows[currentIndex].cells[7].innerHTML;
+        var SOVE = document.getElementById("gridVeSot").rows[currentIndex].cells[8].innerHTML;
+        var GIAMUA = document.getElementById("gridVeSot").rows[currentIndex].cells[9].innerHTML;
+        var PHIDVMUA = document.getElementById("gridVeSot").rows[currentIndex].cells[10].innerHTML;
+        var LOAIPHI = document.getElementById("gridVeSot").rows[currentIndex].cells[11].innerHTML;
+        var PHIXUATVE = document.getElementById("gridVeSot").rows[currentIndex].cells[12].innerHTML;
+        var PHIDVBAN = document.getElementById("gridVeSot").rows[currentIndex].cells[13].innerHTML;
+        var PHIHOAN = document.getElementById("gridVeSot").rows[currentIndex].cells[14].innerHTML;
+        var CHIETKHAU = document.getElementById("gridVeSot").rows[currentIndex].cells[15].innerHTML;
+        var MAGIOITHIEU = document.getElementById("gridVeSot").rows[currentIndex].cells[17].innerHTML;
+        var NGUOIGIOITHIEU = document.getElementById("gridVeSot").rows[currentIndex].cells[18].innerHTML;
+
+
+
+        var ChiTietVeSot = {};
+        ChiTietVeSot.ID = ID;
+        ChiTietVeSot.MAKH = MAKH;
+        ChiTietVeSot.PNR = PNR;
+        ChiTietVeSot.SoVe = SOVE;
+        ChiTietVeSot.GiaMua = GIAMUA;
+        ChiTietVeSot.PhiDVMua = PHIDVMUA;
+        ChiTietVeSot.LoaiPhi = LoaiPhi;
+        ChiTietVeSot.PhiDVBan = PHIDVBAN;
+        ChiTietVeSot.PhiHoan = PHIHOAN;
+        ChiTietVeSot.ChietKhau = CHIETKHAU;
+        ChiTietVeSot.MaGioiThieu = MAGIOITHIEU;
+        ChiTietVeSot.NguoiGioiThieu = NGUOIGIOITHIEU;
+        ChiTietVeSot.MAHHK = MAHHK;
+        ChiTietVeSot.RowIndex = currentIndex;
+
+        $.ajax({
+            type: "POST",
+            url: "../KeToan/ChiTietVeSot",
+            data: {
+                DataDetail: ChiTietVeSot
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

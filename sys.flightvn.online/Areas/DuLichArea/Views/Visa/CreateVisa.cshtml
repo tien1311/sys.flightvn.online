@@ -1,0 +1,125 @@
+﻿
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+    .main-img img {
+        width: 100px !important;
+    }
+
+    .contain-listImg{
+        padding: 5px 0;
+        flex-wrap: wrap !important;
+        display: flex !important;
+        align-items:center;
+    }
+
+    .modal-header .close {
+        color: #fff;
+    }
+    @@media (max-width: 991px){
+        .contain-listImg > * {
+            flex: 0 0 100% !important;
+        }
+    }  
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo mới visa</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Tên</label>
+                        <input class="form-control" id="Name" placeholder="" required>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class=" xdisplay_inputx form-group has-feedback">
+                        <label for="inputEmail3" class="control-label">Loại</label>
+                        <select name="VisaType" id="VisaType" class="form-control">
+                            <option value="VisaQT">Visa nước ngoài</option>
+                            <option value="VisaND">Visa Nhập Cảnh Việt Nam</option>
+                            <option value="VisaDT">Đón - Tiễn Sân Bay</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">&nbsp;</label>
+                        <div>
+                            <a class="btn btn-primary" onclick="Save()">Lưu</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-12">
+                    <div class="item form-group">
+                        <label class="control-label">
+                            Hình đại diện (800x450px)
+                        </label>
+                        <div class="row contain-listImg" id="RowImg1">
+                            <div class="col-sm-7 col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <div class="inputfile-box">
+                                            <input type="file" id="file1" class="inputfile" onchange="previewImage(event)" accept="image/*">
+                                            <label for="file1">
+                                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                    Chọn file
+                                                </span>
+                                            </label>
+                                            <input id="file-name-popup1" class="file-box" placeholder="Chọn tập tin">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <input class="btn btn-primary" onclick="CreateRowImg(this);" type="button" value="+" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-xs-6">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                <label class="form-check-label" >
+                                    Hình đại diện
+                                </label>
+                            </div>
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="main-img" id="imagePreview1">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="addRowsImg">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Mô tả ngắn</label>
+                        <div>
+                            <textarea class="form-control" id="ShortDescription" required>
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/visa/Createvisa.js"></script>

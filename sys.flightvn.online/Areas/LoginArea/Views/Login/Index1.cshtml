@@ -1,0 +1,373 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Đăng nhập hệ thống</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        a {
+            color: #71748d;
+            font-size: 14px;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .splash-container {
+            width: 100%;
+            max-width: 375px;
+            padding: 15px;
+            margin: auto;
+        }
+
+            .splash-container .card-header {
+                padding: 20px;
+            }
+
+        .splash-description {
+            text-align: center;
+            display: block;
+            line-height: 20px;
+            font-size: 1rem;
+            margin-top: 5px;
+            padding-bottom: 10px;
+        }
+
+        .splash-title {
+            text-align: center;
+            display: block;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .card-footer {
+            border-top: 1px solid #e6e6f2;
+            background: #f6f6ff;
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .card-footer-item-bordered:not(:last-child) {
+            border-right: 1px solid rgb(230, 230, 242);
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .card-footer-item {
+            padding: 12px 35px;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .card-footer-item-bordered:not(:last-child) {
+            border-right: 1px solid rgb(230, 230, 242);
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .card-footer-item-bordered:not(:last-child) {
+            border-right: 1px solid rgb(230, 230, 242);
+        }
+
+        .splash-container .card-footer-item {
+            padding: 12px 28px;
+        }
+
+        .card-footer-item {
+            padding: 12px 35px;
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            text-align: center;
+            display: inline-block;
+        }
+
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 38px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 27px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #f68220;;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 6px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 6px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 26px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 45px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+        .Wrapper {
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            background-image: url(/images/TRight.png);
+            background-position: top right;
+            background-repeat: no-repeat;
+        }
+
+        .DvBanner {
+            width: 100%;
+            height: 55px;
+            background-image: url(/images/TLeft.png);
+            background-repeat: no-repeat;
+        }
+
+        .ClMenu {
+            width: 100%;
+            height: 32px;
+            background-image: url(/images/BG-Menu.png);
+            line-height: 32px;
+        }
+
+    </style>
+    </head>
+    
+<body>
+    <div class="Wrapper">
+        <div class="DvBanner"></div>
+        <div class="ClMenu"></div>
+        <div class="splash-container">
+            <div class="card ">
+                <div class="card-header text-center">
+
+                    <img class="logo-img" src="http://gateway.enviet-group.com/template/zalo/images/logoev.png" style="width: 100px; height: auto;" alt="logo">
+                    <span class="splash-description">Đăng nhập</span>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+                    {
+                        <span style="color:red;">@TempData["msg"]</span>
+
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" type="text" name="UserName" placeholder="Tên đăng nhập">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" type="password" name="password" placeholder="Mật khẩu">
+                        </div>
+                        <div class="text-right p-t-8 p-b-31">
+                            <a href="#" onclick="Btnforgetpass(this);">
+                                Quên mật khẩu ?
+                            </a>
+                        </div>
+                        <button class="btn btn-primary btn-lg btn-block">
+                            Đăng nhập
+                        </button>
+                    }
+                    <div id="spinnerLoading" style="text-align: center;display:none">
+                        Đang kiểm tra dữ liệu
+                        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" tabindex="-1" id="forgetpass"
+                 data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                ×
+                            </button>
+                            <h4 class="modal-title">Quên mật khẩu</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <input class="form-control" type="text"
+                                           placeholder="Email" name="email_forgetpass" id="email_forgetpass" />
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="btnSendMail" class="btn btn-primary button button4">Gửi</button>
+
+                        </div>
+
+                        <div id='loader' style='display: none;text-align:center;'>
+                            <img src="~/images/loading.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="limiter">
+
+            <div class="container-login100" style="background-image: url('/login/images/bg-01.jpg');">
+                <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+                    @using (Html.BeginForm("LoginAccount", "Login", FormMethod.Post))
+                    {
+
+                        <span class="login100-form-title p-b-49">
+                            Đăng nhập
+                        </span>
+
+
+                        <span style="color:red;">@TempData["msg"]</span>
+                        <div class="wrap-input100 validate-input m-b-23" data-validate="Username is required">
+                            <span class="label-input100">Email</span>
+                            <input class="input100" type="text" name="email" placeholder="Địa chỉ email của bạn">
+                            <span class="focus-input100" data-symbol="&#xf206;"></span>
+                        </div>
+
+                        <div class="wrap-input100 validate-input" data-validate="Password is required">
+                            <span class="label-input100">Mật khẩu</span>
+                            <input class="input100" type="password" name="password" placeholder="Mật khẩu">
+                            <span class="focus-input100" data-symbol="&#xf190;"></span>
+                        </div>
+
+                        <div class="text-right p-t-8 p-b-31">
+                            <a href="#" onclick="Btnforgetpass(this);">
+                                Forgot password?
+                            </a>
+                        </div>
+
+
+
+                        <div class="container-login100-form-btn">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn">
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+
+
+                    }
+
+
+
+                </div>
+
+
+
+
+
+            </div>
+        </div>*@
+
+
+    <!--===============================================================================================-->
+    <script src="~/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/login/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/login/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/login/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/login/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/login/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/login/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/login/vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/login/js/main.js"></script>
+
+</body>
+</html>
+
+
+
+<script type="text/javascript" charset="UTF-8">
+    function Btnforgetpass(obj) {
+        $("#forgetpass").modal('show');
+    }
+    $("#btnSendMail").click(function () {
+        var emailForgetPass = document.getElementById("email_forgetpass").value;
+        $.ajax({
+            url: '../Login/ForgetPassword', data: { email: emailForgetPass }, method: 'POST',
+            beforeSend: function () {
+                // Show image container
+                $("#loader").show();
+            },
+            complete: function (data) {
+                // Hide image container
+                $("#loader").hide();
+            }
+        })
+       
+            .done(function (result) {
+                 
+                alert(result);
+                $("#forgetpass").modal('hide');
+            })
+    });
+   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

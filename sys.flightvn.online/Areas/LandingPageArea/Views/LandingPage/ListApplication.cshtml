@@ -1,0 +1,62 @@
+﻿@model Manager.Model.Models.LandingPage.Job
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="background: #2A3F54;">
+        @if (Model != null)
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 style="color:#fff">Danh sách ứng viên @Model.Name - @Model.Department</h1>
+            </div>
+            <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên ứng viên</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Ngày gửi CV</th>
+                                        <th>File</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model.ApplicationList != null && Model.ApplicationList.Any())
+                                    {
+                                        int stt = 1;
+                                        foreach (var item in Model.ApplicationList.OrderBy(x => x.CreatedDate))
+                                        {
+                                            <tr>
+                                                <td>@stt</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.Phone</td>
+                                                <td>@item.CreatedDate</td>
+                                                <td>
+                                                    <a target="_blank" href="@item.Resume" class="btn btn-sm btn-primary"> Xem CV </a>
+                                                </td>
+                                            </tr>
+                                            stt++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="2" style="color:red">Chưa có ứng viên</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

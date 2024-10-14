@@ -1,0 +1,197 @@
+﻿@model List<CongNoQuaHanModel>
+@{
+    ViewData["Title"] = "BÁO CÁO CÔNG NỢ QUÁ HẠN";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title> @ViewData["Title"] </title>
+<h2>BÁO CÁO CÔNG NỢ QUÁ HẠN</h2>
+
+<div class="x_panel">
+    <div id="demo-form3" class="form-horizontal form-label-left">
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-sm-4 col-xs-6">
+                <div class="form-group">
+                    <input type="file" class="form-control-file btn btn-info" style="width:100%;" id="files_new" name="files_new">
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-3">
+                <div class="form-group" style="font-size: 14px;padding-top: 10px;">
+                    <a href="http://gateway.enviet-group.com/Files/FileMauCongNoQuaHan.xlsx">File Mẫu</a>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-3">
+                <div class="form-group">
+                    <input class="btn btn-info" onclick="ImportExcel(this);" type="button" value="Import">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Tiêu đề
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="TieuDe" name="TieuDe" value="" placeholder="Tiêu đề" />
+                                    <input class="form-control" type="hidden" id="ID" name="ID" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Tháng
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <select id="Thang" name="Thang" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-1 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        &nbsp;
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <input class="btn btn-primary" onclick="UpdateCongNoQuaHan(this);" type="button" id="UpdateData" style="float:right" value="Update" />
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div id="Rows">
+            <div class="row" id="SoDong">
+                <div class="col-md-1 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="MaNV" id="MaNV" asp-for="MaNV" name="MaNV" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Tên NV" id="TenNV" asp-for="TenNV" name="TenNV" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Số tiền nợ" id="SoTienNo" asp-for="SoTienNo" name="SoTienNo" onblur="formatNumberCNQH(this.value, this.id)" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Thời gian xuất vé" id="ThoiGianXuatVe" asp-for="ThoiGianXuatVe" name="ThoiGianXuatVe" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Dư nợ hiện tại" id="DuNo" asp-for="DuNo" name="DuNo" onblur="formatNumberCNQH(this.value, this.id)" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-4">
+                    <div class="item form-group">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select id="TinhTrang" name="TinhTrang" class="form-control" style=" padding-right: 0px;">
+                                        <option value="Normal">Normal</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Ghi chú" id="GhiChu" asp-for="GhiChu" name="GhiChu" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-6">
+                    <div class="item form-group">
+                        <input class="btn btn-primary" onclick="ThemDong(this);" type="button" value="+" />
+                    </div>
+                </div>
+            </div>
+            <div id="addRows">
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-12">
+                    <input class="btn btn-success" onclick="LuuCongNoQuaHan(this);" type="button" id="SaveData" style="float:right" value="Lưu báo cáo" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div id="demo-form3" class="form-horizontal form-label-left">
+        <div class="row">
+            <div class="table-responsive">
+                <table id="gridCNNVQH" class="table table-striped jambo_table bulk_action table-bordered">
+                    <thead>
+                        <tr class="headings" style="font-size:12px;">
+                            <th class="column-title">STT </th>
+                            <th class="column-title">Tiêu đề</th>
+                            <th class="column-title">Tháng</th>
+                            <th class="column-title">UpdateBy</th>
+                            <th class="column-title">Import</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            int i = 1;
+                            @foreach (var item in Model)
+                            {
+                                <tr class="even pointer" style="font-size:12px;" id="@item.ID">
+                                    <td class="">@i</td>
+                                    <td class="">@item.TieuDe</td>
+                                    <td class="">@item.Thang</td>
+                                    <td class="">@item.UpdateBy</td>
+                                    <td><a class="ImportData" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i style="font-size:14px;color:red" class="fa fa-arrow-circle-down" aria-hidden="true"></i></a></td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.msg)');
+    </script>
+} *@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+<script src="~/js/KeToan/CongNoQuaHan.js"></script>

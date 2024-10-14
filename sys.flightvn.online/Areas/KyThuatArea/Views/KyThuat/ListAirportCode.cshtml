@@ -1,0 +1,168 @@
+﻿
+@model List<AirportCodeRequest>
+@{
+    ViewData["Title"] = "Danh sách sân bay";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Danh sách sân bay</h2>
+
+<div class="x_panel">
+    <div class="row">
+        <div class="col-sm-1 col-xs-12" style="text-align:right;">
+            <label class="col-xs-12">
+                &nbsp;
+            </label>
+            <a id="BtnCreate" href="javascript:;" type="button" class="btn btn-primary" style="margin-bottom:10px">Tạo mới</a>
+        </div>
+    </div>
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridDanhsachDDBL" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th></th>
+                        <th>STT</th>
+                        <th>AirportCode</th>
+                      @*  <th>Latitude</th>
+                        <th>Longitude</th>*@
+                        <th>TimeZoneOffset</th>
+                        <th>IataCode</th>
+                        <th>CityCode</th>
+                        <th>CountryCode</th>
+                        <th>RegionCode</th>
+                        <th>CreatedDate</th>
+                        <th>CreatdeBy</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td style="text-align:center"><a class="Edit" style="color:red;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td>@item.AirportCode</td>
+                            @*    <td>@item.Latitude</td>
+                                <td>@item.Longitude</td>*@
+                                <td>@item.TimeZoneOffset</td>
+                                <td>@item.IataCode</td>
+                                <td>@item.CityCode</td>
+                                <td>@item.CountryCode</td>
+                                <td>@item.RegionCode</td>
+                                <td>@item.CreatedDate</td>
+                                <td>@item.CreatedBy</td>
+                                <td style="text-align:center"><a class="Delete" style="color:red;" href="javascript:;"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+       
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+
+<script>
+    $(document).ready(function () {
+        $('#gridDanhsachDDBL').DataTable();
+    });
+    $("#BtnCreate").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../KyThuat/CreateAirportCode",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridDanhsachDDBL .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        var cells = $(this).closest('tr').find('td');
+
+        var Airport = {};
+        
+        Airport.ID = id;
+        Airport.AirportCode = cells[2].textContent;
+        Airport.Latitude = cells[3].textContent;
+        Airport.Longitude = cells[4].textContent;
+        Airport.TimeZoneOffset = cells[5].textContent;
+        Airport.IataCode = cells[6].textContent;
+        Airport.CityCode = cells[7].textContent;
+        Airport.CountryCode = cells[8].textContent;
+        Airport.RegionCode = cells[9].textContent;
+       
+       
+        $.ajax({
+            type: "POST",
+            url: "../KyThuat/EditAirportCode",
+            data: {
+                model: Airport
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridDanhsachDDBL .Delete").click(function () {
+        var airportCode = $(this).closest('tr').find('td').eq(2).text();
+        $.ajax({
+            type: "DELETE",
+            url: "../KyThuat/DeleteAirportCode",
+            data: {
+                AirportCode: airportCode
+            },
+            success: function (response) {
+                if (response.message == "Success") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Xóa thành công',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    location.reload(true);
+
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+

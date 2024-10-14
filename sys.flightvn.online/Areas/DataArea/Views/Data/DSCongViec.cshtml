@@ -1,0 +1,233 @@
+﻿@model CongViecModel
+
+@{
+    ViewData["Title"] = "DSCongViec";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<h2>DANH SÁCH PHÂN VIỆC VÀ QUY ĐỊNH</h2>
+<div class="x_panel" style="padding: 10px 17px 0;">
+    <div class="x_content">
+        @using (Html.BeginForm("SaveCongViecPB", "Data", new { i = 9 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 " style="padding-top:11px">Phòng ban</label>
+                        <div class="col-sm-8">
+                            <select id="MaPB" name="MaPB" class="form-control">
+                                @foreach (var item in Model.ListPB)
+                                {
+                                    <option value="@item.MaPB">@item.PB</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <select id="CongViec" name="CongViec" class="form-control">
+                                <option selected="selected" value="1">Phân việc</option>
+                                <option value="2">Quy định </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-primary" name="search">Lưu</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="NoiDung" id="NoiDung">
+
+                        </textarea>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<div class="x_panel" style="padding: 10px 17px 0;">
+    <div class="x_content">
+        <table class="table table-hover table-bordered" id="gridDSCongViec">
+
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã NV</th>
+                    <th>Tên NV</th>
+                    <th>Phòng ban</th>
+                    <th>Phân việc</th>
+                    <th>Quy định</th>
+                    <th>Phân việc chung</th>
+                    <th>Quy định chung</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                    foreach (var item in Model.ListNV)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>@item.MaNV</td>
+                            <td>@item.Ten</td>
+                            <td>@item.PhongBan</td>
+                            <td onclick="phanviec(this)">
+                                @if (item.PhanViec == "Tạo mới")
+                                {
+                                    <a style="color:red;" class="phanviec" href="#">@item.PhanViec</a>
+                                }
+                                else
+                                {
+                                    <a style="color:blue;" class="phanviec" href="#">@item.PhanViec</a>
+                                }
+                                <input type="hidden" class="IDphanviec" value="@item.MaNV" />
+                            </td>
+                            <td onclick="quydinh(this)">
+                                @if (item.QuyDinh == "Tạo mới")
+                                {
+                                    <a style="color:red;" class="quydinh" href="#">@item.QuyDinh</a>
+                                }
+                                else
+                                {
+                                    <a style="color:blue;" class="quydinh" href="#">@item.QuyDinh</a>
+                                }
+                                <input type="hidden" class="IDquydinh" value="@item.MaNV" />
+                            </td>
+                            <td onclick="phanviecchung(this)">
+                                @if (item.PhanViecChung == "Tạo mới")
+                                {
+                                    <a style="color:red;" class="phanviecchung" href="#">@item.PhanViecChung</a>
+                                }
+                                else
+                                {
+                                    <a style="color:blue;" class="phanviecchung" href="#">@item.PhanViecChung</a>
+                                }
+                                <input type="hidden" class="IDphanviec" value="@item.MaNV" />
+                            </td>
+                            <td onclick="quydinhchung(this)">
+                                @if (item.QuyDinhChung == "Tạo mới")
+                                {
+                                    <a style="color:red;" class="quydinhchung" href="#">@item.QuyDinhChung</a>
+                                }
+                                else
+                                {
+                                    <a style="color:blue;" class="quydinhchung" href="#">@item.QuyDinhChung</a>
+                                }
+                                <input type="hidden" class="IDquydinh" value="@item.MaNV" />
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    function phanviec(object) {
+        var subject_id = object.querySelector('.IDphanviec').value;
+        var x = object.querySelector('.phanviec').innerHTML;
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/PhanViec",
+            data: { khoachinh: subject_id, congviec: x },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+    };
+    function quydinh(object) {
+        var subject_id = object.querySelector('.IDquydinh').value;
+        var x = object.querySelector('.quydinh').innerHTML;
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/QuyDinh",
+            data: { khoachinh: subject_id, congviec: x },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    function phanviecchung(object) {
+        var subject_id = object.querySelector('.IDphanviec').value;
+        var x = object.querySelector('.phanviecchung').innerHTML;
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/PhanViecChung",
+            data: { khoachinh: subject_id, congviec: x },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+
+    };
+    function quydinhchung(object) {
+        var subject_id = object.querySelector('.IDquydinh').value;
+        var x = object.querySelector('.quydinhchung').innerHTML;
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/QuyDinhChung",
+            data: { khoachinh: subject_id, congviec: x },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+</script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('NoiDung', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+</script>

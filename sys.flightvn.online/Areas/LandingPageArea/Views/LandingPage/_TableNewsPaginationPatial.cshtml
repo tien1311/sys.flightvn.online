@@ -1,0 +1,104 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.LandingPage.News>
+
+<table id="gridHotel" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="width: 42px; text-align: center;">STT</th>
+            <th>Ảnh đại diện</th>
+            <th style="width: 200px;">Tiêu đề</th>
+            <th style="width: 130px;">Mô tả ngắn</th>
+            <th>Số lượt xem</th>
+            <th>Hiển thị</th>
+            <th>Người tạo</th>
+            <th style="text-align: center;">Ngày tạo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model != null && Model.ListProduct.Any())
+        {
+            int stt = 0;
+            foreach (var item in Model.ListProduct)
+            {
+                stt++;
+                <tr id="@item.Id" data-row-booking="row_@item.Id">
+                    <td style="text-align: center;">@item.RowNum</td>
+                    <td>
+                        <img src="@item.Image" style="width:60px; height:60px;" />
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.ShortDescription</td>
+                    <td style="text-align: center;" >@item.ViewCount</td>
+                    <td>
+                        <div class="switch-group">
+                            <input class="form-check-input isActived" data-id="@item.Id" type="checkbox" id="Active-switch-checkbox-@item.Id" role="switch" @(item.IsActived ? "checked" : "")>
+                            <label class="switch-label" for="Active-switch-checkbox-@item.Id"></label>
+                        </div>
+                    </td>
+                    <td>@item.CreatedBy</td>
+                    <td style="text-align: center;">@item.CreatedDate</td>
+                    <td>
+                        <a class="Detail" style="color:blue;" data-id="@item.Id" href="javascript:;">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-danger"> Không có dữ liệu </td>
+            </tr>
+        }
+
+        @* @await Html.PartialAsync("_NewsListPartial", Model) *@
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @if (Model != null)
+    {
+        var startPage = Model.StartPage;
+        var endPage = Model.EndPage;
+        var currentPageSize = Model.PageSize;
+        int soThuTuDauTien = ((@Model.CurrentPage - 1) * Model.PageSize) + 1;
+        int soThuTuCuoiCung = soThuTuDauTien + @Model.ListProduct.ToArray().Length - 1;
+
+        <div style="display:flex;align-items: center;justify-content: space-between;">
+            <div>
+                <label>Tổng số tin tức: @Model.TotalQuantityOfProduct</label>
+            </div>
+
+            @* Phân trang *@
+            <ul class="pagination">
+                @if (Model.TotalPage > 1)
+                {
+                    // Đi tới trang đầu
+                    @if (Model.CurrentPage != 1)
+                    {
+                        <li class="page-item">
+                            <a class="btn page-link" onclick="loadPage(1)">Đầu</a>
+                        </li>
+                    }
+
+                    @for (int page = startPage; page <= endPage; page++)
+                    {
+                        <li class="page-item @(page == Model.CurrentPage ? "active" : "")">
+                            <a class="btn page-link" onclick="loadPage(`${@(page)}`)">@(page)</a>
+                        </li>
+                    }
+                    // Đi tới trang cuối
+                    @if (Model.CurrentPage != @Model.TotalPage)
+                    {
+                        <li class="page-item ">
+                            <a class="btn page-link" onclick="loadPage(`${@(Model.TotalPage)}`)">Cuối</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+    @* @await Html.PartialAsync("_NavPageNewsListPartial", Model) *@
+</nav>

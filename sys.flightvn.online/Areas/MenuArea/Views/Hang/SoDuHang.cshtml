@@ -1,0 +1,218 @@
+﻿@model List<SoDuHangViewModel>
+@{
+    ViewData["Title"] = "Số Dư Hãng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    .headings th {
+        vertical-align: middle !important;
+        text-align: center;
+    }
+
+</style>
+<title>@ViewData["Title"]</title>
+<h2>@ViewData["Title"]</h2>
+@using (Html.BeginForm("SoDuHang", "Hang", new { i = 99 }, FormMethod.Post))
+{
+    <div class="row">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Hãng khác</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">VNA & NON BSP</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="x_panel">
+                    <div class="x_content">
+
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="item form-group col-md-12 col-sm-12 col-xs-12" style="text-align:left;">
+                                        <input type="submit" class="btn btn-primary" value="Lấy số dư mới" name="searchVeBtn">
+                                        <label class="col-form-label" style="color:red;">
+                                            Lấy số dư QH, VJ, VU
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                                @if (Model != null)
+                                {
+                                    @if (Model != null)
+                                    {
+
+                                        foreach (var item in Model)
+                                        {
+                                            if (item.SoDuHangModel.Status == 1)
+                                            {
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">Số dư QH,VJ,VU được cập nhật lúc @item.SoDuHangModel.NgayLap.ToString("dd/MM/yyyy HH:mm:ss") bởi @item.SoDuHangModel.NguoiLap </th>
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item1 in item.chiTietHangModel)
+                                                    {
+                                                        <tr>
+                                                            @{
+                                                                decimal soTien = 0;
+                                                            }
+                                                            <td>@item1.Hang</td>
+                                                            @if (decimal.TryParse(item1.SoTien, out soTien))
+                                                            {
+                                                                @if (soTien <= item1.WarningAmount)
+                                                                {
+                                                                    <td style="color:red;font-weight:bold;"> @string.Format("{0:0,0}", soTien) VNĐ</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="color:#0023F5">@string.Format("{0:0,0}", soTien) VNĐ</td>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <td> @item1.SoTien </td>
+                                                            }
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            }
+                                        }
+                                    }
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="x_panel">
+                    <div class="x_content">
+
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="item form-group col-md-12 col-sm-12 col-xs-12" style="text-align:left;">
+                                        <input type="submit" class="btn btn-primary" value="Lấy số dư mới" name="searchVeVNA">
+                                        <label class="col-form-label" style="color:red;">
+                                            Lấy số dư VietNam Airlines & NON BSP
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                                @if (Model != null)
+                                {
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            if (item.SoDuHangModel.Status == 2)
+                                            {
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">Số dư VNA được cập nhật lúc @item.SoDuHangModel.NgayLap.ToString("dd/MM/yyyy HH:mm:ss") bởi @item.SoDuHangModel.NguoiLap </th>
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item1 in item.chiTietHangModel)
+                                                    {
+                                                        <tr>
+                                                            @{
+                                                                decimal soTien = 0;
+                                                            }
+                                                            <td>@item1.Hang</td>
+                                                            @if (decimal.TryParse(item1.SoTien, out soTien))
+                                                            {
+                                                                @if (soTien <= item1.WarningAmount)
+                                                                {
+                                                                    <td style="color:red;font-weight:bold;"> @string.Format("{0:0,0}", soTien) VNĐ</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="color:#0023F5">@string.Format("{0:0,0}", soTien) VNĐ</td>
+
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+
+
+                                                </tbody>
+                                            }
+                                            if (item.SoDuHangModel.Status == 3)
+                                            {
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">Số dư NON BSP được cập nhật lúc @item.SoDuHangModel.NgayLap.ToString("dd/MM/yyyy HH:mm:ss") bởi @item.SoDuHangModel.NguoiLap </th>
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item1 in item.chiTietHangModel)
+                                                    {
+                                                        <tr>
+                                                            @{
+                                                                decimal soTien = 0;
+                                                            }
+                                                            <td>@item1.Hang</td>
+                                                            @if (decimal.TryParse(item1.SoTien, out soTien))
+                                                            {
+                                                                @if (soTien <= item1.WarningAmount)
+                                                                {
+                                                                    <td style="color:red;font-weight:bold;"> @string.Format("{0:0,0}", soTien) VNĐ</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="color:#0023F5">@string.Format("{0:0,0}", soTien) VNĐ</td>
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+
+
+                                                </tbody>
+                                            }
+                                        }
+                                    }
+                                }
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+<script src="~/js/hang/soduhang.js"></script>
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+
+    <script charset="UTF-8">
+
+        alert('@Html.Raw(ViewBag.msg)');
+
+    </script>
+}
+ *@

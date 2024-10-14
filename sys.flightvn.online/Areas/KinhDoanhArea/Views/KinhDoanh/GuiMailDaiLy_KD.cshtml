@@ -1,0 +1,345 @@
+﻿@model GuiMailDaiLyModel
+
+@{
+    ViewBag.Title = "Gửi mail đại lý kinh doanh";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewBag.Title</title>
+<h2>Gửi mail đại lý</h2>
+<form asp-controller="KinhDoanh" asp-action="GuiMailDaiLy_KD" method="post" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="row" style="line-height:28px;">
+                            <br>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                        Mã KH
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <div class=" col-sm-9 col-xs-7">
+                                        <input type="text" id="MAKH" asp-for="MAKH" name="MAKH" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                    <div class=" col-sm-3 col-xs-5">
+                                        <button type="submit" class="btn btn-primary btn-block" style="width:100px;" name="searchBtn" value="searchBtn">Tìm Kiếm</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                        Đại lý
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                        <input type="text" id="DAILY" readonly asp-for="DAILY" name="DAILY" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <label class="col-form-label col-md-12 col-sm-12 col-xs-12 label-align">
+                                        MAIL
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" id="MAIL" asp-for="MAIL" name="MAIL" class="form-control ">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <label class="col-form-label c ol-md-12 col-sm-12 col-xs-12 label-align">
+                                        MAIL CC
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="text" id="MAILCC" placeholder="abc@gmail.com,xyz@gmail.com" asp-for="MAILCC" name="MAILCC" class="form-control ">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+                                    <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                        FILE ĐÍNH KÈM
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="item form-group">
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <input type="file" class="form-control-file btn btn-primary" id="files" name="files" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                            Các Loại Tài Khoản
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group" style="margin-top:10px;" id="idNoiDungCha">
+                                    <div class="item form-group" id="idNoiDungCon">
+                                        <div class="row">
+                                            <div class="col-md-11 col-sm-11 col-xs-11" id="cbChuDe0">
+                                                <input type="hidden" class="form-control noiDungKhoa" id="IDNoiDungKhoa0" name="IDNoiDungKhoa0" placeholder="" value="">
+                                                <select id="ChuDe0" name="ChuDe0" asp-for="ChuDe" class="select2_single form-control" onchange="getNoiDung(this)">
+                                                    <option value="0">-- Chọn Tài Khoản --</option>
+                                                    @foreach (var item in Model.ListNoiDung)
+                                                    {
+                                                        <option value="@item.RowID" class="tieude">@item.TieuDe</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="col-md-1 col-sm-1 col-xs-1">
+                                                <input class="cong btn btn-primary" type="button" id="cong" name="cong" value="+" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item form-group" id="idnoidungtieude">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <input type="text" class="form-control Account" id="Account0" asp-for="Account0" name="Account0" row="6" />
+                                            </div>
+                                            <div>
+                                                <input type="hidden" class="form-control noiDungKhoatxt" id="noiDungKhoatxt0" asp-for="noiDungKhoatxt" name="noiDungKhoatxt" row="6" />
+                                            </div>
+                                            <div>
+                                                <input type="hidden" class="form-control tieude0" id="tieude0" asp-for="tieude0" name="tieude0" row="6" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-12" style="text-align:right;">
+                                <input hidden id="noiDungTong" name="noiDungTong" />
+                                <button type="submit" class="btn btn-primary" onclick="LuuBaoCao(this);" name="saveBtn" value="saveBtn">Gửi Mail</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Đại lý</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li style="float:right;">
+                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div id="cty" class="cty table-responsive" style="height:270px;">
+                                    <table id="datatable1" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Mã KH</th>
+                                                <th>Tên đại lý</th>
+                                                <th>Mail</th>
+                                                <th style="display:none">Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @if (Model != null)
+                                            {
+                                                @if (Model.Guimailkinhdoanh != null)
+                                                {
+                                                    foreach (var item in Model.Guimailkinhdoanh)
+                                                    {
+                                                        <tr onclick="DL(this)" style="cursor:pointer">
+                                                            <td style="text-align:center"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+                                                            <td>@item.MAKH</td>
+                                                            <td>@item.DAILY</td>
+                                                            <td>@item.MAIL</td>
+                                                            <td style="display:none">@item.MAIL</td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td style="display:none"></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td style="display:none"></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+
+@* <script src="~/js/PhongVe/GuiMailDaiLyKinhDoanh.js"></script> *@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    var count = 1;
+    $(document).ready(function () {
+
+        $(document).on("click", ".cong", function () {
+            var cbChuDe = $("#cbChuDe0");
+            $("#idNoiDungCha").append("  <div class='col - md - 12 col - sm - 12 col - xs - 12 form - group' style='margin - top: 10px; ' id='idNoiDungCha" + count + "'> <div class='item form-group' id='idNoiDungCon" + count + "'><div class='row'><div class='col-md-11 col-sm-11 col-xs-11' id='cbChuDe" + count + "'></div><div class='col-md-1 col-sm-1 col-xs-1'><input class='tru btn btn-danger' name='tru' id='tru' onclick='XoaDong(" + count + ")'  type='button' value='-'/></div></div></div><div class='item form-group' id='idnoidungtieude" + count + "'><div class='row'><div><input type='hidden' class='form-control noiDungKhoatxt' id ='noiDungKhoatxt" + count + "' asp-for='noiDungKhoatxt' name='noiDungKhoatxt" + count + "' row = '6'/></div><div><input type='hidden' class='form-control tieude' id ='tieude" + count + "' asp-for='tieude' name='tieude" + count + "' row = '6'/></div><div class='col-md-12 col-sm-12 col-xs-12'><input type = 'text' class='form-control Account' id = 'Account" + count + "' asp-for='Account' name = 'Account" + count + "' row = '6' /></div></div></div></div>");
+            var result = cbChuDe.html();
+            var result1 = result.replace(/ChuDe0/g, "ChuDe" + count + "");
+            var result2 = result1.replace(/IDNoiDungKhoa0/g, "IDNoiDungKhoa" + count + "");
+            $("#cbChuDe" + count).append(result2);
+
+            count++;
+        });
+    });
+
+
+    function LuuBaoCao() {
+
+        console.log("abc");
+        var noiDungKhoaTong = "";
+        var e = 1;
+        // const tieude_i = document.getElementsByClassName("tieude");
+        for (var i = 0; i < count; i++) {
+
+            var tieude = "tieude" + i;
+            var noiDungKhoatxt = "noiDungKhoatxt" + i;
+            var account = "Account" + i;
+
+            var isDuLieu = document.getElementById(noiDungKhoatxt);
+            if (isDuLieu) {
+                var noidung_i = document.getElementById(noiDungKhoatxt).value;
+                var account_i = document.getElementById(account).value;
+                var tieude_i = document.getElementById(tieude).value;
+
+                noiDungKhoaTong = noiDungKhoaTong + e + "." + "<strong>" + tieude_i + "</strong>" + " " + ":" + " " + account_i + "\n\n" + noidung_i + "\n\n\n";
+
+                //  noiDungKhoaTong = noiDungKhoaTong + e + "." + account_i + "\n" + noidung_i  + "\n\n";
+                e++;
+
+
+            }
+        }
+        document.getElementById("noiDungTong").value = noiDungKhoaTong;
+    }
+
+</script>
+
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+
+        alert('@Html.Raw(ViewBag.msg)');
+
+    </script>
+} *@
+<script type="text/javascript">
+    function getNoiDung(obj) {
+        var i = obj.id.replace(/^\D+/g, '');
+        var id = $('#ChuDe' + i + ' option:selected').val();
+
+
+        $.ajax({
+            type: "GET",
+            url: "../KinhDoanh/GetNoiDung",
+            data: { khoachinh: id },
+            success: function (response) {
+
+
+                document.getElementById("IDNoiDungKhoa" + i).value = id;
+                document.getElementById("noiDungKhoatxt" + i).value = response.noiDungTimKiem;
+                document.getElementById("tieude" + i).value = response.tieuDe;
+
+                //  document.getElementById("noiDung" + i).value = response;
+                return;
+
+
+            },
+            failure: function (response) {
+
+                alert(response);
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+        });
+        return this;
+    }
+    function DL(ctrl) {
+        document.getElementById("MAKH").value = ctrl.getElementsByTagName('td')[1].textContent;
+        document.getElementById("DAILY").value = ctrl.getElementsByTagName('td')[2].textContent;
+        document.getElementById("MAIL").value = ctrl.getElementsByTagName('td')[3].textContent;
+        document.getElementById("SoDT").value = ctrl.getElementsByTagName('td')[4].textContent;
+    }
+    function XoaDong(SoDong) {
+        var e = 'idNoiDungCha' + SoDong;
+        const element = document.getElementById(e);
+        element.remove();
+        countGetTieude
+    }
+
+</script>

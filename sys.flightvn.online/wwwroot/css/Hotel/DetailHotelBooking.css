@@ -1,0 +1,61 @@
+﻿@media(min-width: 768px) {
+    .modal-dialog
+
+{
+    width: 1200px;
+    margin: 30px auto;
+}
+
+}
+
+.modal-header {
+    padding: 6px 15px;
+    border-bottom: none;
+}
+
+.bg {
+    font-weight: bold;
+    background: #f7f3f3;
+}
+
+.borber-table {
+    border: 1px solid #ddd;
+}
+
+    .borber-table > div > label {
+        border-top: 1px solid #ddd;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .borber-table > div > div {
+        border-top: 1px solid #ddd;
+        margin: 0;
+    }
+
+        .borber-table > div > div > span {
+            padding: 10px;
+            display: block;
+            float: left;
+        }
+
+        .borber-table > div > div input, .borber-table > div > div select {
+            margin-top: 4px;
+        }
+
+.title-detail-BK {
+    background: #e2e1e1 !important;
+    color: #f76f09 !important;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    display: table;
+    width: 100%;
+    font-weight: bold;
+}
+
+.modal-header .close {
+    color: #fff;
+}
+

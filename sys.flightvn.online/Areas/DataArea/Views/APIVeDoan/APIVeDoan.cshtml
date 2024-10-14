@@ -1,0 +1,684 @@
+﻿
+@{
+    ViewData["Title"] = "APIVeDoan";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<h2>APIVeDoan</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        AgentCode
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="AgentCode" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        BookType
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="BookType" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Phone
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Phone" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        PhoneRemark
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="PhoneRemark" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Email
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Email" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Remark
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Remark" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        NumberOfGuests
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="NumberOfGuests" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Fare
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Fare" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Charge
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Charge" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Price
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Price" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <div class="row">
+                    <label class="col-xs-12">
+                        Total
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" name="Total" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-12">
+                <label class="col-xs-12">
+                    &nbsp;
+                </label>
+                <button class="btn btn-success" value="btn_TimDanhSach" name="submitBtn" type="submit">Tìm kiếm</button>
+            </div>
+        </div>
+        <div class="x_panel">
+            <div class="row" id="SoDong">
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Type
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="Type" asp-for="Type" name="Type" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Title
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="Title" asp-for="Title" name="Title" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            FirstName
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="FirstName" asp-for="FirstName" name="FirstName" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            LastName
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="LastName" asp-for="LastName" name="LastName" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            DateOfBirth
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="DateOfBirth" asp-for="DateOfBirth" name="DateOfBirth" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-6">
+                    <label class="col-xs-12">
+                        &nbsp;
+                    </label>
+                    <div class="item form-group">
+                        <input class="btn btn-primary" onclick="ThemDong(this);" type="button" value="+" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="addRows">
+            </div>
+        </div>
+        <div class="x_panel">
+            <div class="row" id="SoDongFlights">
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            RouteNo
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="RouteNo" asp-for="RouteNo" name="RouteNo" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            DepartureCode
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="DepartureCode" asp-for="DepartureCode" name="DepartureCode" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            ArrivalCode
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="ArrivalCode" asp-for="ArrivalCode" name="ArrivalCode" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            FlightCode
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="FlightCode" asp-for="FlightCode" name="FlightCode" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            DepartureDate
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="DepartureDate" asp-for="DepartureDate" name="DepartureDate" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            ArrivalDate
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="ArrivalDate" asp-for="ArrivalDate" name="ArrivalDate" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            AirlineSystem
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="AirlineSystem" asp-for="AirlineSystem" name="AirlineSystem" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            FlightAirline
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="FlightAirline" asp-for="FlightAirline" name="FlightAirline" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-6">
+                    <label class="col-xs-12">
+                        &nbsp;
+                    </label>
+                    <div class="item form-group">
+                        <input class="btn btn-primary" onclick="ThemDongFlights(this);" type="button" value="+" />
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="addRowsFlight">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var count = 1;
+    function ThemDong() {
+        document.querySelector('#addRows').insertAdjacentHTML(
+                'beforebegin',
+            `<div class="row" id="SoDong` + count + `">
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Type
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="Type` + count + `" asp-for="Type` + count + `" name="Type` + count + `" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Title
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="Title` + count + `" asp-for="Title` + count + `"  name="Title` + count + `" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            FirstName
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="FirstName` + count + `" asp-for="FirstName` + count + `" name="FirstName` + count + `" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            LastName
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="LastName` + count + `" asp-for="LastName` + count + `" name="LastName` + count + `" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            DateOfBirth
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" id="DateOfBirth` + count + `" asp-for="DateOfBirth` + count + `" name="DateOfBirth` + count + `" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-6">
+                    <label class="col-xs-12">&nbsp;</label>
+                    <div class="item form-group">
+                        <input class="btn btn-danger" onclick="XoaDong(` + count + `)"  type="button" value="-" />
+                    </div>
+                </div>
+            </div>` );
+        count++;
+    }
+
+    function ThemDongFlights() {
+        document.querySelector('#addRowsFlight').insertAdjacentHTML(
+            'beforebegin',
+            `<div class="row" id="SoDongFlights` + count + `">
+            <div class="col-sm-1 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        RouteNo
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="RouteNo` + count + `" asp-for="RouteNo` + count + `" name="RouteNo` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-1 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        DepartureCode
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="DepartureCode` + count + `" asp-for="DepartureCode` + count + `" name="DepartureCode` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-1 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        ArrivalCode
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="ArrivalCode` + count + `" asp-for="ArrivalCode` + count + `" name="ArrivalCode` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-1 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        FlightCode
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="FlightCode` + count + `" asp-for="FlightCode` + count + `" name="FlightCode` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        DepartureDate
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="DepartureDate` + count + `" asp-for="DepartureDate` + count + `" name="DepartureDate` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        ArrivalDate
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="ArrivalDate` + count + `" asp-for="ArrivalDate` + count + `" name="ArrivalDate` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        AirlineSystem
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="AirlineSystem` + count + `" asp-for="AirlineSystem` + count + `" name="AirlineSystem` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-sm-1 col-xs-6">
+                <div class="row">
+                    <label class="col-xs-12">
+                        FlightAirline
+                    </label>
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                    <input class="form-control" type="type" id="FlightAirline` + count + `" asp-for="FlightAirline` + count + `" name="FlightAirline` + count + `" value="" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-6">
+                <label class="col-xs-12">
+                    &nbsp;
+                </label>
+                <div class="item form-group">
+                    <input class="btn btn-danger" onclick="XoaDongFlights(` + count + `)"  type="button" value="-" />
+                </div>
+            </div>
+        </div>` );
+        count++;
+    }
+    function XoaDong(SoDong) {
+        var e = 'SoDong' + SoDong;
+        const element = document.getElementById(e);
+        element.remove();
+        count--;
+    }
+    function XoaDongFlights(SoDong) {
+        var e = 'SoDongFlights' + SoDong;
+        const element = document.getElementById(e);
+        element.remove();
+        count--;
+    }
+</script>

@@ -1,0 +1,17 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "http://donhang.enviet-group.com/Service.asmx"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, SMSService"
+    ],
+    "sync": true,
+    "targetFramework": "netcoreapp2.1",
+    "typeReuseMode": "None"
+  }
+}

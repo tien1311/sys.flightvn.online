@@ -1,0 +1,64 @@
+﻿@model PagingList<SubjectModel>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+@{
+    ViewData["Title"] = "Chính sách & Khuyến mãi";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<style>
+    .news-post {
+        margin-bottom: 20px;
+        border: 1px solid #dddddd;
+        background: #f3f3f3;
+        color: #333;
+        border-radius: 4px;
+    }
+
+    .contain-content {
+        padding: 5px 12px;
+        border-top: 1px solid #DDDDDD;
+    }
+
+    .news-title {
+        font-size: 13px;
+        margin: 10px 0 5px;
+        line-height: 20px;
+        text-transform: uppercase;
+        text-align: left;
+    }
+
+    .post-date {
+        text-align: left;
+    }
+</style>
+
+<H2>Chính sách & Khuyến mãi</H2>
+<div class="clearfix">
+</div>
+<div class="row">
+    <div class="x_panel">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-sm-12">
+                <div class="news-post">
+                    <div class="contain-img">
+                        <a href="@item.subject_content"><img style="border-radius: 4px 4px 0 0;width:389px;height:204px;" src="@item.Image" alt="" class="img-responsive" /></a>
+                    </div>
+                    <div class="contain-content">
+                        <p class="news-title"><a href="@item.subject_content"><strong>@item.Title</strong></a></p>
+                        <p class="post-date"><i class="fa fa-clock-o" aria-hidden="true"></i> @DateTime.Parse(item.Date).ToString("dd/MM/yyyy")</p>
+
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="row" style="float:right;">
+    <vc:pager paging-list="@Model"></vc:pager>
+</div>
+

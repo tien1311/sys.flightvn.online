@@ -1,0 +1,49 @@
+﻿@model Manager.Model.Models.LandingPage.Post
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@using Manager.DataAccess.Repository
+
+@{
+    var landingPageRepository = new LandingPageRepository(_configuration);
+    var category = landingPageRepository.GetCategory(Model.CategoryId).GetAwaiter().GetResult();
+}
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Cập nhật bài viết @category.Name </h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+
+            <form id="submitForm">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tiêu đề</label>
+                            <input class="form-control" type="text" id="Name" name="Name" value="@Model.Name" placeholder="Tiêu đề" required>
+                            <input class="form-control" type="text" id="Id" name="Id" value="@Model.Id" hidden placeholder="Tiêu đề" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Mô tả ngắn</label>
+                            <textarea id="ShortDescription" class="form-control" name="ShortDescription">@Model.ShortDescription</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Mô tả chi tiết</label>
+                            <textarea id="LongDescription" class="form-control">@Model.LongDescription</textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <button id="btnSave" type="submit" class="btn btn-primary">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/landingpage/post/editpost.js"></script>

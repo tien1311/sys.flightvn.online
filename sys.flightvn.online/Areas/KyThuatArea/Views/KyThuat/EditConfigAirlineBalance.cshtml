@@ -1,0 +1,86 @@
+﻿@model ConfigAirlineBalanceModel
+@{
+    string s = "30";
+    var n = Model;
+}
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+
+<div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Update số dư hãng</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <label for="" class="col-sm-12 control-label">Hãng</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" readonly id="Airline" name="Airline" placeholder="Hãng" value="@Model.Airline">
+                                        <input type="hidden" class="form-control" id="ID" name="ID" value="@Model.ID">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <label for="" class="col-sm-12 control-label">Số tiền</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="Amount" onkeyup="formatNumber(this.value, this.id)" name="Amount" placeholder="SoTien" value="@string.Format("{0:0,0}", Model.Amount)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12" style="text-align:right;">
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class=" xdisplay_inputx form-group has-feedback">
+                                <button type="button" id="Update" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/js/kythuat/ConfigBalanceAirline.js"></script>

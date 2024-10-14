@@ -1,0 +1,88 @@
+﻿@model ChuongTrinhKhuyenMai
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" style=" color: #fff;" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Chỉnh sửa bài viết</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            @using (Html.BeginForm("SaveEditCTKM", "Data", new { i = 9 }, FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Hình đại diện (690 x 360)</label>
+                            <input class="form-control" name="Images" placeholder="" value="@Model.Images">
+                            <input type="hidden" name="ID" value="@Model.RowID">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tiêu đề</label>
+                            <input class="form-control" name="Title" placeholder="" value="@Model.Title">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Từ thời gian</label>
+                            <input type="datetime-local" class="form-control" id="datefrom" name="datefrom" placeholder="" value="@Model.DateFrom">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Đến thời gian</label>
+                            <input type="datetime-local" class="form-control" id="dateto" name="dateto" placeholder="" value="@Model.DateTo">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary" name="create" value="Save">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <textarea name="CreateContent" id="CreateContent">
+                            @Model.Content
+                            </textarea>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('CreateContent', {
+                height: 200,
+                filebrowserUploadUrl: '/Data/UploadCKEditor'
+            });
+        });
+    </script>
+</div>

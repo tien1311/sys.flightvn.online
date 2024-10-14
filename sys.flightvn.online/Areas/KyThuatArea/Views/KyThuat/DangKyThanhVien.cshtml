@@ -1,0 +1,463 @@
+﻿@model Member
+
+@{
+    ViewData["Title"] = "Đăng kí thành viên";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Đăng kí tài khoản đại lí</h2>
+
+<div>
+    @using (Html.BeginForm("DangKyThanhVien", "KyThuat", new { i = 12 }, FormMethod.Post))
+    {
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-sm-8" style="">
+                        <div class="row">
+                            <div class="col-xs-12 form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">Mã hợp đồng</label>
+                                    @if (Model.member_idManager == null)
+                                    {
+                                        <div class="col-sm-6">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="mahd" name="mahd">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-sm-6">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="mahd" name="mahd" value="@Model.member_idManager">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="col-sm-4">
+                                        <input type="submit" class="btn btn-primary" value="Lấy thông tin" name="seachMahd" id="seachMahd" />
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">Khu vực</label>
+                                    <div class="col-sm-8">
+                                        <select id="khuvuc" name="khuvuc" asp-for="khuvuc" class="select2_single form-control">
+                                            <option value="5">Miền bắc</option>
+                                            <option value="6">Miền trung</option>
+                                            <option value="7">Miền nam</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (Model.member_company == null)
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <input type="hidden" class="form-control" id="memberid" name="company" value="">
+                                        <label for="" class="col-sm-4 control-label">Tên đại lý</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="company" name="company" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <input type="hidden" class="form-control" id="memberid" name="memberid" value="">
+                                        <label for="" class="col-sm-4 control-label">Tên đại lý</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="company" name="company" value="@Model.member_company">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.member_name == null)
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Người đại diện</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="name" name="name" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Người đại diện</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="name" name="name" value="@Model.member_name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.member_kh == null)
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Mã khách hàng</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="makh" name="makh" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Mã khách hàng</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="makh" name="makh" value="@Model.member_kh">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.member_code == null)
+                            {
+
+
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Tên đăng nhập</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="code" name="code" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Tên đăng nhập</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="code" name="code" value="@Model.member_code">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">Mật khẩu</label>
+                                    <div class="col-sm-8">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="password" class="form-control" id="password" name="password" value="@Model.member_password" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.member_email == null)
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Email</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="email" name="email" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Email</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="email" name="email" value="@Model.member_email">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                            @if (Model.member_address == null)
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Địa chỉ</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="address" name="address" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Địa chỉ</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="address" name="address" value="@Model.member_address">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.member_phone == null)
+                            {
+
+
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Điện thoại</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="phone" name="phone" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Điện thoại</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="phone" name="phone" value="@Model.member_phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.member_fax == null)
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Fax</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="fax" name="fax" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-xs-6 form-group">
+                                    <div class="row">
+                                        <label for="" class="col-sm-4 control-label">Fax</label>
+                                        <div class="col-sm-8">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" class="form-control" id="fax" name="fax" value="@Model.member_fax">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">
+                                        Kinh doanh
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="kinhdoanh" name="kinhdoanh" class="select2_single form-control">
+                                            @foreach (var item in Model.ListKD)
+                                            {
+                                                <option @item.Select value="@item.RowID" class="tieude">@item.Ten</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">
+                                        Kế toán
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="ketoan" name="ketoan" asp-for="ketoan" class="select2_single form-control">
+
+                                            @foreach (var item in Model.ListKt)
+                                            {
+                                                <option @item.Select value="@item.RowID" class="tieude">@item.Ten</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">
+                                        Trạng thái
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="isactive" name="isactive" asp-for="status" class="select2_single form-control">
+                                            <option value="1">Kích hoạt</option>
+                                            <option value="0">Ngừng kích hoạt</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">
+                                        Kích hoạt bảo hiểm
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select id="isshow" name="isshow" asp-for="isshow" class="select2_single form-control">
+                                            <option value="True">Hiển thị</option>
+                                            <option value="False">Ẩn</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <div class="row">
+                                    <label for="dulich" class="col-sm-4 control-label">
+                                        Du lịch
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <input type="checkbox" id="dulich" name="dulich" value="1" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="row">
+                                    <div style="text-align:right;">
+                                        <input type="submit" class="btn btn-primary" value="Lưu thông tin" name="saveBtn" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <div class="row">
+                                    <div style="color:red;">
+                                        <h5>*Tên đăng nhập sẽ được tạo ra ngẫu nhiên.</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@* @if (ViewBag.msg != null)
+{
+    <script type="text/javascript">
+
+        alert('@Html.Raw(ViewBag.msg)');
+    </script>
+
+} *@
+
+
+
+
+

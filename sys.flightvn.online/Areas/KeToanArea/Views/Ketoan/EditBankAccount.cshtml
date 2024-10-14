@@ -1,0 +1,49 @@
+﻿@model Manager.Model.Models.BankAccount.BankAccount
+@{
+    ViewData["Title"] = "Chỉnh sửa tài khoản";
+}
+<title>@ViewData["Title"]</title>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Chỉnh sửa tài khoản</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <form id="submitForm" action="@Url.Action("SaveEditBankAccount","KeToan")" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Mã ngân hàng</label>
+                            <input class="form-control" value="@Model.BankCode" id="bankCode" name="bankCode" placeholder="VD: VCB" maxlength="10" required>
+                            <input class="form-control" value="@Model.BankCode" hidden id="currentBankCode" name="currentBankCode" placeholder="VD: VCB" maxlength="10" required>
+                            <input class="form-control" value="@Model.Id" id="Id" name="Id" hidden>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên ngân hàng</label>
+                            <input class="form-control" value="@Model.BankName" id="bankName" name="bankName" placeholder="VD: Vietcombank" maxlength="150" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Số định danh</label>
+                            <input class="form-control" value="@Model.FirstSerial" id="firstSerial" name="firstSerial" placeholder="Số định danh" maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="float:right">
+                        <div class="form-group" style="float:right;">
+                            <label for="inputEmail3" class="control-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/BankAccount/EditBankAccount.js"></script>

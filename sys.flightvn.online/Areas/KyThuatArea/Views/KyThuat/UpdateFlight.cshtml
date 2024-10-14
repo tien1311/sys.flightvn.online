@@ -1,0 +1,351 @@
+﻿@model FlightModel
+@*@{
+        ViewData["Title"] = "Thêm hành trình";
+        Layout = "~/Views/Shared/MasterLayout.cshtml";
+    }*@
+
+@*<title>@ViewData["Title"]</title>
+        <h2 style="color: #000;">Thêm hành trình</h2>
+    <script src="~/vendors/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>*@
+
+
+<!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
+<div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Sửa hành trình</h1>
+        </div>
+
+        <input id="IDFlight" type="hidden" value="@Model.ID" />
+        <div class="form-horizontal" role="form">
+
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Hãng</label>
+                <div class="col-sm-10">
+
+                    <select id="Airline" name="Airline" asp-for="tieude" class="select2_single form-control">
+                        @if (Model.Airline == "VN")
+                        {
+                            <option selected value="VN">VN</option>
+                            <option value="QH">QH</option>
+                            <option value="VJ">VJ</option>
+                            <option value="VU">VU</option>
+                            <option value="PA">PA</option>
+                        }
+                        @if (Model.Airline == "QH")
+                        {
+                            <option value="VN">VN</option>
+                            <option selected value="QH">QH</option>
+                            <option value="VJ">VJ</option>
+                            <option value="VU">VU</option>
+                            <option value="PA">PA</option>
+                        }
+                        @if (Model.Airline == "VJ")
+                        {
+                            <option value="VN">VN</option>
+                            <option value="QH">QH</option>
+                            <option selected value="VJ">VJ</option>
+                            <option value="VU">VU</option>
+                            <option value="PA">PA</option>
+                        }@if (Model.Airline == "VU")
+                        {
+                            <option value="VN">VN</option>
+                            <option value="QH">QH</option>
+                            <option value="VJ">VJ</option>
+                            <option selected value="VU">VU</option>
+                            <option value="PA">PA</option>
+                        }@if (Model.Airline == "PA")
+                        {
+                            <option value="VN">VN</option>
+                            <option value="QH">QH</option>
+                            <option value="VJ">VJ</option>
+                            <option value="VU">VU</option>
+                            <option selected value="PA">PA</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Hành trình</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="Itinerary" value="@Model.Itinerary" name="Itinerary" placeholder="">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Số lượng chỗ </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="NumberOfGuests" value="@Model.NumberOfGuests" id="NumberOfGuests" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Đơn giá </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" onkeyup="formatNumber('Price');" name="Price" value="@string.Format("{0:0,0}",Model.Price)" id="Price" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Đơn giá giảm </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" onkeyup="formatNumber('PriceAgent');" name="PriceAgent" value="@string.Format("{0:0,0}",Model.PriceAgent)" id="PriceAgent" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Đơn vị tiền tệ </label>
+                <div class="col-sm-10">
+
+                    <select id="Donvi" name="Donvi" asp-for="Donvi" class="select2_single form-control">
+                        @if (Model.Donvi == "VND")
+                        {
+                            <option selected value="VND">VND</option>
+                            <option value="USD">USD</option>
+                        }
+                        else
+                        {
+                            <option value="VND">VND</option>
+                            <option selected value="USD">USD</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Số lượng người (Đoàn) </label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" name="Specification" value="@Model.Specification" id="Specification" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Loại </label>
+                <div class="col-sm-10">
+
+                    <select id="KindTrip" name="KindTrip" asp-for="tieude" onchange="KindTripChange()" class="select2_single form-control">
+                        @if (Model.KindTrip == "KH")
+                        {
+                            <option selected value="KH">Khứ hồi</option>
+                            <option value="MC">Một chiều</option>
+                        }
+                        else
+                        {
+                            <option value="KH">Khứ hồi</option>
+                            <option selected value="MC">Một chiều</option>
+                        }
+
+
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Hoạt động </label>
+                <div class="col-sm-10">
+                    <label style="margin-left: 10px; padding-top: 10px;">
+                        <input id="Active" name="Active" type="checkbox" class="js-switch" data-switchery="true" checked="checked">
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="text-align:left;" class="col-sm-2 control-label">Điều kiện </label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="Condition" name="Condition">@Model.Condition</textarea>
+                </div>
+            </div>
+            @if (Model.ListFlightDetail != null)
+            {
+                <div class="form-group" id="chieudi">
+                    <div class="col-sm-4 col-md-4">
+                        <input type="text" class="form-control" name="FlightNumber1" id="FlightNumber1" value="@Model.ListFlightDetail[0].FlightNumber" placeholder="Mã chuyến bay">
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="Ngày đi" value="@Model.ListFlightDetail[0].FlightDate.ToString("dd/MM/yyyy")" name="FlightDate1">
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+
+                        <input type="time" class="form-control" name="Hour1" id="Hour1" value="@Model.ListFlightDetail[0].FlightHour" placeholder="Thời gian đi">
+                    </div>
+                </div>
+                @if (Model.ListFlightDetail.Count > 1)
+                {
+                    <div class="form-group" id="chieuve">
+                        <div class="col-sm-4 col-md-4">
+                            <input type="text" class="form-control" name="FlightNumber2" id="FlightNumber2" value="@Model.ListFlightDetail[1].FlightNumber" placeholder="Mã chuyến bay">
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal2" value="@Model.ListFlightDetail[1].FlightDate.ToString("dd/MM/yyyy")" placeholder="Ngày về" name="FlightDate2" value=''>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="time" class="form-control" name="Hour2" id="Hour2" value="@Model.ListFlightDetail[1].FlightHour" placeholder="Thời gian về">
+                                </div>
+                            </div>
+                            @*<input type="text" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">*@
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group" id="chieuve">
+                        <div class="col-sm-4 col-md-4">
+                            <input type="text" class="form-control" name="FlightNumber2" id="FlightNumber2" placeholder="Mã chuyến bay">
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="FlightDate2" value=''>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input type="time" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">
+                                </div>
+                            </div>
+                            @*<input type="text" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">*@
+
+                        </div>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="form-group" id="chieudi">
+                    <div class="col-sm-4 col-md-4">
+                        <input type="text" class="form-control" name="FlightNumber1" id="FlightNumber1" placeholder="Mã chuyến bay">
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="Ngày đi" name="FlightDate1" value=''>
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+
+                        <input type="time" class="form-control" name="Hour1" id="Hour1" placeholder="Thời gian đi">
+                    </div>
+                </div>
+                <div class="form-group" id="chieuve">
+                    <div class="col-sm-4 col-md-4">
+                        <input type="text" class="form-control" name="FlightNumber2" id="FlightNumber2" placeholder="Mã chuyến bay">
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="FlightDate2" value=''>
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="time" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">
+                            </div>
+                        </div>
+                        @*<input type="text" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">*@
+
+                    </div>
+                </div>
+            }
+
+            <div class="form-group" style="text-align:right">
+                <div class="col-sm-offset-2">
+                    <input id="UpdateFlight" type="button" class="btn btn-primary" name="UpdateFlight" value="Sửa hành trình" />
+
+
+                    @*<button type="submit" class="btn btn-danger" name="delBtn" value="delBtn">Xóa</button>*@
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script src="~/vendors/ckeditor/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('Condition', {
+                height: 200,
+                filebrowserUploadUrl: '../Data/UploadCKEditor'
+            });
+        });
+    </script>
+
+    <script src="~/js/kythuat/updateflight.js"></script>
+    <div class="row">
+
+        @* @if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+
+                alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+
+        } *@
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

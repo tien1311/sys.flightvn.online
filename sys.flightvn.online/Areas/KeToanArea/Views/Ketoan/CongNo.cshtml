@@ -1,0 +1,221 @@
+﻿@model CongNoModel
+@{
+    ViewData["Title"] = "CongNo";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+    double TongGiaBan = 0;
+    double TongChietKhau = 0;
+    double TongNo = 0;
+    double TongCo = 0;
+}
+
+<h2>Công Nợ</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("SearchCongNo", "KeToan", new { i = 8 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Từ Ngày
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal2" name="cal_from" value='@ViewBag.DateFrom'>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Đến Ngày
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal3" name="cal_to" value='@ViewBag.DateTo'>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Mã KH
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" value='@ViewBag.MaKH' name="MaKH">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <p style="color:red">@ViewBag.error</p>
+                    </div>
+                </div>
+
+                <div class="item form-group col-md-2 col-sm-6 col-xs-6" style="text-align:right;">
+                    <input type="submit" class="btn btn-primary" value="Lọc Công Nợ" name="searchBtn" />
+                </div>
+                <div class="item form-group col-md-1 col-sm-6 col-xs-6" style="text-align:right;">
+                    <input type="submit" class="btn btn-success" value="Xuất excel" name="excelBtn" />
+                </div>
+            </div>
+        }
+        @if (Model != null)
+        {
+            <div class="row">
+                <p style="padding-left: 10px;">Phòng vé: <span style="font-weight:bold;color:red">@Model.TenDL</span> - Mã KH: <span style="font-weight:bold;color:red">@Model.MaKH</span></p>
+            </div>
+        }
+        <div class="row">
+            <div class="item form-group col-md-12 col-sm-12 col-xs-12">
+                Số dư đầu kỳ <b>@ViewBag.DateFrom</b>
+                @if (Model != null)
+                {
+                    {
+                        if (Model.SoDuDauNgay <= 0)
+                        {
+                            <span style="color:green">: (Dương quỹ) @Model.SoDuDauNgay.ToString("#,##0 VNĐ").Replace(".", ",")</span>
+                        }
+                        else
+                        {
+                            <span style="color:red">: (Âm quỹ) @Model.SoDuDauNgay.ToString("#,##0 VNĐ").Replace(".", ",")</span>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="item form-group col-md-12 col-sm-12 col-xs-12">
+                Số dư cuối kỳ <b>@ViewBag.DateTo</b>
+                @if (Model != null)
+                {
+                    {
+                        if (Model.SoDuCuoiNgay <= 0)
+                        {
+                            <span style="color:green">: (Dương quỹ) @Model.SoDuCuoiNgay.ToString("#,##0 VNĐ").Replace(".", ",")</span>
+                        }
+                        else
+                        {
+                            <span style="color:red">: (Âm quỹ) @Model.SoDuCuoiNgay.ToString("#,##0 VNĐ").Replace(".", ",")</span>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        <div class="table-responsive" style="font-size:12px;">
+            <table class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+
+                        <th class="column-title"> STT </th>
+                        <th class="column-title"> Chứng từ </th>
+                        <th class="column-title"> Ngày Chứng từ </th>
+                        <th class="column-title"> Ngày xuất </th>
+                        <th class="column-title"> Code xuất </th>
+                        <th class="column-title"> PNR </th>
+                        <th class="column-title"> Diễn giải </th>
+                        <th class="column-title"> Giá bán </th>
+                        <th class="column-title"> Chiết khấu </th>
+                        <th class="column-title"> Nợ </th>
+                        <th class="column-title"> Có </th>
+                        <th class="column-title"> Lũy kế </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        if (Model.ChiTiet.Count > 0 && Model.ChiTiet.Count != null)
+                        {
+
+                            int i = 1;
+
+                            foreach (var item in Model.ChiTiet)
+                            {
+                                TongGiaBan += item.GiaCoBan;
+                                TongChietKhau += item.ChietKhau;
+                                TongCo += item.Co;
+                                TongNo += item.No;
+
+                                <tr class="even pointer">
+                                    <td class="">@i</td>
+                                    <td class="">@item.ChungTu</td>
+                                    <td class="">@item.NgayChungTuEV </td>
+                                    @{
+                                        if (item.NgayXuat == "01/01/1900")
+                                        {
+                                            <td class=""></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="">@item.NgayXuat</td>
+                                        }
+                                    }
+
+                                    <td class="">@item.Code_signin</td>
+                                    <td class="">@item.PNR </td>
+                                    <td class="">@item.DienGiai</td>
+
+                                    <td class="" style="color:red;text-align:center;">@item.GiaCoBan.ToString("#,##0").Replace(".", ",")</td>
+                                    <td class="" style="color:blue;text-align:center;">@item.ChietKhau.ToString("#,##0").Replace(".", ",")</td>
+                                    <td class="" style="text-align:center;">@item.No.ToString("#,##0").Replace(".", ",")</td>
+                                    <td class="" style="text-align:center;">@item.Co.ToString("#,##0").Replace(".", ",")</td>
+                                    <td class="" style="text-align:center;">@item.LuyKe.ToString("#,##0").Replace(".", ",") </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr class="even pointer">
+                                <td colspan="12">
+                                    <i>Không có thông tin chi tiết công nợ để hiển thị</i>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+                <tbody>
+                    <tr>
+
+                        <th class="column-title">  </th>
+                        <th class="column-title">  </th>
+                        <th class="column-title"> </th>
+                        <th class="column-title">  </th>
+                        <th class="column-title"> </th>
+                        <th class="column-title"> </th>
+                        <th class="column-title">  </th>
+                        <th class="column-title" style="color:red;text-align:center;"> @TongGiaBan.ToString("#,##0").Replace(".", ",") </th>
+                        <th class="column-title" style="color:blue;text-align:center;"> @TongChietKhau.ToString("#,##0").Replace(".", ",") </th>
+                        <th class="column-title" style="text-align:center;"> @TongNo.ToString("#,##0").Replace(".", ",") </th>
+                        <th class="column-title" style="text-align:center;"> @TongCo.ToString("#,##0").Replace(".", ",") </th>
+                        <th class="column-title">  </th>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

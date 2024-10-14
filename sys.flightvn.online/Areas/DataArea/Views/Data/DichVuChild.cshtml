@@ -1,0 +1,99 @@
+﻿@model List<SanPhamChild>
+@{
+    ViewData["Title"] = "Dịch vụ con";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Dịch vụ con</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridDichVu" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:29px; text-align:center;"></th>
+                        <th style="width: 42px; text-align: center;">STT</th>
+                        <th style="width: 130px; text-align: center;">ID</th>
+                        <th style="width: 60px; text-align: center;">Hình</th>
+                        <th>Tên dịch vụ</th>
+                        <th>Dịch vụ cha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td style="text-align: center;">@i</td>
+                                <td style="text-align: center;">@item.ID_PRODUCTCHILD</td>
+                                <td><img src="@item.ChildImg" alt="" style="width:50px;height:auto;" /></td>
+                                <td>@item.Name</td>
+                                <td>@item.NameParent</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    $("#BtnCreate").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateDichVuChild",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridDichVu .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditDichVuChild",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

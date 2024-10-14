@@ -1,0 +1,72 @@
+﻿@model NhanVienModel
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+</style>
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">@Model.ThaoTac</h1>
+
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("LuuCongViec", "Data", new { i = 9 }, FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="item form-group">
+                            <label>Phòng ban</label>
+                            <input class="form-control" type="text" name="PhongBan" value="@Model.PhongBan" readonly />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Nhân viên</label>
+                            <input class="form-control" type="text" name="Ten" value="@Model.Ten" readonly />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Danh mục</label>
+                            <input class="form-control" type="text" name="CongViec" value="@Model.CongViec" readonly />
+                            <input class="form-control" type="hidden" name="ThaoTac" value="@Model.ThaoTac" />
+                            <input class="form-control" type="hidden" name="MaNV" value="@Model.MaNV" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div id="contain_button">
+                                <button type="submit" class="btn btn-success btn-block" name="Save" value="Save">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <textarea name="NoiDungChiTiet" id="NoiDungChiTiet">
+                            @Model.Noidung
+                            </textarea>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('NoiDungChiTiet', {
+            height: 400,
+            filebrowserUploadUrl: '/Data/UploadCKEditor'
+        });
+    });
+</script>

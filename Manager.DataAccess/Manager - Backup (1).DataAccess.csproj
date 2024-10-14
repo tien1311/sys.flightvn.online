@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Update="Repository\LoginRepository.cs">
+			<SubType>Component</SubType>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EPPlus" Version="4.5.2.1" />
+		<PackageReference Include="ExcelDataReader" Version="3.6.0" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
+		<PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
+		<PackageReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
+		<PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NSwag.ApiDescription.Client" Version="13.0.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="RtfPipe" Version="2.0.7677.4303" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Manager.Common\Manager.Common.csproj" />
+	  <ProjectReference Include="..\Manager.ConnectedServices\Manager.ConnectedServices.csproj" />
+	  <ProjectReference Include="..\Manager.Model\Manager.Model.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="EasyInvoice.Client">
+	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
+	  </Reference>
+	  <Reference Include="EasyInvoice.Json">
+	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
+	  </Reference>
+	  <Reference Include="TangDuLieu">
+	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\TangDuLieu.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+
+</Project>

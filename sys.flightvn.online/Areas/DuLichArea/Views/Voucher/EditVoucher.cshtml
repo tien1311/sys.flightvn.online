@@ -1,0 +1,228 @@
+﻿@model VoucherModel
+
+@* Css for Chossen lb*@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css" integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .chosen-select-tourlocation {
+        width: 100%;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-image: none;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    select.chosen-select-tourlocation + .chosen-container.chosen-container-single .chosen-single {
+        height: 32px;
+        background-color: #fff;
+        background: none;
+    }
+</style>
+
+
+<link href="~/css/hotel/createhotel.css" rel="stylesheet" />
+<div class="modal-dialog">
+    <form id="Upsert_Form" enctype="multipart/form-data">
+        <input type="hidden" id="TypeSave" value="EDIT" />
+        <input id="TypeService" value="TOURLOCATION" name="Type" hidden />
+        <!-- Modal content-->
+        <div class="modal-content" style=" background: #2A3F54;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 style="color:#fff">Chỉnh sửa Voucher</h1>
+            </div>
+            <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+                <input class="form-control" id="Id" name="Id" value="@Model.Id" hidden>
+                @*  <input type="date" placeholder="" id="CreateDate" name="CreateDate" class="form-control" value="@Model.CreateDate.ToString("yyyy-MM-dd")" hidden />
+                <input class="form-control" id="CreateBy" name="CreateBy" value="@Model.CreateBy" hidden> *@
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="VoucherName" class="control-label">Tên Voucher (*)</label>
+                            <input class="form-control" id="NameVoucher" name="VoucherName" value="@Model.VoucherName" placeholder="">
+                        </div>
+                    </div>
+                    @*  <div class="col-sm-3">
+                    <div class="form-group">
+                    <label asp-for="VoucherServiceName" class="control-label">Loại dịch vụ (*)</label>
+                    <select name="ServiceType" id="ListServiceType" class="form-control chosen-select-voucher">
+                    @if (ViewData["listServiceType"] != null)
+                    {
+                    @foreach (var item in ViewData["listServiceType"] as List<ServiceType>)
+                    {
+                    <option value="@item.Type">@item.Name</option>
+                    }
+                    }
+                    </select>
+                    </div>
+                    </div> *@
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Danh sách điểm tham quan(*)</label>
+                            <select name="ServiceId" id="ListServiceId" class="form-control chosen-select-tourlocation" data-serviceid="@ViewData["ServiceId"]">
+                                @*using js to call option *@
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Mô tả ngắn (*)</label>
+                            <textarea style="max-width:100%" type="text" id="ShortDescription" name="ShortDescription" class="form-control" maxlength="255" placeholder="Mô tả ngắn">@Model.ShortDescription.Trim()</textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Mô tả chi tiết (*)</label>
+                            <textarea type="text" id="LongDescription" name="Description" class="form-control">@Model.Description.Trim()</textarea>
+                        </div>
+                    </div>
+                    @* <div class="col-sm-6">
+                    <div class=" xdisplay_inputx form-group has-feedback">
+                    <label for="VoucherType" class="control-label">Hình thức khuyến mãi (*)</label>
+                    <select name="VoucherTypeID" id="VoucherType" class="form-control">
+                    @foreach (var item in ViewData["ListVoucherType"] as List<VoucherType>)
+                    {
+                    if (item.Id == Model.VoucherTypeID)
+                    {
+                    <option value="@item.Id" selected>@item.VoucherTypeName</option>
+                    }
+                    else
+                    {
+                    <option value="@item.Id">@item.VoucherTypeName</option>
+                    }
+                    }
+                    </select>
+                    </div>
+                    </div> *@
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Ngày bắt đầu (*)</label>
+                            <input type="date" placeholder="" id="ExpiryDateFrom" name="ExpiryDateFrom" class="form-control" value="@Model.ExpiryDateFrom?.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Ngày hết hạn (*)</label>
+                            <input type="date" placeholder="" id="ExpiryDateTo" name="ExpiryDateTo" class="form-control" value="@Model.ExpiryDateTo?.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+                    @*  <div class="col-sm-3">
+                    <div class="form-group">
+                    <label class="control-label">Đơn có giá từ</label>
+                    <input type="number" min="1" placeholder="" id="PriceMinRequired" name="PriceMinRequired" class="form-control" value="@Model.PriceMinRequired" />
+                    </div>
+                    </div>
+                    <div class="col-sm-3">
+                    <div class="form-group">
+                    <label class="control-label">Mức độ giảm giá (*)</label>
+                    <input type="number" min="1" placeholder="" id="PriceDiscountWhenUse" name="DiscountAmountWhenUse" class="form-control" value="@Model.DiscountAmountWhenUse" />
+                    </div>
+                    </div> *@
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Giá bán (*)</label>
+                            <input type="text" placeholder="Giá bán" id="Price" name="Price" class="form-control price-input" value="@Model.Price" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Giá Giảm (*)</label>
+                            <input type="text" placeholder="Giá giảm" id="DiscountPrice" name="DiscountPrice" class="form-control price-input" value="@Model.DiscountPrice" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Danh sách hình chi tiết</label>
+                            @{
+                                int count = 1;
+                            }
+                            <div class="row">
+                                @foreach (var item in Model.listImage)
+                                {
+                                    string MainImg = "MainImg" + count;
+                                    string ImageURL = "ImageURL" + count;
+                                    <div class="col-sm-3">
+                                        <div class="contain-DetailImg">
+                                            <img src="@item.imageUrl" />
+                                            <input id="@ImageURL" type="hidden" value="@item.Id" name="CurrentImagesId" multiple />
+                                            <div style="margin-top:5px; display: flex; flex-flow: row; align-items: flex-start; ">
+                                                <span style=""><a href="#" style="color: red" onclick="DeleteImg('@item.Id', '@item.voucherId')"><i class="fa fa-trash"></i></a></span>
+                                                @if (item.isMainImage == true)
+                                                {
+                                                    @*  <input class="form-check-input" style="margin-left:10px; margin-right:5px;" type="radio" name="flexRadioDefault" checked id="@MainImg"> *@
+                                                    <input class="form-check-input" style="margin-left:10px; margin-right:5px;" type="radio" id="@MainImg" name="mainImageName" value="@item.Id" checked>
+                                                }
+                                                else
+                                                {
+                                                    <input class="form-check-input" style="margin-left:10px; margin-right:5px;" type="radio" id="@MainImg" name="mainImageName" value="@item.Id">
+                                                }
+                                                <label>
+                                                    Hình đại diện
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    count++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <div class="item form-group">
+                            <label class="control-label">
+                                Hình đại diện (800x450px)
+                            </label>
+                            <div class="row contain-listImg" id="RowImg1" data-number="1">
+                                <div class="col-sm-7 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-10">
+                                            <div class="inputfile-box">
+                                                <input type="file" id="file1" class="inputfile" onchange="previewImage(event)" accept="image/*" name="imageFiles" multiple>
+                                                <label for="file1">
+                                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                        Chọn file
+                                                    </span>
+                                                </label>
+                                                <input id="file-name-popup1" class="file-box" placeholder="Chọn tập tin">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <input class="btn btn-primary" onclick="CreateRowImg(this);" type="button" value="+" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-xs-6">
+                                    <input class="form-check-input" type="radio" id="flexRadioDefault1" name="mainImageName">
+                                    <label class="form-check-label">
+                                        Hình đại diện
+                                    </label>
+                                </div>
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="main-img" id="imagePreview1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="addRowsImg">
+                            </div>
+                            <hr />
+                            <div class="col-sm-12">
+                                <div class="w-100" style="float: right; margin-bottom:20px;">
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/js/Voucher/UpsertVoucher.js"></script>
+<script src="~/js/Voucher/FormatPrice.js"></script>

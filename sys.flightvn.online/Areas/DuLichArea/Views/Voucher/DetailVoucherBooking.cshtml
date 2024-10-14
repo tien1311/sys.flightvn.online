@@ -1,0 +1,301 @@
+﻿@model OrderVM
+@{
+    string checkDisableButton = (Model.OrderHeaderVoucher.OrderStatusId == StaticDetailVoucher.OrderStatusId_CANCELLED || Model.OrderHeaderVoucher.OrderStatusId == StaticDetailVoucher.OrderStatusId_COMPLETED ? "disabled='disabled'" : "");
+    string numberPerson = $"{@Model.OrderHeaderVoucher.NumberAdult} người lớn, {@Model.OrderHeaderVoucher.NumberChild} trẻ em, {@Model.OrderHeaderVoucher.NumberBaby} em bé.";
+    string tourLocationAddress = $"{Model.OrderHeaderVoucher.TourLocationProvince} - {Model.OrderHeaderVoucher.TourLocationDistrict}";
+}
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1200px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .bg {
+        font-weight: bold;
+        background: #f7f3f3;
+    }
+
+    .borber-table {
+        border: 1px solid #ddd;
+    }
+
+        .borber-table > div > label {
+            border-top: 1px solid #ddd;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .borber-table > div > div {
+            border-top: 1px solid #ddd;
+            margin: 0;
+        }
+
+            .borber-table > div > div > span {
+                padding: 10px;
+                display: block;
+                float: left;
+            }
+
+            .borber-table > div > div input, .borber-table > div > div select {
+                margin-top: 4px;
+            }
+
+    .title-detail-BK {
+        background: #e2e1e1 !important;
+        color: #f76f09 !important;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-size: 14px;
+        display: table;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .modal-header .close {
+        color: #fff;
+    }
+</style>
+<div class="modal-dialog">
+    <input type="hidden" id="ID" name="ID" value="@Model.OrderHeaderVoucher.Id" />
+    <input type="hidden" id="IDVoucher" name="IDVoucher" value="@Model.OrderVouchers.FirstOrDefault().Id" />
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">CHI TIẾT VOUCHER BOOKING</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="title-detail-BK" style="margin-bottom:10px;">BOOKING: @Model.OrderHeaderVoucher.BookingCode</div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-xs-7 col-lg-9">
+                            <div class="form-group">
+                                <select id="Tinhtrang" name="OrderStatusId" class="select2_single form-control">
+                                    @foreach (var status in Model.ListStatus)
+                                    {
+                                        if (status.Id != StaticDetailVoucher.OrderStatusId_CANCELLED && status.Id != StaticDetailVoucher.OrderStatusId_NEW)
+                                        {
+                                            if (status.Id == Model.OrderHeaderVoucher.OrderStatusId)
+                                            {
+                                                <option selected value="@status.Id">@status.StatusName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@status.Id">@status.StatusName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5 col-lg-3">
+                            <div class="form-group">
+                                <button class="btn btn-primary" id="btn_Change_Status_booking" onclick="UpdateStatusBooking()" @(checkDisableButton) style="margin-bottom:0px; width:100%;">Đổi tình trạng</button>
+                            </div>
+                        </div>
+                        <div class="col-xs-7 col-lg-9">
+                            <div class="form-group">
+                                <textarea class="form-control" id="Note" name="Note" maxlength="300" placeholder="Ghi chú đổi tình trạng" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-xs-5 col-lg-4">
+                            <div class="form-group">
+                                <button class="btn btn-danger" data-toggle="modal" id="btn_cancel_booking" data-value="" @(checkDisableButton) style="margin-bottom:4px;">
+                                    Hủy booking
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*          <div class="row">
+            <div class="col-md-6">
+            <div class="row">
+            <div class="col-xs-7 col-lg-9">
+            <div class="form-group">
+            <div class="col-12">
+            <div class="form-group">
+            <button class="btn btn-danger" data-toggle="modal" id="btn_cancel_booking" data-value="" @(checkDisableButton) style="margin-bottom:4px;">
+            Hủy booking
+            </button>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div> *@
+            <div class="ThongTinChiTietBK show">
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px;padding: 0;">
+                        THÔNG TIN BOOKING
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Booking đối tác</label>
+                            <div class="col-xs-8">
+                                <span>...</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên Voucher</label>
+                            <div class="col-xs-8">
+                                <span>@Model.OrderVouchers.FirstOrDefault().VoucherName</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Voucher</label>
+                            <div class="col-xs-8">
+                                <span>@Model.OrderVouchers.FirstOrDefault().VoucherCode</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số lượng khách tham gia</label>
+                            <div class="col-xs-8">
+                                <span>@numberPerson</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giá</label>
+                            <div class="col-xs-8">
+                                <span style="color: #dc3545;">@String.Format("{0:#,0}", Model.OrderHeaderVoucher.CurrentPrice)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">VAT(8%)</label>
+                            <div class="col-xs-8">
+                                <span>@String.Format("{0:#,0}", Model.OrderHeaderVoucher.PriceVAT)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giảm giá</label>
+                            <div class="col-xs-8">
+                                <span class="text-success">0</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Thành tiền</label>
+                            <div class="col-xs-8">
+                                <span style="color: #dc3545;">@Model.OrderHeaderVoucher.Total.ToString("#,0")</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="" id="loadStatusDetailContainer">
+                            <label class="col-xs-4 control-label bg">Xuất hóa đơn</label>
+                            <div class="col-xs-8">
+                                @if (Model.OrderHeaderVoucher.PriceVAT > 0)
+                                {
+                                // Có xuất VAT
+                                    <span>Có</span>
+                                }
+                                else
+                                {
+                                    <span>Không</span>
+                                }
+                            </div>
+                        </div>
+                        @await Component.InvokeAsync("DetailBookingVoucher", new { orderHeaderId = @Model.OrderHeaderVoucher.Id })
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN LIÊN HỆ
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Họ tên</label>
+                            <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.Name</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">SĐT</label>
+                            <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.Phone </span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email</label>
+                            <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.Email</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN ĐIỂM THAM QUAN
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên diểm tham quan</label>
+                            <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.TourLocationName</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số điện thoại</label>
+                            <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.TourLocationPhone </span></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email</label>
+                            <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.TourLocationEmail </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tỉnh/Thành</label>
+                            <div class="col-xs-8"><span>@tourLocationAddress</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.OrderHeaderVoucher.PriceVAT > 0)
+                {
+                    // Có VAT
+                    <div class="title-detail-BK">
+                        <div class="" style="line-height: 34px; padding: 0;">
+                            THÔNG TIN HÓA ĐƠN
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 0 10px;">
+                        <div class="col-sm-6 borber-table">
+                            <div class="row" style="">
+                                <label class="col-xs-4 control-label bg">Tên cá nhân</label>
+                                <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.CompanyName</span></div>
+                            </div>
+                            <div class="row" style="">
+                                <label class="col-xs-4 control-label bg">Địa chỉ</label>
+                                <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.Address </span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 borber-table">
+                            <div class="row" style="">
+                                <label class="col-xs-4 control-label bg">Mã số thuế</label>
+                                <div class="col-xs-8"><span>@Model.OrderHeaderVoucher.MaSoThue</span></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/Voucher/DetailBooking.js"></script>

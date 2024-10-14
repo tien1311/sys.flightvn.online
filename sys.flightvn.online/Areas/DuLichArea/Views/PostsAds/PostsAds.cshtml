@@ -1,0 +1,103 @@
+﻿@model List<PostsAdsModel>
+@{
+    ViewData["Title"] = "Bài viết quảng cáo";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Bài viết quảng cáo</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridPostsAds" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>STT</th>
+                        <th>Tên bài viết</th>
+                        <th>Danh mục con</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td><a class="Edit" style="color:blue;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td>@item.Title</td>
+                                <td>@item.CategoryName</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    $("#BtnCreate").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "../PostsAds/CreatePostsAds",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridPostsAds .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../PostsAds/EditPostsAds",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,179 @@
+﻿@model TypeVisa;
+@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@using Manager.Common.Helpers.AreaHelpers
+@inject IUnitOfWork_Repository _unitOfWork_Repository;
+@{
+    var ListProduct = _unitOfWork_Repository.Visa_Rep.Visa();
+}
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+    .modal-header .close {
+        color: #fff;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Chỉnh sửa loại visa</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Tên</label>
+                        <input class="form-control" id="Name" value="@Model.Name">
+                        <input type="hidden" id="ID" value="@Model.ID">
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="item form-group">
+                        <label class="control-label">
+                            Sản phẩm
+                        </label>
+                        <div class=" xdisplay_inputx form-group has-feedback">
+                            <select name="Product" id="Product" class="form-control">
+                                @foreach (var item in ListProduct)
+                                {
+                                    if (item.ID == Model.ProductID)
+                                    {
+                                        <option selected value="@item.ID">@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">&nbsp;</label>
+                        <div>
+                            <a class="btn btn-primary" onclick="Save()">Lưu</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="item form-group">
+                        <label class="control-label">
+                            Giá bán 
+                        </label>
+                        <input class="form-control" id="Price" value="@String.Format("{0:#,0}", Model.Price)">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="item form-group">
+                        <label class="control-label">
+                            Giá chiết khấu
+                        </label>
+                        <input class="form-control" id="DiscountPrice" value="@String.Format("{0:#,0}", Model.DiscountPrice)">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Mô tả</label>
+                        <textarea name="Description" id="Description">
+                            @Model.Description
+                        </textarea>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Tài liệu</label>
+                        <textarea name="Documents" id="Documents">
+                            @Model.Documents
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('Description', {
+            height: 200,
+            filebrowserUploadUrl: '@AreaNameConst.AREA_Data/Data/UploadCKEditorDuLich'
+        });
+        CKEDITOR.replace('Documents', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditorDuLich'
+        });
+    });
+    function formatNumber(number) {
+        number = number.toFixed(0) + '';
+        var x = number.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+
+    var priceInput = document.getElementById('DiscountPrice');
+    priceInput.addEventListener('input', function () {
+        var inputValue = this.value.replace(/[^\d]/g, '');
+        var number = parseFloat(inputValue);
+        var formattedNumber = formatNumber(number);
+        this.value = formattedNumber;
+    });
+    var priceInput = document.getElementById('Price');
+    priceInput.addEventListener('input', function () {
+        var inputValue = this.value.replace(/[^\d]/g, '');
+        var number = parseFloat(inputValue);
+        var formattedNumber = formatNumber(number);
+        this.value = formattedNumber;
+    });
+    function Save() {
+        var data = {};
+        data.ID = document.getElementById("ID").value;
+        data.Name = document.getElementById("Name").value;
+        data.ProductID = document.getElementById("Product").value;
+        var new_price = document.getElementById("Price").value;
+        data.Price = new_price.trim().replace(/\D/g, '');
+        var new_DiscountPrice = document.getElementById("DiscountPrice").value;
+        data.DiscountPrice = new_DiscountPrice.trim().replace(/\D/g, '');
+        data.Description = CKEDITOR.instances['Description'].getData();
+        data.Documents = CKEDITOR.instances['Documents'].getData();
+        $.ajax({
+            type: "POST",
+            url: "../Visa/SaveEditType",
+            data: { data: data },
+            success: function (response) {
+                alert("Lưu thành công");
+                location.reload();
+            },
+            failure: function (response) {
+
+                alert(response.responseText);
+            },
+            error: function (response) {
+
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

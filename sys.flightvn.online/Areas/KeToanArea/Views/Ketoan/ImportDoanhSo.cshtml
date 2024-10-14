@@ -1,0 +1,167 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<ImportDoanhSoViewModel>
+
+@{
+    ViewData["Title"] = "Import Doanh Số";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewData["Title"]</title>
+<style>
+    .container {
+        display: inline-block;
+        width: 100%;
+    }
+
+</style>
+<h2>Import doanh số đại lý</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Ketoan" asp-route-i="5" asp-action="ImportDoanhSo" method="post" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Tháng</label>
+                        <select class="form-control" name="thang">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Năm</label>
+                        <select class="form-control" name="nam">
+                            <option value="2021">2021</option>
+                            <option value="2022" selected>2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <label class="col-form-label">
+                            File đính kèm
+                        </label>
+                        <div class="">
+                            <div class="inputfile-box">
+                                <input type="file" id="file" class="inputfile" onchange='uploadFileKM(this)' name="file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                <label for="file">
+                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                        Chọn tập tin
+                                    </span>
+                                </label>
+
+                                <input id="file-nameKM" class="file-box" placeholder="Chọn tập tin">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1" style="text-align:right">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div style="margin-top: 6px;">
+                            <a href="http://gateway.enviet-group.com/Files/DoanhSoDaiLy.xls" style="text-decoration:underline;font-size:18px;" download>File mẫu </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block" name="Import" value="Import">Xem trước</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-info btn-block" name="Save" value="Save">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="x_panel">
+
+    <div class="x_content">
+
+
+
+        <div class="table-responsive">
+            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Tháng </th>
+                        <th class="column-title">Mã KH </th>
+                        <th class="column-title">Tổng </th>
+                        <th class="column-title">VN </th>
+                        <th class="column-title">VJ </th>
+                        <th class="column-title">QH </th>
+                        <th class="column-title">VU </th>
+                        <th class="column-title">IATA </th>
+                        <th class="column-title">Khác </th>
+                        <th class="bulk-actions" colspan="9">
+                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="">@i</td>
+                                <td class="">@item.Thang/@item.Nam</td>
+                                <td class="">@item.MaKH</td>
+                                <td style="font-weight:bold">@item.Tong.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VN.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VJ.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.QH.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VU.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.IATA.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.Khac.ToString("#,##0").Replace(".", ",")</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@

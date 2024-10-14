@@ -1,0 +1,244 @@
+﻿@model SubjectModel
+
+<style>
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+
+    .popup .table thead th, .popup .table td {
+        padding: 6px 20px !important;
+        text-align: left;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    #home td:first-child {
+        width: 145px;
+    }
+
+    #home td:last-child {
+        width: calc(100% - 145px);
+    }
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Thông tin vé hoàn</h1>
+            @if (Model.code_ticket != "")
+            {
+                <span style="text-align:center; font-size: 13px;"> Refund ID: @Model.code_ticket </span>
+            }
+        </div>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+            <li class="nav-item active">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Thông tin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Nhật ký</a>
+            </li>
+        </ul>
+        <div class="tab-content popup" id="myTabContent">
+            <div class="tab-pane fade  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="table-responsive">
+
+                    <table class="table jambo_table bulk_action " style="margin-bottom:0">
+
+                        <tbody colspan="2">
+                            <tr class="even pointer ">
+
+                                <td class="" colspan="2" style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">Thông tin người gửi</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Đại lý</td>
+                                <td class="" style="color:black;">@Model.subject_name</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Người gửi</td>
+                                <td class="" style="color:black;">@Model.NguoiGui</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Email</td>
+                                <td class="" style="color:black;">@Model.subject_code</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Số điện thoại</td>
+                                <td class="" style="color:black;">@Model.SoDienThoai</td>
+                            </tr>
+                            <tr class="even pointer ">
+
+                                <td class="" colspan="2" style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">Thông tin yêu cầu</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Số vé</td>
+                                <td class="" style="color:black;">@Model.subject_number</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Yêu cầu</td>
+                                <td class="" style="color:black;">@Model.YeuCau</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Thông tin kèm theo</td>
+                                <td class="" style="color:black;">@Model.subject_content</td>
+                            </tr>
+                            <tr class="even pointer ">
+
+                                <td class="" colspan="2" style="color:red;font-size:13px;">@Model.NoiDungHuyHanhTrinh</td>
+                            </tr>
+                            <tr class="even pointer ">
+
+                                <td class="" colspan="2" style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">Thông tin xử lý</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Người xử lý</td>
+                                <td class="" style="color:black;">@Model.subject_updateby</td>
+                            </tr>
+
+
+                            <tr class="even pointer ">
+                                <td class="">Skype</td>
+                                <td class="" style="color:black;">@Model.Skype</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Điện thoại</td>
+                                <td class="" style="color:black;">@Model.SoDienThoai</td>
+                            </tr>
+
+                            <tr class="even pointer ">
+                                <td class="">Ghi chú</td>
+                                <td class="" style="color:black;">@Model.subject_picnote</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Số vé EMD</td>
+                                <td class="" style="color:black;">@Model.SoVeEMD</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Tên khách</td>
+                                <td class="" style="color:black;">@Model.TenKhachEMD</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Ngày xử lý</td>
+                                <td class="" style="color:black;">@Model.subject_date</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Ngày hoàn</td>
+                                <td class="" style="color:red;">@Model.NgayHoan</td>
+                            </tr>
+                            <tr class="even pointer ">
+                                <td class="">Tình trạng</td>
+                                @switch (Model.subject_isshow)
+                                {
+                                    case 0:
+                                        <td class="pending"> Đã hủy </td>
+                                        break;
+                                    case 1:
+
+                                        <td class="new_"> Mới </td>
+
+                                        break;
+                                    case 2:
+                                        {
+                                            if (Model.subject_ishot == 1)
+                                            {
+                                                <td class="waitting">
+                                                    Đang chờ điện SC
+                                                </td>
+
+                                            }
+                                            else if (Model.subject_ishot == 2)
+                                            {
+                                                <td class="waitting">
+                                                    Đang chuyển No Go
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="waitting">
+                                                    Đang chờ hãng kiểm tra
+                                                </td>
+                                            }
+                                        }
+
+                                        break;
+                                    case 3:
+                                        <td class="export"> Đã hoàn - chờ Hãng chi tiền hoàn </td>
+                                        break;
+
+                                    case 4:
+                                        <td class="export"> Sự cố </td>
+                                        break;
+
+                                    case 5:
+                                        <td class="waitting"> Đã nhận </td>
+                                        break;
+                                    case 6:
+                                        <td class="export"> Đã hoàn - Hãng đã chi tiền hoàn </td>
+                                        break;
+                                    case 7:
+                                        <td class="export"> Đang chờ mở OK để hoàn </td>
+                                        break;
+                                }
+                            </tr>
+                            @if (Model.subject_isshow == 3)
+                            {
+                                <tr>
+
+                                    <td class="" colspan="2">Tình trạng <span style="color:red">Đã hoàn - chờ Hãng chi tiền</span> sau số ngày theo quy định của Hãng, nếu chưa thấy tiền về vui lòng liên hệ để Booker <span style="color:red">@Model.subject_updateby</span>  kiểm tra lại cho Đại lý. <br />  @Model.DelayMoney</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="table-responsive">
+                    <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+
+                                <th class="column-title">Thuộc tính </th>
+                                <th class="column-title">Giá trị cũ </th>
+                                <th class="column-title">Giá trị mới </th>
+                                <th class="column-title">NV sửa </th>
+                                <th class="column-title">Ngày </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ListNhatKy)
+                            {
+                                <tr class="even pointer">
+                                    <td class="">@item.ThuocTinh</td>
+                                    <td class="">@item.GiaTriCu</td>
+                                    <td class="">@item.GiaTriMoi</td>
+                                    <td class="">@item.NhanVienSua</td>
+                                    <td class="">@item.NgaySua</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+

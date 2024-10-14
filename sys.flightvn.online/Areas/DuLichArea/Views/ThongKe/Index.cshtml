@@ -1,0 +1,110 @@
+﻿@model List<ThongKeData>
+
+@{
+    ViewData["Title"] = "Thống kê sản phẩm";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<link href="~/js/chart/chart.css" rel="stylesheet" />
+<link href="~/css/thongke/style.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-12">
+        <h5>Thống kê</h5>
+    </div>
+</div>
+
+<div id="form-container">
+    <form action="@Url.Action("GetData", "ThongKe")" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Từ tháng</label>
+                                    <input type="month" class="form-control" name="fromDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Đến tháng</label>
+                                    <input type="month" class="form-control" name="toDate" />
+                                </div>
+                            </div>
+                            <div class="col-md-2 btn-container">
+                                <button type="submit" class="btn btn-primary" id="btn-submit">Lọc</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@Html.Partial("_ThongKePartialView")
+
+<script>
+    $(document).ready(function () {
+        $('#btn-submit').click(function (e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của nút submit
+            var fromDate = $('input[name="fromDate"]').val();
+            var toDate = $('input[name="toDate"]').val();
+
+            // Kiểm tra nếu fromDate hoặc toDate không hợp lệ
+            if (!isValidDate(fromDate) || !isValidDate(toDate)) {
+                // Swal.fire({
+                //     imageUrl: "/images/fail.png",
+                //     imageWidth: 100,
+                //     imageHeight: 100,
+                //     title: "Thao tác thất bại",
+                //     text: "Vui lòng chọn ngày/tháng hợp lệ",
+                //     button: "Đóng",
+                // });
+                CustomSweetAlert_Error('Thao tác thất bại', 'Vui lòng chọn ngày/tháng hợp lệ')
+                return; // Dừng hàm để không gửi AJAX request nếu có lỗi
+            }
+
+            if (fromDate > toDate) {
+                // Swal.fire({
+                //     imageUrl: "/images/fail.png",
+                //     imageWidth: 100,
+                //     imageHeight: 100,
+                //     title: "Thao tác thất bại",
+                //     text: "Ngày/Tháng bắt đầu không được lớn hơn ngày/tháng kết thúc",
+                //     button: "Đóng",
+                // });
+                CustomSweetAlert_Error('Thao tác thất bại', 'Ngày/Tháng bắt đầu không được lớn hơn ngày/tháng kết thúc')
+                return; // Dừng hàm để không gửi AJAX request nếu có lỗi
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetData", "ThongKe")',
+                type: 'POST',
+                data: { fromDate: fromDate, toDate: toDate },
+                success: function (data) {
+
+                    $('#doanhThuChart').html(data);
+                    $('#trangThaiChart').html(data);
+                },
+                error: function (xhr, status, error) {
+                    // alert("Có lỗi xảy ra");
+                    CustomSweetAlert_Error('Có lỗi xảy ra, vui lòng thử lại')
+                }
+            });
+        });
+    });
+
+
+    // Hàm kiểm tra ngày hợp lệ
+    function isValidDate(dateString) {
+        // Kiểm tra nếu dateString là null hoặc là chuỗi rỗng
+        if (!dateString) {
+            return false;
+        }
+        return true;
+    }
+</script>

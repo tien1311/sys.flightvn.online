@@ -1,0 +1,220 @@
+﻿@model string
+
+@{
+    string s = Model;
+}
+<div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" style=" color: #fff;" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Import Data</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="item form-group">
+                            <label class="col-form-label">
+                                File đính kèm
+                            </label>
+                            <div class="">
+                                <div class="inputfile-box">
+                                    <input type="file" id="file" class="inputfile" onchange="uploadFile(this)" name="file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    <label for="file">
+                                        <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                            Chọn tập tin
+                                        </span>
+                                    </label>
+
+                                    <input id="file-name" class="file-box" placeholder="Chọn tập tin">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" style="text-align:left">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div style="margin-top: 6px;">
+                                <a href="http://gateway.enviet-group.com/Files/ImportXoSo.xlsx" style="text-decoration:underline;font-size:18px;" download="">File mẫu </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-success btn-block" onclick="ImportExcel(this);" name="Import" value="Import">Import</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-block" onclick="SaveDataXoSoDetail('@Model')" name="Save" value="Save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table id="gridXoSoDetail" class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">STT </th>
+                                        <th class="column-title">Mã KH </th>
+                                        <th class="column-title">Số lượng </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*<tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+
+<script>
+    function ImportExcel() {
+       
+        //Reference the FileUpload element.
+        var fileUpload = document.getElementById("file");
+        //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        GetTableFromExcel(e.target.result);
+                    };
+                    reader.readAsBinaryString(fileUpload.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        GetTableFromExcel(data);
+                    };
+                    reader.readAsArrayBuffer(fileUpload.files[0]);
+                }
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid Excel file.");
+        }
+    };
+
+    function GetTableFromExcel(data) {
+      
+        //Read the Excel File data in binary
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+        //get the name of First Sheet.
+        var Sheet = workbook.SheetNames[0];
+        //Read all rows from First Sheet into an JSON array.
+        var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[Sheet]);
+        //
+       
+        var table = document.getElementById("gridXoSoDetail");
+        var tbody = document.querySelector("#gridXoSoDetail tbody");
+        //Add the data rows from Excel file.
+        for (var i = 0; i < excelRows.length; i++) {
+
+            if (excelRows[i].MaKH == null || excelRows[i].MaKH == "") {
+
+                excelRows[i].MaKH = "";
+            }
+            else {
+                excelRows[i].MaKH = excelRows[i].MaKH.toUpperCase();
+            }
+            if (excelRows[i].SoLuong == null || excelRows[i].SoLuong == "") {
+
+                excelRows[i].SoLuong = "";
+            }
+            else {
+                excelRows[i].SoLuong = excelRows[i].SoLuong.toUpperCase();
+            }
+            var length = table.rows.length;
+            /* Thêm chi tiết */
+            //var row = table.insertRow(length);
+            //var cell1 = row.insertCell(0);
+            //var cell2 = row.insertCell(1);
+            //var cell3 = row.insertCell(2);
+            //cell1.innerHTML = Number(length);
+            //cell2.innerHTML = excelRows[i].MaKH;
+            //cell3.innerHTML = excelRows[i].SoLuong;
+
+            // Insert a new row at the end of the table
+            var newRow = tbody.insertRow();
+
+            // Add cells to the row
+            var cell1 = newRow.insertCell();
+            var cell2 = newRow.insertCell();
+            var cell3 = newRow.insertCell();
+
+            // Set the content of each cell
+            cell1.textContent = Number(length);
+            cell2.textContent = excelRows[i].MaKH;
+            cell3.textContent = excelRows[i].SoLuong;
+         
+          
+        }
+    };
+   
+    function SaveDataXoSoDetail(ID) {
+        var table = document.getElementById("gridXoSoDetail");
+        var data = [];
+        for (var i = 1; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            var rowData = {
+                MaKH: row.cells[1].textContent.trim(),
+                SoLuong: row.cells[2].textContent.trim(),
+                IDXoSo: ID
+            };
+            data.push(rowData);
+        }
+        console.log(data);
+        var jsonData = JSON.stringify(data);
+
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../Data/SaveDataXoSo",
+            data: {
+                data: jsonData
+            },
+            success: function (response) {
+                alert(response);
+                //location.reload(true);
+                window.location.href = "../Data/CreateChuongTrinhXoSo?i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+</script>

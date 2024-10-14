@@ -1,0 +1,85 @@
+﻿
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Create nội dung chuyển khoản</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Nội dung</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="Description" name="Description" placeholder="Description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <button type="submit" class="btn btn-primary" onclick="Save(this)">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Save() {
+        var Description = document.getElementById("Description").value;
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../QR/SaveCreateDescription",
+            data: {
+                Description: Description
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Bạn đã tạo mới thành công");
+                }
+                else {
+                    alert("Bạn đã tạo mới không thành công");
+                }
+                window.location.href = "../QR/ListAddInfo?&i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

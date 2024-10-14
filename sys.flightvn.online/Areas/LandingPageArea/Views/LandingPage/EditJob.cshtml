@@ -1,0 +1,142 @@
+﻿@model Manager.Model.Models.LandingPage.Job
+@using Microsoft.Extensions.Configuration
+@using Manager.DataAccess.Repository
+@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@inject IConfiguration _configuration
+@inject IUnitOfWork_Repository unitOfwork
+@{
+    var listPhongBan = unitOfwork.ThongBaoDaiLy_Rep.ListPhongBanV2();
+    var listAddress = unitOfwork.LandingPage_Rep.GetCompanyLocation().GetAwaiter().GetResult();
+}
+
+<link href="~/css/hotel/editroomtypehotel.css" rel="stylesheet" />
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="background: #2A3F54;">
+
+        @if (Model != null)
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 style="color:#fff">Chỉnh sửa thông tin tuyển dụng @Model.Name - @Model.Department</h1>
+            </div>
+
+            <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+                <form id="submitForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Tên công việc</label>
+                                <input class="form-control" type="text" id="Name" name="Name" placeholder="Tên công việc" value="@Model.Name" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Phòng ban</label>
+                                <select class="form-control" name="Department" id="Department">
+                                    @foreach (var item in listPhongBan)
+                                    {
+                                        if (item.PB == Model.Department)
+                                        {
+                                            <option selected value="@item.PB">@item.PB</option>
+                                        }
+                                        <option value="@item.PB">@item.PB</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Địa điểm làm việc</label>
+                                <select class="form-control" name="Location" id="Location">
+                                    @foreach (var item in listAddress)
+                                    {
+                                        if (item.Address == Model.Location)
+                                        {
+                                            <option selected value="@item.Address">@item.Address</option>
+                                        }
+                                        <option value="@item.Address">@item.Address</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Mức lương tối thiểu</label>
+                                <input class="form-control price-input" type="text" id="FromSalary" name="FromSalary" value="@Model.FromSalary" placeholder="Lương tối thiểu">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Mức lương tối đa</label>
+                                <input class="form-control price-input" type="text" id="ToSalary" name="ToSalary" value="@Model.ToSalary" placeholder="Lương tối đa">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="IsDeal" class="control-label">Lương thỏa thuận</label>
+
+                                @if (Model.IsDeal)
+                                {
+                                    <input type="checkbox" id="IsDeal" name="IsDeal" checked value="true">
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="IsDeal" name="IsDeal" value="true">
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Ngày mở việc</label>
+                                <input class="form-control" type="date" id="OpenDate" name="OpenDate" value="@Model.OpenDate.ToString("yyyy-MM-dd")">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Ngày đóng việc</label>
+                                <input class="form-control" type="date" id="CloseDate" name="CloseDate" value="@Model.CloseDate.ToString("yyyy-MM-dd")">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Mô tả công việc</label>
+                                <textarea class="form-control" id="Description">@Model.Description</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Yêu cầu công việc</label>
+                                <textarea class="form-control" id="Requirement">@Model.Requirement</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label">Quyền lợi</label>
+                                <textarea class="form-control" id="Benefit">@Model.Benefit</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btnSave" type="submit" class="btn btn-primary">Lưu</button>
+                </form>
+
+
+            </div>
+
+
+        }
+    </div>
+</div>
+<script src="~/js/landingpage/job/editjob.js"></script>

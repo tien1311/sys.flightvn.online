@@ -1,0 +1,650 @@
+﻿@model List<Checkchucnang>
+
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: red; font-size:25px;">Thêm chức năng @Model[0].RowID </h1>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="manv" name="manv" value="@Model[0].RowID">
+                                <label for="" class="col-sm-8 control-label">Tính năng mới</label>
+                                @if (Model[0].Tinhnangmoi == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="tinhnangmoi" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="tinhnangmoi">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Thông báo</label>
+                                @if (Model[0].Thongbao == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="thongbao" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="thongbao">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Báo cáo vé</label>
+                                @if (Model[0].Baocaove == "true")
+                                {
+
+
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="baocaove" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="baocaove">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Nội bộ</label>
+                                @if (Model[0].Noibo == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="noibo" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="noibo">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Đại lí</label>
+                                @if (Model[0].Daili == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="daili" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="daili">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Kế toán</label>
+                                @if (Model[0].Ketoan == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="ketoan" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="ketoan">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Kinh doanh</label>
+                                @if (Model[0].Kinhdoanh == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="kinhdoanh" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="kinhdoanh">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Phòng vé</label>
+                                @if (Model[0].Phongve == "true")
+                                {
+
+
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="phongve" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="phongve">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">BP đoàn</label>
+                                @if (Model[0].BPdoan == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="bpdoan" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="bpdoan">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Hóa đơn</label>
+                                @if (Model[0].Hoadon == "true")
+                                {
+
+
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="hoadon" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="hoadon">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">CA</label>
+                                @if (Model[0].Ca == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="ca" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="ca">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Yến sào</label>
+                                @if (Model[0].Yensao == "true")
+                                {
+
+
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="yensao" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="yensao">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">CS</label>
+                                @if (Model[0].Cs == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="cs" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {<div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="cs">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Data</label>
+                                @if (Model[0].Data == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="data" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="data">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Setting</label>
+                                @if (Model[0].Setting == "true")
+                                {
+
+
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="setting" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="setting">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Kỹ thuật</label>
+                                @if (Model[0].Kythuat == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="kythuat" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {<div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="kythuat">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-xs-3 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="" name="" value="">
+                                <label for="" class="col-sm-8 control-label">Du lịch</label>
+                                @if (Model[0].Dulich == "true")
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="dulich" checked="checked">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {<div class="col-sm-4">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="checkbox" id="dulich">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <div class="row">
+                                <div style="text-align: right; margin-right:20px; ">
+                                    <input type="submit" class="btn btn-primary" id="Savechucnang" value="Lưu" name="saveBtn" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>             
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal content-->
+
+    <style>
+        @@media(min-width: 768px) {
+            .modal-dialog {
+                width: 700px;
+                margin: 30px auto;
+            }
+        }
+
+        .modal-body img {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .modal-header {
+            padding: 6px 15px;
+            border-bottom: none;
+        }
+    </style>
+    <script>
+        
+        $("#Savechucnang").click(function () {
+                var manv = document.getElementById("manv").value;
+                var tinhnangmoi = document.getElementById("tinhnangmoi").checked;
+                var thongbao = document.getElementById("thongbao").checked;
+                var baocaove = document.getElementById("baocaove").checked;
+                var noibo = document.getElementById("noibo").checked;
+                var daili = document.getElementById("daili").checked;
+                var ketoan = document.getElementById("ketoan").checked;
+                var kinhdoanh = document.getElementById("kinhdoanh").checked;
+                var phongve = document.getElementById("phongve").checked;
+                var bpdoan = document.getElementById("bpdoan").checked;
+                var hoadon = document.getElementById("hoadon").checked;
+                var ca = document.getElementById("ca").checked;
+                var yensao = document.getElementById("yensao").checked;
+                var cs = document.getElementById("cs").checked;
+                var data = document.getElementById("data").checked;
+                var setting = document.getElementById("setting").checked;
+                var kythuat = document.getElementById("kythuat").checked;
+                var dulich = document.getElementById("dulich").checked;
+          
+                $.ajax({
+                    type: "POST",
+                    url: "../KyThuat/Savephanquyenmember",
+                    data: {                     
+                        manv: manv,
+                        tinhnangmoi: tinhnangmoi,
+                        thongbao: thongbao,
+                        baocaove: baocaove,
+                        noibo: noibo,
+                        daili: daili,
+                        ketoan: ketoan,
+                        kinhdoanh: kinhdoanh,
+                        phongve: phongve,
+                        bpdoan: bpdoan,
+                        hoadon: hoadon,
+                        ca: ca,
+                        yensao: yensao,
+                        cs: cs,
+                        data: data,
+                        setting: setting,
+                        kythuat: kythuat,
+                        dulich: dulich
+                    },
+                    success: function (response) {
+
+
+                        if (response == true) {
+                            alert("Lưu thành công");
+                            location.reload();
+                        } else {
+                            alert("Lưu thất bại");
+                            location.reload();
+                        }
+
+                    },
+                    failure: function (response) {
+                        console.log(response);
+                        alert(response);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                        alert(response);
+                    }
+                });
+            });
+    </script>
+    <div class="row">
+
+        @* @if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+
+                      alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+
+        } *@
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

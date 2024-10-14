@@ -1,0 +1,133 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<ImportDoanhSoViewModel>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Tra Cứu Doanh Số";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewData["Title"]</title>
+<style>
+    .container {
+        display: inline-block;
+        width: 100%;
+    }
+</style>
+<h2>Tra cứu doanh số đại lý</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("TraCuuDoanhSo", "KeToan", new { i = 5 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>Tháng</label>
+                        <input class="form-control" type="text" name="Thang" placeholder="Tháng" />
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>Năm</label>
+                        <select class="form-control" name="Nam">
+                            <option value="2020">2020</option>
+                            <option value="2021" selected>2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="item form-group">
+                        <label>Mã KH</label>
+                        <input class="form-control" type="text" name="MaKH" placeholder="Mã KH" />
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block" name="Search" value="Search">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-info btn-block" name="Export" value="Export">Xuất Excel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive">
+            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Tháng </th>
+                        <th class="column-title">Mã KH </th>
+                        <th class="column-title">Tổng </th>
+                        <th class="column-title">VN </th>
+                        <th class="column-title">VJ </th>
+                        <th class="column-title">QH </th>
+                        <th class="column-title">VU </th>
+                        <th class="column-title">IATA </th>
+                        <th class="column-title">Khác </th>
+                        <th class="bulk-actions" colspan="9">
+                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="">@item.STT</td>
+                                <td class="">@item.Thang/@item.Nam</td>
+                                <td class="">@item.MaKH</td>
+                                <td style="font-weight:bold">@item.Tong.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VN.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VJ.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.QH.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VU.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.IATA.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.Khac.ToString("#,##0").Replace(".", ",")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @if (Model != null)
+            {
+                <nav style="float:right;">
+                    <vc:pager paging-list="@Model"></vc:pager>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@

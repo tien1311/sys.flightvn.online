@@ -1,0 +1,162 @@
+﻿@model MapModel
+@{
+    ViewData["Title"] = "Map";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>Map</title>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <h2>Sơ đồ ga quốc nội</h2>
+                    <a id="BtnCreateMapQN" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+                </div>
+                <div class="table-responsive">
+                    <table id="gridMapQN" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>STT</th>
+                                <th>Tiêu đề</th>
+                                <th>Sân bay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.Map_QN)
+                                {
+                                    <tr id="@item.ID">
+                                        <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                        <td>@i</td>
+                                        <td>@item.TieuDe</td>
+                                        <td>@item.AirportName</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div>
+                    <h2>Sơ đồ ga quốc tế</h2>
+                    <a id="BtnCreateMapQT" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+                </div>
+                <div class="table-responsive">
+                    <table id="gridMapQT" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>STT</th>
+                                <th>Tiêu đề</th>
+                                <th>Sân bay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.Map_QT)
+                                {
+                                    <tr id="@item.ID">
+                                        <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                        <td>@i</td>
+                                        <td>@item.TieuDe</td>
+                                        <td>@item.AirportName</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    $("#gridMapQN .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditMap",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridMapQT .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditMap",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#BtnCreateMapQN").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateMap",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#BtnCreateMapQT").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateMap",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+

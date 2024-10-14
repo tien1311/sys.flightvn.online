@@ -1,0 +1,320 @@
+﻿
+/*CUSTOM*/
+
+/*.container {
+    padding: 0px 10px;
+}*/
+
+.container #card_main {
+    width: 100%;
+    background: none;
+    box-shadow: none;
+    /*border: 1px solid #03558A;*/
+}
+
+.container .grid {
+    padding: 0em 0.5em;
+}
+
+.container #card_main .grid .column {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+.container #dropdown_record_selected {
+    line-height: 1.24em !important;
+    min-width: 0em;
+}
+
+.container #card_main #date_calendar_carbooking .input {
+    width: 100%;
+}
+
+.container #card_main #dropdown_address_search {
+    width: 100%;
+}
+
+.container #card_main #box_vat_btnSearch {
+    display: flex;
+    align-items: center;
+}
+
+.container #card_main #box_vat_btnSearch .checkbox {
+    margin-right: 20px;
+}
+
+#box_vat_btnSearch .ui.form .inline.fields {
+    margin: 0px 0px;
+    padding: 0.7em 0.5em;
+}
+
+#box_vat_btnSearch .ui.form .inline.fields .field {
+    padding: 0px !important;
+}
+
+#box_time_calendar {
+    position: relative;
+}
+
+#box_time_calendar #enable_calendar_checkbox {
+    position: absolute;
+    right: 11px;
+    top: 38px;
+}
+
+.container #card_main #box_record {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container #card_main #box_btnConfirm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ui .grid .messager_error {
+    padding-left: 0.5em;
+    margin-top: 10px;
+}
+
+.container #card_main .pickup_address_text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-md .container.body .right_col {
+    padding: 10px 5px 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    .container #card_main #box_vat_btnSearch {
+        padding-top: 0px;
+    }
+
+    .ui.form:not(.unstackable) .fields:not(.unstackable) > .fields, .ui.form:not(.unstackable) .fields:not(.unstackable) > .field {
+        width: auto;
+        margin: 0 0 1em;
+    }
+
+    #box_status_booking {
+        padding-top: 0px;
+    }
+}
+
+
+/*Hiệu ứng loading*/
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999999999999;
+}
+
+.loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.ui.segment {
+    box-shadow: none;
+    padding: 0px;
+    border-radius: 0px;
+    border: 0px;
+}
+
+.ui.table {
+    font-size: 0.9em;
+}
+
+.ui.popup {
+    max-width: auto;
+    line-height: 1em !important;
+    font-size: 0.9em;
+}
+
+.context .filter {
+    width: 100%;
+    justify-content: flex-end;
+    display: flex;
+    padding-right: 5px;
+}
+
+.ui.button {
+    margin: 0px;
+}
+
+p {
+    line-height: 1.2em;
+}
+
+.table-container {
+    overflow-x: auto;
+    white-space: nowrap; /* Ngăn các nội dung bảng bị ngắt dòng */
+    width: 100%; /* Đảm bảo bảng chiếm đầy đủ chiều rộng của container */
+}
+
+.item_field {
+    display: flex;
+    justify-content: start;
+    border-bottom: solid 0.5px #BFBFBF;
+    line-height: 2.5em;
+}
+
+.item_field:last-child {
+    border-bottom: none;
+}
+
+.item_field .item_label {
+    color: black;
+    font-weight: bold;
+    width: 35%;
+    background-color: #F7F3F3;
+    padding: 0px 15px;
+}
+
+.item_field .item_text {
+    padding: 0px 15px;
+}
+
+/*BOOTSTRAP*/
+
+.modal-header .close {
+    margin-top: -24px;
+    color: #fff;
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        /*width: 90%;*/
+        margin: 30px auto;
+    }
+}
+
+.table-carbooking th {
+    background-color: #F7F3F3;
+}
+
+.table-carbooking thead th {
+    background-color: #E2E1E1;
+    color: #F17B20;
+}
+
+.modal-header {
+    background: #2A3F54;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    color: #fff;
+}
+
+.booking_detail 
+{
+    /*border: 1px solid red;*/
+}
+
+.booking_detail .card-header {
+    padding: 10px;
+}
+
+.booking_detail .card-header {
+    padding: 10px;
+}
+
+.booking_detail table th {
+    font-size: 13px;
+}
+
+#box_status_booking {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+#box_status_booking #dropdown_selected_status {
+    width: 100%;
+}
+
+/* General styles for the container and elements */
+.responsive-input {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.responsive-input input {
+    flex: 1 1 auto;
+    margin-bottom: 10px; /* margin between input and buttons on mobile */
+}
+
+.responsive-input button {
+    flex: 1 1 auto;
+    margin-left: 5px;
+}
+
+.responsive-input #btn_get_link {
+    border-radius: unset;
+    margin: 0px 10px;
+}
+
+/* Styles for mobile devices */
+@media (max-width: 600px) {
+    .responsive-input {
+        flex-direction: column;
+    }
+
+    .responsive-input input {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .responsive-input button {
+        margin-left: 0;
+        width: 100%;
+        margin-bottom: 10px; /* Add margin between buttons */
+    }
+
+    .responsive-input button:last-child {
+        margin-bottom: 0; /* Remove margin for the last button */
+    }.responsive-input input {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .responsive-input button {
+        margin-left: 0;
+        width: 100%;
+        margin-bottom: 10px; /* Add margin between buttons */
+    }
+
+    .responsive-input button:last-child {
+        margin-bottom: 0; /* Remove margin for the last button */
+    }
+    .responsive-input #btn_get_link {
+        margin: unset;
+        margin-top:5px;
+    }
+}
+
+

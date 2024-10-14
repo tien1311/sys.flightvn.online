@@ -1,0 +1,158 @@
+﻿@model List<ReportPaymentChannelModel>
+@{
+    ViewData["Title"] = "Báo cáo thanh toán các kênh";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("ReportPaymentChannel", "Data", new { i = 5 }, FormMethod.Post))
+        {
+            <div class="row">
+
+                <div class="form-horizontal">
+                    <div class="item col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Từ Ngày
+                            </label>
+                            <div class="col-sm-9">
+
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal5" name="FromDate" value='@ViewBag.DateFrom'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    @*Muốn cho trường tháng năm rỗng ko lấy ngày hiện tại vào file custom.min.js dòng 1230*@
+                    <div class="item col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Đến Ngày
+                            </label>
+                            <div class="col-sm-9">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal6" name="ToDate" value='@ViewBag.DateTo'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3" style="padding-top:11px">Channel</label>
+                            <div class="col-sm-9">
+                                <select id="Channel" name="Channel" class="form-control">
+                                    @if (ViewBag.Channels != null)
+                                    {
+                                        <option value="All">Tất cả</option>
+                                        foreach (var item in ViewBag.Channels)
+                                        {
+                                            <option value="@item">
+                                                @item
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                 
+                  
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" style="float:right;">
+                    <div style="float:right">
+                        <button type="submit" class="btn btn-primary"  name="buttonclick" value="search">Tìm kiếm</button>
+                        <button type="submit" class="btn btn-success"  name="buttonclick" value="excel">Xuất excel</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+
+            <table id="gridReport" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Ngày giao dịch </th>
+                        <th class="column-title">Mã đơn hàng </th>
+                        <th class="column-title">Số tiền </th>
+                        <th class="column-title">Phương thức thanh toán </th>
+                        <th class="column-title">Cổng thanh toán </th>
+                        <th class="column-title">Nội dung </th>
+                        <th class="column-title">Kênh </th>
+                        <th class="column-title">Ngày nhận </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td class="">@i</td>
+                                <td class="">@DateTime.Parse(item.TransactionDate.ToString()).ToString("dd/MM/yyyy hh:mm:ss")</td>
+                                <td class="">@item.Code</td>
+                                <td class="">@string.Format("{0:0,0}", item.Amount)</td>
+                                <td class="">@item.PaymentMethod</td>
+                                <td class="">@item.PaymentGateway</td>
+                                <td class="">@item.Description</td>
+                                <td class="">@item.Channel</td>
+                                <td class="">@DateTime.Parse(item.CreatedDate.ToString()).ToString("dd/MM/yyyy hh:mm:ss")</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+

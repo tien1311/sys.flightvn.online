@@ -1,0 +1,133 @@
+﻿@model AccountModel
+<style>
+    .tab-content > .active {
+        opacity: 1;
+    }
+    .tab-content {
+        border-style: solid;
+        border-width: 0px 1px 1px 1px;
+        border-color: #ddd;
+        padding: 10px;
+    }
+    .nav-tabs > li > a {
+        color: #fff;
+        cursor: default;
+        background-color: #2A3F54;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+    .nav-tabs > li.active > a {
+        color: #2A3F54 !important;
+        cursor: default;
+        background-color: #fff !important;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+    .modal-content {
+        margin: 30px auto;
+    }
+    @@media(min-width: 768px) {
+        .StickNote .modal-content {
+            width: 800px;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="StickNote">
+    <div class="modal-content">
+        <div class="modal-body" style=" background: #2A3F54;">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Note</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Edit Note</a>
+                </li>
+                <button type="button" class="close" data-dismiss="modal" style="color:#fff">&times;</button>
+            </ul>
+            <div class="tab-content popup" id="myTabContent" style="background: #fff;">
+                @if (Model != null)
+                {
+                    <div class="tab-pane fade  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-sm-12" id="ContentStickNote" style="height:300px; overflow:auto">
+                                <div style=" height: 300px; overflow: auto; border: 2px solid #90b1da; border-radius: 10px;">
+                                    <div style="padding:10px;">
+                                        @Html.Raw(Model.StickNote)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="hidden" id="maNV" value="@Model.MaNV" />
+                                <textarea name="CreateContent" id="CreateContent">
+                                @Model.StickNote
+                            </textarea>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div style="text-align:right;margin-top:10px;">
+                                        <a id="SaveStickNote" href="javascript:;" class="btn btn-primary">Lưu</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal content-->
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+
+    $("#SaveStickNote").click(function () {
+        CKEDITOR.replace('CreateContent');
+        var content = CKEDITOR.instances.CreateContent.getData();
+        var maNV = document.getElementById("maNV").value;
+        $.ajax({
+            type: "POST",
+            url: "../Home/SaveStickNote",
+            data: {
+                createContent: content,
+                maNV: maNV
+            },
+            success: function (response) {
+                alert("Bạn đã cập nhật thành công");
+                document.getElementById('ContentStickNote').innerHTML = response;
+                return;
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('CreateContent', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+</script>

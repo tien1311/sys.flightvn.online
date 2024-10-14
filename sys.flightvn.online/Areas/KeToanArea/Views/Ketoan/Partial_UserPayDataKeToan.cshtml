@@ -1,0 +1,79 @@
+﻿@model List<UserPay>
+
+@{
+    Layout = null;
+    int i = 0;
+    var gateway_Rep = new GatewayRepository();
+}
+
+<div class="table-responsive">
+    <table id="gridReport" class="table table-striped jambo_table bulk_action">
+        <thead>
+            <tr class="headings">
+                <th>STT</th>
+                <th>Mã KH</th>
+                <th>Mã KH Đại lý</th>
+                <th>Mã đơn hàng</th>
+                <th>Mã tham chiếu</th>
+                <th>Phương thức </th>
+                <th>Trạng thái</th>
+                <th>Ngày lập</th>
+                <th class="text-center">Số tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    i++;
+                    var paymentTypeImg = gateway_Rep.GetImagePaymentTypeUrl(item.paymentType);
+                    <tr>
+                        <td>@item.RowNum</td>
+                        <td>@item.MaKH</td>
+                        <td>@item.MaKH_DL</td>
+                        <td>@item.orderId</td>
+                        <td>@item.Partner_TransId</td>
+                        <td class="text-center">
+                            <img src="@paymentTypeImg" style="width:30px; height: 30px;" />
+                        </td>
+                        <td class="resultStatus text-center" style="min-width:120px;">
+                            @if (item.resultCode == 0)
+                            {
+                                <span class="success btn-success">Thành công</span>
+                            }
+                        </td>
+                        <td>@item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td class="text-center">
+                            <span class="text-danger fw-bold"> @string.Format("{0:0,0}", item.Amount) </span>
+                        </td>
+                    </tr>
+                }
+
+                <tr>
+                    <td colspan="2" class="totalAmountTitle">Tổng tiền</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="totalAmount text-center">
+                        <span>    @string.Format("{0:0,0}", ViewBag.TotalAmount) </span>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">
+                        Không có dữ liệu
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<input id="pageNumber" hidden value="@ViewBag.PageNumber" />
+<input id="totalPagesInput" hidden value="@ViewBag.TotalPages" />

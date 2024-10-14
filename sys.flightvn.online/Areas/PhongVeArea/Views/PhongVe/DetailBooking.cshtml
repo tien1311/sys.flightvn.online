@@ -1,0 +1,849 @@
+﻿@model DetailBooking
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1200px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .bg {
+        font-weight: bold;
+        background: #f7f3f3;
+    }
+
+    .borber-table {
+        border: 1px solid #ddd;
+    }
+
+        .borber-table > div > label {
+            border-top: 1px solid #ddd;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .borber-table > div > div {
+            border-top: 1px solid #ddd;
+            margin: 0;
+        }
+
+            .borber-table > div > div > span {
+                padding: 10px;
+                display: block;
+                float: left;
+            }
+
+            .borber-table > div > div input, .borber-table > div > div select {
+                margin-top: 4px;
+            }
+
+    .title-detail-BK {
+        background: #e2e1e1 !important;
+        color: #f76f09 !important;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-size: 14px;
+        display: table;
+        width: 100%;
+    }
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Chi tiết booking</h1>
+        </div>
+        <div class="modal-body">
+            <div class="title-detail-BK" style="margin-bottom:10px;">Booking: @Model.OrderID_SMS </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <div class="form-group">
+                                <select id="Tinhtrang" name="Tinhtrang" class="select2_single form-control">
+                                    @if (Model != null && Model.ListTinhTrang != null)
+                                    {
+                                        foreach (var item in Model.ListTinhTrang)
+                                        {
+                                            <option @item.Select value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                <button class="btn btn-primary" onclick="DoiTrangThai()" value="DoiTrangThai">Đổi trạng thái</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <label class="col-form-label pad-top-6 col-xs-3 label-align" for="first-name">
+                                    Giao cho:
+                                </label>
+                                <div class="col-xs-5 ">
+                                    <select id="NguoiThayDoi" name="NguoiThayDoi" class="select2_single form-control">
+                                        @if (Model != null && Model.ListNguoiThayDoi != null)
+                                        {
+                                            foreach (var item in Model.ListNguoiThayDoi)
+                                            {
+                                                <option value="@item.ID">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                    <input type="hidden" id="NguoiThayDoiOld" name="NguoiThayDoiOld" value="@Model.GiaoCho" />
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-default" value="ThayDoi" onclick="GiaoCho()">Thay đổi</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <button class="btn btn-primary" value="NhatKy" onclick="NhatKy()">Nhật ký</button>
+                            <button class="btn btn-success" value="GuiMail" onclick="SendMail()">Gửi mail</button>
+                            <button class="btn btn-info" onclick="SendSMSBookingXuatVe()" value="GuiSMS">Gửi SMS</button>
+                            @*<button class="btn btn-warning" value="XacNhan">Xác nhận</button>*@
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12" role="form">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="OrderID" name="OrderID" placeholder="Mã Booking" value="@Model.OrderID_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="HanhTrinh_SMS" placeholder="Hành trình" value="@Model.HanhTrinh_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="NguoiLienHe_SMS" placeholder="Họ tên" value="@Model.NguoiLienHe_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="DienThoai_SMS" placeholder="Số điện thoại" value="@Model.DienThoai_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="Gio_SMS" placeholder="Giờ tt" value="@Model.Gio_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="NgayThanhToan_SMS" placeholder="Ngày thanh toán" value="@Model.NgayThanhToan_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input class="form-control" id="GiaVeMoi_SMS" placeholder="Giá vé mới" value="@Model.GiaVeMoi_SMS">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button class="btn btn-warning" onclick="SendSMSBooking()" value="XacNhan">Gửi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ThongTinChiTietBK show">
+                <div class="title-detail-BK">
+                    <div class="col-sm-6 col-xs-5" style="line-height: 34px;padding: 0;">
+                        Tình Trạng Booking
+                    </div>
+                    <div class="col-sm-6 col-xs-7" style="text-align: right;">
+                        <button style="margin: 0; display: inline;" onclick="EditTinhTrang()" id="btnEditTinhTrang" class="btn btn-default">Hiệu chỉnh</button>
+                        <button style="margin: 0; display: none;" onclick="UpdateTinhTrang()" id="btnUpdateTinhTrang" class="btn btn-primary">Cập nhật</button>
+                        <button style="margin: 0; display: none;" onclick="CancelTinhTrang()" id="btnCancelTinhTrang" class="btn btn-danger">Hủy</button>
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Loại vé</label>
+                            <div class="col-xs-8">
+                                <span>@Model.LoaiVe</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Hình Thức Thanh Toán</label>
+                            <div class="col-xs-8">
+                                <span id="lblHTThanhToan" class="TinhTrang show">@Model.HinhThucThanhToan</span>
+                                <select id="txtHTThanhToan" class="form-control input-sm TinhTrang hide" name="HTThanhToan">
+                                    @if (Model != null && Model.ListHTThanhToan != null)
+                                    {
+                                        foreach (var item in Model.ListHTThanhToan)
+                                        {
+                                            <option @item.Select value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngân Hàng chuyển khoản</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblNganHangCK">@Model.NganHangChuyenKhoan</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtNganHangCK" name="NganHangCK" value="@Model.NganHangChuyenKhoan" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Hành Trình</label>
+                            <div class="col-xs-8">
+                                <span>@Model.HanhTrinh (@Model.DiemDi - @Model.DiemDen)</span>
+                                <input type="hidden" id="HanhTrinh" value="@Model.HanhTrinh" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Lượt Đi</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblLuotDi">@Model.LuotDi</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtLuotDi" name="LuotDi" value="@Model.LuotDi" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ghi Chú</label>
+                            <div class="col-xs-8"><span>@Model.GhiChu</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Thiêt bị</label>
+                            <div class="col-xs-8"><span>@Model.ThietBi</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người Thay Đổi</label>
+                            <div class="col-xs-8"><span>@Model.NguoiThayDoi</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Time Limit</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblTimeLimit">@Model.TimeLimit</span><span class="TinhTrang show" id="lblDateLimit">@Model.DateLimit</span>
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <input class="form-control input-sm TinhTrang hide" type="text" id="txtTimeLimit" name="TimeLimit" value="@Model.TimeLimit" />
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <input class="form-control input-sm TinhTrang hide" type="text" id="txtDateLimit" name="DateLimit" value="@Model.DateLimit" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Giao Dịch</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblMaGiaoDich">@Model.MaGiaoDich</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtMaGiaoDich" name="MaGiaoDich" value="@Model.MaGiaoDich" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngân Hàng tt trực tuyến</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblNganHangTTTT">@Model.NganHangTTTT</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtNganHangTTTT" name="NganHangTTTT" value="@Model.NganHangTTTT" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Remark Kế Toán</label>
+                            <div class="col-xs-8"><span>@Model.RemarkKeToan</span></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tình Trạng</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblTinhTrang">@Model.TinhTrang</span>
+                                <select class="form-control input-sm TinhTrang hide" id="txtTinhTrang" name="TinhTrang">
+                                    @if (Model != null && Model.ListTinhTrang != null)
+                                    {
+                                        foreach (var item in Model.ListTinhTrang)
+                                        {
+                                            <option @item.Select value="@item.ID">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tình Trạng Thanh Toán</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblTinhTrangTT">@Model.TinhTrangThanhToan</span>
+                                @if (@Model.CheckTinhTrangTT.ToUpper() == "FALSE")
+                                {
+                                    <input style="margin-top:12px" class="TinhTrang hide" type="checkbox" id="txtTinhTrangTT" name="TinhTrangTT" value="" />
+                                }
+                                @if (@Model.CheckTinhTrangTT.ToUpper() == "TRUE")
+                                {
+                                    <input style="margin-top:12px" class="TinhTrang hide" type="checkbox" id="txtTinhTrangTT" checked name="TinhTrangTT" value="" />
+                                }
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số Tiền Chuyển Khoản</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblSoTienCK">@String.Format("{0:0,0}", Model.SoTienChuyenKhoan)</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtSoTienCK" name="SoTienCK" value="@Model.SoTienChuyenKhoan" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Đặt Chổ</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblMaDatChoLD">@Model.MaDatCho_LD</span><span class="TinhTrang show" id="lblMaDatChoLV">@Model.MaDatCho_LV</span>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <input class="form-control input-sm TinhTrang hide" type="text" id="txtMaDatChoLD" name="MaDatChoLD" value="@Model.MaDatCho_LD" placeholder="Mã đặt chổ lượt đi" />
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input class="form-control input-sm TinhTrang hide" type="text" id="txtMaDatChoLV" name="MaDatChoLV" value="@Model.MaDatCho_LV" placeholder="Mã đặt chổ lượt về" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Lượt Về</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblLuotVe">@Model.LuotVe</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtLuotVe" name="LuotVe" value="@Model.LuotVe" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Remark</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblRemark">@Model.Remark</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtRemark" name="Remark" value="@Model.Remark" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngôn ngữ</label>
+                            <div class="col-xs-8"><span>@Model.NgonNgu</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày Book</label>
+                            <div class="col-xs-8"><span>@Model.NgayBook</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày Thay Đổi</label>
+                            <div class="col-xs-8"><span>@Model.NgayThayDoi</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Tham Chiếu</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblMaThamChieu">@Model.MaThamChieu</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtMaThamChieu" name="MaThamChieu" value="@Model.MaThamChieu" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số Tiền GD trực tuyến</label>
+                            <div class="col-xs-8">
+                                <span class="TinhTrang show" id="lblTienTrucTuyen">@Model.SoTienGDTrucTuyen</span>
+                                <input class="form-control input-sm TinhTrang hide" type="text" id="txtTienTrucTuyen" name="TienTrucTuyen" value="@Model.SoTienGDTrucTuyen" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tổng tiền mới</label>
+                            <div class="col-xs-8"><span>@Model.TongTienMoi</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-sm-6 col-xs-5" style="line-height: 34px; padding: 0;">
+                        Thông Tin Liên Hệ
+                    </div>
+                    <div class="col-sm-6 col-xs-7" style="text-align: right;">
+                        <button style="margin: 0; display: inline;" onclick="EditLienHe()" id="btnEditLienHe" class="btn btn-default">Hiệu chỉnh</button>
+                        <button style="margin: 0; display: none;" onclick="UpdateLienHe()" id="btnUpdateLienHe" class="btn btn-primary">Cập nhật</button>
+                        <button style="margin: 0; display: none;" onclick="CancelLienHe()" id="btnCancelLienHe" class="btn btn-danger">Hủy</button>
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Voucher</label>
+                            <div class="col-xs-8"><span>@Model.MaVoucher</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã Kế Toán</label>
+                            <div class="col-xs-8"><span>@Model.MaKeToan</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người liên hệ</label>
+                            <div class="col-xs-8">
+                                <span class="LienHe show" id="lblNguoiLienHe">@Model.NguoiLienHe</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtNguoiLienHe" name="NguoiLienHe" value="@Model.NguoiLienHe" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email</label>
+                            <div class="col-xs-8">
+                                <span class="LienHe show" id="lblEmail">@Model.Email</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtEmail" name="Email" value="@Model.Email" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Thành Phố</label>
+                            <div class="col-xs-8">
+                                <span class="LienHe show" id="lblThanhPho">@Model.ThanhPho</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtThanhPho" name="ThanhPho" value="@Model.ThanhPho" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Đơn vị / Cá nhân</label>
+                            <div class="col-xs-8"><span>@Model.DonVi</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giảm giá</label>
+                            <div class="col-xs-8">
+                                <span>@Model.GiamGia</span>
+                                @*<span class="LienHe show" id="lblGiamGia">@Model.GiamGia</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtGiamGia" name="GiamGia" value="@Model.GiamGia" placeholder="Nhập số tiền giảm" />*@
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Điện Thoại</label>
+                            <div class="col-xs-8">
+                                <span style="float: left;" class="LienHe show" id="lblDienThoai">@Model.DienThoai</span>
+                                <select style="float: left; width: 50%;" class="form-control input-sm LienHe show">
+                                    @if (Model != null && Model.ListDaXuatVe != null)
+
+                                    {
+
+                                        foreach (var item in Model.ListDaXuatVe)
+                                        {
+                                            <option value="">@item.Order_ID</option>
+                                        }
+                                    }
+                                </select>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtDienThoai" name="DienThoai" value="@Model.DienThoai" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa Chỉ</label>
+                            <div class="col-xs-8">
+                                <span class="LienHe show" id="lblDiaChi">@Model.DiaChi</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtDiaChi" name="DiaChi" value="@Model.DiaChi" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Quốc Gia</label>
+                            <div class="col-xs-8">
+                                <span class="LienHe show" id="lblQuocGia">@Model.QuocGia</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtQuocGia" name="QuocGia" value="@Model.QuocGia" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-sm-6 col-xs-5" style="line-height: 34px; padding: 0;">
+                        Thông Tin Chuyến Bay Lượt Đi
+                    </div>
+                    <div class="col-sm-6 col-xs-7" style="text-align: right;">
+                        <button style="margin: 0; display: inline;" onclick="EditThongTinCBLD()" id="btnEditThongTinCBLD" class="btn btn-default">Hiệu chỉnh</button>
+                        <button style="margin: 0; display: none;" onclick="UpdateThongTinCBLD()" id="btnUpdateThongTinCBLD" class="btn btn-primary">Cập nhật</button>
+                        <button style="margin: 0; display: none;" onclick="CancelThongTinCBLD()" id="btnCancelThongTinCBLD" class="btn btn-danger">Hủy</button>
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div style="background: #f76f09; color: #fff; font-weight: bold; padding:5px 10px;">
+                        <span>Lượt đi</span>
+                        <img src="~/images/ico-flight.gif" style="height:18px!important; margin-left:5px;" />
+                    </div>
+                    <div id="chuyenBay" class="chuyenBay table-responsive">
+                        <table class="table table-bordered table-hover" style="margin-bottom: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Hãng</th>
+                                    <th>Số Hiệu</th>
+                                    <th>Hạng</th>
+                                    <th>Code</th>
+                                    <th>Điểm Đi</th>
+                                    <th>Điểm Đến</th>
+                                    <th>Ngày Đi</th>
+                                    <th>Giờ Đi</th>
+                                    <th>Giờ Đến</th>
+                                    <th>Giá Net</th>
+                                    <th>Thuế/Phí</th>
+                                    <th>Phí DV</th>
+                                    <th>Giảm</th>
+                                    <th>Tổng Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span id="lblAirline_LD" class="ThongTinCBLD show">@Model.Airline_LD</span>
+                                    </td>
+                                    <td>
+                                        <span id="lblSoHieu_LD" class="ThongTinCBLD show">@Model.SoHieu_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtSoHieu_LD" name="SoHieu_LD" value="@Model.SoHieu_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblHang_LD" class="ThongTinCBLD show">@Model.Hang_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtHang_LD" name="Hang_LD" value="@Model.Hang_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblCode_LD" class="ThongTinCBLD show">@Model.Code_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtCode_LD" name="Code_LD" value="@Model.Code_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblDiemDi_LD" class="ThongTinCBLD show">@Model.DiemDi_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtDiemDi_LD" name="DiemDi_LD" value="@Model.DiemDi_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblDiemDen_LD" class="ThongTinCBLD show">@Model.DiemDen_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtDiemDen_LD" name="DiemDen_LD" value="@Model.DiemDen_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblNgayDi_LD" class="ThongTinCBLD show">@Model.NgayDi_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtNgayDi_LD" name="NgayDi_LD" value="@Model.NgayDi_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGioDi_LD" class="ThongTinCBLD show">@Model.GioDi_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGioDi_LD" name="GioDi_LD" value="@Model.GioDi_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGioDen_LD" class="ThongTinCBLD show">@Model.GioDen_LD</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGioDen_LD" name="GioDen_LD" value="@Model.GioDen_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGiaNet_LD" class="ThongTinCBLD show">@String.Format("{0:#,0}", Model.GiaNet_LD)</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGiaNet_LD" name="GiaNet_LD" value="@Model.GiaNet_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblThuePhi_LD" class="ThongTinCBLD show">@String.Format("{0:#,0}", Model.Thue_LD)</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtThuePhi_LD" name="ThuePhi_LD" value="@Model.Thue_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblPhiDV_LD" class="ThongTinCBLD show">@String.Format("{0:#,0}", Model.PhiDV_LD)</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtPhiDV_LD" name="PhiDV_LD" value="@Model.PhiDV_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGiam_LD" class="ThongTinCBLD show">@String.Format("{0:#,0}", Model.Giam_LD)</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGiam_LD" name="Giam_LD" value="@Model.Giam_LD" />
+                                    </td>
+                                    <td>
+                                        <span id="lblTongTien_LD" class="ThongTinCBLD show">@String.Format("{0:#,0}", Model.TongTien_LD)</span>
+                                        <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtTongTien_LD" name="TongTien_LD" value="@Model.TongTien_LD" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-sm-6 col-xs-5" style="line-height: 34px; padding: 0;">
+                        Thông Tin Chuyến Bay Lượt Về
+                    </div>
+                    <div class="col-sm-6 col-xs-7" style="text-align: right;">
+                        <button style="margin: 0; display: inline;" onclick="EditThongTinCBLV()" id="btnEditThongTinCBLV" class="btn btn-default">Hiệu chỉnh</button>
+                        <button style="margin: 0; display: none;" onclick="UpdateThongTinCBLV()" id="btnUpdateThongTinCBLV" class="btn btn-primary">Cập nhật</button>
+                        <button style="margin: 0; display: none;" onclick="CancelThongTinCBLV()" id="btnCancelThongTinCBLV" class="btn btn-danger">Hủy</button>
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div style="background: #f76f09; color: #fff; font-weight: bold; padding:5px 10px;">
+                        <span>Lượt về</span>
+                        <img src="~/images/ico-flight-back.gif" style="height:18px!important; margin-left:5px;" />
+                    </div>
+                    <div id="chuyenBay" class="chuyenBay table-responsive">
+                        <table class="table table-bordered table-hover" style="margin-bottom: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Hãng</th>
+                                    <th>Số Hiệu</th>
+                                    <th>Hạng</th>
+                                    <th>Code</th>
+                                    <th>Điểm Đi</th>
+                                    <th>Điểm Đến</th>
+                                    <th>Ngày Đi</th>
+                                    <th>Giờ Đi</th>
+                                    <th>Giờ Đến</th>
+                                    <th>Giá Net</th>
+                                    <th>Thuế/Phí</th>
+                                    <th>Phí DV</th>
+                                    <th>Giảm</th>
+                                    <th>Tổng Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span id="lblAirline_LV" class="ThongTinCBLV show">@Model.Airline_LV</span>
+                                    </td>
+                                    <td>
+                                        <span id="lblSoHieu_LV" class="ThongTinCBLV show">@Model.SoHieu_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtSoHieu_LV" name="SoHieu_LV" value="@Model.SoHieu_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblHang_LV" class="ThongTinCBLV show">@Model.Hang_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtHang_LV" name="Hang_LV" value="@Model.Hang_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblCode_LV" class="ThongTinCBLV show">@Model.Code_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtCode_LV" name="Code_LV" value="@Model.Code_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblDiemDi_LV" class="ThongTinCBLV show">@Model.DiemDi_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtDiemDi_LV" name="DiemDi_LV" value="@Model.DiemDi_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblDiemDen_LV" class="ThongTinCBLV show">@Model.DiemDen_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtDiemDen_LV" name="DiemDen_LV" value="@Model.DiemDen_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblNgayDi_LV" class="ThongTinCBLV show">@Model.NgayDi_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtNgayDi_LV" name="NgayDi_LV" value="@Model.NgayDi_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGioDi_LV" class="ThongTinCBLV show">@Model.GioDi_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtGioDi_LV" name="GioDi_LV" value="@Model.GioDi_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGioDen_LV" class="ThongTinCBLV show">@Model.GioDen_LV</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtGioDen_LV" name="GioDen_LV" value="@Model.GioDen_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGiaNet_LV" class="ThongTinCBLV show">@String.Format("{0:#,0}", Model.GiaNet_LV)</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtGiaNet_LV" name="GiaNet_LV" value="@Model.GiaNet_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblThuePhi_LV" class="ThongTinCBLV show">@String.Format("{0:#,0}", Model.Thue_LV)</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtThuePhi_LV" name="ThuePhi_LV" value="@Model.Thue_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblPhiDV_LV" class="ThongTinCBLV show">@String.Format("{0:#,0}", Model.PhiDV_LV)</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtPhiDV_LV" name="PhiDV_LV" value="@Model.PhiDV_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblGiam_LV" class="ThongTinCBLV show">@String.Format("{0:#,0}", Model.Giam_LV)</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtGiam_LV" name="Giam_LV" value="@Model.Giam_LV" />
+                                    </td>
+                                    <td>
+                                        <span id="lblTongTien_LV" class="ThongTinCBLV show">@String.Format("{0:#,0}", Model.TongTien_LV)</span>
+                                        <input class="ThongTinCBLV hide form-control input-sm" type="text" id="txtTongTien_LV" name="TongTien_LV" value="@Model.TongTien_LV" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="title-detail-BK">Thông Tin Khách</div>
+                <div class="row" style="padding: 0 10px;">
+                    <div id="thongTinKhach" class="thongTinKhach table-responsive">
+                        <table id="gridThongTinKhach" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Danh Xưng</th>
+                                    <th>Họ</th>
+                                    <th>Tên</th>
+                                    <th>Ngày Sinh</th>
+                                    <th>Code lượt đi</th>
+                                    <th>Code lượt về</th>
+                                    <th>HL lượt Đi</th>
+                                    <th>HL lượt về</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.ListThongTinKhach.Count < 1)
+                                {
+                                    <tr class="even pointer">
+                                        <td colspan="12">
+                                            <i>Không có thông tin để hiển thị</i>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model.ListThongTinKhach)
+                                    {
+                                        string ThongTinKhach = "ThongTinKhach" + item.RowID;
+                                        string txtCodeDi = "txtCodeDi" + item.RowID;
+                                        string txtCodeVe = "txtCodeVe" + item.RowID;
+                                        string lblCodeDi = "lblCodeDi" + item.RowID;
+                                        string lblCodeVe = "lblCodeVe" + item.RowID;
+
+                                        <tr id="@item.RowID">
+                                            <td>
+                                                <span>@item.DanhXung</span>
+                                            </td>
+                                            <td style="line-height: 28px;">@item.Ho</td>
+                                            <td style="line-height: 28px;">@item.Ten</td>
+                                            <td><span>@item.NgaySinh</span></td>
+                                            <td>
+                                                <span id="@lblCodeDi" class="@ThongTinKhach show">@item.Code_LD</span>
+                                                <input class="form-control input-sm @ThongTinKhach hide" type="text" id="@txtCodeDi" name="CodeDi" value="@item.Code_LD" />
+                                            </td>
+                                            <td>
+                                                <span id="@lblCodeVe" class="@ThongTinKhach show">@item.Code_LV</span>
+                                                <input class="form-control input-sm @ThongTinKhach hide" type="text" id="@txtCodeVe" name="CodeVe" value="@item.Code_LV" />
+                                            </td>
+                                            <td><span>@item.HanhLy_LD</span></td>
+                                            <td><span>@item.HanhLy_LV</span></td>
+                                            <td>
+                                                @{
+                                                    string btnEditThongTinKhach = "btnEditThongTinKhach" + item.RowID;
+                                                    string btnUpdateThongTinKhach = "btnUpdateThongTinKhach" + item.RowID;
+                                                    string btnCancelThongTinKhach = "btnCancelThongTinKhach" + item.RowID;
+                                                }
+                                                <a style="margin: 0; display: inline;" onclick="btnEditThongTinKhach(@item.RowID)" id="@btnEditThongTinKhach" class="btn btn-link Edit" href="javascript:;">Edit</a>
+                                                <a style="margin: 0; display: none;" onclick="btnUpdateThongTinKhach(@item.RowID)" id="@btnUpdateThongTinKhach" class="btn btn-link Update" href="javascript:;">Cập nhật</a>
+                                                <a style="margin: 0; display: none;" onclick="btnCancelThongTinKhach(@item.RowID)" id="@btnCancelThongTinKhach" class="btn btn-link Cancel" href="javascript:;">Hủy</a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-sm-6 col-xs-5" style="line-height: 34px; padding: 0;">
+                        Thông Tin Hóa Đơn
+                    </div>
+                    <div class="col-sm-6 col-xs-7" style="text-align: right;">
+                        <button style="margin: 0; display: inline;" onclick="EditHoaDon()" id="btnEditHoaDon" class="btn btn-default">Hiệu chỉnh</button>
+                        <button style="margin: 0; display: none;" onclick="UpdateHoaDon()" id="btnUpdateHoaDon" class="btn btn-primary">Cập nhật</button>
+                        <button style="margin: 0; display: none;" onclick="CancelHoaDon()" id="btnCancelHoaDon" class="btn btn-danger">Hủy</button>
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Công Ty</label>
+                            <div class="col-xs-8">
+                                <span id="lblCongTy" class="HoaDon show">@Model.CongTy_HD</span>
+                                <input class="form-control input-sm HoaDon hide" type="text" id="txtCongTy" name="CongTy" value="@Model.CongTy_HD" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa Chỉ CTY</label>
+                            <div class="col-xs-8">
+                                <span id="lblDiaChiCTY" class="HoaDon show">@Model.DiaChiCT_HD</span>
+                                <input class="form-control input-sm HoaDon hide" type="text" id="txtDiaChiCTY" name="DiaChiCTY" value="@Model.DiaChiCT_HD" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">MST</label>
+                            <div class="col-xs-8">
+                                <span id="lblMST" class="HoaDon show">@Model.MST_HD</span>
+                                <input class="form-control input-sm HoaDon hide" type="text" id="txtMST" name="MST" value="@Model.MST_HD" />
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa Chỉ HD</label>
+                            <div class="col-xs-8">
+                                <span id="lblDiaChiHD" class="HoaDon show">@Model.DiaChiHD_HD</span>
+                                <input class="form-control input-sm HoaDon hide" type="text" id="txtDiaChiHD" name="DiaChiHD" value="@Model.DiaChiHD_HD" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title-detail-BK">Thông Tin Giao Vé</div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người Nhận</label>
+                            <div class="col-xs-8"><span>@Model.NguoiNhan_GV</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa Chỉ Giao Vé</label>
+                            <div class="col-xs-8"><span>@Model.DiaChiGiaoVe_GV</span></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Điện Thoại</label>
+                            <div class="col-xs-8"><span>@Model.DienThoai_GV</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Thành Phố</label>
+                            <div class="col-xs-8"><span>@Model.ThanhPho_GV</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ThongTinChiTietBK hide">
+                <div class="title-detail-BK">Nhật ký</div>
+                <div id="NhatKy" class="NhatKy table-responsive">
+                    <table class="table table-bordered table-hover" style="margin-bottom: 10px;">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Thuộc tính</th>
+                                <th>Giá trị cũ</th>
+                                <th>Giá trị mới</th>
+                                <th>Người thao tác</th>
+                                <th>Ngày thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.ListLog != null)
+                            {
+                                if (Model.ListLog.Count < 1)
+                                {
+                                    <tr>
+                                        <td colspan="5"><i>Không có thông tin để hiển thị</i></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model.ListLog)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>
+                                                <span class="">@item.Properties</span>
+                                            </td>
+                                            <td>
+                                                <span class="">@item.OldValues</span>
+                                            </td>
+                                            <td>
+                                                <span class="">@item.NewValues</span>
+                                            </td>
+                                            <td>
+                                                <span class="">@item.UserUpdate</span>
+                                            </td>
+                                            <td>
+                                                <span class="">@item.DateUpdate</span>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/PhongVe/DetailBooking.js"></script>
+

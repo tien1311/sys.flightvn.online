@@ -1,0 +1,228 @@
+﻿@model ListVeSotModel
+@{
+    ViewData["Title"] = "Báo cáo vé sót";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2 style="text-align: center; font-weight: bold;">DANH SÁCH VÉ CHƯA BÁO CÁO </h2>
+<br />
+
+<div class="row" style="margin-bottom:10px;">
+    @using (Html.BeginForm("SearchVeSot", "PhongVe", new { i = 13 }, FormMethod.Post))
+    {
+        <div class="col-sm-4 col-xs-12">
+            <button class="btn btn-danger" type="submit" id="getBCVS" name="getBCVS" value="getBCVS">Lấy danh sách vé sót mới nhất</button>
+            @* <a class="btn btn-success" id="btnSendSMS" name="SendSMS" onclick="SendSMS()">Gửi SMS</a>*@
+        </div>
+        <div class="col-sm-4 col-xs-12" style="float:right">
+            <div class="form-group">
+                <div class="col-xs-9">
+                    <select class="form-control" name="ma" id="ListTen">
+                        @if (Model != null && Model.ListTen != null)
+                        {
+                            foreach (var item in Model.ListTen)
+                            {
+                                <option value="@item.Ma">
+                                    @item.Expr1
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-xs-3">
+                    <button type="submit" class="btn btn-primary" name="Search" value="Search">Search</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="table-responsive">
+        <table id="gridVeSot" class="table table-hover table-bordered">
+            <thead>
+                @*    <tr class="bg-danger">
+                <td colspan="12">
+                DS vé sót đã gửi SMS lúc <span style="font-weight:bold; color:red;">@Model.NgayGuiSMS</span> bởi <span style="font-weight:bold; color:red;">@Model.NguoiGuiSMS</span>. Tin nhắn chỉ gửi đến những người có số vé trước ngày hiện tại. Bạn chỉ được gửi tin nhắn sau 10h và chỉ gửi được 1 lần trong ngày.
+                <input type="hidden" id="timeSendSMS" value="@DateTime.Parse(Model.NgayGuiSMS).ToString("yyyy-MM-dd HH:mm:ss")" />
+                </td>
+                </tr>*@
+                <tr class="bg-success">
+                    @if (Model.VeSot.Count > 0)
+                    {
+                        <td colspan="12">
+                            DS vé sót được cập nhật lúc <span style="font-weight:bold; color:red;">@Model.VeSot[0].NgayCapNhat</span> bởi <span style="font-weight:bold; color:red;">@Model.VeSot[0].NhanVienTao</span>. Nếu bạn muốn xem DS báo cáo vé sót mới nhất hãy bấm vào nút "Lấy danh sách vé sót mới nhất"
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>STT</th>
+                    <th>HK</th>
+                    <th>Nhân Viên</th>
+                    <th>PNR</th>
+                    <th>TK NO</th>
+                    <th>Nghiệp vụ</th>
+                    <th>Ngày Xuất</th>
+                    <th>Mã NV</th>
+                    <th>Hành Trình</th>
+                    <th>Tình Trạng</th>
+                    <th>Ngày Báo Cáo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                }
+                @if (Model != null && Model.VeSot != null)
+                {
+                    foreach (var item in Model.VeSot)
+                    {
+                        double n = int.Parse(item.NgayMua.Substring(0, 2)) % 2;
+                        if (int.Parse(item.NgayMua.Substring(0, 2)) % 2 == 0)
+                        {
+                            <tr class="bg-info">
+                                <td><a class="VeSot" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td class="hang" id="@item.MaHK">@item.MaHK</td>
+                                <td>@item.Expr1</td>
+                                <td class="PNR" id="@item.PNR">@item.PNR</td>
+                                <td class="sove" id="@item.TKNockt"><a class="VeSot" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.TKNockt</a></td>
+                                <td>@item.Nghiepvu</td>
+                                <td>@item.NgayMua</td>
+                                <td>@item.Ma</td>
+                                <td>@item.ID_HanhT</td>
+                                <td>@item.TinhTrang</td>
+                                <td>@item.NgayUp</td>
+                            </tr>
+                            i++;
+                        }
+                        else
+                        {
+                            <tr>
+                                <td><a class="VeSot" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td class="hang" id="@item.MaHK">@item.MaHK</td>
+                                <td>@item.Expr1</td>
+                                <td class="PNR" id="@item.PNR">@item.PNR</td>
+                                <td class="sove" id="@item.TKNockt"><a class="VeSot" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.TKNockt</a></td>
+                                <td>@item.Nghiepvu</td>
+                                <td>@item.NgayMua</td>
+                                <td>@item.Ma</td>
+                                <td>@item.ID_HanhT</td>
+                                <td>@item.TinhTrang</td>
+                                <td>@item.NgayUp</td>
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <p style="font-style:italic; color:red">
+        &nbsp;&nbsp;&nbsp;&nbsp;Yêu cầu nhân viên phải nộp báo cáo ngay sau khi xuất vé, chậm nhất là 10h sáng hôm sau (bao gồm cả thứ 7 & chủ nhật). Kế toán sẽ căn cứ vào báo cáo vé sót của booker trực để thống kê booker vi phạm. Cứ 1 lần bị chụp màn hình web không nộp báo cáo vé của các ngày trước sẽ bị tính là 1 lần. Cứ mỗi 3 lần chậm nộp báo cáo sẽ bị trừ 500.000VND.
+    </p>
+    <p style="font-style:italic; color:red">
+        &nbsp;&nbsp;&nbsp;&nbsp;Ví dụ như 11h hôm nay ngày 25/11, booker A, không báo cáo vé B xuất ngày 24/11, đến chiều ngày 26/11 mới nộp báo cáo thì số lần tính chậm nộp báo cáo sẽ là 2 lần.
+    </p>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.message != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.message)');
+    </script>
+} *@
+<script>
+    $(document).ready(function () {
+
+        var timeSendSMS = document.getElementById("timeSendSMS").value;
+        //var temp = new Date(timeSendSMS);
+        var temp1 = new Date();
+        //var DaySMS = temp.getDate();
+        //var DayNow = temp1.getDate();
+        var HoursNow = temp1.getHours();
+        var diff = (new Date() - new Date(timeSendSMS.replace(/-/g, '/'))) / 86400000;
+
+        //var diff = DayNow - DaySMS;
+        if (diff < 1 && HoursNow < 10) {
+            $("#btnSendSMS").attr("disabled", "disabled");
+            var element = document.getElementById("btnSendSMS");
+            element.classList.remove("btn-success");
+            element.classList.add("btn-default");
+        }
+    });
+    function SendSMS() {
+        var timeSendSMS = document.getElementById("timeSendSMS").value;
+        //var temp = new Date(timeSendSMS);
+        var temp1 = new Date();
+        //var DaySMS = temp.getDate();
+        //var DayNow = temp1.getDate();
+        var HoursNow = temp1.getHours();
+        var diff = (new Date() - new Date(timeSendSMS.replace(/-/g, '/'))) / 86400000;
+        /*var diff = DayNow - DaySMS;*/
+        if (diff > 1 && HoursNow >= 10) {
+            $.ajax({
+                type: "POST",
+                url: "../PhongVe/SendSMSVeSot",
+                success: function (response) {
+                    if (response == true) {
+                        alert("Gửi SMS thành công");
+                    }
+                    else {
+                        alert("Gửi SMS không thành công");
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        else {
+
+            alert("Bạn không thể gửi tin nhắn vì chưa tới thời gian quy định");
+        }
+    };
+    $("#gridVeSot .VeSot").click(function () {
+        var pnr = $(this).closest('tr').find('.PNR').attr('id');
+        var sove = $(this).closest('tr').find('.sove').attr('id');
+        var hang = $(this).closest('tr').find('.hang').attr('id');
+
+        var rowjQuery = $(this).closest("tr");
+        var currentIndex = rowjQuery[0].rowIndex;
+        if ($(this).closest('tr').find('.hang').attr('id').trim() == "QH") {
+            var sove = $(this).closest('tr').find('.PNR').attr('id');
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "../PhongVe/BaoCaoVeSot",
+            data: {
+                PNR: pnr,
+                SOVE: sove,
+                HANG: hang,
+                Index: currentIndex
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

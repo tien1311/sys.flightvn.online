@@ -1,0 +1,75 @@
+﻿@inject IConfiguration _configuration
+@{
+    ViewData["Title"] = "Tạo IP Whitelist";
+}
+
+<title>@ViewData["Title"]</title>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo mới IP White List</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <form id="submitForm" method="post" enctype="multipart/form-data">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên công ty</label>
+                            <input class="form-control" id="Company" name="Company" placeholder="VD: Flight VN Group" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Địa chỉ</label>
+                            <input class="form-control" id="PhysicalAddress" name="PhysicalAddress" placeholder="VD: 16B Sông Đà, Phường 02, Quận Tân Bình, TP.Hồ Chí Minh" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="item form-group" style="margin-top:12px;">
+                            <label class="control-label">
+                                Danh sách IP 
+                            </label>
+
+                            <div class="table-responsive">
+                                <table class="table tableFormIncrease">
+                                    <thead>
+                                        <tr>
+                                            <th>Địa chỉ IP</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input type="text" name="IPPartners[0].IPAddress" class="form-control" placeholder="Địa chỉ IP" required />
+                                            </td>
+                                            <td>
+                                                <input class="btn btn-primary" onclick="CreateRowTable();" type="button" value="+" />
+
+                                                @* Nếu dòng đầu sẽ không có dấu - *@
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12" style="float:right">
+                        <div class="form-group" style="float:right;">
+                            <label for="inputEmail3" class="control-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/ip/createipwhitelist.js"></script>

@@ -1,0 +1,46 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@model PagingList<SubjectModel>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+@{
+    ViewData["Title"] = "Bản tin";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>@ViewBag.tieude</h2>
+
+<div class="clearfix">
+
+</div>
+<div class="row ">
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            @foreach (var item in Model)
+            {
+                <div class="x_content change_color" style="padding:0px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div style="height:100%;">
+                                <div class="thumbnail" style="padding:0;float:left;width:82px;height:82px;margin:10px;max-height:100%;">
+                                    <div class="image" style="width:82px;height:82px;">
+                                        <img style="max-width:100%; margin-right:10px; display: block;border:0.6px solid;border-color:#dacfcf" src="@item.Image" alt="image" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:10px;">
+
+                                @Html.ActionLink(item.Title, "DetailNews", "Noibo", new { area = AreaNameConst.AREA_NoiBo, subject_id = @item.subject_id, i = 7 }, new { style = "font-size:12px;font-weight:700;color:#000" })
+                            </div>
+                            <div>
+                                <span style="margin-top:10px;display:block;font-size:10px;color:blue;">@item.Date</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row" style="float:right;">
+    <vc:pager paging-list="@Model"></vc:pager>
+</div>

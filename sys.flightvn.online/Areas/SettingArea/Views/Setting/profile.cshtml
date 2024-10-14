@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewData["Title"] = "Thông tin nhân viên";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+@model AccountModel
+
+<style>
+    .info span:first-child {
+        font-weight: 600;
+    }
+
+    .phanviec, .quydinh {
+        width: 100px;
+    }
+
+    @@media (max-width: 768px) {
+        .contain-File {
+            padding: 0 10px;
+        }
+    }
+</style>
+
+
+<div class="" style="margin:0 10px;">
+    <h2 style="color: #000;">Thông tin nhân viên</h2>
+    <div class="row img-profile">
+        <img src="@Model.TenHinh" alt="">
+        <div class="main-info">
+            <p style="font-weight: 600; color: #000;font-size: 16px;">@Model.HoTen</p>
+            <p>@Model.ChucVu</p>
+            <p>Email : @Model.Email</p>
+            <p><span>Tel : @Model.DienThoai</span> - <span>Ext: @Model.Line</span> </p>
+            <p id="CongViec">
+                <span><a class="phanviec btn btn-primary btn-sm" data-toggle="modal" data-target="#openPopup" href="javascript:;">Phân việc</a></span>
+                <input type="hidden" id="IDphanviec" value="@Model.MaNV" />
+                <span><a class="quydinh btn btn-success btn-sm" data-toggle="modal" data-target="#openPopup" href="javascript:;">Quy định</a></span>
+                <input type="hidden" id="IDquydinh" value="@Model.MaNV" />
+            </p>
+        </div>
+    </div>
+    <div class="row contain-info-profile">
+        <div class="col-sm-6 info-profile">
+            <li class="info">
+                <span>Ngày sinh :</span>
+                <span>@Model.NgaySinh.ToString("dd/MM/yyyy")</span>
+            </li>
+            <li class="info">
+                <span>SĐT :</span>
+                <span>@Model.DienThoaiCN</span>
+            </li>
+            <li class="info">
+                <span>HKTT :</span>
+                <span>@Model.DiaChiThuongTru</span>
+            </li>
+            <li class="info">
+                <span>ĐKTT :</span>
+                <span>@Model.DiaChiTamTru</span>
+            </li>
+            <li class="info">
+                <span>CMND :</span>
+                <span>@Model.CMND</span>
+            </li>
+            <li class="info">
+                <span>Nơi Cấp :</span>
+                <span>@Model.NoiCap</span>
+            </li>
+            <li class="info">
+                <span>Ngày cấp :</span>
+                <span>@Model.NgayCap.ToString("dd/MM/yyyy")</span>
+            </li>
+            <div class="contain-File">
+                <p style="font-weight: bold; font-size:14px;">Hồ sơ nhân sự</p>
+                @if (Model.ListFile.Count > 0)
+                {
+                    foreach (var item in Model.ListFile)
+                    {
+                        <li style=" font-size: 14px;">
+                            <span style="text-transform: uppercase; color: #204d74;">@item.Title -</span>
+                            <span><a href="@item.TenFile" download target="_blank">file đính kèm -</a></span>
+                            <span>Ngày up: @item.NgayUp.ToString("dd/MM/yyyy")</span>
+                        </li>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-sm-6 info-profile">
+            <li class="info">
+                <span>Khu vực :</span>
+                <span>@Model.ChiNhanh</span>
+            </li>
+            <li class="info">
+                <span>Ngày làm :</span>
+                <span>@Model.NgayLamViec.ToString("dd/MM/yyyy")</span>
+            </li>
+            <li class="info">
+                <span>Phòng ban :</span>
+                <span>@Model.PhongBan</span>
+            </li>
+            <li class="info">
+                <span>TK Tech :</span>
+                <span>@Model.SoTK</span>
+            </li>
+            <li class="info">
+                <span>Mã NV :</span>
+                <span>@Model.MaNV</span>
+            </li>
+            <li class="info">
+                <span>MST :</span>
+                <span>@Model.MaSoThue</span>
+            </li>
+            <li class="info">
+                <span>Ngày cấp MST :</span>
+                <span>@Model.NgayCapMST</span>
+            </li>
+            <li class="info">
+                <span>Skype :</span>
+                <span>@Model.Skyper</span>
+            </li>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $("#CongViec .phanviec").click(function () {
+        var subject_id = document.getElementById("IDphanviec").value;
+        $.ajax({
+            type: "POST",
+            url: "../Setting/PhanViec",
+            data: { khoachinh: subject_id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#CongViec .quydinh").click(function () {
+        var subject_id = document.getElementById("IDquydinh").value;
+        $.ajax({
+            type: "POST",
+            url: "../Setting/QuyDinh",
+            data: { khoachinh: subject_id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+</script>
+

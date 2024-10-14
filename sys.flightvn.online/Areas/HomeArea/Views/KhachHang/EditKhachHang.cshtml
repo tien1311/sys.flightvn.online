@@ -1,0 +1,142 @@
+﻿@model Show
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .has-feedback .form-control {
+        padding-right: 20px;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" id="abc">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <Center> <h1 style="color:red">Chỉnh sửa khách hàng VIP</h1> </Center>
+        </div>
+        <div class="modal-body">
+            <div class="x_panel">
+                <div class="x_content">
+                    @using (Html.BeginForm("Edit", "KhachHang", new { i = 11 }, FormMethod.Post))
+                    {
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                        Mã Khách Hàng
+                                    </label>
+                                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="hidden" id="IDtxt" class="form-control has-feedback-right" name="ID" value="@Model.ID">
+                                                        <input type="text" id="MaKH" readonly asp-for="MaKH" class="form-control has-feedback-right" name="MaKH" value="@Model.MaKH">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                        Tên Công Ty
+                                    </label>
+                                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" id="TenKH" readonly asp-for="TenKH" class="form-control has-feedback-right" name="TenKH" value="@Model.TenCty">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                        Nhóm
+                                    </label>
+                                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <select name="NhomKH" id="NhomKH" value=@Model.Nhom class="form-control">
+                                                        <option value="@Model.IDNhom" selected hidden>@Model.Nhom</option>
+                                                        @foreach (var item in Model.ListNhomDL)
+                                                        {
+                                                            <option value="@item.IDNhom">@item.TenNhom</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                        Ghi Chú
+                                    </label>
+                                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <input type="text" id="GhiChu" class="form-control has-feedback-right" name="GhiChu" value="@Model.Ghichu">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                        Trạng thái
+                                    </label>
+                                    <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                        <fieldset class="col-xs-12" style="padding:0px">
+                                            <div class="control-group">
+                                                <div class="controls">
+                                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                                        <label class="checkbox-inline" style="line-height:20px;">
+                                                            <input type="checkbox" id="Hidden" name="Hidden"> Ẩn
+                                                            <input type="hidden" id="Hiddentxt" value="@Model.Status" />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="item form-group col-md-6 col-sm-12 col-xs-12" style="text-align:right">
+                                    <button type="submit" class="btn btn-primary" id="Edit" name="Edit" value="Edit">Lưu</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="~/js/custom.min.js"></script>
+<script>
+    var hid = document.getElementById("Hiddentxt").value;
+    if (hid == "True") {
+        document.getElementById("Hidden").setAttribute("checked", "checked");
+    }
+</script>

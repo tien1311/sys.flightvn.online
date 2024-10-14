@@ -1,0 +1,284 @@
+﻿@model List<UserPay>
+
+@{
+    Layout = null;
+    int i = 0;
+    var gateway_Rep = new GatewayRepository();
+    var selectedColumns = ViewBag.SelectedColumns as List<string> ?? new List<string>();
+
+}
+
+<div class="table-responsive">
+    <table id="gridReport" class="table table-striped jambo_table bulk_action">
+        <thead>
+            <tr class="headings">
+                @if (selectedColumns.Contains("stt"))
+                {
+                    <th class="column-title stt">STT</th>
+                }
+                @if (selectedColumns.Contains("makh"))
+                {
+                    <th class="column-title makh">Mã KH</th>
+                }
+                @if (selectedColumns.Contains("makh_dl"))
+                {
+                    <th class="column-title makh">Mã KH Đại lý</th>
+                }
+                @if (selectedColumns.Contains("ten"))
+                {
+                    <th class="column-title ten">Tên</th>
+                }
+                @if (selectedColumns.Contains("madonhang"))
+                {
+                    <th class="column-title madonhang">Mã đơn hàng</th>
+                }
+                @if (selectedColumns.Contains("mathanhtoan"))
+                {
+                    <th class="column-title mathanhtoan">Mã thanh toán</th>
+                }
+                @if (selectedColumns.Contains("mathamchieu"))
+                {
+                    <th class="column-title mathamchieu">Mã tham chiếu</th>
+                }
+                @if (selectedColumns.Contains("phuongthuc"))
+                {
+                    <th class="column-title phuongthuc">Phương thức </th>
+                }
+                @if (selectedColumns.Contains("loai"))
+                {
+                    <th class="column-title loai">Loại</th>
+                }
+                @if (selectedColumns.Contains("trangthai"))
+                {
+                    <th class="column-title trangthai" style="width:120px;">Trạng thái</th>
+                }
+                @if (selectedColumns.Contains("email"))
+                {
+                    <th class="column-title email">Email</th>
+                }
+                @if (selectedColumns.Contains("sdt"))
+                {
+                    <th class="column-title sdt">SĐT</th>
+                }
+                @if (selectedColumns.Contains("diachi"))
+                {
+                    <th class="column-title diachi">Địa chỉ</th>
+                }
+                @if (selectedColumns.Contains("ngaylap"))
+                {
+                    <th class="column-title ngaylap">Ngày lập</th>
+                }
+                @if (selectedColumns.Contains("sotien"))
+                {
+                    <th class="column-title sotien">Số tiền</th>
+                }
+                @if (selectedColumns.Contains("ghichu"))
+                {
+                    <th class="column-title ghichu">Ghi chú</th>
+                }
+                @if (selectedColumns.Contains("maloi"))
+                {
+                    <th class="column-title maloi">Mã lỗi</th>
+                }
+                @if (selectedColumns.Contains("nguyennhan"))
+                {
+                    <th class="column-title nguyennhan">Nguyên nhân</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    i++;
+                    var requestTypeName = gateway_Rep.GetRequestType(item.paymentType, item.requestType);
+                    var paymentTypeImg = gateway_Rep.GetImagePaymentTypeUrl(item.paymentType);
+                    <tr>
+                        @if (selectedColumns.Contains("stt"))
+                        {
+                            <td class="stt">@item.RowNum</td>
+                        }
+                        @if (selectedColumns.Contains("makh"))
+                        {
+                            <td class="makh">@item.MaKH</td>
+                        }
+                        @if (selectedColumns.Contains("makh_dl"))
+                        {
+                            <td class="makh">@item.MaKH_DL</td>
+                        }
+                        @if (selectedColumns.Contains("ten"))
+                        {
+                            <td class="ten">@item.Name</td>
+                        }
+                        @if (selectedColumns.Contains("madonhang"))
+                        {
+                            <td class="madonhang">@item.orderId</td>
+                        }
+                        @if(selectedColumns.Contains("mathanhtoan"))
+                        {
+                            <td class="mathanhtoan">@item.PaymentId</td>
+                        }
+                        @if (selectedColumns.Contains("mathamchieu"))
+                        {
+                            <td class="mathamchieu">@item.Partner_TransId</td>
+                        }
+                        @if (selectedColumns.Contains("phuongthuc"))
+                        {
+                            <td class="phuongthuc"><img src="@paymentTypeImg" style="width:30px; height: 30px;" /></td>
+                        }
+                        @if (selectedColumns.Contains("loai"))
+                        {
+                            <td class="loai">@requestTypeName</td>
+                        }
+                        @if (selectedColumns.Contains("trangthai"))
+                        {
+                            <td class="trangthai resultStatus text-center" style="min-width:120px;">
+                                @if (item.resultCode == 0)
+                                {
+                                    <span class="success btn-success">Thành công</span>
+                                }
+                                else if (item.resultCode == -1)
+                                {
+                                    <span class="failure btn-danger">Thất bại</span>
+                                }
+                                else
+                                {
+                                    <span class="processing btn-warning">Đang xử lý</span>
+                                }
+                            </td>
+                        }
+                        @if (selectedColumns.Contains("email"))
+                        {
+                            <td class="email">@item.email</td>
+                        }
+                        @if (selectedColumns.Contains("sdt"))
+                        {
+                            <td class="sdt">@item.soDienThoai</td>
+                        }
+                        @if (selectedColumns.Contains("diachi"))
+                        {
+                            <td class="diachi">@item.DiaChi</td>
+                        }
+                        @if (selectedColumns.Contains("ngaylap"))
+                        {
+                            <td class="ngaylap">@item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        }
+                        @if (selectedColumns.Contains("sotien"))
+                        {
+                            <td class="sotien"><span class="text-danger fw-bold"> @string.Format("{0:0,0}", item.Amount) </span></td>
+                        }
+                        @if (selectedColumns.Contains("ghichu"))
+                        {
+                            <td class="ghichu">@item.Note</td>
+                        }
+                        @if (selectedColumns.Contains("maloi"))
+                        {
+                            <td class="maloi">@item.FailedCode</td>
+                        }
+                        @if (selectedColumns.Contains("nguyennhan"))
+                        {
+                            <td class="nguyennhan">@item.FailedReason</td>
+                        }
+                    </tr>
+                }
+
+                <tr>
+                    <td colspan="2" class="totalAmountTitle">Tổng tiền</td>
+                    <td  class="totalAmount">@string.Format("{0:0,0}", ViewBag.TotalAmount)</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">Không có dữ liệu</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@* <div class="table-responsive">
+    <table id="gridReport" class="table table-striped jambo_table bulk_action">
+        <thead>
+            <tr class="headings">
+                <th class="column-title">STT</th>
+                <th class="column-title">Mã KH</th>
+                <th class="column-title">Mã đơn hàng</th>
+                <th class="column-title">Mã tham chiếu</th>
+                <th class="column-title">Phương thức </th>
+                <th class="column-title">Loại</th>
+                <th class="column-title">Trạng thái</th>
+                <th class="column-title">Email</th>
+                <th class="column-title">SĐT</th>
+                <th class="column-title">Ngày lập</th>
+                <th class="column-title">Số tiền</th>
+                <th class="column-title">Mã lỗi</th>
+                <th class="column-title">Nguyên nhân</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    i++;
+                    var requestTypeName = gateway_Rep.GetRequestType(item.paymentType,item.requestType);
+                    var paymentTypeImg = gateway_Rep.GetImagePaymentTypeUrl(item.paymentType);
+                    <tr>
+                        <td>@item.RowNum</td>
+                        <td>@item.MaKH</td>
+                        <td>@item.orderId</td>
+                        <td>@item.Partner_TransId</td>
+                        <td>
+                            <img src="@paymentTypeImg" style="width:30px; height: 30px;" />
+                        </td>
+                        <td>
+                            @requestTypeName
+                        </td>
+                        <td class="resultStatus text-center" style="width:100px;">
+                            @if (item.resultCode == 0)
+                            {
+                                <span class="success btn-success">Thành công</span>
+                            }
+                            else if (item.resultCode == -1)
+                            {
+                                <span class="failure btn-danger">Thất bại</span>
+                            }
+                            else
+                            {
+                                <span class="processing btn-warning">Đang xử lý</span>
+                            }
+                        </td>
+                        <td>@item.email</td>
+                        <td>@item.soDienThoai</td>
+                        <td>@item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>
+                            <span class="text-danger fw-bold"> @string.Format("{0:0,0}", item.Amount) </span>
+                        </td>
+                        <td>@item.FailedCode</td>
+                        <td>@item.FailedReason</td>
+                    </tr>
+                }
+
+                <tr>
+                    <td colspan="3" class="totalAmountTitle">Tổng tiền</td>
+                    <td colspan="8" class="totalAmount">@string.Format("{0:0,0}",ViewBag.TotalAmount)</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">
+                        Không có dữ liệu
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div> *@
+
+<input id="pageNumber" hidden value="@ViewBag.PageNumber" />
+<input id="totalPagesInput" hidden value="@ViewBag.TotalPages" />
+

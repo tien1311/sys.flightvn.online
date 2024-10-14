@@ -1,0 +1,146 @@
+﻿@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@inject IUnitOfWork_Repository _unitOfWork_Repository;
+@{
+    var ListTT = _unitOfWork_Repository.ThongBaoDaiLy_Rep.TinhTrang();
+}
+@model NoiDungKhoa
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Chỉnh sửa nội dung</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="" class="col-sm-12 control-label">Tiêu đề</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="TieuDe" name="TieuDe" placeholder="Tiêu đề" value="@Model.TieuDe">
+                                    <input type="hidden" id="ROWID" value="@Model.ROWID" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="" class="col-sm-12 control-label">Tình trạng</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select name="TT" id="TT" class="form-control">
+                                        @foreach (var item in ListTT)
+                                        {
+                                            if (Model.IDTinhTrang == item.ID)
+                                            {
+                                                <option selected value="@item.ID">@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.ID">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <button type="submit" class="btn btn-primary" onclick="Save(this)">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="" class="col-sm-12 control-label">Nội dung</label>
+                    <div class="col-sm-12">
+                        <textarea class="form-control" id="NoiDung" name="NoiDung">@Model.NoiDung</textarea>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <label for="" class="col-sm-12 control-label">Nội dung tìm kiếm</label>
+                    <div class="col-sm-12">
+                        <textarea class="form-control" id="NoiDungTimKiem" rows="5" name="NoiDungTimKiem">@Model.NoiDungTimKiem</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('NoiDung', {
+            height: 200,
+            filebrowserUploadUrl: '../Data/UploadCKEditor'
+        });
+    });
+</script>
+<script>
+    function Save() {
+        var NoiDung = CKEDITOR.instances.NoiDung.getData();
+        var TieuDe = document.getElementById("TieuDe").value;
+        var NoiDungTimKiem = document.getElementById("NoiDungTimKiem").value;
+        var TT = document.getElementById("TT").value;
+        var ROWID = document.getElementById("ROWID").value;
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../ThongBaoDaiLy/SaveEditNoiDung",
+            data: {
+                ROWID: ROWID,
+                TieuDe: TieuDe,
+                TT: TT,
+                NoiDung: NoiDung,
+                NoiDungTimKiem: NoiDungTimKiem
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Bạn đã chỉnh sửa thành công");
+                }
+                else {
+                    alert("Bạn đã chỉnh sửa không thành công");
+                }
+                window.location.href = "../ThongBaoDaiLy/NoiDung?&i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>
+

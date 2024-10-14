@@ -1,0 +1,63 @@
+﻿@using Microsoft.Extensions.Configuration
+@using Manager.DataAccess.Repository
+@inject IConfiguration _configuration
+
+@{
+    var landingPage_Rep = new LandingPageRepository(_configuration);
+    var listCategory = landingPage_Rep.GetCategory().GetAwaiter().GetResult();
+}
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo mới danh mục </h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+
+            <form id="submitForm">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên danh mục</label>
+                            <input class="form-control" type="text" id="Name" name="Name" placeholder="Tên danh mục" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Thứ tự</label>
+                            <input class="form-control" type="number" min="1" id="Position" name="Position" required>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Danh mục cha</label>
+                            <select class="form-control" id="ParentId" name="ParentId">
+                                <option value="0">Không là danh mục con</option>
+                                @foreach (var item in listCategory)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Header Menu</label>
+                            <input  type="checkbox" min="1" value="1" id="HeaderValue" name="HeaderValue">
+                        </div>
+                    </div>
+
+                </div>
+                <button id="btnSave" type="submit" class="btn btn-primary">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/hotel/generateimagetoview.js"></script>
+<script src="~/js/landingpage/category/createcategory.js"></script>

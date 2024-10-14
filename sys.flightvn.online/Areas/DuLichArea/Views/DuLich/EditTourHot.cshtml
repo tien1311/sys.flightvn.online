@@ -1,0 +1,586 @@
+﻿@model Tourall
+
+@{
+    ViewData["Title"] = "Danh sách Tour";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    .chosen-container.chosen-container-multi {
+        width: 100% !important;
+    }
+
+    #custom-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    .custom-loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<title>@ViewData["Title"]</title>
+
+<link href="~/css/dulich/listtour.css" rel="stylesheet" />
+<div id="custom-loading-overlay">
+    <div class="custom-loading-spinner"></div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#AddTourModal">Thêm tour</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="AddTourModal" tabindex="-1" role="dialog" aria-labelledby="AddTourModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style=" background: #2A3F54;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color:#fff; font-size:20px">Thêm tour</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+
+            <form id="createTourForm">
+                <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Thông tin tour</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Tên tour</label>
+                                            <input class="form-control" type="text" name="tour_name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Điểm đi</label>
+                                            <select class="form-control" name="diem_di">
+                                                @*@foreach (var item in Model.Destination)
+                                                {
+                                                <option value="@item.IDTinh">@item.TenTinh</option>
+                                                }*@
+                                                <option value="item.IDTinh">item.TenTinh</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Điểm đến</label>
+                                            <select name="diem_den[]" multiple id="chosen-select" class="chosen-select form-control">
+                                                @*@foreach (var item in ViewBag.listTinhThanh)
+                                                {
+                                                <option value="@item.IDTinh">@item.TenTinh</option>
+                                                }*@
+                                                <option value="item.IDTinh">item.TenTinh</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Điểm đón</label>
+                                            <input class="form-control" type="text" name="diem_don" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Loại phương tiện</label>
+                                            <select class="form-control" name="loai_xe">
+                                                <option value="Xe khách">Xe khách</option>
+                                                <option value="Máy bay">Máy bay</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Hướng dẫn viên</label>
+                                            <input class="form-control" type="text" name="hdv" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Số ngày</label>
+                                            <input class="form-control" type="number" step="1" min="1" name="so_ngay" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Số đêm</label>
+                                            <input class="form-control" type="number" min="1" step="1" name="so_dem" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">File chương trình</label>
+                                            <div class="inputfile-box">
+                                                <input type="file" id="fileProgram" class="inputfile" name="files" onchange="handleFileChange(event, 'fileProgramName')">
+                                                <label for="fileProgram">
+                                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">Chọn file</span>
+                                                </label>
+                                                <input id="fileProgramName" class="file-box" placeholder="Chọn tập tin" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Thông tin người bán</h4>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Tên người bán</label>
+                                            <input class="form-control" type="text" name="sales_name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control" type="email" name="sales_email" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Số điện thoại</label>
+                                            <input class="form-control" type="tel" name="sales_phoneNumber" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Ghi chú</label>
+                                            <input class="form-control" type="tel" name="note" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Ngày đi</label>
+                                            <input class="form-control" type="date" name="ngay_di" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Ngày về</label>
+                                            <input class="form-control" type="date" name="ngay_ve" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Ngày đóng tour</label>
+                                            <input class="form-control" type="date" name="ngay_dong_tour" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Tổng</label>
+                                            <input class="form-control" type="number" name="tong" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Đã đặt</label>
+                                            <input class="form-control" type="number" name="da_dat" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Giữ chỗ</label>
+                                            <input class="form-control" type="number" name="giu_cho" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="item form-group">
+                                    <label class="control-label">
+                                        Hình đại diện (800x450px)
+                                    </label>
+                                    <div class="row contain-listImg" id="RowImg1">
+                                        <div class="col-sm-7 col-xs-12">
+                                            <div class="row">
+                                                <div class="col-xs-10">
+                                                    <div class="inputfile-box">
+                                                        <input type="file" id="file1" class="inputfile" onchange="previewImage(event)" accept="image/*">
+                                                        <label for="file1">
+                                                            <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                                Chọn file
+                                                            </span>
+                                                        </label>
+                                                        <input id="file-name-popup1" class="file-box" placeholder="Chọn tập tin">
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <input class="btn btn-primary" onclick="CreateRowImg();" type="button" value="+" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 col-xs-6">
+                                            <input class="form-check-input" type="radio" name="mainImage" id="flexRadioDefault1" value="1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Hình đại diện
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-2 col-xs-6">
+                                            <div class="main-img" id="imagePreview1"></div>
+                                        </div>
+                                    </div>
+                                    <div id="addRowsImg"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Mô tả ngắn</label>
+                                    <textarea class="form-control" name="short_notes" id="short_notes"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="form-label" class="control-label">Mô tả dài</label>
+                                    <textarea class="form-control" name="long_notes" id="long_notes"></textarea>
+                                </div>
+                            </div>
+                            <br />
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-price">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="width: 150px">Loại khách sạn</th>
+                                                <th>Giá người lớn</th>
+                                                <th>Giá trẻ em</th>
+                                                <th>Giá em bé</th>
+                                                <th>Phụ thu đơn</th>
+                                                <th>Phụ thu quốc tịch</th>
+                                                <th>HH người lớn</th>
+                                                <th>HH trẻ em</th>
+                                                <th>HH em bé</th>
+                                                <th>KM Giá người lớn</th>
+                                                <th>KM Giá trẻ em</th>
+                                                <th>KM Giá em bé</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input class="btn btn-primary" onclick="CreateRowTable();" type="button" value="+" />
+
+                                                    @* Nếu dòng đầu sẽ không có dấu - *@
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="gia_loai">
+
+                                                        <option value="1s">KS 1s</option>
+                                                        <option value="2s">KS 2s</option>
+                                                        <option value="3s">KS 3s</option>
+                                                        <option value="4s">KS 4s</option>
+                                                        <option value="5s">KS 5s</option>
+                                                        <option value="rs3s">RS 3s</option>
+                                                        <option value="rs4s">RS 4s</option>
+                                                        <option value="rs5s">RS 5s</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="gia_nguoi_lon[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="gia_tre_em[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="gia_em_be[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="phu_thu_don[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="phu_thu_quoctich[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="hh_gia_nguoi_lon[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="hh_gia_tre_em[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="hh_gia_em_be[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="km_gia_nguoi_lon[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="km_gia_tre_em[]" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control priceInput" name="km_gia_em_be[]" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="action-group form-group">
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('long_notes', {
+            height: 200,
+            filebrowserUploadUrl: '/Data/UploadCKEditorDuLich'
+        });
+
+        $('form').on('submit', function (e) {
+            for (instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+        });
+    });
+
+
+
+    function previewImage(event) {
+        var id = (event.target.id).slice(4);
+        var ImgPreview = "imagePreview" + id;
+        var fileName = "file-name-popup" + id;
+
+        // Get the file from the input field
+        var file = event.target.files[0];
+
+        if (file) {
+            // Create a FileReader object
+            var reader = new FileReader();
+
+            // Set the onload event handler
+            reader.onload = function () {
+                // Remove the previous img element, if any
+                var imagePreview = document.getElementById(ImgPreview);
+                if (imagePreview) {
+                    while (imagePreview.firstChild) {
+                        imagePreview.removeChild(imagePreview.firstChild);
+                    }
+
+                    // Create an img element
+                    var img = document.createElement('img');
+                    img.src = reader.result;
+                    img.style.maxWidth = "100%"; // Ensure the image fits within the preview area
+                    imagePreview.appendChild(img);
+
+                    // Set the file name in the input field
+                    document.getElementById(fileName).value = file.name;
+                } else {
+                    console.error("Image preview element not found: " + ImgPreview);
+                }
+            };
+
+            reader.onerror = function () {
+                console.error("There was an error reading the file!");
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            console.error("No file selected or file not readable.");
+        }
+    }
+
+    var countImg = 1;
+    function CreateRowImg() {
+        countImg++;
+        var newRow = `
+        <div class="row contain-listImg" id="RowImg${countImg}">
+            <div class="col-sm-7 col-xs-12">
+                <div class="row">
+                    <div class="col-xs-10">
+                        <div class="inputfile-box">
+                            <input type="file" id="file${countImg}" class="inputfile" onchange="previewImage(event)" accept="image/*">
+                            <label for="file${countImg}">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn file
+                                </span>
+                            </label>
+                            <input id="file-name-popup${countImg}" class="file-box" placeholder="Chọn tập tin">
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <input class="btn btn-danger" onclick="DeleteRowImg(${countImg})" type="button" value="-" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <input class="form-check-input" type="radio" name="mainImage" id="flexRadioDefault${countImg}" onchange="checkOnlyOneMainImage()">
+                <label class="form-check-label" for="flexRadioDefault${countImg}">
+                    Hình đại diện
+                </label>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <div class="main-img" id="imagePreview${countImg}">
+                </div>
+            </div>
+        </div>`;
+        document.querySelector('#addRowsImg').insertAdjacentHTML('beforebegin', newRow);
+    }
+
+    function DeleteRowImg(SoDong) {
+        var e = 'RowImg' + SoDong;
+        const element = document.getElementById(e);
+        if (element) {
+            element.remove();
+        } else {
+            console.error("Row element not found: " + e);
+        }
+    }
+
+    function checkOnlyOneMainImage() {
+        var radios = document.querySelectorAll('input[name="mainImage"]');
+        radios.forEach((radio) => {
+            radio.addEventListener('change', function () {
+                if (this.checked) {
+                    radios.forEach((r) => {
+                        if (r !== this) {
+                            r.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', checkOnlyOneMainImage);
+
+
+
+    function handleFileChange(event, outputId) {
+        var input = event.target;
+        var fileName = input.files[0].name;
+        document.getElementById(outputId).value = fileName;
+    }
+
+    function handleImageChange(event) {
+        var input = event.target;
+        var file = input.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '100%';
+            preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+        document.getElementById('fileImageName').value = file.name;
+    }
+
+
+    $(document).ready(function () {
+        $('#loading-overlay').hide();
+
+
+        $("#gridReport").on('click', '.Chitiet', function () {
+            $('#loading-overlay').show();
+
+            var Tour_Id = $(this).closest('tr').find('td:nth-child(3)').text().trim();
+
+            $.ajax({
+                type: "POST",
+                url: "../DuLich/EditTourHot",
+                data: { Tour_Id: Tour_Id },
+                success: function (response) {
+                    $('#loading-overlay').hide();
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+
+<script src="~/js/dulich/listtour.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>

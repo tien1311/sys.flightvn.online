@@ -1,0 +1,202 @@
+﻿@inject IConfiguration _configuration;
+@model List<TourEV>
+
+@{
+    ViewData["Title"] = "Danh sách Tour";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<div class="x_panel">
+    <div class="">
+        
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Tên tour</label>
+                    <input class="form-control" type="text" name="tour_name" id="tour_name" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Tháng Năm</label>
+                    <input type="month" class="form-control" name="thang_nam" id="thangNam" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="form-label">Loại tour</label>
+                    <select class="form-control" name="loai_tour" id="loai_tour">
+                        <option value="1">Tour nội địa</option>
+                        <option value="2">Tour quốc tế</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <button id="timKiemBtn" class="btn btn-primary form-control">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" data-toggle="modal" data-target="#AddTourModal" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridType" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th>STT</th>
+                        <th>Tour id</th>
+                        <th>Tên tour</th>
+                        <th>Tổng</th>
+                        <th>Đã đặt</th>
+                        <th>Giữ chỗ</th>
+                        <th>Số ngày</th>
+                        <th>Số đêm</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        int stt = 1;
+                        foreach (var tour in Model)
+                        {
+                            <tr id="@tour.Tour_Id">
+                                <td>@stt</td>
+                                <td class="tour-id-cell">
+                                    <a class="Chitiet tour-id-link" id="viewDetailTourHot" data-tourid="@tour.Tour_Id" style="color:blue;" data-target="#openPopup" data-toggle="modal" href="javascript:;">@tour.Tour_Id</a>
+                                </td>
+                                <td>@tour.Name_Tour</td>
+                                <td>@tour.Tong</td>
+                                <td>@tour.Da_Dat</td>
+                                <td>@tour.Giu_Cho</td>
+                                <td>@tour.So_Ngay</td>
+                                <td>@tour.So_Dem</td>
+                                <td>
+                                    @if (tour.Active == 1)
+                                    {
+                                        <input type="checkbox" class="js-switch" data-switchery="true" style="display: none;" checked onchange="ActiveTourHot(0,@tour.Id);" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="js-switch" data-switchery="true" style="display: none;" onchange="ActiveTourHot(1,@tour.Id);" />
+                                    }
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">Không có dữ liệu nào trong data</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog"></div>
+<div class="modal fade" id="AddTourModal" role="dialog"></div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+<script>
+    $("#BtnCreate").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../TourHot/AddTourHot",
+            success: function (response) {
+                $('#AddTourModal').html(response);
+                $('#AddTourModal').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#gridType .Chitiet").click(function () {
+            var Tour_Id = $(this).data('tourid');
+            $.ajax({
+                type: "POST",
+                url: "../TourHot/EditTourHot",
+                data: { Tour_Id: Tour_Id },
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                },
+                failure: function (response) {
+                    alert('Lỗi: ' + response.responseText);
+                },
+                error: function (response) {
+                    alert('Lỗi: ' + response.responseText);
+                }
+            });
+        });
+    });
+
+    var i = 0;
+
+    document.getElementById("timKiemBtn").addEventListener("click", function () {
+        var tentour = document.getElementById("tour_name").value;
+        var thangNam = document.getElementById("thangNam").value;
+        var loai_tour = document.getElementById("loai_tour").value;
+
+        i += 15;
+
+        window.location.href = '../TourHot/ListTourHot?tentour=' + tentour + '&selectedDate=' + thangNam + '&i=' + i;
+    });
+
+    function ActiveTourHot(active, Tour_Id) {
+        debugger;
+        console.log(active);
+        $.ajax({
+            type: "POST",
+            url: "../TourHot/ChangeActiveTourHot",
+            data: {
+                Tour_Id: Tour_Id,
+                Active: active
+            },
+            success: function (response) {
+                if (response === true) {
+                    alert("Bạn đã thay đổi thành công");
+                } else {
+                    alert("Bạn đã thay đổi không thành công");
+                }
+                location.reload();
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+</script>
+
+

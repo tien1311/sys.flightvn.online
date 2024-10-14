@@ -1,0 +1,418 @@
+﻿@model KhachHangModel
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .has-feedback .form-control {
+        padding-right: 20px;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" id="abc">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>          
+                <h1 style="color:red">Chỉnh sửa đối tác VIP</h1>         
+        </div>
+        <div class="modal-body">
+            <div class="x_panel">
+                <div class="x_content">
+
+                    <div class="row">
+                        <div class="form-horizontal">
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Họ tên
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="hidden" id="IDtxt" class="form-control has-feedback-right" name="ID" value="@Model.ID">
+                                                    <input type="text" id="Nametxt" class="form-control has-feedback-right" name="name" value="@Model.Hoten">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Chức vụ
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="text" id="Chucvutxt" class="form-control has-feedback-right" name="Chucvu" value="@Model.Chuc">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Hãng
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="text" id="Hangtxt" class="form-control has-feedback-right" name="hang" value="@Model.Hang">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Miền
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <select id="Mientxt" class="form-control has-feedback-right" name="mien">
+                                                        <option value="Miền Bắc" @(Model.Mien == "Miền Bắc" ? "selected" : "")>Miền Bắc</option>
+                                                        <option value="Miền Trung" @(Model.Mien == "Miền Trung" ? "selected" : "")>Miền Trung</option>
+                                                        <option value="Miền Nam" @(Model.Mien == "Miền Nam" ? "selected" : "")>Miền Nam</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Nhóm
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <select id="Nhomtxt" class="form-control has-feedback-right" name="nhom">
+                                                        <option value="Đại lý" @(Model.Nhom == "Đại lý" ? "selected" : "")>Đại lý</option>
+                                                        <option value="Hãng" @(Model.Nhom == "Hãng" ? "selected" : "")>Hãng</option>
+                                                        <option value="Khác" @(Model.Nhom == "Khác" ? "selected" : "")>Khác</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Nhân viên KD
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class="xdisplay_inputx form-group has-feedback">
+                                                    <select id="NVKDtxt" class="form-control has-feedback-right" name="nvkd">
+                                                        <option value="">Chọn nhân viên</option>
+                                                        @foreach (var nv in ViewBag.DSnhanvienkinhdoanh)
+                                                        {
+                                                            <option value="@nv.MaNV" @(Model.Nhanvienkinhdoanh == nv.MaNV ? "selected" : "")>@nv.Ten</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Ngày sinh
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                    <input type="text" class="form-control has-feedback-right" id="NgaySinh" name="birthday" value="@Model.Ngaysinh">
+                                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    NGT
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="text" id="NGTtxt" class="form-control has-feedback-right" name="NGT" value="@Model.NGT">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Số điện thoại
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="text" id="Phonetxt" class="form-control has-feedback-right" name="phone" value="@Model.SDT">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Địa chỉ
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="text" id="Addresstxt" class="form-control has-feedback-right" name="address" value="@Model.Diachi">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Bỏ chăm sóc
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    @if (Model.IsHotro == "True")
+                                                    {
+                                                        <input type="checkbox" style="border: 1px solid #ccc;width:20px; height:20px;" id="block" name="block" checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" style="border: 1px solid #ccc;width:20px; height:20px;" id="block" name="block">
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Lý do
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input type="text" class="form-control has-feedback-right" name="note" id="Notetxt" value="@Model.Ghichu">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                    Quà tặng
+                                </label>
+                                <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                    <fieldset class="col-xs-12" style="padding:0px">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                    <input type="text" class="form-control has-feedback-right" id="single_cal2" name="ngaytang">
+                                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="item form-group col-md-6 col-sm-12 col-xs-12">
+                                <fieldset class="col-xs-12">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <textarea rows="4" name="gift" id="Gifttxt" class="form-control has-feedback-right"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="item form-group col-md-12 col-sm-12 col-xs-12" style="text-align:right">
+                                <button type="submit" onclick="myFunction()" class="btn btn-success" name="save" id="save" value="edit">Lưu</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="table-responsive" style="font-size:12px;">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title" style="width: 60px; text-align: center;">STT</th>
+                                        <th class="column-title" style="width: 100px; text-align: center;">Năm</th>
+                                        <th class="column-title">Quà tặng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 1;
+                                    }
+                                    @if (Model.Listquatang != null)
+                                    {
+                                        foreach (var item in Model.Listquatang)
+                                        {
+                                            <tr id="@item.ID" class="even pointer">
+                                                <td style="text-align:center">@i</td>
+                                                <td style="text-align:center">@item.Nam</td>
+                                                <td class="">@item.QuaTang</td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="~/js/custom.min.js"></script>
+<script>
+    $("#save").click(function () {
+        var id = $("#IDtxt").val();
+        var name = $("#Nametxt").val();
+        var Chucvu = $("#Chucvutxt").val();
+        var hang = $("#Hangtxt").val();
+        var mien = $("#Mientxt").val();
+        var ngt = $("#NGTtxt").val();
+        var phone = $("#Phonetxt").val();
+        var birthday = $("#single_cal5").val();
+        var address = $("#Addresstxt").val();
+        var block = $("#block").is(":checked") ? "true" : "false";
+        var ngaytang = $("#single_cal2").val();
+        var gift = $("#Gifttxt").val();
+        var note = $("#Notetxt").val();
+        var nvkd = $("#NVKDtxt").val();
+        var nhom = $("#Nhomtxt").val();
+
+        // Kiểm tra dữ liệu nhập vào
+        if (name === "") {
+            alert("Bạn phải nhập tên của đối tác VIP.");
+            return;
+        }
+        if (Chucvu === "") {
+            alert("Bạn phải nhập chức vụ.");
+            return;
+        }
+        if (hang === "") {
+            alert("Bạn phải nhập hạng.");
+            return;
+        }
+        if (mien === "") {
+            alert("Bạn phải chọn miền.");
+            return;
+        }
+        if (birthday === "") {
+            alert("Bạn phải nhập ngày sinh.");
+            return;
+        }
+        if (phone === "") {
+            alert("Bạn phải nhập số điện thoại.");
+            return;
+        }
+
+        if (name == "") {
+            alert("Bạn phải nhập tên của đối tác VIP");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "../KhachHang/EditKhachHangVip",
+                data: {
+                    ID: id,
+                    name: name,
+                    Chucvu: Chucvu,
+                    hang: hang,
+                    mien: mien,
+                    NGT: ngt,
+                    phone: phone,
+                    birthday: birthday,
+                    address: address,
+                    block: block,
+                    ngaytang: ngaytang,
+                    gift: gift,
+                    note: note,
+                    nvkd: nvkd
+
+                },
+                success: function (response) {
+                    if (response) { 
+                        alert("Bạn đã chỉnh sửa thành công");
+                        location.reload();
+                    } else {
+                        alert("Chỉnh sửa thất bại. Vui lòng thử lại.");
+                    }
+
+                    location.reload();
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    });
+
+    
+
+</script>

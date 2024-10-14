@@ -1,0 +1,379 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Upload_ImgModel
+@{
+    ViewData["Title"] = "UploadPopup";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<style>
+    .ResizeImage {
+        width: 100px !important;
+        height: auto !important;
+    }
+</style>
+<h2>Upload images</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Popup" asp-route-i="9" asp-action="SaveImgPopup" method="post" enctype="multipart/form-data">
+            <div class="row form-horizontal">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Link</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="Link" placeholder="" value="@Model.popupSys_Img.adv_linkto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <div class="inputfile-box">
+                            <input type="file" id="file" class="inputfile" onchange='uploadFilePop_Sys(this)' name="file" accept="image/*">
+                            <label for="file">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn tập tin
+                                </span>
+                            </label>
+                            <input id="file-namePop_Sys" name="HinhDaUP" class="file-box" placeholder="Chọn tập tin" value="@Model.popupSys_Img.adv_picture">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-top:8px">
+                                <input id="PopupSys_status" name="status" type="checkbox"> Ẩn popup
+                                <input type="hidden" id="PopupSys_isshow" name="PopupSys_isshow" value="@Model.popupSys_Img.adv_isshow" />
+                            </div>
+                            <div class="col-xs-6" style="text-align:right">
+                                <button type="submit" class="btn btn-success" name="SaveImg" value="SaveImg">Lưu</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="item form-group">
+                        <label>
+                            Hình popup trang sys
+                        </label>
+                        <div>
+                            <img src="@Model.popupSys_Img.adv_picture" alt="Alternate Text" width="100px" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Popup" asp-route-i="9" asp-action="SaveImgBannerAirline24h" method="post" enctype="multipart/form-data">
+            <div class="row form-horizontal">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Link</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="Link" placeholder="" value="@Model.bannerAirline_Img.adv_linkto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <div class="inputfile-box">
+                            <input type="file" id="file1" class="inputfile" onchange='uploadFileBan_Air(this)' name="file" accept="image/*">
+                            <label for="file1">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn tập tin
+                                </span>
+                            </label>
+                            <input id="file-nameBan_Air" name="HinhDaUP" class="file-box" placeholder="Chọn tập tin" value="@Model.bannerAirline_Img.adv_picture">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-top:8px">
+                                <input id="BannerAirline_status" name="status" type="checkbox"> Ẩn popup
+                                <input type="hidden" id="BannerAirline_isshow" name="BannerAirline_isshow" value="@Model.bannerAirline_Img.adv_isshow" />
+                            </div>
+                            <div class="col-xs-6" style="text-align:right">
+                                <button type="submit" class="btn btn-success" name="SaveImg" value="SaveImg">Lưu</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="item form-group">
+                        <label>
+                            Hình banner trang Airline24h
+                        </label>
+                        <div>
+                            <img src="@Model.bannerAirline_Img.adv_picture" alt="Alternate Text" width="100px" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Popup" asp-route-i="9" asp-action="SaveImgBannerEvbay" method="post" enctype="multipart/form-data">
+            <div class="row form-horizontal">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Link</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="Link" placeholder="" value="@Model.bannerloginEvbay.adv_linkto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <div class="inputfile-box">
+                            <input type="file" id="file2" class="inputfile" onchange='uploadFileBan_Evbay(this)' name="file" accept="image/*">
+                            <label for="file2">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn tập tin
+                                </span>
+                            </label>
+                            <input id="nameBan_Evbay" name="HinhDaUP" class="file-box" placeholder="Chọn tập tin" value="@Model.bannerloginEvbay.adv_picture">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-top:8px">
+                                <input id="BannerEvbay_status" name="status" type="checkbox"> Ẩn popup
+                                <input type="hidden" id="BannerEVbay_isshow" name="BannerEVbay_isshow" value="@Model.bannerloginEvbay.adv_isshow" />
+                            </div>
+                            <div class="col-xs-6" style="text-align:right">
+                                <button type="submit" class="btn btn-success" name="SaveImg" value="SaveImg">Lưu</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="item form-group">
+                        <label>
+                            Hình banner trang Evbay
+                        </label>
+                        <div>
+                            <img src="@Model.bannerloginEvbay.adv_picture" alt="Alternate Text" width="100px" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Popup" asp-route-i="9" asp-action="SaveImgBannerADVEvbay" method="post" enctype="multipart/form-data">
+            <div class="row form-horizontal">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Link</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="Link" placeholder="" value="@Model.bannerADVEvbay.adv_linkto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <div class="inputfile-box">
+                            <input type="file" id="file3" class="inputfile" onchange='uploadFileADV_Evbay(this)' name="file" accept="image/*">
+                            <label for="file3">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn tập tin
+                                </span>
+                            </label>
+                            <input id="nameADV_Evbay" name="HinhDaUP" class="file-box" placeholder="Chọn tập tin" value="@Model.bannerADVEvbay.adv_picture">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-top:8px">
+                                <input id="BannerADVEvbay_status" name="status" type="checkbox"> Ẩn popup
+                                <input type="hidden" id="BannerADVEVbay_isshow" name="BannerADVEVbay_isshow" value="@Model.bannerADVEvbay.adv_isshow" />
+                            </div>
+                            <div class="col-xs-6" style="text-align:right">
+                                <button type="submit" class="btn btn-success" name="SaveImg" value="SaveImg">Lưu</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="item form-group">
+                        <label>
+                            Hình banner trang Evbay
+                        </label>
+                        <div>
+                            <img src="@Model.bannerADVEvbay.adv_picture" alt="Alternate Text" width="100px" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Popup" asp-route-i="9" asp-action="SaveImgBannerADVVeDoanEvbay" method="post" enctype="multipart/form-data">
+            <div class="row form-horizontal">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Link</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="Link" placeholder="" value="@Model.bannerADVVeDoanEvbay.adv_linkto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <div class="inputfile-box">
+                            <input type="file" id="file4" class="inputfile" onchange='uploadFileADV_VeDoanEvbay(this)' name="file" accept="image/*">
+                            <label for="file4">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn tập tin
+                                </span>
+                            </label>
+                            <input id="nameADV_VeDoanEvbay" name="HinhDaUP" class="file-box" placeholder="Chọn tập tin" value="@Model.bannerADVVeDoanEvbay.adv_picture">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-top:8px">
+                                <input id="BannerADVVeDoanEvbay_status" name="status" type="checkbox"> Ẩn popup
+                                <input type="hidden" id="BannerADVVeDoanEVbay_isshow" name="BannerADVVeDoanEVbay_isshow" value="@Model.bannerADVVeDoanEvbay.adv_isshow" />
+                            </div>
+                            <div class="col-xs-6" style="text-align:right">
+                                <button type="submit" class="btn btn-success" name="SaveImg" value="SaveImg">Lưu</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="item form-group">
+                        <label>
+                            Hình banner trang vé đoàn Evbay
+                        </label>
+                        <div>
+                            <img src="@Model.bannerADVVeDoanEvbay.adv_picture" alt="Alternate Text" width="100px" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="Popup" asp-route-i="9" asp-action="SaveImgBannerADSEnvietGroup" method="post" enctype="multipart/form-data">
+            <div class="row form-horizontal">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Link</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="Link" placeholder="" value="@Model.bannerADSEnvietGroup.adv_linkto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="item form-group">
+                        <div class="inputfile-box">
+                            <input type="file" id="file4" class="inputfile" onchange='uploadFilebannerADS_EnvietGroup(this)' name="file" accept="image/*">
+                            <label for="file4">
+                                <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                    Chọn tập tin
+                                </span>
+                            </label>
+                            <input id="nameADS_EnvietGroup" name="HinhDaUP" class="file-box" placeholder="Chọn tập tin" value="@Model.bannerADSEnvietGroup.adv_picture">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-top:8px">
+                                <input id="BannerADSEnvietGroup_status" name="status" type="checkbox"> Ẩn popup
+                                <input type="hidden" id="BannerADSEnvietGroup_isshow" name="BannerADSEnvietGroup_isshow" value="@Model.bannerADSEnvietGroup.adv_isshow" />
+                            </div>
+                            <div class="col-xs-6" style="text-align:right">
+                                <button type="submit" class="btn btn-success" name="SaveImg" value="SaveImg">Lưu</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="item form-group">
+                        <label>
+                            Hình banner trang chủ envietgroup.com
+                        </label>
+                        <div>
+                            <img src="@Model.bannerADSEnvietGroup.adv_picture" alt="Alternate Text" width="100px" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var PopupSys_isshow = document.getElementById("PopupSys_isshow").value;
+        if (PopupSys_isshow != "1") {
+            $('#PopupSys_status').attr("checked", "checked");
+        }
+        var BannerAirline_isshow = document.getElementById("BannerAirline_isshow").value;
+        if (BannerAirline_isshow != "1") {
+            $('#BannerAirline_status').attr("checked", "checked");
+        }
+        var BannerEVbay_isshow = document.getElementById("BannerEVbay_isshow").value;
+        if (BannerEVbay_isshow != "1") {
+            $('#BannerEvbay_status').attr("checked", "checked");
+        }
+        var BannerADVEVbay_isshow = document.getElementById("BannerADVEVbay_isshow").value;
+        if (BannerADVEVbay_isshow != "1") {
+            $('#BannerADVEvbay_status').attr("checked", "checked");
+        }
+        var BannerADVVeDoanEVbay_isshow = document.getElementById("BannerADVVeDoanEVbay_isshow").value;
+        if (BannerADVVeDoanEVbay_isshow != "1") {
+            $('#BannerADVVeDoanEvbay_status').attr("checked", "checked");
+        }
+
+        var BannerADSEnvietGroup_isshow = document.getElementById("BannerADSEnvietGroup_isshow").value;
+        if (BannerADSEnvietGroup_isshow != "1") {
+            $('#BannerADSEnvietGroup_status').attr("checked", "checked");
+        }
+    });
+</script>

@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewData["Title"] = "Quy định công việc";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<style>
+    .container-login100 {
+        width: 100%;
+        min-height: 100vh;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .img-responsive {
+        border-radius: 7px;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .container-login100 {
+        background-image: url('/images/2.png');
+    }
+
+    .container-content {
+        background: #fff;
+        border-radius: 5px;
+        padding: 0px;
+        text-align: justify;
+    }
+
+    .content-iframe {
+        margin: auto;
+        width: 100%;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        font-weight: bold;
+    }
+
+    .nav > li.nav-item > a:focus, .nav > li.nav-item > a:hover {
+        color: #000 !important;
+    }
+
+    .content-iframe iframe {
+        height: 800px;
+        width: 100%;
+        border-radius: 7px;
+    }
+
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .btn-BSP {
+        color: #fff;
+        background-color: #6c0678;
+        border-color: #6c0678;
+    }
+    .btn-organ {
+        background-color: #f5821f;
+        border-color: #f5821f;
+        color: #fff;
+    }
+    .nav > li > a {
+        padding: 8px 13px 8px !important;
+    }
+
+    @@media (max-width: 768px) {
+        .logo {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 30px;
+        }
+
+        .container-login100 {
+            background-image: url('/images/5.jpg');
+            background-position: inherit;
+        }
+
+        .content-iframe {
+            width: 100%;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .modal-dialog {
+            width: 100%;
+            margin: auto;
+        }
+    }
+</style>
+<div class="limiter">
+    <div class="container-login100" style="">
+        <div class="content-iframe">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+                        <li class="nav-item active">
+                            <a class="btn btn-warning" id="NV-tab" data-toggle="tab" href="#NV" role="tab" aria-controls="NV" aria-selected="true">CSKH</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" id="VNA-tab" data-toggle="tab" href="#VNA" role="tab" aria-controls="VNA" aria-selected="false">Chính sách hỗ trợ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-organ" id="CS-tab" data-toggle="tab" href="#CS" role="tab" aria-controls="CS" aria-selected="false">Chính sách CA</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-info" id="NQ-tab" data-toggle="tab" href="#NQ" role="tab" aria-controls="NQ" aria-selected="false">Nội quy</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-success" id="PM-tab" data-toggle="tab" href="#PM" role="tab" aria-controls="PM" aria-selected="false">Hướng dẫn PM</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger" id="PMCT-tab" data-toggle="tab" href="#PMCT" role="tab" aria-controls="PMCT" aria-selected="false">Hướng dẫn PM CTY</a>
+                        </li>
+                    </ul>
+                    <div class="modal-body">
+                        <div class="tab-content popup" id="myTabContent">
+                            <div class="tab-pane fade  active" id="NV" role="tabpanel" aria-labelledby="NV-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vRoTzcXaGCZmdG7Q0d24M83H9Qcecjj2X2eXAeFUb4__RG-SRvlMUIU7pMEerxHyJK9-jqNmGbpekTZ/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="VNA" role="tabpanel" aria-labelledby="VNA-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vTow0doQrbVq-EwPvNPF89rBLxv3UfvRCgUrVnkNbRqr01LFmpCYAnz7GVgicDTWeFDn5avf8chA20q/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="CS" role="tabpanel" aria-labelledby="CS-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTped5J5bl0CiVJJcbHEJ1KdiIhoa6bpblpYX1WbNihGOFIT38Mkcz9Nj-nvXZ8pqAlWQRgL_wlO6z3/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="NQ" role="tabpanel" aria-labelledby="NQ-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vRfmZQTWhOTJuBavGWuMWWxvZVo7EWiEgGNavrr9TIeD7qcuAHkgrIjDCedTJdcyzeoh8_X7YIUT9-C/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="PM" role="tabpanel" aria-labelledby="PM-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vR0vSYiiaTNOEhPTwg1T6NzgCCNt0iguYV53iHoHsMdkKbozdLLwStfpZ_gPGk3SIJ7K_W6EKnEewb9/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="PMCT" role="tabpanel" aria-labelledby="PMCT-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vQAgLicKuEV72-FUJU1ekp4fQmwjcoTQc3PDGWPmlcyEKfcGin-Qfs6M_flt_sSYFCNBae2zx4Qgcsh/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,805 @@
+﻿@model TourEV
+
+
+<style>
+    .modal-body img {
+        width: 150px !important;
+        height: auto !important;
+    }
+
+    .main-img img {
+        width: 100px !important;
+    }
+
+    .contain-listImg {
+        padding: 5px 0;
+        flex-wrap: wrap !important;
+        display: flex !important;
+        align-items: center;
+    }
+
+    .contain-DetailImg {
+        margin: 5px 0;
+    }
+
+    .modal-header .close {
+        color: #fff;
+    }
+
+    .chosen-container.chosen-container-multi {
+        width: 100% !important;
+    }
+
+
+
+    .modal-dialog {
+        max-width: 1000px !important;
+        margin: 1.75rem auto;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        width: 4px; /* Chiều rộng của thanh cuộn dọc */
+        height: 4px; /* Chiều cao của thanh cuộn ngang */
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Màu nền của track */
+        border-radius: 8px; /* Bo tròn góc của track */
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: orange; /* Màu của thanh cuộn */
+        border-radius: 8px; /* Bo tròn góc của thanh cuộn */
+    }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #e69500; /* Màu khi hover của thanh cuộn */
+        }
+
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        table-layout: auto; /* Điều này sẽ giúp các ô bảng tự động điều chỉnh kích thước dựa trên nội dung */
+    }
+
+    .action-group {
+        float: right;
+    }
+
+    .x_panel {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .x_content {
+        overflow-x: auto;
+    }
+
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+
+
+    .modal-header .close {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 20px; /* Adjust as necessary */
+        right: 10px; /* Adjust as necessary */
+    }
+
+    .modal-title {
+        flex-grow: 1;
+        text-align: left;
+    }
+
+    @@media (min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+
+
+
+    #custom-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    .custom-loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Chi tiết tour</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <form id="editTourForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Thông tin tour</h4>
+                        <input type="hidden" value="@Model.Tour_Id" id="Tour_id" name="Tour_id" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Tên tour</label>
+                                    <input class="form-control" type="text" name="tour_name" value="@Model.Name_Tour" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Điểm đi</label>
+                                    <select id="diem_di" class="form-control" name="diem_di">
+                                        @foreach (var item in ViewBag.listTinhThanh)
+                                        {
+                                            <option value="@item.IDTinh">@item.TenTinh</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @{
+                            var diemDenList = !string.IsNullOrEmpty(Model.Diem_Den)
+                            ? Model.Diem_Den.Split(',').Select(int.Parse).ToList()
+                            : new List<int>();
+                        }
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Điểm đến</label>
+                                    <select name="diem_den[]" multiple id="chosen-select" class="chosen-select form-control">
+                                        @foreach (var item in ViewBag.listTinhThanh)
+                                        {
+                                            var isSelected = diemDenList.Contains(item.IDTinh) ? "selected" : "";
+                                            <option value="@item.IDTinh" @isSelected>@item.TenTinh</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Điểm đón</label>
+                                    <input class="form-control" type="text" name="diem_don" value="@Model.Diem_Don" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Loại phương tiện</label>
+                                    <select class="form-control" name="loai_xe">
+                                        @if (Model.Loai_Xe == "Xe khách")
+                                        {
+                                            <option value="Xe khách">Xe khách</option>
+                                            <option value="Máy bay">Máy bay</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Máy bay">Máy bay</option>
+                                            <option value="Xe khách">Xe khách</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Hướng dẫn viên</label>
+                                    <input class="form-control" type="text" name="hdv" value="@Model.Hdv" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Số ngày</label>
+                                    <input class="form-control" type="number" step="1" min="1" name="so_ngay" value="@Model.So_Ngay" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Số đêm</label>
+                                    <input class="form-control" type="number" min="1" step="1" name="so_dem" value="@Model.So_Dem" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Gắn cờ</label>
+                                    <select id="gan_co" class="form-control" name="gan_co">
+                                        @foreach (var item in ViewBag.listFlag)
+                                        {
+                                            <option value="@item.ID" @(item.ID == Model.FlagID ? "selected" : "")>@item.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">File chương trình</label>
+                                    <div class="inputfile-box">
+                                        <!-- Input để chọn file -->
+                                        <input type="file" id="fileProgram" class="inputfile" name="files" onchange="handleFileChange(event, 'fileProgramName')">
+                                        <label for="fileProgram">
+                                            <span class="file-button btn btn-primary" style="margin-bottom: 6px;">Chọn file</span>
+                                        </label>
+                                        <!-- Input để hiển thị tên file từ mô hình -->
+                                        <input id="fileProgramName" class="file-box" value="@Model.Files[0].Name" placeholder="Chọn tập tin" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Thông tin người bán</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Tên người bán</label>
+                                    <input class="form-control" type="text" name="sales_name" value="@Model.Sale.Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input class="form-control" type="email" name="sales_email" value="@Model.Sale.Email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input class="form-control" type="tel" name="sales_phoneNumber" value="@Model.Sale.Phone" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Ghi chú</label>
+                                    <input class="form-control" type="text" name="note" value="@Model.Ghi_Chu" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày đi</label>
+                                    <input class="form-control" type="date" name="ngay_di" value="@Model.Ngay_Di?.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày về</label>
+                                    <input class="form-control" type="date" name="ngay_ve" value="@Model.Ngay_Ve?.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày đóng tour</label>
+                                    <input class="form-control" type="date" name="ngay_dong_tour" value="@Model.Ngay_Dong_Tour?.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Tổng</label>
+                                    <input class="form-control" type="number" name="tong" value="@Model.Tong" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Đã đặt</label>
+                                    <input class="form-control" type="number" name="da_dat" value="@Model.Da_Dat" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Giữ chỗ</label>
+                                    <input class="form-control" type="number" name="giu_cho" value="@Model.Giu_Cho" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">List hình chi tiết</label>
+                            @{
+                                int count = 1;
+                            }
+                            <div class="row">
+                                @foreach (var item in Model.Imgs)
+                                {
+                                    string MainImg = "MainImg" + count;
+                                    string ImageURL = "ImageURL" + count;
+                                    <div class="col-sm-6">
+                                        <div class="contain-DetailImg">
+                                            <img src="@item.Url" />
+                                            <input id="@ImageURL" type="hidden" value="@item.Url" />
+                                            <span style="margin: 0 10px;">
+                                                <a href="#" style="color: red" onclick="DeleteImg('@item.Img_Id')">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </span>
+                                            @if (item.MainImg == true)
+                                            {
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked id="@MainImg">
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="@MainImg">
+                                            }
+                                            <label class="form-check-label">
+                                                Hình đại diện
+                                            </label>
+                                        </div>
+                                    </div>
+                                    count++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="item form-group">
+                            <label class="control-label">
+                                Hình đại diện (800x450px)
+                            </label>
+                            <div class="row contain-listImg" id="RowImg1">
+                                <div class="col-sm-7 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-10">
+                                            <div class="inputfile-box">
+                                                <input type="file" id="file1" class="inputfile" onchange="previewImage(event)" accept="image/*" />
+                                                <label for="file1">
+                                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                        Chọn file
+                                                    </span>
+                                                </label>
+                                                <input id="file-name-popup1" class="file-box" placeholder="Chọn tập tin" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <input class="btn btn-primary" onclick="CreateRowImg(this);" type="button" value="+" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-xs-6">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <label class="form-check-label">
+                                        Hình đại diện
+                                    </label>
+                                </div>
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="main-img" id="imagePreview1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="addRowsImg">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Mô tả ngắn</label>
+                            <textarea class="form-control" name="short_notes" id="short_notes"> @Model.Short_Notes</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="form-label" class="control-label">Mô tả dài</label>
+                            <textarea class="form-control" name="long_notes_edit" id="long_notes_edit"> @Model.Long_Notes</textarea>
+                        </div>
+                    </div>
+                    <br />
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-price">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="width: 150px">Loại khách sạn</th>
+                                        <th>Giá người lớn</th>
+                                        <th>Giá trẻ em</th>
+                                        <th>Giá em bé</th>
+                                        <th>Phụ thu đơn</th>
+                                        <th>Phụ thu quốc tịch</th>
+                                        <th>HH người lớn</th>
+                                        <th>HH trẻ em</th>
+                                        <th>HH em bé</th>
+                                        <th>KM Giá người lớn</th>
+                                        <th>KM Giá trẻ em</th>
+                                        <th>KM Giá em bé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var gia in Model.Gias)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <button class="btn btn-@((Model.Gias.IndexOf(gia) == 0) ? "primary" : "danger")" onclick="@(Model.Gias.IndexOf(gia) == 0 ? "CreateRowTable()" : "DeleteRowTable(this)")" type="button">@((Model.Gias.IndexOf(gia) == 0) ? "+" : "-")</button>
+                                            </td>
+                                            <td>
+                                                <select class="form-control" name="gia_loai">
+                                                    <option value="1s" @(gia.loai_gia == "1s" ? "selected" : "")>KS 1s</option>
+                                                    <option value="2s" @(gia.loai_gia == "2s" ? "selected" : "")>KS 2s</option>
+                                                    <option value="3s" @(gia.loai_gia == "3s" ? "selected" : "")>KS 3s</option>
+                                                    <option value="4s" @(gia.loai_gia == "4s" ? "selected" : "")>KS 4s</option>
+                                                    <option value="5s" @(gia.loai_gia == "5s" ? "selected" : "")>KS 5s</option>
+                                                    <option value="rs3s" @(gia.loai_gia == "rs3s" ? "selected" : "")>RS 3s</option>
+                                                    <option value="rs4s" @(gia.loai_gia == "rs4s" ? "selected" : "")>RS 4s</option>
+                                                    <option value="rs5s" @(gia.loai_gia == "rs5s" ? "selected" : "")>RS 5s</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" class="form-control priceInput" name="gia_nguoi_lon[]" value="@gia.gia_nguoi_lon" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="gia_tre_em[]" value="@gia.gia_tre_em" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="gia_em_be[]" value="@gia.gia_em_be" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="phu_thu_don[]" value="@gia.phu_thu_don" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="phu_thu_quoctich[]" value="@gia.phu_thu_quoctich" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="hh_gia_nguoi_lon[]" value="@gia.hh_gia_nguoi_lon" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="hh_gia_tre_em[]" value="@gia.hh_gia_tre_em" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="hh_gia_em_be[]" value="@gia.hh_gia_em_be" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="km_gia_nguoi_lon[]" value="@gia.km_gia_nguoi_lon" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="km_gia_tre_em[]" value="@gia.km_gia_tre_em" /></td>
+                                            <td><input type="text" class="form-control priceInput" name="km_gia_em_be[]" value="@gia.km_gia_em_be" /></td>
+                                        </tr>
+                                    }
+                                    <tr id="addRowsImg"></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="action-group form-group">
+                            <button type="button" id="submitEditForm" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/dulich/EditTourHot.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script src="~/js/DuLich/chosen.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".chosen-select").chosen();
+    });
+
+    $(document).ready(function () {
+        var diemDi = '@Model.Diem_Di';
+        $('#diem_di').val(diemDi);
+    });
+
+</script>
+<script>
+
+    var countImg = 1;
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-outline-primary btn-block",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+    function previewImage(event) {
+        var id = (event.target.id).slice(4, 5);
+        var ImgPreview = "imagePreview" + id;
+        var fileName = "file-name-popup" + id;
+        var files = event.target.files; // Sử dụng tất cả các tệp
+
+        // Xoá tất cả các hình ảnh trước đó
+        var imagePreview = document.getElementById(ImgPreview);
+        while (imagePreview.firstChild) {
+            imagePreview.removeChild(imagePreview.firstChild);
+        }
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                imagePreview.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+            document.getElementById(fileName).value = file.name;
+        }
+    }
+
+    function CreateRowImg() {
+        countImg++;
+        document.querySelector('#addRowsImg').insertAdjacentHTML(
+            'beforebegin',
+            `<div class="row contain-listImg" id="RowImg${countImg}">
+                <div class="col-sm-7 col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-10">
+                            <div class="inputfile-box">
+                                <input type="file" id="file${countImg}" class="inputfile" onchange="previewImage(event)" accept="image/*">
+                                <label for="file${countImg}">
+                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                        Chọn file
+                                    </span>
+                                </label>
+                                <input id="file-name-popup${countImg}" class="file-box" placeholder="Chọn tập tin">
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <input class="btn btn-danger" onclick="DeleteRowImg(${countImg})" type="button" value="-" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-6">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault${countImg}">
+                    <label class="form-check-label">
+                        Hình đại diện
+                    </label>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                    <div class="main-img" id="imagePreview${countImg}">
+                    </div>
+                </div>
+            </div>`);
+    }
+
+    function DeleteRowImg(SoDong) {
+        var e = 'RowImg' + SoDong;
+        const element = document.getElementById(e);
+        element.remove();
+    }
+
+
+
+
+    function handleFileChange(event, outputId) {
+        var input = event.target;
+        var fileName = input.files[0].name;
+        document.getElementById(outputId).value = fileName;
+    }
+
+    function handleImageChange(event) {
+        var input = event.target;
+        var file = input.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '100%';
+            preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+        document.getElementById('fileImageName').value = file.name;
+    }
+
+
+    function DeleteImg(id) {
+        $.ajax({
+            type: "POST",
+            url: "../TourHot/DeleteImg",
+            data: { id: id },
+            success: function (response) {
+                swalWithBootstrapButtons.fire({
+                    imageUrl: "/images/success.png",
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    title: 'Xóa thành công',
+                    confirmButtonText: 'Đóng',
+                });
+                location.reload();
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+
+
+
+    $(document).ready(function () {
+
+
+        CKEDITOR.replace('long_notes_edit', {
+            height: 200,
+            filebrowserUploadUrl: '/Data/UploadCKEditorDuLich'
+        });
+
+        $('#submitEditForm').on('click', function (e) {
+            e.preventDefault();
+
+            for (instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+
+            const formData = new FormData($('#editTourForm')[0]);
+            let checkMainImg = 0;
+
+            var countlist = document.querySelectorAll('.contain-DetailImg').length;
+            for (var i = 1; i <= countlist; i++) {
+                var imagesURL = "ImageURL" + i;
+                var mainImgs = "MainImg" + i;
+                var mainImgStatus = document.getElementById(mainImgs).checked;
+
+                console.log("Checking existing image " + i + ": " + mainImgStatus); // Log trạng thái của checkbox
+                formData.append('imagesURL', document.getElementById(imagesURL).value);
+                formData.append('mainImgs', mainImgStatus);
+
+                if (mainImgStatus) {
+                    checkMainImg++;
+                }
+            }
+
+            for (var i = 1; i <= countImg; i++) {
+                var detailImage = "file" + i;
+                var mainImg = "flexRadioDefault" + i;
+                var fileInput = document.getElementById(detailImage);
+                var mainImgStatus = document.getElementById(mainImg).checked;
+
+                if (fileInput && fileInput.files.length > 0) {
+                    console.log("Checking new image " + i + ": " + mainImgStatus); // Log trạng thái của checkbox
+                    formData.append('imageFiles', fileInput.files[0]);
+                    formData.append('mainImages', mainImgStatus);
+
+                    if (mainImgStatus) {
+                        checkMainImg++;
+                    }
+                }
+            }
+
+            // Nếu không có thay đổi mainImage, đảm bảo ít nhất có một mainImage và nó phải là false
+            if (checkMainImg === 0) {
+                console.log("No main image selected, setting a default main image to false.");
+                formData.append('mainImages', false);
+                checkMainImg++;
+            }
+
+            if (checkMainImg === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    text: 'Bạn chưa chọn hình đại diện!',
+                    confirmButtonText: 'Đóng',
+                });
+                return;
+            }
+
+            $.ajax({
+                url: '../TourHot/EditTour',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Cập nhật tour thành công!',
+                            confirmButtonText: 'Đóng',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    } else if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: response.message || 'Đã có lỗi xảy ra!',
+                            confirmButtonText: 'Đóng',
+                        });
+                    }
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Đã có lỗi xảy ra!',
+                        confirmButtonText: 'Đóng',
+                    });
+                }
+            });
+        });
+    });
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,158 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.LandingPage.Job>
+@using Microsoft.Extensions.Configuration
+@using Manager.DataAccess.Repository
+@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@inject IConfiguration _configuration
+@inject IUnitOfWork_Repository unitOfwork
+@{
+    var listPhongBan = unitOfwork.ThongBaoDaiLy_Rep.ListPhongBanV2();
+}
+@{
+    ViewData["Title"] = "Tuyển dụng Flight VN";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<style>
+    table tr td {
+        vertical-align: middle !important;
+    }
+
+    .collapse.show {
+        display: table-row !important;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+    .switch-group {
+        display: inline-block;
+    }
+
+    #gridHotel.table > tbody > tr > td {
+        vertical-align: middle;
+    }
+    /* Ẩn checkbox mặc định */
+    .form-check-input[type="checkbox"] {
+        display: none;
+    }
+
+    /* Tạo giao diện cho nút switch */
+    .switch-label {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+        background-color: #ccc;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: -3px;
+    }
+
+    /* Tạo giao diện cho nút switch khi checked */
+    .form-check-input[type="checkbox"]:checked + .switch-label {
+        background-color: #66bb6a;
+    }
+
+    .switch-label:before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 21px;
+        height: 21px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.2s;
+    }
+
+    .form-check-input[type="checkbox"]:checked + .switch-label:before {
+        transform: translateX(25px);
+    }
+
+    a > i {
+        font-size: 18px !important;
+    }
+</style>
+
+
+@Html.Partial("_EnvietOverlay")
+
+
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="@Url.Action("GetListJobPagination", "LandingPage")" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Phòng ban</label>
+                                <select class="form-control" id="Department" name="Department">
+                                    <option value="">Tất cả</option>
+                                    @foreach (var item in listPhongBan)
+                                    {
+                                        <option value="@item.PB">@item.PB</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label>Từ ngày</label>
+                                <input type="date" name="fromDate" class="form-control" id="fromDate" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>Đến ngày</label>
+                                <input type="date" name="toDate" class="form-control" id="toDate" />
+                            </div>
+                            <div class="col-md-3" style="margin-top: 24px;">
+                                <input type="submit" class="btn btn-primary" value="Tìm kiếm" id="btnSearch" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+
+                    <div style="margin: 10px 0px;">
+                        <label style="margin-right: 5px;">Hiển thị</label>
+                        <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                            <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                            <option value="25">25</option>
+                            <option selected value="50">50</option>
+                        </select>
+                        <label style="margin-left: 5px;">dòng</label>
+                    </div>
+
+
+                    <div class="table-responsive" id="table_Pagination">
+
+                        @await Html.PartialAsync("_TableJobPaginationPatial", Model)
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script src="~/js/landingpage/job/job.js"></script>

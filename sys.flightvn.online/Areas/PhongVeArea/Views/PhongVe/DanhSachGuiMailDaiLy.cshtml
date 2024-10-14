@@ -1,0 +1,250 @@
+﻿@model DanhSachXuatDoiVe
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Báo cáo Xuất vé - Đổi vé";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+
+<title>@ViewData["Title"]</title>
+<link href="~/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    .form-horizontal .has-feedback .form-control-feedback {
+        right: 0;
+    }
+
+    #gridVeHoan th {
+        padding: 10px 6px;
+    }
+
+    .pagination {
+        margin: 8px 0;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        vertical-align: middle;
+    }
+
+    .table {
+        margin-bottom: 0px;
+    }
+</style>
+<h2>Báo cáo Xuất vé - Đổi vé</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("DanhSachGuiMailDaiLy", "PhongVe", new { i = 3 }, FormMethod.Post))
+        {
+
+            <div class="row">
+
+                <div class="form-horizontal">
+                    <div class="item col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Từ Ngày
+                            </label>
+                            <div class="col-sm-9">
+
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal5" name="cal_from" value='@ViewBag.DateFrom'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    @*Muốn cho trường tháng năm rỗng ko lấy ngày hiện tại vào file custom.min.js dòng 1230*@
+                    <div class="item col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Đến Ngày
+                            </label>
+                            <div class="col-sm-9">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal6" name="cal_to" value='@ViewBag.DateTo'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Mã KH
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="MAKH" name="MAKH" placeholder="Mã KH" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3" style="padding-top:11px">Nhân viên</label>
+                            <div class="col-sm-9">
+                                <select id="NHANVIEN" name="NHANVIEN" class="form-control">
+                                    @if (Model.ListNhanVien != null)
+                                    {
+                                        <option value="All">Tất cả</option>
+                                        foreach (var item in Model.ListNhanVien)
+                                        {
+                                            <option value="@item.TenDangNhap">
+                                                @item.TenNhanVien
+                                            </option>
+                                        }
+                                    }
+
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3" style="padding-top:11px">Tình trạng</label>
+                            <div class="col-sm-9">
+                                <select id="tinhtrang" name="tinhtrang" class="form-control">
+                                    <option selected="selected" value="All">Tất Cả</option>
+                                    <option value="1">Xuất vé</option>
+                                    <option value="2">Đổi vé</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 col-xs-12 label-align" for="first-name">
+                                PNR
+                            </label>
+                            <div class="col-sm-6 col-xs-8">
+                                <input class="form-control" type="text" id="PNR" name="PNR" placeholder="PNR" value="" />
+                            </div>
+                            <div class="col-sm-3 col-xs-4">
+                                <button type="submit" class="btn btn-primary" name="search">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+
+            <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title"> STT</th>
+                        <th class="column-title"> Mã KH </th>
+                        <th class="column-title"> Tên Đại Lý  </th>
+                        <th class="column-title"> PNR </th>
+                        <th class="column-title"> Hãng </th>
+                        <th class="column-title"> Mail </th>
+                        <th class="column-title"> MailCC </th>
+                        <th class="column-title"> Tình Trạng </th>
+                        <th class="column-title"> NV gửi </th>
+                        <th class="column-title"> Ngày gửi </th>
+                        <th class="column-title"> Phí dịch vụ </th>
+                        <th class="column-title"> URL </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null)
+                    {
+                        <tr class="even pointer">
+                            <td colspan="12" style="text-align:center;">
+                                <i>Không có thông tin để hiển thị</i>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.ListXuatDoiVe)
+                        {
+                <tr id="@item.ID" class="even pointer">
+                    <td style="text-align:center">@item.STT</td>
+                    <td class="">@item.MAKH</td>
+                    <td class=""><a class="VeHoan" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.DAILY</a> </td>
+                    <td class="">@item.PNR</td>
+                    <td class="">@item.HANG</td>
+
+                    <td class="">@item.MAIL</td>
+                    <td class="">@item.MAILCC</td>
+                    <td class="">@item.TINHTRANG</td>
+                    <td class="">@item.NGUOIGUI</td>
+                    <td class="">@item.NGAYGUI</td>
+                    <td class="">@item.PHIDICHVU</td>
+                    @if (item.URL != "")
+                    {
+                        <td class=""><a href="@item.URL" target="_blank">Link</a></td>
+                    }
+                    else
+                    {
+                        <td class=""></td>
+                    }
+                </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    $("#gridTable .VeHoan").click(function () {
+
+        var id = String($(this).closest('tr').attr('id'));
+       
+        $.ajax({
+            type: "POST",
+            url: "../PhongVe/ChiTietNoiDungXuatDoi",
+            data: { khoachinh: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+
+
+

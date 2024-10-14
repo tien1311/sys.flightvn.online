@@ -1,0 +1,673 @@
+﻿@model List<Member>
+
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Chi tiết thành viên</h1>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Khu vực</label>
+                                <div class="col-sm-8">
+                                    <select id="khuvuc" name="khuvuc" asp-for="khuvuc" class="select2_single form-control">
+                                        <option value="5">Miền bắc</option>
+                                        <option value="6">Miền trung</option>
+                                        <option value="7">Miền nam</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="memberid" name="company" value="@Model[0].member_id">
+                                <label for="" class="col-sm-4 control-label">Tên đại lý</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="company" name="company" value="@Model[0].member_company">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Người đại diện</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="name" name="name" value="@Model[0].member_name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Mã khách hàng</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="makh" name="makh" value="@Model[0].member_kh">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="MemberChildDetails">
+                            <input value="@Model[0].member_childs.Count" id="MemberChildsCount" type="hidden" />
+
+                             <div class="col-xs-12 form-group member-child">
+                                        <div class="row">
+                                    <label for="" class="col-sm-4 control-label">Mã phụ</label>
+                                            <div class="col-sm-5">
+                                                <input class="btn btn-primary" onclick="ThemDong(this);" type="button" value="+">
+                                            </div>
+                                        </div>
+                             </div>
+
+                            @if(Model[0].member_childs.Count > 0)
+                            {
+                                @for (int y = 0; y < Model[0].member_childs.Count; y++)
+                                {
+                                    int STT = y + 1;
+                                    <div class="col-xs-12 form-group member-child">
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 control-label"></label>
+                                            <div class="col-sm-5">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                                            <input type="text" placeholder="Mã Phụ @STT" class="form-control" id="member_child_@STT" name="member_child_@STT" value="@Model[0].member_childs[y]">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item form-group col-sm-3">
+                                                <input class="btn btn-danger" onclick="XoaDong(this);" type="button" value="-">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                         
+
+                           
+                        </div>
+                      
+                         
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Tên đăng nhập</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="code" name="code" value="@Model[0].member_code">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Email</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="email" name="email" value="@Model[0].member_email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Địa chỉ</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="address" name="address" value="@Model[0].member_address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Điện thoại</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="phone" name="phone" value="@Model[0].member_phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Fax</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="fax" name="fax" value="@Model[0].member_fax">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">
+                                    Kinh doanh
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="kinhdoanh" name="kinhdoanh" class="select2_single form-control">
+                                        @foreach (var item in Model[0].ListKD)
+                                        {
+                                            <option @item.Select value="@item.RowID" class="tieude">@item.Ten</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">
+                                    Kế toán
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="ketoan" name="ketoan" asp-for="ketoan" class="select2_single form-control">
+
+                                        @foreach (var item in Model[0].ListKt)
+                                        {
+                                            <option @item.Select value="@item.RowID" class="tieude">@item.Ten</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">
+                                    Trạng thái
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="isactive" name="isactive" asp-for="status" class="select2_single form-control">
+                                        @if (Model[0].member_isactive == "1")
+                                        {
+                                            <option value="1" selected hidden>Kích hoạt</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="0" selected hidden>Ngừng kích hoạt</option>
+                                        }
+                                        <option value="1">Kích hoạt</option>
+                                        <option value="0">Ngừng kích hoạt</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model[0].member_isactive == "1")
+                        {
+                            <input type="hidden">
+                        }
+                        else
+                        {
+                            <div class="col-xs-12 form-group">
+                                <div class="row">
+                                    <label for="" class="col-sm-4 control-label">Lý do khóa</label>
+                                    <div class="col-sm-8">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <p style="color:red;">@Html.Raw(Model[0].lockReason) </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">
+                                    Kích hoạt bảo hiểm
+                                </label>
+                                <div class="col-sm-8">
+                                    <select id="isshow" name="isshow" asp-for="isshow" class="select2_single form-control">
+                                        @if (Model[0].member_isshow == "True")
+                                        {
+                                            <option value="True" selected hidden>Hiển thị</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="False" selected hidden>Ẩn</option>
+                                        }
+                                        <option value="True">Hiển thị</option>
+                                        <option value="False">Ẩn</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">
+                                    IsTravel
+                                </label>
+                                <div class="col-sm-8">
+                                    @if (Model[0].IsTravel == "True")
+                                    {
+                                        <input type="checkbox" id="dulich" name="dulich" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="dulich" name="dulich" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label for="" class="col-sm-4 control-label">Lần đăng nhập cuối</label>
+                                <div class="col-sm-8">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                @Html.Raw(Model[0].last_login)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align:right">
+                                    <input type="submit" id="UpdateMember" class="btn btn-primary" value="Lưu" name="EditSave" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <label class="col-sm-2 control-label">Khôi phục mật khẩu</label>
+                                <div class="col-sm-6">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="password" class="form-control" id="password" name="password"  >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" style="text-align:right">
+                                    <input type="submit" class="btn btn-primary" value="Khôi phục" name="resetPassword" id="UpdatePassword" />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <h2>Danh sách Zalo liên kết</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Tên nick</th>
+                                                <th>Ngày liên kêt</th>
+                                                <th>Ngày hủy LK</th>
+                                                <th>Lý do hủy</th>
+                                                <th>Trang thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int i = 1;}
+                                            @if (Model[0].DsZalo != null)
+                                            {
+                                                @if (Model[0].DsZalo != null)
+                                                {
+                                                    @foreach (var item in Model[0].DsZalo)
+                                                    {
+                                                        <tr id="@item.ID" class="even pointer">
+                                                            <td>@item.Ten</td>
+                                                            <td>@item.Ngaylienket</td>
+                                                            <td>@item.Ngayhuy</td>
+                                                            <td>@item.Lydo</td>
+                                                            @if (@item.Active == "True")
+                                                            {
+                                                                <td>
+                                                                    <input type="checkbox" checked="checked">
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    <input type="checkbox">
+                                                                </td>
+                                                            }
+                                                        </tr>
+                                                        i++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                        <td style="display:none"></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td style="display:none"></td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <h2>Danh sách Skype đăng kí</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Họ tên</th>
+                                                <th>Nick</th>
+                                                <th>Ngày tạo</th>
+                                                <th>Trang thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int a = 1;}
+                                            @if (Model[0].DsSkype != null)
+                                            {
+                                                @if (Model[0].DsSkype != null)
+                                                {
+                                                    @foreach (var item in Model[0].DsSkype)
+                                                    {
+                                                        <tr id="@item.ID" class="even pointer">
+                                                            <td>@item.Ten</td>
+                                                            <td>@item.Nick</td>
+                                                            <td>@item.Ngaytao</td>
+                                                            @if (@item.Active == "1")
+                                                            {
+                                                                <td>
+                                                                    <input type="checkbox" checked="checked">
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>
+                                                                    <input type="checkbox">
+                                                                </td>
+                                                            }
+                                                        </tr>
+                                                        a++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td style="display:none"></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td style="display:none"></td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <h2>Danh sách điện thoại đã đăng kí</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Họ tên</th>
+                                                <th>Bộ phận</th>
+                                                <th>Số dt</th>
+                                                <th>Ngày tạo</th>
+                                                <th>Trạng thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int b = 1;}
+                                            @if (Model[0].DsDienthoai != null)
+                                            {
+                                                @if (Model[0].DsDienthoai != null)
+                                                {
+                                                    @foreach (var item in Model[0].DsDienthoai)
+                                                    {
+                                            <tr id="@item.ID" class="even pointer">
+                                                <td>@item.Ten</td>
+                                                <td>@item.Bophan</td>
+                                                <td>@item.Sdt</td>
+                                                <td>@item.Ngaytao</td>                                            
+                                                @if (@item.Active == "1")
+                                                {
+                                                    <td>
+                                                        <input type="checkbox" checked="checked">
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td>
+                                                        <input type="checkbox">
+                                                    </td>
+                                                }
+                                            </tr>
+                                                        b++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td style="display:none"></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td style="display:none"></td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 form-group">
+                            <div class="row">
+                                <h2>Danh sách tài khoản phụ đại lí</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Họ tên</th>
+                                                <th>Email</th>
+                                                <th>Tình trạng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{int c = 1;}
+                                            @if (Model[0].DsTaikhoanphu != null)
+                                            {
+                                                @if (Model[0].DsTaikhoanphu != null)
+                                                {
+                                                    @foreach (var item in Model[0].DsTaikhoanphu)
+                                                    {
+                                                        <tr id="@item.ID" class="even pointer">
+                                                            <td>@item.Ten</td>
+                                                            <td>@item.Email</td>
+                                                            <td>@item.Tinhtrang</td>
+                                                        </tr>
+                                                        c++;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+
+                                                        <td style="display:none"></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td style="display:none"></td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal content-->
+
+    <style>
+        @@media(min-width: 768px) {
+            .modal-dialog {
+                width: 1000px;
+                margin: 30px auto;
+            }
+        }
+
+        .modal-body img {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .modal-header {
+            padding: 6px 15px;
+            border-bottom: none;
+        }
+    </style>
+   
+    <div class="row">
+
+        @*@if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+
+                      alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+
+        }*@
+    </div>
+</div>
+<script src="~/js/daily/danhsachthanhvien.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

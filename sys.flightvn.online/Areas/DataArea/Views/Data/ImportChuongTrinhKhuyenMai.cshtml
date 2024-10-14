@@ -1,0 +1,523 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model KhuyenMaiDaiLyModel
+
+@{
+    ViewData["Title"] = "Import chương trình khuyến mãi";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewData["Title"]</title>
+<style>
+    .container-login100 {
+        width: 100%;
+        min-height: 100vh;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .img-responsive {
+        border-radius: 7px;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .container-content {
+        background: #fff;
+        border-radius: 5px;
+        padding: 0px;
+        text-align: justify;
+    }
+
+    .content-iframe {
+        margin: auto;
+        width: 100%;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        font-weight: bold;
+    }
+
+    .nav > li.nav-item > a:focus, .nav > li.nav-item > a:hover {
+        color: #000 !important;
+    }
+
+    .content-iframe iframe {
+        height: 800px;
+        width: 100%;
+        border-radius: 7px;
+    }
+
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .btn-BSP {
+        color: #fff;
+        background-color: #6c0678;
+        border-color: #6c0678;
+    }
+
+    .btn-organ {
+        background-color: #f5821f;
+        border-color: #f5821f;
+        color: #fff;
+    }
+
+    .nav > li > a {
+        padding: 8px 13px 8px !important;
+    }
+
+    @@media (max-width: 768px) {
+        .logo {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 30px;
+        }
+
+        .content-iframe {
+            width: 100%;
+        }
+    }
+</style>
+<h2>Import chương trình khuyến mãi</h2>
+
+
+<div class="limiter">
+    <div class="container-login100" style="">
+        <div class="content-iframe">
+            <div class="modal-content">
+                <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+                    <li class="nav-item active">
+                        <a class="btn btn-primary" id="Create-tab" data-toggle="tab" href="#Create" role="tab" aria-controls="Create" aria-selected="false">Tạo DS khuyến mãi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-warning" id="DS-tab" data-toggle="tab" href="#DS" role="tab" aria-controls="DS" aria-selected="true">DS khuyến mãi</a>
+                    </li>
+                </ul>
+                <div class="modal-body">
+                    <div class="tab-content popup" id="myTabContent">
+                        <div class="tab-pane fade active" id="Create" role="tabpanel" aria-labelledby="Create-tab">
+                            <div class="x_panel">
+                                <div class="x_content">
+                                    <div class="row">
+                                        <div class="col-xs-12 container-content">
+                                            <div class="row">
+                                                <div class="col-sm-2">
+                                                    <div class="form-group">
+                                                        <label>Tiêu đề</label>
+                                                        <input class="form-control" id="title" name="title" placeholder="Tiêu đề" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="form-group">
+                                                        <label>Từ thời gian</label>
+                                                        <input type="datetime-local" class="form-control" id="datefrom" name="datefrom" placeholder="" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="form-group">
+                                                        <label>Đến thời gian</label>
+                                                        <input type="datetime-local" class="form-control" id="dateto" name="dateto" placeholder="" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="item form-group">
+                                                        <label class="col-form-label">
+                                                            File đính kèm
+                                                        </label>
+                                                        <div class="">
+                                                            <div class="inputfile-box">
+                                                                <input type="file" id="file" class="inputfile" onchange='uploadFile(this)' name="file" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                                                <label for="file">
+                                                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                                        Chọn tập tin
+                                                                    </span>
+                                                                </label>
+
+                                                                <input id="file-name" class="file-box" placeholder="Chọn tập tin">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1" style="text-align:right">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <div style="margin-top: 6px;">
+                                                            <a href="http://gateway.enviet-group.com/Files/KhuyenMaiDaiLy.xlsx" style="text-decoration:underline;font-size:18px;" download>File mẫu </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <div>
+                                                            <button type="submit" class="btn btn-primary btn-block" name="Import" value="Import" onclick="ImportExcel(this);">Import</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <div>
+                                                            <button type="submit" class="btn btn-success btn-block" name="Save" value="Save" onclick="SaveDataKhuyenMai(this)">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Mô tả</label>
+                                                        <textarea name="description" id="description">
+
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Nội dung</label>
+                                                        <textarea name="content" id="content">
+
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <th class="column-title">STT </th>
+                                                            <th class="column-title">Mã KH </th>
+                                                            <th class="column-title">SL </th>
+                                                            <th class="column-title">Tiêu đề </th>
+                                                            <th class="column-title">Từ ngày </th>
+                                                            <th class="column-title">Đến ngày </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="DS" role="tabpanel" aria-labelledby="DS-tab">
+                            <div class="x_panel">
+                                <div class="x_content">
+                                    <div class="row">
+                                        <div class="col-xs-12 container-content">
+                                            <div class="table-responsive">
+                                                <table id="gridCTKM" class="table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <th class="column-title">STT </th>
+                                                            <th class="column-title">Tiêu đề </th>
+                                                            <th class="column-title">Từ Ngày </th>
+                                                            <th class="column-title">Đến ngày </th>
+                                                            <th class="column-title"> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model != null)
+                                                        {
+                                                            if (Model.ListChuongTrinhKhuyenMai != null)
+                                                            {
+                                                                int i = 1;
+                                                                @foreach (var item in Model.ListChuongTrinhKhuyenMai)
+                                                                {
+                                                                    if (DateTime.Parse(item.DateTo) < DateTime.Now)
+                                                                    {
+                                                                        <tr style="background-color: lightgray;">
+                                                                            <td class="">@i</td>
+                                                                            <td class="">
+                                                                                <a href="#" onclick="ListDaiLy('@item.IDChuongTrinh')"> @item.Title</a>
+                                                                            </td>
+                                                                            <td class="">@item.DateFrom</td>
+                                                                            <td class="">@item.DateTo</td>
+                                                                            <td style="text-align: center;">
+                                                                                @if (item.Status == true)
+                                                                                {
+                                                                                    <a class="Status" style="color:red;" href="#" onclick="UpdateStatusCTKM(0,'@item.IDChuongTrinh')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a class="Status" style="color:green;" href="#" onclick="UpdateStatusCTKM(1,'@item.IDChuongTrinh')"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                        i++;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <tr>
+                                                                            <td class="">@i</td>
+                                                                            <td class="">
+                                                                                <a href="#" onclick="ListDaiLy('@item.IDChuongTrinh')"> @item.Title</a>
+                                                                            </td>
+                                                                            <td class="">@item.DateFrom</td>
+                                                                            <td class="">@item.DateTo</td>
+                                                                            <td style="text-align: center;">
+                                                                                @if (item.Status == true)
+                                                                                {
+                                                                                    <a class="Status" style="color:red;" href="#" onclick="UpdateStatusCTKM(0,'@item.IDChuongTrinh')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a class="Status" style="color:green;" href="#" onclick="UpdateStatusCTKM(1,'@item.IDChuongTrinh')"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                        i++;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+
+<script>
+    function ImportExcel() {
+
+        //Reference the FileUpload element.
+        var fileUpload = document.getElementById("file");
+        //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        GetTableFromExcel(e.target.result);
+                    };
+                    reader.readAsBinaryString(fileUpload.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        GetTableFromExcel(data);
+                    };
+                    reader.readAsArrayBuffer(fileUpload.files[0]);
+                }
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid Excel file.");
+        }
+    };
+
+    function GetTableFromExcel(data) {
+        var title = document.getElementById("title").value;
+        var dafrom = document.getElementById("datefrom").value;
+        var dato = document.getElementById("dateto").value;
+        //Read the Excel File data in binary
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+        //get the name of First Sheet.
+        var Sheet = workbook.SheetNames[0];
+        //Read all rows from First Sheet into an JSON array.
+        var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[Sheet]);
+        //
+
+        var table = document.getElementById("gridHoanVe");
+        var tbody = document.querySelector("#gridHoanVe tbody");
+        //Add the data rows from Excel file.
+        for (var i = 0; i < excelRows.length; i++) {
+
+            if (excelRows[i].MaKH == null || excelRows[i].MaKH == "") {
+
+                excelRows[i].MaKH = "";
+            }
+            else {
+                excelRows[i].MaKH = excelRows[i].MaKH.toUpperCase();
+            }
+            if (excelRows[i].SL == null || excelRows[i].SL == "") {
+
+                excelRows[i].SL = "";
+            }
+            else {
+                excelRows[i].SL = excelRows[i].SL.toUpperCase();
+            }
+            var length = table.rows.length;
+            /* Thêm chi tiết */
+            //var row = table.insertRow(length);
+            //var cell1 = row.insertCell(0);
+            //var cell2 = row.insertCell(1);
+            //var cell3 = row.insertCell(2);
+            //cell1.innerHTML = Number(length);
+            //cell2.innerHTML = excelRows[i].MaKH;
+            //cell3.innerHTML = excelRows[i].SoLuong;
+
+            // Insert a new row at the end of the table
+            var newRow = tbody.insertRow();
+
+            // Add cells to the row
+            var cell1 = newRow.insertCell();
+            var cell2 = newRow.insertCell();
+            var cell3 = newRow.insertCell();
+            var cell4 = newRow.insertCell();
+            var cell5 = newRow.insertCell();
+            var cell6 = newRow.insertCell();
+
+            // Set the content of each cell
+            cell1.textContent = Number(length);
+            cell2.textContent = excelRows[i].MaKH;
+            cell3.textContent = excelRows[i].SL;
+            cell4.textContent = title;
+            cell5.textContent = dafrom;
+            cell6.textContent = dato;
+        }
+    };
+
+    function SaveDataKhuyenMai() {
+        let editorDes = CKEDITOR.instances.description;
+        let textDes = editorDes.getData();
+        let editorCont = CKEDITOR.instances.content;
+        let textCont = editorCont.getData();
+        var table = document.getElementById("gridHoanVe");
+        var data = [];
+        for (var i = 1; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            var rowData = {
+                MaKH: row.cells[1].textContent.trim(),
+                SoLuong: row.cells[2].textContent.trim(),
+                Title: row.cells[3].textContent.trim(),
+                DateFrom: row.cells[4].textContent.trim(),
+                DateTo: row.cells[5].textContent.trim(),
+                Description: textDes.trim(),
+                Content: textCont.trim()
+            };
+            data.push(rowData);
+        }
+        console.log(data);
+        var jsonData = JSON.stringify(data);
+
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../Data/SaveDataKhuyenMai",
+            data: {
+                data: jsonData
+            },
+            success: function (response) {
+                alert(response);
+                location.reload(true);
+                //window.location.href = "/Data/ImportChuongTrinhXoSo?i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+</script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('description', {
+            height: 200,
+            filebrowserUploadUrl: '../Data/UploadCKEditor'
+        });
+    });
+    $(document).ready(function () {
+        CKEDITOR.replace('content', {
+            height: 200,
+            filebrowserUploadUrl: '../Data/UploadCKEditor'
+        });
+    });
+    function ListDaiLy(id) {
+        $.ajax({
+            type: "POST",
+            url: "../Data/ListDaiLy",
+            data: {
+                IDChuongTrinh: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    function UpdateStatusCTKM(status, id) {
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditStatusCTKM",
+            data: {
+                IDChuongTrinh: id,
+                Status: status
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Bạn đã lưu danh mục thành công");
+                }
+                else {
+                    alert("Bạn đã lưu danh mục không thành công");
+                }
+                window.location.href = "../Data/ImportChuongTrinhKhuyenMai?i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+</script>

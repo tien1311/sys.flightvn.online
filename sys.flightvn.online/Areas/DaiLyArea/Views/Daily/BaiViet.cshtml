@@ -1,0 +1,82 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.Post.PostModel>
+@{
+    ViewData["Title"] = "Danh sách bài viết";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+    List<Manager.Model.Models.Post.Section> listCategory = ViewData["listCategory"] as List<Manager.Model.Models.Post.Section>;
+}
+<style>
+    table tr td {
+        vertical-align: middle !important;
+    }
+</style>
+
+<title>@ViewData["Title"]</title>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <select id="Filter_TinhTrang" class="form-control">
+                        <option value="0">Tất cả</option>
+                        @if (listCategory.Any() || listCategory != null)
+                        {
+                            // Lặp qua các mục có parent_id = null (tức là các mục cha)
+                            var parentGroups = listCategory.Where(c => c.parent_id == 0);
+                            foreach (var parent in parentGroups)
+                            {
+                                // Hiển thị mục cha với style in đậm
+                                <option value="@parent.section_id" style="font-weight: bold;">- @parent.section_name</option>
+
+                                // Lặp qua các mục con của mục cha hiện tại
+                                var childItems = listCategory.Where(c => c.parent_id == parent.section_id);
+                                foreach (var item in childItems)
+                                {
+                                    <option value="@item.section_id">&nbsp;&nbsp;&nbsp;&nbsp;+ @item.section_name</option>
+                                }
+                            }
+                        }
+                    </select>
+
+
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>&ensp;</label> <br />
+                    <a href="#" id="btnCreate" class="btnCreate btn btn-primary" >Tạo mới</a>
+                </div>
+            </div>
+        </div>
+        <hr style="margin:inherit !important;" />
+        @* // Số lượng hiển thị *@
+        <div style="margin: 10px 0px;">
+            <label style="margin-right: 5px;">Hiển thị</label>
+            <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                <option value="25">25</option>
+                <option selected value="50">50</option>
+            </select>
+            <label style="margin-left: 5px;">dòng</label>
+        </div>
+        <div class="table-responsive" id="table_Pagination">
+            @await Html.PartialAsync("_TablePaginationPatial", Model)
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@*@if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+}*@
+
+@* DateRange Picker *@
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="~/js/daily/baiviet.js"></script>

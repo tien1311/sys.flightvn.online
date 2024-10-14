@@ -1,0 +1,81 @@
+﻿@model List<Manager.Model.Models.IP.IPPartner>
+
+@{
+
+}
+
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 style="color: #fff; margin: 0px;">Danh sách Địa chỉ IP của @ViewBag.PartnerName </h4>
+            <input id="PartnerId" value="@ViewBag.PartnerId" hidden />
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row" role="form">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table tableFormIncrease">
+                            <thead>
+                                <tr>
+                                    <th>EndPoint API</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    var lastIndex = Model.Count() - 1;
+
+                                    for (int i = 0; i < Model.Count(); i++)
+                                    {
+                                        var item = Model[i];
+
+                                        <tr>
+                                            <td>@item.IPAddress</td>
+                                            <td>
+                                                <a href="javascript:;" class="DeleteIP" data-id="@item.Id">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
+
+
+                                            @if (i == lastIndex)
+                                            {
+                                                <td>
+                                                    <input class="btn btn-primary" onclick="CreateRowTable();" type="button" value="+" />
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="2" style="color:red">Không có dữ liệu</td>
+                                        <td>
+                                            <input class="btn btn-primary" onclick="CreateRowTable();" type="button" value="+" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <div id="action-group-btn" style="float:right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ip/editipaddress.js"></script>

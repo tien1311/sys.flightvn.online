@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Danh sách thanh toán";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<link href="~/css/paymentgateway/doichieuthanhtoanonline.css" rel="stylesheet" />
+
+<h2>Đối chiếu thanh toán online</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="@Url.Action("SearchThanhToanOnline", "Ketoan")" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Từ ngày</label>
+                                <input type="date" name="fromDate" class="form-control" id="fromDate" />
+
+                            </div>
+                            <div class="col-md-4">
+                                <label>Đến ngày</label>
+                                <input type="date" name="toDate" class="form-control" id="toDate" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Mã đơn</label>
+                                <input type="text" name="orderIds" placeholder="VD: EVSB......" class="form-control" id="orderId" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:8px;">
+                            <div class="col-md-4">
+                                <label>Phương thức thanh toán</label>
+                                <select name="paymentType" id="paymentType" class="form-control">
+                                    <option value="All">Tất cả</option>
+                                    <option value="VNPAY">VNPAY</option>
+                                    <option value="Appota">Appota</option>
+                                    <option value="Momo">Momo</option>
+                                    <option value="ZaloPay">ZaloPay</option>
+                                    <option value="Paypal">Paypal</option>
+                                    <option value="Debt">Công nợ</option>
+                                    <option value="chuyen-khoan">Chuyển khoản</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 24px;">
+                                <input type="submit" class="btn btn-primary" value="Tìm kiếm" id="btnSearch" />
+                                <input type="button" class="btn btn-success" value="Xuất excel" id="btnExportExcel" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content" id="userpayData">
+                    @Html.Partial("Partial_UserPayDataKeToan")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-right">
+                <ul id="pagination">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ketoan/danhsachthanhtoan.js"></script>

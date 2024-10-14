@@ -1,0 +1,320 @@
+﻿@model List<DoanhSoHangViewModel>
+
+
+@{
+    ViewData["Title"] = "Doanh Số Hãng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+
+<h2>@ViewData["Title"]</h2>
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("DoanhSoHang", "KyThuat", new { i = 12 }, FormMethod.Post))
+        {
+        <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <div class="item form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="radio">
+                            <label>
+                                @if (ViewBag.SelectOptions != "CheckDate")
+                                    {
+                                <input type="radio" checked="checked" value="CheckMonth" id="CheckMonth" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+                                    else
+                                    {
+                                <input type="radio" value="CheckMonth" id="CheckMonth" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+                                <span style="font-size:14px;font-weight:700"> Tra cứu theo tháng</span>
+
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <div class="radio">
+                            <label>
+                                @if (ViewBag.SelectOptions == "CheckDate")
+                                    {
+                                <input type="radio" checked="checked" value="CheckDate" id="CheckDate" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+                                    else
+                                    {
+                                <input type="radio" value="CheckDate" id="CheckDate" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+                                <span style="font-size:14px;font-weight:700">Tra cứu theo ngày</span>
+
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="TraCuuThang">
+            <div class="item form-group col-md-8 col-sm-12 col-xs-12">
+                <label class="col-form-label pad-top-6 col-md-1 col-sm-4 col-xs-12 label-align" for="first-name">
+                    Tháng
+                </label>
+                <div class="col-md-3 col-sm-8 col-xs-8 ">
+
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select id="Thang" name="Thang" class="select2_single form-control">
+                                        @{
+                                                for(int e = 1; e <= 12; e++)
+                                                {
+                                                   if(int.Parse(ViewBag.Month.ToString()) == e)
+                                                   {
+                                            <option selected value="@e">@e</option>
+                                                   }
+                                                   else
+                                                   {
+                                            <option value="@e">@e</option>
+                                                   }
+                                                }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <label class="col-form-label pad-top-6 col-md-1 col-sm-4 col-xs-12 label-align" for="first-name">
+                    Năm
+                </label>
+                <div class="col-md-3  col-sm-8 col-xs-8 ">
+
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select id="Nam" name="Nam" class="select2_single form-control">
+                                        @{
+                                                for(int y = 2019; y <= 2025; y++)
+                                                {
+                                                    if(int.Parse(ViewBag.Year.ToString()) == y)
+                                                    {
+                                            <option selected value="@y">@y</option>
+                                                    }
+                                                    else
+                                                    {
+                                            <option value="@y">@y</option>
+                                                    }
+
+                                                }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="item form-group col-md-3 col-sm-3 col-xs-3">
+                    <input type="submit" class="btn btn-primary" value="Tìm kiếm" name="SearchBtnMonth" />
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row" id="TraCuuNgay" style="display:none;">
+            <div class="item form-group col-md-9 col-sm-12 col-xs-12">
+                <label class="col-form-label pad-top-6 col-md-2 col-sm-4 col-xs-12 label-align" for="first-name">
+                    Từ Ngày
+                </label>
+                <div class="col-md-3 col-sm-8 col-xs-8 ">
+
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal2" name="cal_from" value='@ViewBag.DateFrom'>
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <label class="col-form-label pad-top-6 col-md-2 col-sm-4 col-xs-12 label-align" for="first-name">
+                    Đến Ngày
+                </label>
+                <div class="col-md-3 col-sm-8 col-xs-8 ">
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal3" name="cal_to" value='@ViewBag.DateTo'>
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="item form-group col-md-2 col-sm-3 col-xs-3">
+                    <input type="submit" class="btn btn-primary" value="Tìm kiếm" name="SearchBtn" />
+                </div>
+            </div>
+
+        </div>
+        }
+
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT</th>
+                        <th class="column-title">Ngày</th>
+                        <th class="column-title">Tổng</th>
+                        <th class="column-title">VN</th>
+                        <th class="column-title">QH</th>
+                        <th class="column-title">VJ</th>
+                        <th class="column-title">VU</th>
+                        <th class="column-title">IATA</th>
+                        <th class="column-title">KHÁC</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{int i = 1;}
+                    @if (Model != null)
+            {
+                double TotalVN = 0;
+                double TotalQH = 0;
+                double TotalVJ = 0;
+                double TotalVU = 0;
+                double TotalIATA = 0;
+                double TotalKHAC = 0;
+                double Tong = 0;
+                    @foreach (var item in Model)
+                {
+                    <tr id="@item.Ngay" class="even pointer">
+                        <td style="text-align:center">@i</td>
+                        <td class="">@item.Ngay</td>
+                        <td class="">@string.Format("{0:0,0}", item.TONG)</td>
+                        <td class=""><a class="ChitietVN" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@string.Format("{0:0,0}", item.VN)</a></td>
+                        <td class="">@string.Format("{0:0,0}", item.QH)</td>
+                        <td class="">@string.Format("{0:0,0}", item.VJ)</td>
+                        <td class="">@string.Format("{0:0,0}", item.VU)</td>
+                        <td class=""><a class="ChitietIATA" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@string.Format("{0:0,0}", item.IATA)</a></td>
+                        <td class="">@string.Format("{0:0,0}", item.KHAC)</td>
+                    </tr>
+                    i++;
+                    TotalVN += item.VN;
+                    TotalQH += item.QH;
+                    TotalVJ += item.VJ;
+                    TotalVU += item.VU;
+                    TotalIATA += item.IATA;
+                    TotalKHAC += item.KHAC;
+                }
+                Tong = TotalVN + TotalQH + TotalVJ + TotalVU + TotalIATA + TotalKHAC;
+                    <tr class="headings" style="background-color: chartreuse;">
+                        <td style="text-align:center"></td>
+                        <td class="">Tổng</td>
+                        <td class="">@string.Format("{0:0,0}", Tong) </td>
+                        <td class="">@string.Format("{0:0,0}", TotalVN) </td>
+                        <td class="">@string.Format("{0:0,0}", TotalQH)</td>
+                        <td class="">@string.Format("{0:0,0}", TotalVJ)</td>
+                        <td class="">@string.Format("{0:0,0}", TotalVU)</td>
+                        <td class="">@string.Format("{0:0,0}", TotalIATA)</td>
+                        <td class="">@string.Format("{0:0,0}", TotalKHAC)</td>
+
+                    </tr>
+            }
+            else
+            {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    $("#gridTable .ChitietVN").click(function () {
+        /*var index = $('#gridVeHoan tr').index($(this).closest('tr'));*/
+        var ngay = String($(this).closest('tr').attr('id'));
+        console.log(ngay);
+        $.ajax({
+            type: "POST",
+            url: "../KyThuat/PopupDoanhSoHang",
+            data: { Ngay: ngay, Hang: "VN" },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridTable .ChitietIATA").click(function () {
+        /*var index = $('#gridVeHoan tr').index($(this).closest('tr'));*/
+        var ngay = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../KyThuat/PopupDoanhSoHang",
+            data: { Ngay: ngay,Hang : "IATA" },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+
+<script>
+    var name = document.querySelector('input[name="SelectOptions"]:checked').id;
+    checkRadio(name);
+
+    function checkRadio(name) {
+     
+        if (name == "CheckMonth") {
+            document.getElementById("TraCuuThang").style.display = "block";
+            document.getElementById("TraCuuNgay").style.display = "none";
+        }
+        else {
+            document.getElementById("TraCuuThang").style.display = "none";
+            document.getElementById("TraCuuNgay").style.display = "block";
+        }
+    }
+</script>
+

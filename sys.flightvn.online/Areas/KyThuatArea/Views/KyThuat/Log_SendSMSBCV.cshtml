@@ -1,0 +1,50 @@
+﻿@model PagingList<LOG_SendSMSBaoCaoVe>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Log_SendSMSBCV";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Log gửi SMS báo cáo vé</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã NV</th>
+                        <th>SDT Nhận</th>
+                        <th>Nội dung</th>
+                        <th>Người gửi</th>
+                        <th>Ngày gửi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.MANV</td>
+                                <td>@item.DIENTHOAI</td>
+                                <td>@item.NOIDUNG_SMS</td>
+                                <td>@item.NGUOIGUI</td>
+                                <td>@item.NGAYGUI</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <div class="row" style="float:right;">
+            <vc:pager paging-list="@Model"></vc:pager>
+        </div>
+    </div>
+</div>
+

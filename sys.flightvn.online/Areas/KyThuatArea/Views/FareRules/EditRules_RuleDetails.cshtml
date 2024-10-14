@@ -1,0 +1,321 @@
+﻿@model Rules_RuleDetails;
+@{
+    // FareRulesRepository Rules_Rep = new FareRulesRepository();
+    var ListAirlines = ViewData["ListAirlines"] as List<Rules_Airlines>;
+    var ListPartners = ViewData["ListPartners"] as List<Rules_Partners>;
+}
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+        .selectBox select {
+            width: 100%;
+            font-weight: bold;
+        }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkboxes {
+        display: none;
+        border: 1px #dadada solid;
+        position: absolute;
+        z-index: 9;
+        background: #fff;
+        width: 100%;
+    }
+
+        #checkboxes label {
+            display: block;
+            padding: 0 15px;
+        }
+
+        #checkboxes input {
+            margin-right: 5px;
+        }
+
+        #checkboxes span {
+            display: inline !important;
+        }
+
+        #checkboxes label:hover {
+            background-color: #1e90ff;
+            color: #fff;
+        }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Edit Rule</h1>
+        </div>
+        <div class="modal-body" style="border-radius:0 0 8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Airline</label>
+                    <div class="col-sm-12">
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <select id="Airline" name="Airline" class="select2_single form-control" onchange="ListAirline()">
+                                            @for (int i = 0; i < ListAirlines.Count; i++)
+                                            {
+                                                if (ListAirlines[i].AirlineID == Model.AirlineID)
+                                                {
+                                                    <option selected value="@ListAirlines[i].AirlineID">@ListAirlines[i].AirlineName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@ListAirlines[i].AirlineID">@ListAirlines[i].AirlineName</option>
+                                                }
+                                            }
+                                        </select>
+                                        <input type="hidden" id="RuleDetailID" name="RuleDetailID" value="@Model.RuleDetailID" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <label for="" class="col-sm-12 control-label">SeatClasses</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="SeatClasses" name="SeatClasses" placeholder="SeatClasses" value="@Model.SeatClasses">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="" class="col-sm-12 control-label">CabinClassCode</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="CabinClassCode" name="CabinClassCode" placeholder="CabinClassCode" value="@Model.CabinClassCode">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">CategoryName</label>
+                    <div class="col-sm-12">
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <select id="Category" name="Category" class="select2_single form-control">
+                                            <option value="@Model.CategoryId">@Model.CategoryName</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <label for="" class="col-sm-12 control-label">CabinClassName_vi</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="CabinClassName_vi" name="CabinClassName_vi" placeholder="CabinClassName_vi" value="@Model.CabinClassName_vi">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <label for="" class="col-sm-12 control-label">CabinClassName_en</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="CabinClassName_en" name="CabinClassName_en" placeholder="CabinClassName_en" value="@Model.CabinClassName_en">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <label for="" class="col-sm-12 control-label">DomesticRules_vi</label>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <textarea name="DomesticRules_vi" id="DomesticRules_vi">@Model.DomesticRules_vi</textarea>
+                    </div>
+                </div>
+                <label for="" class="col-sm-12 control-label">DomesticRules_en</label>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <textarea name="DomesticRules_en" id="DomesticRules_en">@Model.DomesticRules_en</textarea>
+                    </div>
+                </div>
+                <label for="" class="col-sm-12 control-label">IntlRules_vi</label>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <textarea name="IntlRules_vi" id="IntlRules_vi">@Model.IntlRules_vi</textarea>
+                    </div>
+                </div>
+                <label for="" class="col-sm-12 control-label">IntlRules_en</label>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <textarea name="IntlRules_en" id="IntlRules_en">@Model.IntlRules_en</textarea>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary" onclick="SaveLuckyDrawData(this)" name="Save" value="Save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('DomesticRules_vi', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+    $(document).ready(function () {
+        CKEDITOR.replace('DomesticRules_en', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+    $(document).ready(function () {
+        CKEDITOR.replace('IntlRules_vi', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+    $(document).ready(function () {
+        CKEDITOR.replace('IntlRules_en', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+    function ListAirline() {
+        var AirlineID = document.getElementById("Airline").value;
+        $.ajax({
+            type: "POST",
+            url: "../FareRules/ListCategories",
+            data: {
+                AirlineID: AirlineID
+            },
+            success: function (response) {
+                var x = document.getElementById("Category");
+                $("#Category option").remove();
+                for (var i = 0; i < response.length; i++) {
+                    var optionSelect = document.createElement("option");
+                    optionSelect.value = response[i].categoryID
+                    optionSelect.text = response[i].categoryName;
+                    x.appendChild(optionSelect);
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+    function SaveLuckyDrawData(id) {
+        var RuleDetailID = document.getElementById("RuleDetailID").value;
+        var CategoryId = document.getElementById("Category").value;
+        var AirlineID = document.getElementById("Airline").value;
+        var SeatClasses = document.getElementById("SeatClasses").value;
+        var CabinClassCode = document.getElementById("CabinClassCode").value;
+        var CabinClassName_vi = document.getElementById("CabinClassName_vi").value;
+        var CabinClassName_en = document.getElementById("CabinClassName_en").value;
+        var DomesticRules_vi = CKEDITOR.instances['DomesticRules_vi'].getData();
+        var DomesticRules_en = CKEDITOR.instances['DomesticRules_en'].getData();
+        var IntlRules_vi = CKEDITOR.instances['IntlRules_vi'].getData();
+        var IntlRules_en = CKEDITOR.instances['IntlRules_en'].getData();
+        var model = {
+            RuleDetailID: RuleDetailID,
+            CategoryId: CategoryId,
+            AirlineID: AirlineID,
+            SeatClasses: SeatClasses,
+            CabinClassCode: CabinClassCode,
+            CabinClassName_vi: CabinClassName_vi,
+            CabinClassName_en: CabinClassName_en,
+            DomesticRules_vi: DomesticRules_vi,
+            DomesticRules_en: DomesticRules_en,
+            IntlRules_vi: IntlRules_vi,
+            IntlRules_en: IntlRules_en,
+        }
+        var jsonData = JSON.stringify(model);
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../FareRules/SaveEditRules_RuleDetails",
+            data: {
+                data: jsonData
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Bạn đã chỉnh sửa thành công");
+                }
+                else {
+                    alert("Bạn đã chỉnh sửa không thành công");
+                }
+                window.location.href = "../FareRules/Rules_RuleDetails?&i=12";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    //var expanded = false;
+
+    //function showCheckboxes() {
+    //    var checkboxes = document.getElementById("checkboxes");
+    //    if (!expanded) {
+    //        checkboxes.style.display = "block";
+    //        expanded = true;
+    //    } else {
+    //        checkboxes.style.display = "none";
+    //        expanded = false;
+    //    }
+    //}
+    //function getOptions() {
+    //    var selectedOptions = document.querySelectorAll('#checkboxes input[type=checkbox]:checked');
+    //    for (var i = 0; i < selectedOptions.length; i++) {
+    //        output.innerHTML += selectedOptions[i].value + " , ";
+    //        console.log(selectedOptions[i].value)
+    //    }
+    //}
+    //$('#selectall').click(function () {
+    //    if ($(this).is(':checked')) {
+    //        $('#checkboxes input').attr('checked', true);
+    //    } else {
+    //        $('#checkboxes input').attr('checked', false);
+    //    }
+    //});
+</script>

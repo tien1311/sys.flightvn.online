@@ -1,0 +1,119 @@
+﻿@model TinhTrangKhoa
+@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@inject IUnitOfWork_Repository _unitOfWork_Repository;
+@{
+    var ListPB = _unitOfWork_Repository.ThongBaoDaiLy_Rep.ListPhongBan();
+}
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Edit tình trạng</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="" class="col-sm-12 control-label">Tình trạng</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="Tình trạng" value="@Model.Name">
+                                    <input type="hidden"  id="ID" name="ID" value="@Model.ID">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="" class="col-sm-12 control-label">Phòng ban</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select name="PB" id="PB" class="form-control">
+                                        @foreach (var item in ListPB)
+                                        {
+                                            if (item.MaPB == Model.ID_Dept)
+                                            {
+                                                <option selected value="@item.MaPB">@item.PB</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.MaPB">@item.PB</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <button type="submit" class="btn btn-primary" onclick="Save(this)">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function Save() {
+        var ID = document.getElementById("ID").value;
+        var Name = document.getElementById("Name").value;
+        var PB = document.getElementById("PB").value;
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../ThongBaoDaiLy/SaveEditTinhTrang",
+            data: {
+                ID: ID,
+                Name: Name,
+                PB: PB
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Bạn đã chỉnh sửa thành công");
+                }
+                else {
+                    alert("Bạn đã chỉnh sửa không thành công");
+                }
+                window.location.href = "../ThongBaoDaiLy/TinhTrang?&i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

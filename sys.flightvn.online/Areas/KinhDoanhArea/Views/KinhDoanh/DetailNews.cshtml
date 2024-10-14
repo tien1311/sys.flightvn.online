@@ -1,0 +1,27 @@
+﻿@model SubjectModel
+@{
+    ViewData["Title"] = "Chi Tiết Tin";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewBag.Title</title>
+<style type="text/css">
+    .resize div {
+        width: unset !important;
+    }
+</style>
+<div class="row">
+    <div class="x_panel">
+        <div class="x_content">
+            <div id="resize_image" class="resize">
+                <div>
+                    <h1>@Model.Title</h1>
+                </div>
+                <div>@Html.Raw(Model.subject_content)</div>
+                @if (Model.subject_name != null && Model.subject_name != "")
+                {
+                    <a href="http://daily.airline24h.com/upload/bantin/@Model.subject_name" style="color:blue" target="_blank">link file đính kèm</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

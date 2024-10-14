@@ -1,0 +1,84 @@
+﻿@model List<ProductsModel>
+@inject IConfiguration configuration
+@{
+    var location_Rep = new LocationRepository(configuration);
+}
+
+<style>
+    .truncate {
+        max-width: 200px; /* Chiều rộng tối đa của ô */
+        white-space: nowrap; /* Ngăn không cho văn bản xuống dòng */
+        overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước của ô */
+        text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi văn bản quá dài */
+    }
+</style>
+
+<div class="table-responsive">
+    <table id="gridHotel" class="table table-striped jambo_table bulk_action">
+        <thead>
+            <tr>
+                <th style="text-align:center;"></th>
+                <th style="text-align:center;"></th>
+                <th style="text-align: center;">STT</th>
+                <th style="text-align: center;">Code</th>
+                <th>Tên khách sạn</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr id="@item.ID">
+
+                        <td><input type="checkbox" class="cbkItem" value="@item.ID" /></td>
+
+                        <td style="text-align: center;">
+                            <a class="Edit" data-id="@item.ID" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        </td>
+                        <td style="text-align: center;">@item.RowNum</td>
+                        <td style="text-align: center;">@item.Code</td>
+                        <td>@item.Name</td>
+                        <td class="truncate" title="@item.Address, @location_Rep.GetWardNameByCode(item.Ward), @location_Rep.GetDistrictNameByCode(item.District), @location_Rep.GetProvinceNameByCode(item.Province)">
+                            @item.Address, @location_Rep.GetWardNameByCode(item.Ward), @location_Rep.GetDistrictNameByCode(item.District), @location_Rep.GetProvinceNameByCode(item.Province)
+                        </td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td>
+                            @* <input class="form-check-input isActived" data-id="@item.Code" type="checkbox" id="switch-checkbox" role="switch" @(item.IsActive ? "checked" : "")> *@
+                            <div class="switch-group">
+                                <input class="form-check-input isActived" data-id="@item.Code" type="checkbox" id="switch-checkbox-@item.Code" role="switch" @(item.IsActive ? "checked" : "")>
+                                <label class="switch-label" for="switch-checkbox-@item.Code"></label>
+                            </div>
+                            <a class="EditRoomTypeHotel" data-id="@item.ID" style="color:darkorange" id="EditRoomTypeHotel" data-toggle="modal" data-target="#openPopup" href="javascript:;">
+                                <i class="fa fa-list-alt Action_Icon" aria-hidden="true"></i>
+                            </a>
+
+                            <a class="EditProductHotelService" data-id="@item.ID" style="color:#337ab7" id="EditProductHotelService" data-toggle="modal" data-target="#openPopup" href="javascript:;">
+                                <i class="fa fa-cutlery  Action_Icon" aria-hidden="true"></i>
+                            </a>
+
+                            <a class="DeleteHotel btnDelete" style="color:red;" data-id="@item.ID" id="DeleteHotel" href="#">
+                                <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6" style="color:red">Chưa có dữ liệu</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<input id="pageNumber" hidden value="@ViewBag.PageNumber" />
+<input id="totalPagesInput" hidden value="@ViewBag.TotalPages" />

@@ -1,0 +1,58 @@
+﻿
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo mới giải thưởng Flight VN </h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+
+            <form id="submitForm">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Năm</label>
+                            <input class="form-control" type="number" id="Year" name="Year" placeholder="Năm" min="2010" max="@DateTime.Now.Year" step="1" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table" id="tableAddRow">
+                                <thead>
+                                    <tr>
+                                        <th>Giải thưởng</th>
+                                        <th>Hãng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="RewardName[]" class="form-control" placeholder="Giải thưởng" />
+                                        </td>
+                                      
+                                        <td>
+                                            <input type="text" name="RewardFrom[]" class="form-control" placeholder="Hãng" />
+                                        </td>
+                                     
+                                        <td>
+                                            <input class="btn btn-primary" onclick="CreateRowTable();" type="button" value="+" />
+
+                                            @* Nếu dòng đầu sẽ không có dấu - *@
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btnSave" type="submit" class="btn btn-primary">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/landingpage/reward/createreward.js"></script>

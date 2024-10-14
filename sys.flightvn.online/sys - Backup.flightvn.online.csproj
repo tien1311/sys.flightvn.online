@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="2.2.0" />
+    <PackageReference Include="X.PagedList" Version="8.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EVC.Common\EVC.Common.csproj" />
+    <ProjectReference Include="..\EVC.ConnectedServices\EVC.ConnectedServices.csproj" />
+    <ProjectReference Include="..\EVC.DataAccess\EVC.DataAccess.csproj" />
+    <ProjectReference Include="..\EVC.Model\EVC.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EasyInvoice.Client">
+      <HintPath>bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyInvoice.Json">
+      <HintPath>bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

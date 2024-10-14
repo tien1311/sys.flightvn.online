@@ -1,0 +1,120 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.Hotel.HotelBooking>
+@inject IConfiguration _configuration
+@{
+    ViewData["Title"] = "Hotel Booking";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+    HotelRepository hotelRepository = new HotelRepository(_configuration);
+}
+<title>@ViewData["Title"]</title>
+
+<link href="~/css/hotel/hotelbooking.css" rel="stylesheet" />
+
+<div class="overlay" id="loadingOverlay">
+    <div class="loading-container">
+        <img src="~/images/logo ev-none br.png" alt="Logo" class="logo">
+        <div class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="@Url.Action("SearchListHotelBooking", "Hotel")" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Mã booking</label>
+                                <input type="text" name="BookingCode" placeholder="VD: EVHT010124001" class="form-control" id="BookingCode" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>Tên khách hàng</label>
+                                <input type="text" name="FullName" placeholder="VD: Nguyễn Văn A" class="form-control" id="FullName" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>Email</label>
+                                <input type="text" name="Email" placeholder="VD: customer@@gmail.com" class="form-control" id="Email" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>Số điện thoại</label>
+                                <input type="text" name="Phone" placeholder="VD: 0912345678" class="form-control" id="Phone" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:8px;">
+                            <div class="col-md-3">
+                                <label>Trạng thái</label>
+                                <select name="StatusID" id="StatusID" class="form-control">
+                                    <option value="0">Tất cả</option>
+                                    <option value="1">Mới</option>
+                                    <option value="2">Đã nhận Booking</option>
+                                    <option value="3">Đã giữ chỗ</option>
+                                    <option value="4">Đã thanh toán cọc</option>
+                                    <option value="5">Đã hoàn tất thanh toán</option>
+                                    <option value="6">Đã hoàn thành</option>
+                                    <option value="7">Đã huỷ</option>
+
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Từ ngày</label>
+                                <input type="date" name="fromDate" class="form-control" id="fromDate" />
+                            </div>
+                            <div class="col-md-3">
+                                <label>Đến ngày</label>
+                                <input type="date" name="toDate" class="form-control" id="toDate" />
+                            </div>
+                            <div class="col-md-3" style="margin-top: 24px;">
+                                <input type="submit" class="btn btn-primary" value="Tìm kiếm" id="btnSearch" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content" id="listHotelBookingData">
+
+                    <div style="margin: 10px 0px;">
+                        <label style="margin-right: 5px;">Hiển thị</label>
+                        <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                            <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                            <option value="25">25</option>
+                            <option selected value="50">50</option>
+                        </select>
+                        <label style="margin-left: 5px;">dòng</label>
+                    </div>
+
+
+                    <div class="table-responsive" id="table_Pagination">
+                        @await Html.PartialAsync("_TableHotelBookingPaginationPatial", Model)
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-right">
+                <ul id="pagination">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/hotel/hotelbooking.js"></script>

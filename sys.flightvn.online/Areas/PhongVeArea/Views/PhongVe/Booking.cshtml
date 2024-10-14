@@ -1,0 +1,332 @@
+﻿@model BookingViewModel
+@{
+    ViewData["Title"] = "Booking";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<h2>Quản Lý Booking</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            @using (Html.BeginForm("SearchBooking", "PhongVe", new { i = 3 }, FormMethod.Post))
+            {
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Booking
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <input class="form-control" name="Booking" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Người LH
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <input class="form-control" name="NguoiLH" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Từ Ngày
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <fieldset class="col-xs-12" style="padding:0px">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal5" name="cal_from" value='@ViewBag.DateFrom'>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Đến Ngày
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <fieldset class="col-xs-12" style="padding:0px">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal6" name="cal_to" value='@ViewBag.DateTo'>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Email
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <input class="form-control" name="Email" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Điện thoại
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <input class="form-control" name="Phone" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Tình trạng
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <select id="Tinhtrang" name="Tinhtrang" asp-for="Tinhtrang" class="select2_single form-control">
+                                <option selected="selected" value="0">-------- Chọn --------</option>
+                                @if (Model != null && Model.ListTinhTrang != null)
+                                {
+                                    foreach (var item in Model.ListTinhTrang)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            HT Thanh toán
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <select id="Thanhtoan" name="Thanhtoan" asp-for="Thanhtoan" class="select2_single form-control">
+                                <option selected="selected" value="0">---- Phương thức thanh toán ----</option>
+                                @if (Model != null && Model.ListHTThanhToan != null)
+                                {
+                                    foreach (var item in Model.ListHTThanhToan)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Người thay đổi
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <select id="NguoiThayDoi" name="NguoiThayDoi" class="select2_single form-control">
+                                <option selected="selected" value="0">--- Chọn ---</option>
+                                @if (Model != null && Model.ListNguoiThayDoi != null)
+                                {
+                                    foreach (var item in Model.ListNguoiThayDoi)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Xác nhận
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <select id="Xacnhan" name="Xacnhan" asp-for="Xacnhan" class="select2_single form-control">
+                                <option value="0">--- Tất cả ---</option>
+                                <option value="True">Đã xác nhận</option>
+                                <option value="False">Chưa xác nhận</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Thiết bị
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-12 ">
+                            <select id="Thietbi" name="Thietbi" asp-for="Thietbi" class="select2_single form-control">
+                                <option value="0">--- Tất cả ---</option>
+                                <option value="WEB">Web</option>
+                                <option value="WEBMOBILE">Web Mobile</option>
+                                <option value="APP">App Mobile</option>
+                                <option value="APP_NEW">App New</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <button type="button" onclick="refesh()" class="btn btn-warning">Làm mới</button>
+                    <button type="submit" class="btn btn-success">Tìm kiếm</button>
+                    @*<button type="submit" class="btn btn-primary">Tạo booking</button>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <h2>Danh sách booking</h2>
+        <div id="" class="table-responsive">
+            <table id="gridBooking" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Booking</th>
+                        <th>Tình trạng</th>
+                        <th>Người LH</th>
+                        <th>Điện thoại</th>
+                        <th>Hành lý đi</th>
+                        <th>Hành lý về</th>
+                        <th>Ghi chú</th>
+                        <th>Tổng</th>
+                        <th>Ngày tạo</th>
+                        <th>Giao cho</th>
+                        <th>Remark KT</th>
+                        <th>Xác nhận</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.ListBooking.Count < 1)
+                    {
+                        <tr class="even pointer">
+                            <td colspan="12">
+                                <i>Không có thông tin để hiển thị</i>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (var item in Model.ListBooking)
+                        {
+                            <tr id="@item.Order_ID">
+                                <td class="text-center">@i</td>
+                                <td class="text-center"><a class="Edit" style="color:blue;" data-target="#openPopup" href="javascript:;">@item.Order_ID</a></td>
+                                @if (item.BkStatus.Trim() == "Đã xuất vé")
+                                {
+                                    <td class="text-center" style="color: #198608;">@item.BkStatus</td>
+                                }
+                                @if (item.BkStatus.Trim() == "Chờ thanh toán")
+                                {
+                                    <td class="text-center" style="color: #102dd9;">@item.BkStatus</td>
+                                }
+                                @if (item.BkStatus.Trim() == "Mới")
+                                {
+                                    <td class="text-center" style="color: #C00;">@item.BkStatus</td>
+                                }
+                                @if (item.BkStatus.Trim() == "Đang xử lý")
+                                {
+                                    <td class="text-center" style="color: #1c709c;">@item.BkStatus</td>
+                                }
+                                @if (item.BkStatus.Trim() == "Đã gọi")
+                                {
+                                    <td class="text-center" style="color: #ed5f29;">@item.BkStatus</td>
+                                }
+                                @if (item.BkStatus.Trim() == "Đã hủy")
+                                {
+                                    <td class="text-center" style="color: #7c7879;">@item.BkStatus</td>
+                                }
+                                @if (item.BkStatus.Trim() == "Chưa xuất được vé")
+                                {
+                                    <td class="text-center">@item.BkStatus</td>
+                                }
+                                <td>@item.Contact_Name</td>
+                                <td class="text-center">@item.Contact_Phone</td>
+                                @if (item.BagGage_OneWay == 0)
+                                {
+                                    <td class="text-center">
+                                        <img src="~/images/none-baggage.gif" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">@String.Format("{0:0,0}", item.BagGage_OneWay)</td>
+                                }
+                                @if (item.BagGage_RoundTrip == 0)
+                                {
+                                    <td class="text-center">
+                                        <img src="~/images/none-baggage.gif" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">@String.Format("{0:0,0}", item.BagGage_RoundTrip)</td>
+                                }
+                                <td>@item.Remark</td>
+                                <td class="text-center">@String.Format("{0:0,0}", item.Total)</td>
+                                <td>@item.DateBook</td>
+                                <td>@item.Assigned</td>
+                                <td>@item.Transaction_Note</td>
+                                <td>@item.User_Confirm</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    $("#gridBooking .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../PhongVe/DetailBooking",
+            data: { ID: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    function refesh() {
+        location.reload();
+    }
+</script>

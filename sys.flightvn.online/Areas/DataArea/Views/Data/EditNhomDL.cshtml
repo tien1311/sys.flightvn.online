@@ -1,0 +1,68 @@
+﻿@model NhomDL
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Chỉnh sửa nhóm đại lý</h1>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("SaveEditNhomDL", "Data", new { i = 9 }, FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên Vip</label>
+                            <input name="ID" type="hidden" value="@Model.IDNhom">
+                            <input class="form-control" name="Title" placeholder="" value="@Model.TenNhom">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary" name="searchKH" value="searchBtn">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <textarea name="CreateContent" id="CreateContent">
+                            @Html.Raw(Model.NoiDung) 
+                            </textarea>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('CreateContent', {
+            height: 200,
+            filebrowserUploadUrl: '../Data/UploadCKEditor'
+        });
+    });
+</script>
+

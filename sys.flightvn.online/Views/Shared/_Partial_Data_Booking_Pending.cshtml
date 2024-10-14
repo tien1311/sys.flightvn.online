@@ -1,0 +1,147 @@
+﻿@{
+    Dictionary<string, List<string>> arr = new Dictionary<string, List<string>>();
+    arr["PENDING"] = new List<string>() { "Mới", "btn-danger", "" };
+    arr["ACCEPT"] = new List<string>() { "Đã tiếp nhận", "btn-info", "" };
+    arr["CREATE"] = new List<string>() { "", "btn-warning", "Chờ xử lý" };
+    arr["WAITING"] = new List<string>() { "Đã xác nhận", "btn-primary", "Chờ xác nhận" };
+    arr["CONFIRM"] = new List<string>() { "Đã thanh toán", "btn-success", "Xác nhận chuyến" };
+    arr["COMPLETE"] = new List<string>() { "Đã hoàn thành", "btn-success", "Hoàn thành chuyến" };
+    arr["REJECT"] = new List<string>() { "", "btn-dark", "Hủy chuyến"};
+    arr["CANCEL"] = new List<string>() { "Đã hủy", "btn-dark", "Hủy chuyến" };
+    PagedList<Request> requests = ViewBag.pagination_pending;
+}
+
+<table class="ui celled unstackable lighten-th table" style="border: 1px solid #E6E9ED;">
+    <thead>
+        <tr>
+            <th class="ui center aligned middle aligned">STT</th>
+            <th class="ui center aligned middle aligned">evcode</th>
+            <th class="ui center aligned middle aligned">Mã NCC</th>
+            <th>Ngày đặt</th>
+            <th>Hành trình</th>
+            <th>Liên hệ</th>
+            <th class="ui center aligned middle aligned">Loại xe</th>
+            <th class="ui center aligned middle aligned">Thành tiền</th>
+            <th class="ui center aligned middle aligned">Trạng thái EV</th>
+            <th class="ui center aligned middle aligned">Trạng thái NCC</th>
+            <th class="ui center aligned middle aligned">
+                <button class="ui icon button btn_sync_booking" data-value="all">
+                    <i class="sync icon"></i>
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (requests != null && requests.Count > 0)
+        {
+            var index = 1;
+            @foreach (var item in requests)
+            {
+                <tr>
+                    <td class="ui center aligned middle aligned">@index</td>
+                    <td class="ui center aligned middle aligned"><a class="evcode" data-toggle="modal" data-target="#car_booking_detail" data-value="@item.id">@item.evcode</a></td>
+                    <td class="ui center aligned middle aligned">@item.id_booking</td>
+                    <td class="ui center aligned middle aligned">@item.date_booking.ToString("dd/MM/yyyy")</td>
+                    <td class="ui vertically middle aligned">
+                        <p>Điểm đi: @item.location_from</p>
+                        <p>Điểm đến: @item.location_to</p>
+                        <p>Khởi hành: @item.departure.ToString("dd/MM/yyyy HH:mm tt")</p>
+                    </td>
+                    <td class="ui vertically middle aligned">
+                        <p>@item.fullname</p>
+                        <p>Phone: @item.phone</p>
+                        <p>Email: @item.email</p>
+                    </td>
+                    <td class="ui center aligned middle aligned">@item.type_car</td>
+                    <td class="ui center aligned middle aligned"> <span style="line-height:unset;" id="totalPrice_Car_@item.evcode"> @string.Format("{0:#,##0}", item.total) </span> </td>
+                    <td class="ui center aligned middle aligned">
+                        @if (item.status_enviet != null)
+                        {
+                            <button class="btn @(arr[item.status_enviet][1]) btn-sm" id="btn-status-enviet_@item.evcode" style="border-radius:18px;line-height:8px;cursor:auto">
+                                @(arr[item.status_enviet][0])
+                            </button>
+                        }
+                    </td>
+                    <td class="ui center aligned middle aligned">
+                        @if (item.status_booking != null)
+                        {
+                            <button class="btn @(arr[item.status_booking][1]) btn-sm" style="border-radius:18px;line-height:8px;cursor:auto">
+                                @(arr[item.status_booking][2])
+                            </button>
+                        }
+                    </td>
+                    <td class="ui center aligned middle aligned">
+                        @if (item.status_booking != null && item.status_booking != "CANCEL")
+                        {
+                            <button class="ui icon button btn_sync_booking" data-value="@item.id_booking">
+                                <i class="sync icon"></i>
+                            </button>
+                        }                
+                    </td>
+                </tr>
+                index++;
+            }
+        }
+        else
+        {
+            <tr>
+                <td>Không có dữ liệu</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (requests != null && requests.Count > 0)
+{
+    <div class="ui pagination menu">
+
+        @if (requests.HasPreviousPage)
+        {
+            int prev_page = requests.PageNumber - 1;
+            <a class="item" data-value="@prev_page"><i class="angle double left icon" style="visibility: visible;"></i></a>
+        }
+        else
+        {
+            <a class="item disabled" data-value=""><i class="angle double left icon" style="visibility: visible;"></i></a>
+        }
+
+        @if (requests.PageNumber > 5)
+        {
+            <a class="item disabled">...</a>
+        }
+
+        @for (int i = 1; i <= requests.PageCount; i++)
+        {
+            @if (i < requests.PageNumber + 4)
+            {
+                @if (i > requests.PageNumber - 4)
+                {
+                    @if (requests.PageNumber == i)
+                    {
+                        <a class="item active" data-value="@i">@i</a>
+                    }
+                    else
+                    {
+                        <a class="item" data-value="@i">@i</a>
+                    }
+                }
+            }
+        }
+
+        @if (requests.PageNumber < requests.PageCount - 4)
+        {
+            <a class="item disabled">...</a>
+        }
+
+        @if (requests.HasNextPage)
+        {
+            int next_page = requests.PageNumber + 1;
+            <a class="item" data-value="@next_page"><i class="angle double right icon" style="visibility: visible;"></i></a>
+        }
+        else
+        {
+            <a class="item disabled" data-value=""><i class="angle double right icon" style="visibility: visible;"></i></a>
+        }
+    </div>
+}
+

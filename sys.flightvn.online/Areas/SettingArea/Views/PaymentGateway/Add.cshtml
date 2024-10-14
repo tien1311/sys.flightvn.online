@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Payment
+
+
+<h2 class="text-center">Thêm phương thức thanh toán</h2>
+
+<div class="card-body">
+
+    <div class="bs-stepper-content">
+        @using (Html.BeginForm("Add", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", id = "addForm", i = 12 }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+
+            <div class="form-group">
+                <h4 class="text-danger">Phương thức thanh toán</h4>
+
+                <label class="required-field">Tên phương thức</label>
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Nhập tên phương thức" })
+                @Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <label for="imageFile">Hình ảnh</label>
+                <div class="custom-file">
+                    <input type="file" class="form-control-file form-control" id="imageFile" name="imageFile">
+                </div>
+            </div>
+
+
+            <hr />
+            <h4 class="text-danger">Thông tin Phí</h4>
+
+
+            <div class="form-group">
+                <table id="feeTable" class="table mt-4">
+                    <thead>
+                        <tr>
+                            <th class="required-field">Loại thanh toán </th>
+                            <th class="required-field">% Chi phí</th>
+                            <th class="required-field">Giá cố định</th>
+                            <th class="required-field">Mã loại thanh toán</th>
+                            <th>Hình</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="feeRow">
+                            <td><input name="FeeName[]" type="text" class="form-control" placeholder="Nhập tên loại thanh toán"></td>
+                            <td><input name="Percent[]" type="number" step="any" class="form-control" placeholder="Nhập chi phí %"></td>
+                            <td><input name="FixedCosts[]" type="number" step="any" class="form-control" placeholder="Nhập giá cố định"></td>
+                            <td><input name="RequestType[]" type="text" class="form-control" placeholder="Nhập mã loại thanh toán (paywithATM/SHB/captureWallet)"></td>
+                            <td class="custom-file">
+                                <input type="file" class="form-control-file requestTypeImageInputFile form-control" name="requestTypeImage" id="requestTypeImage">
+                                <input type="text" hidden name="" class="requestTypeImageInputValue" />
+                            </td>
+                            <td><button type="button" class="btn btn-danger removeFee">Xóa</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" id="addFee" class="btn btn-primary">Thêm Loại thanh toán</button>
+            </div>
+
+
+            <div class="form-group mt-5">
+                <a asp-area="Admin" asp-controller="Payment" asp-action="Index" class="btn btn-danger">Quay lại</a>
+                <button type="submit" class="btn btn-success">Xác nhận</button>
+            </div>
+        }
+
+    </div>
+
+</div>
+
+<script src="~/js/paymentgateway/add.js"></script>

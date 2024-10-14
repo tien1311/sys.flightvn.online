@@ -1,0 +1,49 @@
+﻿@model List<ThongKeData>
+
+@{
+    Layout = null;
+}
+
+<style>
+    .chart__title {
+        font-size: 18px;
+    }
+</style>
+
+
+<div class="row chart_content_tinhtrang">
+    <div class="col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="chart-container">
+                    <h5 class="text-center text-danger chart__title">Biểu đồ trạng thái của các kênh bán</h5>
+                    <div class="row">
+                     @*    <div class="col-xs-6 chart-item">
+                            <canvas id="trangThaiChart" width="200" height="100"></canvas>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row chart_content_doanhthu">
+    <div class="col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="chart-container" id="chart-container_doanhthu">
+                    <h5 class="text-center text-danger chart__title">Biểu đồ doanh thu của các kênh bán</h5>
+                    <canvas id="doanhThuChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<textarea id="EnVietChartData" style="display: none;">@Html.Raw(Json.Serialize(Model))</textarea>
+<script src="~/js/chart/chart.bundle.js"></script>
+<script src="~/js/chart/chart.bundle.min.js"></script>
+<script src="~/js/chart/chart.js"></script>
+<script src="~/js/chart/chart.min.js"></script>
+<script src="~/js/thongke/thongke.js"></script>

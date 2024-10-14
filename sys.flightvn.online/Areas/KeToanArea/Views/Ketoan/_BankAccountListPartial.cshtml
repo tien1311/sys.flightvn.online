@@ -1,0 +1,29 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.BankAccount.BankAccount>
+
+@if (Model != null)
+{
+
+    int soThuTu = (@Model.CurrentPage - 1) * Model.PageSize;
+    foreach (var item in Model.ListProduct)
+    {
+        <tr id="@item.Id">
+
+            <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
+
+            <td style="text-align: center;">
+                <a class="Edit" data-id="@item.Id" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            </td>
+            <td style="text-align: center;">@item.RowNum</td>
+            <td style="text-align: center;">@item.BankCode</td>
+            <td>@item.BankName</td>
+            <td>@item.FirstSerial</td>
+            <td>@item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            <td>@item.CreatedBy</td>
+            <td>
+                <a class="btnDelete" style="color:red;" data-id="@item.Id" id="btnDelete" href="#">
+                    <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+    }
+}

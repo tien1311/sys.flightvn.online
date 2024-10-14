@@ -1,0 +1,162 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model DoanhSoViewModel
+@{
+    var acc = ViewBag.ACC;
+    ViewData["Title"] = "Doanh số đại lý";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Doanh số đại lý</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <form asp-controller="KinhDoanh" asp-route-i="10" asp-action="DoanhSoDaiLy" method="post" enctype="multipart/form-data">
+            <div class="row">
+                @if (acc == "NV00293" || acc == "NV00016" || acc == "NV00014" || acc == "NV00006" || acc == "NV00017")
+                {
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <select name="MaNV" class="form-control">
+                                <option value="ALL">
+                                    All
+                                </option>
+                                @foreach (var item in Model.ListKinhDoanh)
+                                {
+                                    <option value="@item.MaNV">
+                                        @item.TenNV
+                                    </option>
+                                }
+                            </select>
+
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Tháng</label>
+                        <select class="form-control" name="thang">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Năm</label>
+                        <select class="form-control" name="nam">
+                            @for (int i = 2021; i <= 2030; i++)
+                            {
+                                if (i == DateTime.Now.Year)
+                                {
+                                    <option selected value="@i">@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-block" name="Import" value="Import">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p style="font-size: 14px; margin-top: 10px;">Tổng doanh số của nhân viên <span style="color: #337ab7;">@Model.TenKD</span>: <strong style="color: red;">@Model.TongCong.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+        <div class="row">
+            <div class="col-sm-2 col-xs-6">
+                <p>VN = <strong>@Model.TongVN.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+                <p>QH = <strong>@Model.TongQH.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+                <p>IATA = <strong>@Model.TongIATA.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+            </div>
+            <div class="col-sm-2 col-xs-6">
+                <p>VJ = <strong>@Model.TongVJ.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+                <p>VU = <strong>@Model.TongVU.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+                <p>Khác = <strong>@Model.TongKhac.ToString("#,##0").Replace(".", ",") VNĐ</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <p style="color:red;">
+                Thời gian cập nhật các doanh số đại lý: Hàng tháng ngày 10, Ms Kan Phượng sẽ đưa dữ liệu doanh số tháng trước của Đại lý lên Web
+            </p>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive">
+            <table id="gridDoanhSo" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Tháng </th>
+                        <th class="column-title">Mã KH </th>
+                        <th class="column-title">Tổng </th>
+                        <th class="column-title">VN </th>
+                        <th class="column-title">VJ </th>
+                        <th class="column-title">QH </th>
+                        <th class="column-title">VU </th>
+                        <th class="column-title">IATA </th>
+                        <th class="column-title">Khác </th>
+                        <th class="column-title">Tên công ty </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model.ListDoanhSo)
+                        {
+                            <tr>
+                                <td class="">@item.STT</td>
+                                <td class="">@item.Thang/@item.Nam</td>
+                                <td class="">@item.MaKH</td>
+                                <td style="font-weight:bold; color:red">@item.Tong.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VN.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VJ.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.QH.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.VU.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.IATA.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.Khac.ToString("#,##0").Replace(".", ",")</td>
+                                <td class="">@item.TenCongTy</td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var DoanhSo = document.getElementById("gridDoanhSo");
+        var lengthDoanhSo = DoanhSo.rows.length;
+
+        if (lengthDoanhSo > 2) {
+            $('#gridDoanhSo').dataTable({
+                "pageLength": 50,
+                "language": {
+                    url: 'http://cdn.datatables.net/plug-ins/1.10.21/i18n/Vietnamese.json'
+                }
+            });
+        }
+    });
+</script>

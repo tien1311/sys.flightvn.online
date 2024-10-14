@@ -1,0 +1,24 @@
+﻿@model PaginationBase<OrderHeaderVoucher>
+
+@if (Model != null)
+{
+    int soThuTu = (@Model.CurrentPage - 1) * Model.PageSize;
+    foreach (var item in Model.ListProduct)
+    {
+        <tr id="@item.Id">
+            <td style="text-align: center;">@(++soThuTu)</td>
+            <td style="text-align: center;" id="loadStatusBookingContainer-@(item.Id)">
+                @await Component.InvokeAsync("BookingVoucher", new { orderHeaderId = item.Id })
+            </td>
+            <td style="text-align: center;"><a class="Detail" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.BookingCode</a></td>
+            <td>@item.VoucherName</td>
+            <td style="text-align: center;">@item.TourLocationName</td>
+            <td style="text-align: center;color: #dc3545;">@String.Format("{0:#,0}", item.Total)</td>
+            <td style="text-align: center;">@item.Name</td>
+            <td style="text-align: center;">@item.Phone</td>
+            <td style="text-align: center;">@item.Email</td>
+            <td style="text-align: center;">@item.DateCustomerUse.ToString("dd/MM/yyyy")</td>
+            <td style="text-align: center;">@item.CreateDate.ToString("dd/MM/yyyy hh:mm:ss")</td>
+        </tr>
+    }
+}

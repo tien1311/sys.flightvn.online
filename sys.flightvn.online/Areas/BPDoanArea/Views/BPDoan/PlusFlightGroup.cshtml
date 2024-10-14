@@ -1,0 +1,546 @@
+﻿@model FlightGroupModel
+@using Manager.Common.Helpers.AreaHelpers
+
+<!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<link type="text/css" href="~/css/cdn.jsdelivr.net_npm_daterangepicker_daterangepicker.css" rel="stylesheet" />
+<style>
+    .form-group.has-feedback span {
+        display: table-cell !important;
+    }
+</style>
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 style="color: #fff; margin: 0px;">Thêm hành trình</h4>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row" role="form">
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Hãng</label>
+                    <div class="col-sm-12">
+                        <fieldset style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <select id="Airline" name="Airline" class="select2_single form-control">
+                                            @if (Model.Airline == "VN")
+                                            {
+                                                <option selected value="VN">VN</option>
+                                                <option value="QH">QH</option>
+                                                <option value="VJ">VJ</option>
+                                                <option value="VU">VU</option>
+                                                <option value="PA">PA</option>
+                                            }
+                                            @if (Model.Airline == "QH")
+                                            {
+                                                <option value="VN">VN</option>
+                                                <option selected value="QH">QH</option>
+                                                <option value="VJ">VJ</option>
+                                                <option value="VU">VU</option>
+                                                <option value="PA">PA</option>
+                                            }
+                                            @if (Model.Airline == "VJ")
+                                            {
+                                                <option value="VN">VN</option>
+                                                <option value="QH">QH</option>
+                                                <option selected value="VJ">VJ</option>
+                                                <option value="VU">VU</option>
+                                                <option value="PA">PA</option>
+                                            }@if (Model.Airline == "VU")
+                                            {
+                                                <option value="VN">VN</option>
+                                                <option value="QH">QH</option>
+                                                <option value="VJ">VJ</option>
+                                                <option selected value="VU">VU</option>
+                                                <option value="PA">PA</option>
+                                            }@if (Model.Airline == "PA")
+                                            {
+                                                <option value="VN">VN</option>
+                                                <option value="QH">QH</option>
+                                                <option value="VJ">VJ</option>
+                                                <option value="VU">VU</option>
+                                                <option selected value="PA">PA</option>
+                                            }
+                                        </select>
+                                        <input type="hidden" id="ID" name="ID" value="@Model.ID" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Tổng số lượng chỗ</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="number" class="form-control" id="TotalNumberOfGuests" name="TotalNumberOfGuests" placeholder="Tổng số lượng chỗ" value="@Model.TotalNumberOfGuests">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Số lượng chỗ còn lại</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="number" class="form-control" id="NumberOfGuests" name="NumberOfGuests" placeholder="Số lượng chỗ còn lại" value="@Model.NumberOfGuests">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="col-sm-6">
+                <label for="" class="col-sm-12 control-label">Đơn giá</label>
+                <div class="col-sm-12">
+                <div class="control-group">
+                <div class="controls">
+                <div class=" xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control" onkeyup="formatNumber('Price');" id="Price" name="Price" placeholder="Đơn giá" value="@string.Format("{0:0,0}", Model.Price)">
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-6">
+                <label for="" class="col-sm-12 control-label">Đơn giá giảm</label>
+                <div class="col-sm-12">
+                <div class="control-group">
+                <div class="controls">
+                <div class=" xdisplay_inputx form-group has-feedback">
+                <input type="text" class="form-control" onkeyup="formatNumber('PriceAgent');" id="PriceAgent" name="PriceAgent" placeholder="Đơn giá giảm" value="@string.Format("{0:0,0}", Model.PriceAgent)">
+                </div>
+                </div>
+                </div>
+                </div>
+                </div> *@
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Giá</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" onkeyup="formatNumber('Fare');" id="Fare" name="Fare" placeholder="Giá" value="@string.Format("{0:0,0}", Model.Fare)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Phí</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" onkeyup="formatNumber('Charge');" id="Charge" name="Charge" placeholder="Phí" value="@string.Format("{0:0,0}", Model.Charge)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Giảm giá</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" onkeyup="formatNumber('Discount');" id="Discount" name="Discount" placeholder="Giảm giá" value="@string.Format("{0:0,0}", Model.Discount)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Đơn vị tiền tệ</label>
+                    <div class="col-sm-12">
+                        <fieldset style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <select id="Unit" name="Unit" class="select2_single form-control">
+                                            @if (Model.Unit == "VND")
+                                            {
+                                                <option selected value="VND">VND</option>
+                                                <option value="USD">USD</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="VND">VND</option>
+                                                <option selected value="USD">USD</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Số lượng người để giảm giá</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="number" class="form-control" id="Specification" name="Specification" placeholder="Số lượng người để giảm giá" value="@Model.Specification">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">Loại</label>
+                    <div class="col-sm-12">
+                        <fieldset style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <select id="TypeOfTrip" name="TypeOfTrip" asp-for="tieude" onchange="TypeOfTripChange()" class="select2_single form-control">
+                                            @if (Model.TypeOfTrip == "ONEWAY")
+                                            {
+                                                <option selected value="ONEWAY">Một chiều</option>
+                                                <option value="ROUNDTRIP">Khứ hồi</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="ONEWAY">Một chiều</option>
+                                                <option selected value="ROUNDTRIP">Khứ hồi</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="" class="col-sm-12 control-label">QuickSearch</label>
+                    <div class="col-sm-12">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" id="QuickSearch" name="QuickSearch" placeholder="QuickSearch" value="@Model.QuickSearch">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.ListFlightDetail != null)
+                {
+                    if (Model.ListFlightDetail.Count > 0)
+                    {
+                        <div class="col-sm-12" id="chieudi">
+                            <label for="" class="col-sm-12 control-label">Chiều đi</label>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="FlightCode1" id="FlightCode1" placeholder="Mã chuyến bay" value="@Model.ListFlightDetail[0].FlightCode">
+                                    <input type="hidden" id="ID_FD1" name="ID_FD1" value="@Model.ListFlightDetail[0].ID" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="DepartureCode1" id="DepartureCode1" placeholder="Nơi đi" value="@Model.ListFlightDetail[0].DepartureCode">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="ArrivalCode1" id="ArrivalCode1" placeholder="Nơi đến" value="@Model.ListFlightDetail[0].ArrivalCode">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="Ngày đi" name="DepartureDate1" value="@Model.ListFlightDetail[0].DepartureDate.ToString("dd/MM/yyyy")">
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <div class="input-group date" id="myDatepicker3">
+                                        <input type="text" class="form-control" name="DepartureHour1" id="DepartureHour1" placeholder="Thời gian đi" value="@Model.ListFlightDetail[0].DepartureHour.Trim()">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    if (Model.ListFlightDetail.Count > 1)
+                    {
+                        <div class="col-sm-12" id="chieuve">
+                            <label for="" class="col-sm-12 control-label">Chiều về</label>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="FlightCode2" id="FlightCode2" placeholder="Mã chuyến bay" value="@Model.ListFlightDetail[1].FlightCode">
+                                    <input type="hidden" id="ID_FD2" name="ID_FD2" value="@Model.ListFlightDetail[1].ID" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="DepartureCode2" id="DepartureCode2" placeholder="Nơi đi" value="@Model.ListFlightDetail[1].DepartureCode">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="ArrivalCode2" id="ArrivalCode2" placeholder="Nơi đến" value="@Model.ListFlightDetail[1].ArrivalCode">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="DepartureDate2" value="@Model.ListFlightDetail[1].DepartureDate.ToString("dd/MM/yyyy")">
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <div class="input-group date" id="myDatepicker2">
+                                        <input type="text" class="form-control" name="DepartureHour2" id="DepartureHour2" placeholder="Thời gian về" value="@Model.ListFlightDetail[1].DepartureHour.Trim()">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-sm-12" id="chieuve" style="display:none;">
+                            <label for="" class="col-sm-12 control-label">Chiều về</label>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="FlightCode2" id="FlightCode2" placeholder="Mã chuyến bay">
+                                    <input type="hidden" id="ID_FD2" name="ID_FD2" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="DepartureCode2" id="DepartureCode2" placeholder="Nơi đi">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control" name="ArrivalCode2" id="ArrivalCode2" placeholder="Nơi đến">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="DepartureDate2" value=''>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <div class="input-group date" id="myDatepicker2">
+                                        <input type="text" class="form-control" id="DepartureHour2">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                }
+                <div class="col-sm-12">
+                    <label for="" class="col-sm-12 control-label">Điều kiện</label>
+                    <div class="col-sm-12">
+                        <textarea class="form-control" id="Condition" name="Condition">@Model.Condition</textarea>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" style="text-align:right;margin-top: 10px;">
+                    <div class="col-sm-offset-2">
+                        <input id="SaveFlight" type="button" class="btn btn-primary" name="saveBtn" value="Thêm hành trình" />
+                        @*<button type="submit" class="btn btn-danger" name="delBtn" value="delBtn">Xóa</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/vendors/ckeditor/ckeditor.js"></script>
+    <script src="~/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('Condition', {
+                height: 200,
+                filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+            });
+        });
+        $('#myDatepicker3').datetimepicker({
+            format: 'HH:mm'
+        });
+        $('#myDatepicker2').datetimepicker({
+            format: 'HH:mm'
+        });
+    </script>
+    <script>
+        $('input[name="DepartureDate1"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+        $('input[name="DepartureDate2"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+        function TypeOfTripChange() {
+            var Kind = document.getElementById("TypeOfTrip").value;
+            var x = document.getElementById("chieuve");
+            if (Kind == "ONEWAY") {
+                x.style.display = "none";
+            }
+            else {
+                x.style.display = "block";
+            }
+        }
+        function formatNumber(id) {
+            var number = document.getElementById(id).value
+            number = number.replaceAll(",", "");
+            x = number.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            var tong = x1 + x2;
+            document.getElementById(id).value = x1 + x2;
+            return x1 + x2;
+        }
+        function FormatDateTime(x) {
+            const [day, month, year] = x.split('/');
+            const date = new Date(year, month - 1, day);
+            return date.toISOString();
+        }
+        $("#SaveFlight").click(function () {
+            var data = {};
+            var ID = document.getElementById("ID").value;
+            var Airline = document.getElementById("Airline").value;
+            var TotalNumberOfGuests = document.getElementById("TotalNumberOfGuests").value;
+            var NumberOfGuests = document.getElementById("NumberOfGuests").value;
+            var QuickSearch = document.getElementById("QuickSearch").value;
+            // var Price = document.getElementById("Price").value;
+            // var PriceAgent = document.getElementById("PriceAgent").value;
+            var Fare = document.getElementById("Fare").value;
+            var Charge = document.getElementById("Charge").value;
+            var Discount = document.getElementById("Discount").value;
+            var Unit = document.getElementById("Unit").value;
+            var Specification = document.getElementById("Specification").value;
+            var TypeOfTrip = document.getElementById("TypeOfTrip").value;
+            var Condition = CKEDITOR.instances.Condition.getData();
+
+            data.ID = ID;
+            data.Airline = Airline;
+            data.TotalNumberOfGuests = TotalNumberOfGuests;
+            data.NumberOfGuests = NumberOfGuests;
+            data.QuickSearch = QuickSearch;
+            // data.Price = Price;
+            // data.PriceAgent = PriceAgent;
+            data.Fare = Fare;
+            data.Charge = Charge;
+            data.Discount = Discount;
+            data.Unit = Unit;
+            data.Specification = Specification;
+            data.TypeOfTrip = TypeOfTrip;
+            data.Condition = Condition;
+
+            var ID_FD1 = document.getElementById("ID_FD1").value;
+            var FlightCode1 = document.getElementById("FlightCode1").value;
+            var DepartureCode1 = document.getElementById("DepartureCode1").value;
+            var ArrivalCode1 = document.getElementById("ArrivalCode1").value;
+            var single_cal1 = document.getElementById("single_cal1").value;
+            var DepartureHour1 = document.getElementById("DepartureHour1").value;
+            single_cal1 = FormatDateTime(single_cal1);
+            var ListFlightGroupDetail = new Array();
+            var FlightGroupDetail = {};
+
+            FlightGroupDetail.ID = ID_FD1;
+            FlightGroupDetail.FlightCode = FlightCode1;
+            FlightGroupDetail.DepartureCode = DepartureCode1;
+            FlightGroupDetail.ArrivalCode = ArrivalCode1;
+            FlightGroupDetail.DepartureDate = single_cal1;
+            FlightGroupDetail.DepartureHour = DepartureHour1;
+            ListFlightGroupDetail.push(FlightGroupDetail);
+            if (TypeOfTrip == "ROUNDTRIP") {
+                var ID_FD2 = document.getElementById("ID_FD2").value;
+                if (ID_FD2 == null) {
+                    ID_FD2 = 0;
+                }
+                var FlightCode2 = document.getElementById("FlightCode2").value;
+                var DepartureCode2 = document.getElementById("DepartureCode2").value;
+                var ArrivalCode2 = document.getElementById("ArrivalCode2").value;
+                var single_cal2 = document.getElementById("single_cal2").value;
+                var DepartureHour2 = document.getElementById("DepartureHour2").value;
+                single_cal2 = FormatDateTime(single_cal2);
+                var FlightGroupDetail = {};
+                FlightGroupDetail.ID = ID_FD2;
+                FlightGroupDetail.FlightCode = FlightCode2;
+                FlightGroupDetail.DepartureCode = DepartureCode2;
+                FlightGroupDetail.ArrivalCode = ArrivalCode2;
+                FlightGroupDetail.DepartureDate = single_cal2;
+                FlightGroupDetail.DepartureHour = DepartureHour2;
+                ListFlightGroupDetail.push(FlightGroupDetail);
+            }
+            data.ListFlightDetail = ListFlightGroupDetail;
+            $.ajax({
+                type: "POST",
+                url: "../BPDoan/SavePlusFlightGroup",
+                data: { flight: data },
+                success: function (response) {
+                    alert("Lưu thành công");
+                    location.reload();
+                },
+                failure: function (response) {
+
+                    alert(response.responseText);
+                },
+                error: function (response) {
+
+                    alert(response.responseText);
+                }
+            });
+        });
+    </script>
+    <div class="row">
+        @*@if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+                alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+        }*@
+    </div>
+
+</div>

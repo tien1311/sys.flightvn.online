@@ -1,0 +1,205 @@
+﻿@model List<CongNoQuaHanModel>
+<style>
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .tab-content {
+        border-style: solid;
+        border-width: 0px 1px 1px 1px;
+        border-color: #ddd;
+        padding: 10px;
+    }
+
+    .nav-tabs > li > a {
+        color: #fff;
+        cursor: default;
+        background-color: #2A3F54;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #2A3F54 !important;
+        cursor: default;
+        background-color: #fff !important;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+
+    .modal-content {
+        margin: 30px auto;
+    }
+
+    .table-responsive {
+        background: #fff;
+        border-radius: 0px 0px 8px 8px;
+    }
+
+    .title {
+        background: #fff;
+        padding: 7px;
+        font-weight: bold;
+        border-bottom: 1px solid;
+        border-radius: 8px 8px 0px 0px;
+    }
+
+    @@media(min-width: 768px) {
+        .CNNV .modal-content {
+            width: 900px;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-body {
+        padding: 0 15px 15px;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+        background: #2A3F54;
+    }
+</style>
+<div class="CNNV">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" style="color:#fff">&times;</button>
+            <h4 style="color:white">Danh sách công nợ nhân viên quá hạn</h4>
+        </div>
+        <div class="modal-body" style=" background: #2A3F54;">
+            <div class="row" id="SoDong">
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="MaNV" id="MaNV" asp-for="MaNV" name="MaNV" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Tên NV" id="TenNV" asp-for="TenNV" name="TenNV" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Số tiền nợ" id="SoTienNo" asp-for="SoTienNo" name="SoTienNo" onblur="formatNumberCNQH(this.value, this.id)" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Thời gian xuất vé" id="ThoiGianXuatVe" asp-for="ThoiGianXuatVe" name="ThoiGianXuatVe" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Dư nợ hiện tại" id="DuNo" asp-for="DuNo" name="DuNo" onblur="formatNumberCNQH(this.value, this.id)" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select id="TinhTrang" name="TinhTrang" class="form-control" style=" padding-right: 0px;">
+                                        <option value="Normal">Normal</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-4">
+                    <div class="item form-group">
+                        <input type="text" placeholder="Ghi chú" id="GhiChu" asp-for="GhiChu" name="GhiChu" class="form-control ">
+                    </div>
+                </div>
+                <div class="col-md-1 col-xs-6">
+                    <div class="item form-group">
+                        <input class="btn btn-primary" onclick="Save(this);" type="button" value="Lưu" />
+                    </div>
+                </div>
+            </div>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <div style="margin-bottom:5px;">
+                        <div class="title">
+                            @item.TieuDe Tháng @item.Thang
+                            <input class="form-control" type="hidden" id="ID" name="ID" value="@item.ID"/>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="gridCNNV" class="table table-striped jambo_table bulk_action table-bordered">
+                                <thead>
+                                    <tr class="headings" style="font-size:12px;">
+                                        <th class="column-title">STT </th>
+                                        <th class="column-title">Mã NV</th>
+                                        <th class="column-title">Tên NV</th>
+                                        <th class="column-title">Số tiền nợ</th>
+                                        <th class="column-title">Time xuất</th>
+                                        <th class="column-title">Dư nợ</th>
+                                        <th class="column-title">Status</th>
+                                        <th class="column-title">Ghi chú</th>
+                                        <th class="column-title"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (item != null)
+                                    {
+                                        int i = 1;
+                                        @foreach (var item_detail in item.ListCongNoNVQuaHan)
+                                        {
+                                            if (@item_detail.TinhTrang == "High")
+                                            {
+                                                <tr class="even pointer danger" style="font-size:12px;">
+                                                    <td class="">@i</td>
+                                                    <td class="">@item_detail.MaNV</td>
+                                                    <td class="">@item_detail.TenNV</td>
+                                                    <td class="">@string.Format("{0:0,0}", double.Parse(item_detail.SoTienNo))</td>
+                                                    <td class="">@item_detail.ThoiGianXuatVe</td>
+                                                    <td class="">@string.Format("{0:0,0}", double.Parse(item_detail.DuNo))</td>
+                                                    <td class="">@item_detail.TinhTrang</td>
+                                                    <td class="">@item_detail.GhiChu</td>
+                                                    <td style="text-align:center">
+                                                        <a style="color:red;" href="javascript:;" onclick="Del(@item_detail.ID)"><i class="fa fa-trash" style="font-size:14px;" aria-hidden="true"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr class="even pointer" style="font-size:12px;">
+                                                    <td class="">@i</td>
+                                                    <td class="">@item_detail.MaNV</td>
+                                                    <td class="">@item_detail.TenNV</td>
+                                                    <td class="">@string.Format("{0:0,0}", double.Parse(item_detail.SoTienNo))</td>
+                                                    <td class="">@item_detail.ThoiGianXuatVe</td>
+                                                    <td class="">@string.Format("{0:0,0}", double.Parse(item_detail.DuNo))</td>
+                                                    <td class="">@item_detail.TinhTrang</td>
+                                                    <td class="">@item_detail.GhiChu</td>
+                                                    <td style="text-align:center">
+                                                        <a style="color:red;" href="javascript:;" onclick="Del(@item_detail.ID)"><i class="fa fa-trash" style="font-size:14px;" aria-hidden="true"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            i++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ketoan/ds_cnnvqh_detail.js"></script>

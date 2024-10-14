@@ -1,0 +1,47 @@
+﻿@model List<ConfigAirlineBalanceModel>
+@{
+    ViewData["Title"] = "Cấu hình thông báo số dư hãng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Cấu hình thông báo số dư hãng</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridConfigBalance" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th></th>
+                        <th>STT</th>
+                        <th>Hãng</th>
+                        <th>Số tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td style="text-align:center"><a class="Edit" style="color:red;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td>@item.Airline</td>
+                                <td>@string.Format("{0:0,0}", item.Amount)</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+       
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<script src="~/js/kythuat/ConfigBalanceAirline.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />

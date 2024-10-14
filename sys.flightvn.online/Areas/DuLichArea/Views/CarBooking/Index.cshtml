@@ -1,0 +1,178 @@
+﻿@{
+    ViewData["Title"] = "Danh sách đặt xe";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<link href="~/fomantic/semantic.css" rel="stylesheet" />
+<link href="~/css/carbooking/site.css" rel="stylesheet" />
+<script src="~/js/jquery-3.7.1.min.js"></script>
+
+
+<div id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
+
+
+<div class="ui fluid container" style="border:1px solid #E6E9ED">
+    <div class="ui card" id="card_main">
+        <div class="content" style="background:#fff;">
+            <div class="ui grid">
+                <div class="four wide computer six wide tablet ten wide mobile column">
+                    <label>Điểm đi</label>
+                    <div class="ui fluid selection dropdown" id="dropdown_address_search">
+                        <input type="hidden" name="selected_location_from" value="" id="selected_address_search">
+                        <div class="default text"></div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="">Tất cả</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="three wide computer five wide tablet six wide mobile column" id="box_time_calendar">
+                    <label>Tháng</label>
+                    <div class="ui calendar" id="date_calendar_carbooking">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" placeholder="Chọn tháng" id="selected_date" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="three wide computer five wide tablet ten wide mobile column" id="box_status_booking">
+                    <div class="filter">
+                        <div class="field">
+                            <label>Trạng thái</label>
+                            <div class="ui dropdown selection" id="dropdown_selected_status">
+                                <input type="hidden" name="status">
+                                <div class="default text">Chọn trạng thái</div>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item" data-value="">Tất cả</div>
+                                    <div class="item" data-value="PENDING">Mới</div>
+                                    <div class="item" data-value="ACCEPT">Đã tiếp nhận</div>
+                                    <div class="item" data-value="WAITING">Đã xác nhận</div>
+                                    <div class="item" data-value="CONFIRM">Đã thanh toán</div>
+                                    <div class="item" data-value="COMPLETE">Đã hoàn thành</div>
+                                    <div class="item" data-value="CANCEL">Đã hủy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="six wide computer sixteen wide tablet sixteen wide mobile column" id="box_vat_btnSearch">
+                    <div class="ui form">
+                        <label>Hóa đơn</label>
+                        <div class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="vat" value="" checked="checked">
+                                    <label>Tất cả</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="vat" value="1">
+                                    <label>Có hóa đơn</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="vat" value="0">
+                                    <label>Không hóa đơn</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="content" style="background:#fff;">
+            <div id="partialContainer">
+                @await Component.InvokeAsync("BookingContent")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="car_booking_detail" tabindex="-1" role="dialog" aria-labelledby="carbooking" aria-hidden="true" style="overflow-y: auto !important;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="carbooking">Chi tiết Xe booking</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal_booking_detail">
+                @await Html.PartialAsync("_Partial_Modal_Booking_Detail")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="cancel_booking_detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">LÝ DO HỦY CHUYẾN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Nội dung <span style="color:red">(*)</span></label>
+                        <textarea class="form-control" id="cancellation_reason" placeholder="Nội dung"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_cancel_booking">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add_other_fee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">LÝ DO THÊM PHÍ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Phí <span style="color:red">(*)</span></label>
+                        <input class="form-control" name="otherFee" id="otherFee" placeholder="Phí khác" />
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung <span style="color:red">(*)</span></label>
+                        <textarea class="form-control" id="other_fee_reason" placeholder="Nội dung"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveOtherFeeBtn">Lưu</button>
+                <button type="button" class="btn btn-secondary" id="saveOtherFeeBtn-Close" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@* CarBooking Start *@
+<script src="~/fomantic/semantic.js"></script>
+<script src="~/js/carbooking/site.js"></script>
+@* CarBooking End *@

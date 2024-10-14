@@ -1,0 +1,487 @@
+﻿@model ThongBaoModel
+@{
+    ViewData["Title"] = "Thông Báo";
+    Layout = "~/Views/Shared/MasterLayout_ThongBao.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<style>
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .nav-tabs > li > a {
+        font-weight: bold;
+        padding: 8px 50px 8px !important;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #fff !important;
+        cursor: default;
+        background-color: rgb(245 130 32) !important;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+        padding: 8px 50px 8px !important;
+    }
+
+    .content-iframe {
+        margin: auto;
+        width: 100%;
+    }
+
+        .content-iframe iframe {
+            height: 800px;
+            width: 100%;
+            border-radius: 7px;
+        }
+
+    .popup .table thead th, .popup .table td {
+        padding: 6px 20px !important;
+        text-align: left;
+    }
+
+    .tieude {
+        float: left;
+        width: calc(100% - 99px);
+        text-align: center;
+        font-size: 30px;
+        margin-top: 32px;
+    }
+</style>
+<div style="min-height: 987px; padding: 10px 20px 20px ">
+    <div style=" display: table; width: 100%; margin-bottom: 10px; ">
+        <p style="float:left;">
+            <a href="http://sys.airline24h.com/"><img src="~/images/Logo ev-none br.png" style="width: 99px;" /></a>
+        </p>
+        <h2 class="tieude">Thông báo</h2>
+    </div>
+    <div style="clear:both"></div>
+
+    <div class="x_panel">
+
+        <div class="x_content">
+            <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+
+                <li class="nav-item active">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Thông báo ĐL</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Lưu ý</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="ALL-tab" data-toggle="tab" href="#ALL" role="tab" aria-controls="ALL" aria-selected="true">Thông báo all</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="KT-tab" data-toggle="tab" href="#KT" role="tab" aria-controls="KT" aria-selected="true">Thông báo KT</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="PV-tab" data-toggle="tab" href="#PV" role="tab" aria-controls="PV" aria-selected="true">Thông báo PV</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" id="SNDL-tab" data-toggle="tab" href="#SNDL" role="tab" aria-controls="SNDL" aria-selected="true">Thông báo SNKHV</a>
+                </li>
+            </ul>
+            <div class="tab-content popup content-iframe" id="myTabContent">
+                <div class="tab-pane fade active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table id="gridThongBaoDL" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+
+                                    <th class="column-title"> STT</th>
+                                    <th class="column-title"> Ngày gửi </th>
+                                    <th class="column-title"> Mã KH </th>
+                                    <th class="column-title"> Tên đại lý </th>
+                                    <th class="column-title"> Kinh doanh </th>
+                                    <th class="column-title"></th>
+                                    <th class="column-title"> Người lập </th>
+                                    <th class="column-title"> Tình trạng </th>
+                                    <th class="column-title"> Chi tiết </th>
+                                    @*<th class="column-title" style="text-align: center;"> Đã xem </th>*@
+                                    <input type="hidden" id="MaNV" value="@Model.list_TBDL[0].MaNV" />
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.list_TBDL.Count < 1)
+                                {
+                                    <tr class="even pointer">
+                                        <td colspan="12" style="text-align:center;">
+                                            <i>Không có thông tin để hiển thị</i>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int i = 1;
+
+                                    foreach (var item in Model.list_TBDL)
+                                    {
+                                        @if (@item.DaXem == true)
+                                        {
+                                            <tr id="@item.ID" class="even pointer">
+                                                <td class="">@i</td>
+                                                <td class="">@DateTime.Parse(item.NgayKhoa).ToString("dd/MM/yyyy") </td>
+                                                <td class="">@item.MaKH</td>
+                                                <td class="">@item.TenDaiLy</td>
+                                                <td class="">@item.NVKD</td>
+                                                <td>
+                                                    @if (item.MaNV.ToUpper().Trim() == item.MaKD.ToUpper().Trim())
+                                                    {
+                                                        @if (item.DaXem == true)
+                                                        {
+                                                            <input id="DaXem" style="display:table-cell" disabled checked="checked" class="checkbox" type="checkbox" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            string ID = "DL" + @item.ID;
+                                                            <input id="@ID" style="display:table-cell" onclick="DanhDauDaXem(this.id);" class="checkbox" type="checkbox" />
+                                                        }
+                                                    }
+                                                    @{
+                                                        string NVL = "NVL" + i;
+                                                        string NVKD = "NVKD" + i;
+                                                    }
+                                                    <input type="hidden" id="@NVL" value="@item.MaNVLap" />
+                                                    <input type="hidden" id="@NVKD" value="@item.MaKD" />
+                                                </td>
+                                                <td class="">@item.NguoiKhoa</td>
+                                                <td class="">@item.TinhTrang</td>
+                                                <td><a class="ThongBaoDL" data-toggle="modal" href="#" onclick="ChiTietThongBaoDL(@item.ID, @i)">Xem chi tiết</a></td>
+
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr id="@item.ID" class="even pointer bg-danger">
+                                                <td class="">@i</td>
+                                                <td class="">@DateTime.Parse(item.NgayKhoa).ToString("dd/MM/yyyy") </td>
+                                                <td class="">@item.MaKH</td>
+                                                <td class="">@item.TenDaiLy</td>
+                                                <td class="">@item.NVKD</td>
+                                                <td>
+                                                    @if (item.MaNV.ToUpper().Trim() == item.MaKD.ToUpper().Trim())
+                                                    {
+                                                        @if (item.DaXem == true)
+                                                        {
+                                                            <input id="DaXem" style="display:table-cell" disabled checked="checked" class="checkbox" type="checkbox" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            string ID = "DL" + @item.ID;
+                                                            <input id="@ID" style="display:table-cell" onclick="DanhDauDaXem(this.id);" class="checkbox" type="checkbox" />
+                                                        }
+                                                    }
+                                                    @{
+                                                        string NVL = "NVL" + i;
+                                                        string NVKD = "NVKD" + i;
+                                                    }
+                                                    <input type="hidden" id="@NVL" value="@item.MaNVLap" />
+                                                    <input type="hidden" id="@NVKD" value="@item.MaKD" />
+                                                </td>
+                                                <td class="">@item.NguoiKhoa</td>
+                                                <td class="">@item.TinhTrang</td>
+                                                <td><a class="ThongBaoDL" data-toggle="modal" href="#" onclick="ChiTietThongBaoDL(@item.ID,@i)">Xem chi tiết</a></td>
+
+                                            </tr>
+                                        }
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <div class="col-xs-12 container-content">
+                            <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTNoRZvlXfYElmfI9N22skciC-QQk1Vy6-kgkn-Wlzj8wh3eK2OhfzlGACgdG8qBTrR-I2F-7JZUeTY/pubhtml?widget=true&amp;headers=false"></iframe>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="ALL" role="tabpanel" aria-labelledby="ALL-tab">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table id="gridThongBaoALL" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+
+                                    <th class="column-title"> STT</th>
+                                    <th class="column-title"> Ngày lập</th>
+                                    <th class="column-title"> Người lập </th>
+                                    <th class="column-title"> Tiêu đề </th>
+                                    <th class="column-title"> Nội dung </th>
+                                    @*<th class="column-title" style="text-align: center;"> Đã xem </th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.list_TBALL.Count < 1)
+                                {
+                                    <tr class="even pointer">
+                                        <td colspan="12" style="text-align:center;">
+                                            <i>Không có thông tin để hiển thị</i>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int i = 1;
+
+                                    foreach (var item in Model.list_TBALL)
+                                    {
+                                        <tr class="even pointer">
+                                            <td class="">@i</td>
+                                            <td class="">@DateTime.Parse(item.NgayLap).ToString("dd/MM/yyyy") </td>
+                                            <td class="">@item.NguoiLap</td>
+                                            <td class="">@item.TieuDe</td>
+                                            <td><a class="ThongBaoNB" id="@item.ID" onclick="nd(this.id)" style="cursor: pointer;">Xem chi tiết</a></td>
+                                            @*<td class="last" style="text-align:center;vertical-align:middle">
+                                    @if (item.DaXem == true)
+                                    {
+                                    <input id="DaXem" style="display:table-cell" disabled onclick="DanhDauDaXem(this);" checked="checked" class="checkbox" type="checkbox" />
+
+                                    }
+                                    else
+                                    {
+                                    <input id="DaXem" style="display:table-cell" disabled onclick="DanhDauDaXem(this);" class="checkbox" type="checkbox" />
+                                    }
+                                    </td>*@
+                                        </tr>
+
+                                        string IDND = "ND" + item.ID;
+                                        <tr>
+                                            <td colspan="12" id="@IDND" style="display:none">
+                                                @Html.Raw(item.NoiDung)
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="KT" role="tabpanel" aria-labelledby="KT-tab">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table id="gridThongBaoKT" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+
+                                    <th class="column-title"> STT</th>
+                                    <th class="column-title"> Ngày lập</th>
+                                    <th class="column-title"> Người lập </th>
+                                    <th class="column-title"> Tiêu đề </th>
+                                    <th class="column-title"> Nội dung </th>
+                                    @*<th class="column-title" style="text-align: center;"> Đã xem </th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.list_TBKT.Count < 1)
+                                {
+                                    <tr class="even pointer">
+                                        <td colspan="12" style="text-align:center;">
+                                            <i>Không có thông tin để hiển thị</i>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int i = 1;
+
+                                    foreach (var item in Model.list_TBKT)
+                                    {
+                                        <tr class="even pointer">
+                                            <td class="">@i</td>
+                                            <td class="">@DateTime.Parse(item.NgayLap).ToString("dd/MM/yyyy") </td>
+                                            <td class="">@item.NguoiLap</td>
+                                            <td class="">@item.TieuDe</td>
+                                            <td><a class="ThongBaoNB" id="@item.ID" onclick="nd(this.id)" style="cursor: pointer;">Xem chi tiết</a></td>
+                                            @*<td class="last" style="text-align:center;vertical-align:middle">
+                                    @if (item.DaXem == true)
+                                    {
+                                    <input id="DaXem" style="display:table-cell" disabled onclick="DanhDauDaXem(this);" checked="checked" class="checkbox" type="checkbox" />
+
+                                    }
+                                    else
+                                    {
+                                    <input id="DaXem" style="display:table-cell" disabled onclick="DanhDauDaXem(this);" class="checkbox" type="checkbox" />
+                                    }
+                                    </td>*@
+                                        </tr>
+
+                                        string IDND = "ND" + item.ID;
+                                        <tr>
+                                            <td colspan="12" id="@IDND" style="display:none">
+                                                @Html.Raw(item.NoiDung)
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="PV" role="tabpanel" aria-labelledby="PV-tab">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table id="gridThongBaoPV" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+
+                                    <th class="column-title"> STT</th>
+                                    <th class="column-title"> Ngày lập</th>
+                                    <th class="column-title"> Người lập </th>
+                                    <th class="column-title"> Tiêu đề </th>
+                                    <th class="column-title"> Nội dung </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.list_TBPV.Count < 1)
+                                {
+                                    <tr class="even pointer">
+                                        <td colspan="12" style="text-align:center;">
+                                            <i>Không có thông tin để hiển thị</i>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    int i = 1;
+
+                                    foreach (var item in Model.list_TBPV)
+                                    {
+                                        <tr class="even pointer">
+                                            <td class="">@i</td>
+                                            <td class="">@DateTime.Parse(item.NgayLap).ToString("dd/MM/yyyy") </td>
+                                            <td class="">@item.NguoiLap</td>
+                                            <td class="">@item.TieuDe</td>
+                                            <td><a class="ThongBaoNB" id="@item.ID" onclick="nd(this.id)" style="cursor: pointer;">Xem chi tiết</a></td>
+
+                                            @*<td class="last" style="text-align:center;vertical-align:middle">
+                                    @if (item.DaXem == true)
+                                    {
+                                    <input id="DaXem" style="display:table-cell" disabled onclick="DanhDauDaXem(this);" checked="checked" class="checkbox" type="checkbox" />
+
+                                    }
+                                    else
+                                    {
+                                    <input id="DaXem" style="display:table-cell" disabled onclick="DanhDauDaXem(this);" class="checkbox" type="checkbox" />
+                                    }
+                                    </td>*@
+                                        </tr>
+
+                                        string IDND = "ND" + item.ID;
+                                        <tr>
+                                            <td colspan="12" id="@IDND" style="display:none">
+                                                @Html.Raw(item.NoiDung)
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="SNDL" role="tabpanel" aria-labelledby="SNDL-tab">
+                    <div class="table-responsive" style="font-size:12px;">
+                        <table id="gridThongBaoPV" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">STT</th>
+                                    <th class="column-title">Khách hàng</th>
+                                    <th class="column-title">Chức vụ</th>
+                                    <th class="column-title">Hãng</th>
+                                    <th class="column-title">Miền</th>
+                                    <th class="column-title">Ngày sinh</th>
+                                    <th class="column-title">Người tiếp quản</th>
+                                    <th class="column-title">Ngày tạo</th>
+                                    <th class="column-title">Đã xem</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Thongbaosinhnhatdaili != null)
+                                {
+                                    int stt = 1;
+                                    foreach (var item in ViewBag.Thongbaosinhnhatdaili)
+                                    {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>@item.KhachHang</td>
+                                    <td>@item.ChucVu</td>
+                                    <td>@item.Hang</td>
+                                    <td>@item.Mien</td>
+                                    <td>@item.NgaySinh.ToString("dd/MM/yyyy")</td>
+                                    <td>@item.NguoiTiepQuan</td>
+                                    <td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        @if (item.DaXem == true)
+                                        {
+                                            <input type="checkbox" id="checkbox-@item.ID" checked disabled />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" id="checkbox-@item.ID" onchange="ActiveKHV(@item.ID);" />
+                                        }
+
+
+                                    </td>
+                                </tr>
+                                        stt++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5">Không có thông báo sinh nhật nào.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup1" role="dialog">
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1>Nội dung</h1>
+            </div>
+            <div class="modal-body">
+                <div id="noidung" class="modal-body-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    function nd(clicked_id) {
+        var IDND = "ND" + clicked_id;
+        let html = document.getElementById(IDND).innerHTML;
+        document.getElementById("noidung").innerHTML = html;
+        $('#openPopup').modal('show');
+    }
+</script>
+<script src="~/js/thongbao/thongbao.js"></script>

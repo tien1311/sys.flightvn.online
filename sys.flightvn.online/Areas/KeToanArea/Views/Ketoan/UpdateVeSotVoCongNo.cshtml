@@ -1,0 +1,139 @@
+﻿@model ChiTietVeSot
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Sửa báo cáo vé</h1>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <input class="form-control" type="text" hidden name="CurrentIndex" id="CurrentIndex" value="@Model.RowIndex" />
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input value="@Model.ID" id="RowID" hidden />
+                        <input class="form-control" type="text" name="Hang" disabled readonly id="Hang" value="@Model.MAHHK" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="PNR" id="PNR" value="@Model.PNR" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="SoVe" id="SoVe" value="@Model.SoVe" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="item form-group">
+                                @if (Model.MAKH.Contains("NV"))
+                                {
+                                    <input style="text-transform: uppercase;" class="form-control" type="text" disabled readonly name="MaKH" value="@Model.MAKH" id="MaKH" placeholder="Mã KH" />
+                                }
+                                else
+                                {
+                                    <input style="text-transform: uppercase;" class="form-control" type="text" name="MaKH" value="@Model.MAKH" id="MaKH" placeholder="Mã KH" />
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="check" class="btn btn-info" type="submit" style="box-shadow: 2px 2px 5px #838080; "><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="GiaMua" id="GiaMua" value="@Model.GiaMua" placeholder="Giá mua" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="PhiMua" id="PhiMua" value="@Model.PhiDVMua" placeholder="Phí dịch vụ mua" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <select onchange="ShowPhiXuatVe('PhiXuatVe', this.id)" class="form-control" id="KindName">
+                            @foreach (var item in @Model.ListLoaiPhi)
+                            {
+                                <option @item.Selected value="@item.Amount">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" disabled type="text" name="PhiXuatVe" id="PhiXuatVe" value="@Model.PhiXuatVe" placeholder="Phí xuất vé" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="PhiBan" id="PhiBan" value="@Model.PhiDVBan" placeholder="Phí dịch vụ bán" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="PhiHoan" id="PhiHoan" value="@Model.PhiHoan" placeholder="Phí hoàn" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="ChietKhau" id="ChietKhau" value="@Model.ChietKhau" placeholder="Chiết khấu" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="MaGioiThieu" id="MaGioiThieu" value="@Model.MaGioiThieu" placeholder="Mã giới thiệu" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="NguoiGioiThieu" id="NguoiGioiThieu" value="@Model.NguoiGioiThieu" placeholder="Người giới thiệu" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="item form-group">
+                        <p id="tenCTY" style="color:red; font-size:14px"></p>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="item form-group">
+                        <label>&nbsp;</label>
+                        <div style="text-align:right">
+                            <button id="save" class="btn btn-primary" type="submit">Lưu sửa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+</script>
+<script src="~/js/ketoan/updatevesotvocongno.js"></script>

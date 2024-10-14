@@ -1,0 +1,504 @@
+﻿@model List<ImportDoanhSoViewModel>
+
+@{
+    ViewData["Title"] = "BIỂU ĐỒ DOANH SỐ ĐẠI LÝ";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2 style="text-align: center; font-weight: bold;">BIỂU ĐỒ DOANH SỐ ĐẠI LÝ </h2>
+<br />
+<style>
+</style>
+<div class="x_panel" style="padding: 10px 17px 0;">
+
+    <div class="x_content">
+        @using (Html.BeginForm("SearchChart", "KinhDoanh", new { i = 10 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="">
+                    <div class="col-sm-1">
+                        <div class="item form-group">
+                            <label>Mã KH</label>
+                            <input class="form-control" type="text" name="MaKH" placeholder="Mã KH" />
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <label>Năm</label>
+                            <select class="form-control" name="Nam">
+                                <option value="2020">2020</option>
+                                <option value="2021" selected>2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-success btn-block" name="Search" value="Search">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive">
+            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Tháng </th>
+                        <th class="column-title">Mã KH </th>
+                        <th class="column-title">Tổng </th>
+                        <th class="column-title">VN </th>
+                        <th class="column-title">VJ </th>
+                        <th class="column-title">QH </th>
+                        <th class="column-title">VU </th>
+                        <th class="column-title">IATA </th>
+                        <th class="column-title">Khác </th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int s = 1;
+                        for (int i = 0; i < Model.Count; i++)
+                        {
+                            if (Model[i].Thang == "1")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam</span></td>
+                                    <td><span id="MaKH_1">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_1">@Model[i].Tong </span></td>
+                                    <td><span id="VN_1">@Model[i].VN </span></td>
+                                    <td><span id="VJ_1">@Model[i].VJ </span></td>
+                                    <td><span id="QH_1">@Model[i].QH </span></td>
+                                    <td><span id="VU_1">@Model[i].VU </span></td>
+                                    <td><span id="IATA_1">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_1">@Model[i].Khac </span></td>
+                                </tr>
+                                <tr style="display:none">
+                                    <td><span id="Nam">@Model[i].Nam</span></td>
+                                    <td><span id="MaKH_1">@Model[i].MaKH</span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "2")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_2">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_2">@Model[i].Tong </span></td>
+                                    <td><span id="VN_2">@Model[i].VN </span></td>
+                                    <td><span id="VJ_2">@Model[i].VJ </span></td>
+                                    <td><span id="QH_2">@Model[i].QH</span></td>
+                                    <td><span id="VU_2">@Model[i].VU </span></td>
+                                    <td><span id="IATA_2">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_2">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "3")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_3">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_3">@Model[i].Tong </span></td>
+                                    <td><span id="VN_3">@Model[i].VN </span></td>
+                                    <td><span id="VJ_3">@Model[i].VJ </span></td>
+                                    <td><span id="QH_3">@Model[i].QH </span></td>
+                                    <td><span id="VU_3">@Model[i].VU </span></td>
+                                    <td><span id="IATA_3">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_3">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "4")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_4">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_4">@Model[i].Tong </span></td>
+                                    <td><span id="VN_4">@Model[i].VN </span></td>
+                                    <td><span id="VJ_4">@Model[i].VJ</span></td>
+                                    <td><span id="QH_4">@Model[i].QH </span></td>
+                                    <td><span id="VU_4">@Model[i].VU </span></td>
+                                    <td><span id="IATA_4">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_4">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "5")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_5">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_5">@Model[i].Tong </span></td>
+                                    <td><span id="VN_5">@Model[i].VN </span></td>
+                                    <td><span id="VJ_5">@Model[i].VJ</span></td>
+                                    <td><span id="QH_5">@Model[i].QH </span></td>
+                                    <td><span id="VU_5">@Model[i].VU </span></td>
+                                    <td><span id="IATA_5">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_5">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "6")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_6">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_6">@Model[i].Tong </span></td>
+                                    <td><span id="VN_6">@Model[i].VN </span></td>
+                                    <td><span id="VJ_6">@Model[i].VJ </span></td>
+                                    <td><span id="QH_6">@Model[i].QH </span></td>
+                                    <td><span id="VU_6">@Model[i].VU </span></td>
+                                    <td><span id="IATA_6">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_6">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "7")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_7">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_7">@Model[i].Tong </span></td>
+                                    <td><span id="VN_7">@Model[i].VN </span></td>
+                                    <td><span id="VJ_7">@Model[i].VJ </span></td>
+                                    <td><span id="QH_7">@Model[i].QH </span></td>
+                                    <td><span id="VU_7">@Model[i].VU </span></td>
+                                    <td><span id="IATA_7">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_7">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "8")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_8">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_8">@Model[i].Tong </span></td>
+                                    <td><span id="VN_8">@Model[i].VN </span></td>
+                                    <td><span id="VJ_8">@Model[i].VJ </span></td>
+                                    <td><span id="QH_8">@Model[i].QH</span></td>
+                                    <td><span id="VU_8">@Model[i].VU </span></td>
+                                    <td><span id="IATA_8">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_8">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "9")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_9">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_9">@Model[i].Tong</span></td>
+                                    <td><span id="VN_9">@Model[i].VN </span></td>
+                                    <td><span id="VJ_9">@Model[i].VJ </span></td>
+                                    <td><span id="QH_9">@Model[i].QH </span></td>
+                                    <td><span id="VU_9">@Model[i].VU </span></td>
+                                    <td><span id="IATA_9">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_9">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "10")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_10">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_10">@Model[i].Tong </span></td>
+                                    <td><span id="VN_10">@Model[i].VN </span></td>
+                                    <td><span id="VJ_10">@Model[i].VJ </span></td>
+                                    <td><span id="QH_10">@Model[i].QH</span></td>
+                                    <td><span id="VU_10">@Model[i].VU </span></td>
+                                    <td><span id="IATA_10">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_10">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "11")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_11">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_11">@Model[i].Tong </span></td>
+                                    <td><span id="VN_11">@Model[i].VN </span></td>
+                                    <td><span id="VJ_11">@Model[i].VJ </span></td>
+                                    <td><span id="QH_11">@Model[i].QH </span></td>
+                                    <td><span id="VU_11">@Model[i].VU </span></td>
+                                    <td><span id="IATA_11">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_11">@Model[i].Khac </span></td>
+                                </tr>
+                            }
+                            if (Model[i].Thang == "12")
+                            {
+                                <tr>
+                                    <td><span>@s</span></td>
+                                    <td><span id="">@Model[i].Thang/@Model[i].Nam </span></td>
+                                    <td><span id="MaKH_12">@Model[i].MaKH</span></td>
+                                    <td><span id="tong_12">@Model[i].Tong </span></td>
+                                    <td><span id="VN_12">@Model[i].VN </span></td>
+                                    <td><span id="VJ_12">@Model[i].VJ</span></td>
+                                    <td><span id="QH_12">@Model[i].QH </span></td>
+                                    <td><span id="VU_12">@Model[i].VU </span></td>
+                                    <td><span id="IATA_12">@Model[i].IATA </span></td>
+                                    <td><span id="Khac_12">@Model[i].Khac </span></td>
+                                </tr>
+
+                            }
+                            s++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="x_panel" style="padding: 10px 17px 0;">
+    <div class="x_content">
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+</div>
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+    var Nam = document.getElementById('Nam').innerHTML;
+    var MaKH = document.getElementById('MaKH_1').innerHTML;
+
+    var tong_1 = document.getElementById('tong_1').innerHTML;
+    var tong_2 = document.getElementById('tong_2').innerHTML;
+    var tong_3 = document.getElementById('tong_3').innerHTML;
+    var tong_4 = document.getElementById('tong_4').innerHTML;
+    var tong_5 = document.getElementById('tong_5').innerHTML;
+    var tong_6 = document.getElementById('tong_6').innerHTML;
+    var tong_7 = document.getElementById('tong_7').innerHTML;
+    var tong_8 = document.getElementById('tong_8').innerHTML;
+    var tong_9 = document.getElementById('tong_9').innerHTML;
+    var tong_10 = document.getElementById('tong_10').innerHTML;
+    var tong_11 = document.getElementById('tong_11').innerHTML;
+    var tong_12 = document.getElementById('tong_12').innerHTML;
+
+    var VN_1 = document.getElementById('VN_1').innerHTML;
+    var VN_2 = document.getElementById('VN_2').innerHTML;
+    var VN_3 = document.getElementById('VN_3').innerHTML;
+    var VN_4 = document.getElementById('VN_4').innerHTML;
+    var VN_5 = document.getElementById('VN_5').innerHTML;
+    var VN_6 = document.getElementById('VN_6').innerHTML;
+    var VN_7 = document.getElementById('VN_7').innerHTML;
+    var VN_8 = document.getElementById('VN_8').innerHTML;
+    var VN_9 = document.getElementById('VN_9').innerHTML;
+    var VN_10 = document.getElementById('VN_10').innerHTML;
+    var VN_11 = document.getElementById('VN_11').innerHTML;
+    var VN_12 = document.getElementById('VN_12').innerHTML;
+
+    var VJ_1 = document.getElementById('VJ_1').innerHTML;
+    var VJ_2 = document.getElementById('VJ_2').innerHTML;
+    var VJ_3 = document.getElementById('VJ_3').innerHTML;
+    var VJ_4 = document.getElementById('VJ_4').innerHTML;
+    var VJ_5 = document.getElementById('VJ_5').innerHTML;
+    var VJ_6 = document.getElementById('VJ_6').innerHTML;
+    var VJ_7 = document.getElementById('VJ_7').innerHTML;
+    var VJ_8 = document.getElementById('VJ_8').innerHTML;
+    var VJ_9 = document.getElementById('VJ_9').innerHTML;
+    var VJ_10 = document.getElementById('VJ_10').innerHTML;
+    var VJ_11 = document.getElementById('VJ_11').innerHTML;
+    var VJ_12 = document.getElementById('VJ_12').innerHTML;
+
+    var VU_1 = document.getElementById('VU_1').innerHTML;
+    var VU_2 = document.getElementById('VU_2').innerHTML;
+    var VU_3 = document.getElementById('VU_3').innerHTML;
+    var VU_4 = document.getElementById('VU_4').innerHTML;
+    var VU_5 = document.getElementById('VU_5').innerHTML;
+    var VU_6 = document.getElementById('VU_6').innerHTML;
+    var VU_7 = document.getElementById('VU_7').innerHTML;
+    var VU_8 = document.getElementById('VU_8').innerHTML;
+    var VU_9 = document.getElementById('VU_9').innerHTML;
+    var VU_10 = document.getElementById('VU_10').innerHTML;
+    var VU_11 = document.getElementById('VU_11').innerHTML;
+    var VU_12 = document.getElementById('VU_12').innerHTML;
+
+    var QH_1 = document.getElementById('QH_1').innerHTML;
+    var QH_2 = document.getElementById('QH_2').innerHTML;
+    var QH_3 = document.getElementById('QH_3').innerHTML;
+    var QH_4 = document.getElementById('QH_4').innerHTML;
+    var QH_5 = document.getElementById('QH_5').innerHTML;
+    var QH_6 = document.getElementById('QH_6').innerHTML;
+    var QH_7 = document.getElementById('QH_7').innerHTML;
+    var QH_8 = document.getElementById('QH_8').innerHTML;
+    var QH_9 = document.getElementById('QH_9').innerHTML;
+    var QH_10 = document.getElementById('QH_10').innerHTML;
+    var QH_11 = document.getElementById('QH_11').innerHTML;
+    var QH_12 = document.getElementById('QH_12').innerHTML;
+
+    var IATA_1 = document.getElementById('IATA_1').innerHTML;
+    var IATA_2 = document.getElementById('IATA_2').innerHTML;
+    var IATA_3 = document.getElementById('IATA_3').innerHTML;
+    var IATA_4 = document.getElementById('IATA_4').innerHTML;
+    var IATA_5 = document.getElementById('IATA_5').innerHTML;
+    var IATA_6 = document.getElementById('IATA_6').innerHTML;
+    var IATA_7 = document.getElementById('IATA_7').innerHTML;
+    var IATA_8 = document.getElementById('IATA_8').innerHTML;
+    var IATA_9 = document.getElementById('IATA_9').innerHTML;
+    var IATA_10 = document.getElementById('IATA_10').innerHTML;
+    var IATA_11 = document.getElementById('IATA_11').innerHTML;
+    var IATA_12 = document.getElementById('IATA_12').innerHTML;
+
+    var Khac_1 = document.getElementById('Khac_1').innerHTML;
+    var Khac_2 = document.getElementById('Khac_2').innerHTML;
+    var Khac_3 = document.getElementById('Khac_3').innerHTML;
+    var Khac_4 = document.getElementById('Khac_4').innerHTML;
+    var Khac_5 = document.getElementById('Khac_5').innerHTML;
+    var Khac_6 = document.getElementById('Khac_6').innerHTML;
+    var Khac_7 = document.getElementById('Khac_7').innerHTML;
+    var Khac_8 = document.getElementById('Khac_8').innerHTML;
+    var Khac_9 = document.getElementById('Khac_9').innerHTML;
+    var Khac_10 = document.getElementById('Khac_10').innerHTML;
+    var Khac_11 = document.getElementById('Khac_11').innerHTML;
+    var Khac_12 = document.getElementById('Khac_12').innerHTML;
+
+    var max = Math.max(tong_1, tong_2, tong_3, tong_4, tong_5, tong_6, tong_7, tong_8, tong_9, tong_10, tong_11, tong_12, VN_1, VN_2, VN_3, VN_4, VN_5, VN_6, VN_7, VN_8, VN_9, VN_10, VN_11, VN_12, VJ_1, VJ_2, VJ_3, VJ_4, VJ_5, VJ_6, VJ_7, VJ_8, VJ_9, VJ_10, VJ_11, VJ_12, VU_1, VU_2, VU_3, VU_4, VU_5, VU_6, VU_7, VU_8, VU_9, VU_10, VU_11, VU_12, QH_1, QH_2, QH_3, QH_4, QH_5, QH_6, QH_7, QH_8, QH_9, QH_10, QH_11, QH_12, IATA_1, IATA_2, IATA_3, IATA_4, IATA_5, IATA_6, IATA_7, IATA_8, IATA_9, IATA_10, IATA_11, IATA_12, Khac_1, Khac_2, Khac_3, Khac_4, Khac_5, Khac_6, Khac_7, Khac_8, Khac_9, Khac_10, Khac_11, Khac_12);
+    var min = Math.min(tong_1, tong_2, tong_3, tong_4, tong_5, tong_6, tong_7, tong_8, tong_9, tong_10, tong_11, tong_12, VN_1, VN_2, VN_3, VN_4, VN_5, VN_6, VN_7, VN_8, VN_9, VN_10, VN_11, VN_12, VJ_1, VJ_2, VJ_3, VJ_4, VJ_5, VJ_6, VJ_7, VJ_8, VJ_9, VJ_10, VJ_11, VJ_12, VU_1, VU_2, VU_3, VU_4, VU_5, VU_6, VU_7, VU_8, VU_9, VU_10, VU_11, VU_12, QH_1, QH_2, QH_3, QH_4, QH_5, QH_6, QH_7, QH_8, QH_9, QH_10, QH_11, QH_12, IATA_1, IATA_2, IATA_3, IATA_4, IATA_5, IATA_6, IATA_7, IATA_8, IATA_9, IATA_10, IATA_11, IATA_12, Khac_1, Khac_2, Khac_3, Khac_4, Khac_5, Khac_6, Khac_7, Khac_8, Khac_9, Khac_10, Khac_11, Khac_12);
+
+    const labels = [
+        'Tháng 1',
+        'Tháng 2',
+        'Tháng 3',
+        'Tháng 4',
+        'Tháng 5',
+        'Tháng 6',
+        'Tháng 7',
+        'Tháng 8',
+        'Tháng 9',
+        'Tháng 10',
+        'Tháng 11',
+        'Tháng 12',
+    ];
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Tổng',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [tong_1, tong_2, tong_3, tong_4, tong_5, tong_6, tong_7, tong_8, tong_9, tong_10, tong_11, tong_12],
+            },
+            {
+                label: 'VN',
+                borderColor: '#36a2eb',
+                backgroundColor: '#36a2eb',
+                data: [VN_1, VN_2, VN_3, VN_4, VN_5, VN_6, VN_7, VN_8, VN_9, VN_10, VN_11, VN_12],
+            },
+            {
+                label: 'VJ',
+                borderColor: '#ffcd56',
+                backgroundColor: '#ffcd56',
+                data: [VJ_1, VJ_2, VJ_3, VJ_4, VJ_5, VJ_6, VJ_7, VJ_8, VJ_9, VJ_10, VJ_11, VJ_12],
+            },
+            {
+                label: 'QH',
+                borderColor: '#4bc0c0',
+                backgroundColor: '#4bc0c0',
+                data: [QH_1, QH_2, QH_3, QH_4, QH_5, QH_6, QH_7, QH_8, QH_9, QH_10, QH_11, QH_12],
+            },
+            {
+                label: 'VU',
+                borderColor: '#0066b3',
+                backgroundColor: '#0066b3',
+                data: [VU_1, VU_2, VU_3, VU_4, VU_5, VU_6, VU_7, VU_8, VU_9, VU_10, VU_11, VU_12],
+            },
+            {
+                label: 'IATA',
+                borderColor: '#9966ff',
+                backgroundColor: '#9966ff',
+                data: [IATA_1, IATA_2, IATA_3, IATA_4, IATA_5, IATA_6, IATA_7, IATA_8, IATA_9, IATA_10, IATA_11, IATA_12],
+            },
+            {
+                label: 'Khác',
+                borderColor: '#c9cbcf',
+                backgroundColor: '#c9cbcf',
+                data: [Khac_1, Khac_2, Khac_3, Khac_4, Khac_5, Khac_6, Khac_7, Khac_8, Khac_9, Khac_10, Khac_11, Khac_12],
+            },
+        ]
+    };
+</script>
+
+
+<script type="text/javascript">
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                },
+                title: {
+                    display: true,
+                    text: 'Doanh số đại lý ' + MaKH + ' năm ' + Nam
+                }
+            },
+            hover: {
+                mode: 'index',
+                intersec: false
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Tháng'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Số tiền'
+                    },
+                    min: min,
+                    max: max,
+                    ticks: {
+                        // forces step size to be 50 units
+                        stepSize: 1000000
+                    }
+                }
+            }
+        },
+    };
+</script>
+<script>
+    // === include 'setup' then 'config' above ===
+
+    var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+</script>
+
+

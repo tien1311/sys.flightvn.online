@@ -1,0 +1,184 @@
+﻿@model List<Rules_Partners>
+@{
+    ViewData["Title"] = "Rules_Partners";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2>Danh sách đối tác</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-1 col-xs-12" style="text-align:right;">
+                <a id="BtnCreate" href="javascript:;" type="button" class="btn btn-primary">Tạo mới</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridRules_Partners" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th></th>
+                        <th>STT</th>
+                        <th>PartnerCode</th>
+                        <th>PartnerName</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Rule</th>
+                        <th>Import Rule</th>
+                        @*<th></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.PartnerID">
+                                <td><a class="Edit" style="color:blue;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td>@item.PartnerCode</td>
+                                <td>@item.PartnerName</td>
+                                <td>@item.PartnerPhones</td>
+                                <td>@item.PartnerEmails</td>
+                                <td><a class="RuleDetail" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></td>
+                                <td><a class="ImportRule" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i style="font-size:14px;color:red" class="fa fa-arrow-circle-down" aria-hidden="true"></i></a></td>
+                                @*<td style="text-align:center"><a class="Delete" style="color:red;" href="javascript:;"><i class="fa fa-trash" aria-hidden="true"></i></a></td>*@
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    $("#BtnCreate").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../FareRules/CreateRules_Partners",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridRules_Partners .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../FareRules/EditRules_Partners",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridRules_Partners .RuleDetail").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../FareRules/RuleDetail",
+            data: {
+                PartnerID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridRules_Partners .ImportRule").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../FareRules/ImportRule",
+            data: {
+                PartnerID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    //$("#gridRules_Partners .Delete").click(function () {
+    //    var id = String($(this).closest('tr').attr('id'));
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/FareRules/DeleteRules_Partners",
+    //        data: {
+    //            ID: id
+    //        },
+    //        success: function (response) {
+    //            if (response == true) {
+    //                alert("Xóa thành công");
+    //                window.location.href = 'http://sys.airline24h.com/Lotusmile/Lotusmile?&i=9';
+    //            }
+    //            else {
+    //                alert("Xóa không thành công");
+    //            }
+    //        },
+    //        failure: function (response) {
+    //            alert(response.responseText);
+    //        },
+    //        error: function (response) {
+    //            alert(response.responseText);
+    //        }
+    //    });
+    //});
+</script>

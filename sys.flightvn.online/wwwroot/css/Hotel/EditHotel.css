@@ -1,0 +1,41 @@
+﻿@media(min-width: 768px) {
+    .modal-dialog {
+        width: 800px;
+        margin: 30px auto;
+    }
+}
+
+.modal-body img {
+    width: 150px !important;
+    height: auto !important;
+}
+
+.modal-header {
+    padding: 6px 15px;
+    border-bottom: none;
+}
+
+.main-img img {
+    width: 100px !important;
+}
+
+.contain-listImg {
+    padding: 5px 0;
+    flex-wrap: wrap !important;
+    display: flex !important;
+    align-items: center;
+}
+
+.contain-DetailImg {
+    margin: 5px 0;
+}
+
+.modal-header .close {
+    color: #fff;
+}
+
+@media (max-width: 991px) {
+    .contain-listImg > * {
+        flex: 0 0 100% !important;
+    }
+}

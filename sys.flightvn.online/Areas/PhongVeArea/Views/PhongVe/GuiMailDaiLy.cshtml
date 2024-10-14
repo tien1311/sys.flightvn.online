@@ -1,0 +1,443 @@
+﻿@model TongQuatMail
+
+@{
+    ViewBag.Title = "Xuất vé - Đổi vé";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewBag.Title</title>
+<h2>Gửi thông tin Xuất vé - Đổi vé</h2>
+<form asp-controller="PhongVe" asp-action="GuiMailDaiLy" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div id="demo-form2" class="form-horizontal form-label-left">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="x_content" style="line-height:28px;">
+                                <br>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                            Mã KH
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <div class="col-md-9 col-sm-9 col-xs-9">
+                                            <input type="text" id="MAKH" asp-for="MAKH" name="MAKH" class="form-control col-md-7 col-xs-12">
+
+
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <button type="submit" class="btn btn-primary btn-block" style="width:100px;" name="buttonclick" value="searchBtn">Tìm Kiếm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                            Đại lý
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                            <input type="text" id="DAILY" readonly asp-for="DAILY" name="DAILY" class="form-control col-md-7 col-xs-12">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12 label-align">
+                                            MAIL
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" id="MAIL" asp-for="MAIL" name="MAIL" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label c ol-md-12 col-sm-12 col-xs-12 label-align">
+                                            MAIL CC
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" id="MAILCC" placeholder="abc@gmail.com,xyz@gmail.com" asp-for="MAILCC" name="MAILCC" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12 label-align">
+                                            PNR
+                                        </label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" id="PNR" asp-for="PNR" name="PNR" class="form-control ">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                            Chọn hãng
+                                        </label>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input id="HANG_NAME" asp-for="HANG_NAME" name="HANG_NAME" type="hidden" />
+                                            <select id="HANG" name="HANG" asp-for="HANG" class="select2_single form-control">
+                                                <option value="0">-- Chọn hãng --</option>
+
+                                                <option value="VN">Vietnam Airlines</option>
+                                                <option value="QH">BAMBOO</option>
+                                                <option selected="selected" value="BSP">BSP</option>
+                                                <option value="VJ">VIETJET</option>
+                                                <option value="VU">Viettravel Airline</option>
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" style="margin-top:7px;" checked="" value="XUATVE" id="XUATVE" name="TINHTRANG">
+                                                    <span style="font-size:14px;font-weight:700">  Xuất vé</span>
+
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-12">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" style="margin-top:7px;" value="DOIVE" id="DOIVE" name="TINHTRANG">
+                                                    <span style="font-size:14px;font-weight:700">  Đổi vé </span>
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                            Phí dịch vụ
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="text" id="PHIDICHVU" asp-for="PHIDICHVU" name="PHIDICHVU" value="0" onkeyup="FormatPhiDichVu();" class="form-control ">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+                                        <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                            File đính kèm
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="item form-group">
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <input type="file" class="form-control-file btn btn-primary" id="files" name="files" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Đại lý</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li style="float:right;">
+                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        </li>
+
+
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div id="cty" class="cty table-responsive" style="height:270px;">
+                                        <table id="datatable1" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Mã KH</th>
+                                                    <th>Tên đại lý</th>
+                                                    <th style="display:none">Email</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model == null)
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td style="display:none"></td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    if (Model.ListGuiMail != null)
+                                                    {
+                                                        foreach (var item in Model.ListGuiMail)
+                                                        {
+                                                            <tr onclick="DL(this)" style="cursor:pointer">
+                                                                <td style="text-align:center"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+                                                                <td>@item.MAKH</td>
+                                                                <td>@item.DAILY</td>
+                                                                <td style="display:none">@item.MAIL</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td style="display:none"></td>
+                                                        </tr>
+                                                    }
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Nội dung</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li style="float:right;">
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+
+
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <div id="alerts"></div>
+                                        <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
+                                                <ul class="dropdown-menu"></ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a data-edit="fontSize 5">
+                                                            <p style="font-size:17px">Huge</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 3">
+                                                            <p style="font-size:14px">Normal</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 1">
+                                                            <p style="font-size:11px">Small</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                                                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                                                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                                                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                                                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                                                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
+                                                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                                                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                                                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                                                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                                                <div class="dropdown-menu input-append">
+                                                    <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
+                                                    <button class="btn" type="button">Add</button>
+                                                </div>
+                                                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                                                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                                            </div>
+                                        </div>
+                                        <div id="editor-one" class="editor-wrapper placeholderText" contenteditable="true"></div>
+                                        <textarea name="NOIDUNG" asp-for="NOIDUNG" id="NOIDUNG" style="display:none;"></textarea>
+                                        <br />
+                                        <div class="ln_solid"></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Điều kiện</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li style="float:right;">
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+
+
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <div id="alerts"></div>
+                                        <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-two">
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
+                                                <ul class="dropdown-menu"></ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a data-edit="fontSize 5">
+                                                            <p style="font-size:17px">Huge</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 3">
+                                                            <p style="font-size:14px">Normal</p>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-edit="fontSize 1">
+                                                            <p style="font-size:11px">Small</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
+                                                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
+                                                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
+                                                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
+                                                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
+                                                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
+                                                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
+                                                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
+                                                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
+                                                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
+                                            </div>
+                                            <div class="btn-group">
+                                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
+                                                <div class="dropdown-menu input-append">
+                                                    <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
+                                                    <button class="btn" type="button">Add</button>
+                                                </div>
+                                                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
+                                            </div>
+
+                                            <div class="btn-group">
+                                                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
+                                                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
+                                            </div>
+                                        </div>
+                                        <div id="editor-two" class="editor-wrapper placeholderText" contenteditable="true"></div>
+                                        <textarea name="DIEUKIEN" asp-for="DIEUKIEN" id="DIEUKIEN" style="display:none;"></textarea>
+                                        <br />
+                                        <div class="ln_solid"></div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-success" onclick="myFunction()" style="float:right">Gửi Mail</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</form>
+
+<script src="~/js/PhongVe/GuiMailDaiLy.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.msg)');
+    </script>
+} *@

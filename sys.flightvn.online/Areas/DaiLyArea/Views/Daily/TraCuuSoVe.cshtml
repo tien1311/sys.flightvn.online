@@ -1,0 +1,94 @@
+﻿@model List<SoVeModel>
+@{
+    ViewData["Title"] = "Tra cứu số vé";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    .headings th{
+        vertical-align:middle!important;
+        text-align:center;
+    }
+</style>
+<title>@ViewData["Title"]</title>
+<h2>Tra cứu số vé</h2>
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("SearchSoVe", "Daily", new { i = 8 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="row">
+                        <div class="item form-group col-md-8 col-sm-8 col-xs-8">
+                            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                <input type="text" id="sove" style="height:25px;" placeholder="Số vé" name="sove" class="form-control">
+                            </div>
+                        </div>
+                        <div class="item form-group col-md-4 col-sm-4 col-xs-4" style="text-align:left;">
+                            <input type="submit" class="btn btn-primary" style="height:25px;padding-top:0;" value="Tìm vé" name="searchVeBtn" />
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        }
+        <div class="table-responsive">
+            <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">Hãng </th>
+                        <th class="column-title">AIRCODE</th>
+                        <th class="column-title">Code_sign</th>
+                        <th class="column-title">PNR</th>
+                        <th class="column-title">Số vé</th>
+                        <th class="column-title">Ngày</th>
+                        <th class="column-title">Hành trình </th>
+                        <th class="column-title">Đơn giá mua</th>
+                        <th class="column-title">Lệ phí mua</th>
+                        <th class="column-title">Phí hoàn vé</th>
+                        <th class="column-title">Tiền thuế</th>
+                        <th class="column-title">Phí DV mua</th>
+                        <th class="column-title">Giá mua</th>
+                        <th class="column-title">Chiết khấu 1</th>
+                        <th class="column-title">Chiết khấu 2</th>
+                        <th class="column-title">Giá bán</th>
+                        <th class="column-title">Phí DV bán 1</th>
+                        <th class="column-title">Phí DV bán 2</th>
+                        <th class="column-title">Đối tượng nợ</th>
+                        <th class="column-title">Booker</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ID_HHK</td>
+                                <td>@item.AIRCODEDTC</td>
+                                <td>@item.Code_Sign</td>
+                                <td>@item.PNR</td>
+                                <td>@item.TKNockt</td>
+                                <td>@DateTime.Parse(item.Ngay).ToString("dd/MM/yyyy") </td>
+                                <td>@item.ID_HanhT</td>
+                                <td>@item.DonGiaMua.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.LePhiMua.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.Phidhv.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.TienThue.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.PhiDichVM.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.GiaMua.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.ChietKhau1.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.ChietKhau2.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.GiaBan.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.PhiDichVB1.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.PhiDichVB2.ToString("#,##0").Replace(".", ",")</td>
+                                <td>@item.DoiTuongNo</td>
+                                <td>@item.Booker</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

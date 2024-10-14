@@ -1,0 +1,172 @@
+﻿@model List<INFO_IDBookerModel>
+@{
+    ViewData["Title"] = "DanhSachIDBooker";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<h2>Danh sách ID  Booker Club Vietnam Airlines</h2>
+<div class="x_panel" style="padding: 10px 17px 0;">
+
+    <div class="x_content">
+        @using (Html.BeginForm("SearchIDBooker", "Data", new { i = 9}, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <select class="form-control" name="select">
+                                <option value="MaKH" selected>Mã KH</option>
+                                <option value="IDBK">ID Booker</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="item form-group">
+                            <input class="form-control" type="text" name="Value" placeholder="Mã KH/ID Booker" />
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-success btn-block" name="Search" value="Search">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-block" name="Search" value="Excel">Xuất excel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive">
+            <table id="gridIDBooker" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title">Ngày up </th>
+                        <th class="column-title">Mã KH </th>
+                        <th class="column-title">Tên đại lý </th>
+                        <th class="column-title">NVKD </th>
+                        <th class="column-title">ID Booker </th>
+                        <th class="column-title">Họ tên </th>
+                        <th class="column-title">SDT </th>
+                        <th class="column-title">STK </th>
+                        <th class="column-title">Ngân hàng </th>
+                        <th class="column-title">CTK </th>
+                        <th class="column-title"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int s = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td>@s</td>
+                                <td>@item.UpdateDate</td>
+                                <td>@item.CreateUp</td>
+                                <td>@item.CompanyName</td>
+                                <td>@item.Sales</td>
+                                <td>@item.ID_Booker</td>
+                                <td>@item.Name</td>
+                                <td>@item.Tel</td>
+                                <td>@item.BankNumber</td>
+                                <td>@item.BankName</td>
+                                <td>@item.BankAccount </td>
+                                <td><a href="#" onclick="Del(@item.ID)"><i class="fa fa-trash" style="font-size:14px; color:red;" aria-hidden="true"></i></a></td>
+                            </tr>
+                            s++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@*@if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+}*@
+<script>
+    function Del(id) {
+        $.ajax({
+            type: "POST",
+            url: "../Data/DelIDBooker",
+            data: { ID: id },
+            success: function (response) {
+                if (response == true) {
+                    alert("Xóa thành công !");
+                }
+                else {
+                    alert("Xóa không thành công !")
+                }
+                window.location.href = "../Data/DanhSachIDBooker?i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+    function ExportExcel() {
+
+        var table = document.getElementById("gridIDBooker");
+        var length = table.rows.length;
+        if (length < 2) {
+            alert("Phải có ít nhất 1 ID Booker !");
+            return;
+        }
+
+        var LisIDBooker = new Array();
+        if (length > 0) {
+            for (var j = 1; j < length; j++) {
+                var IDBooker = {};
+                IDBooker.STT = table.rows[j].cells.item(0).innerHTML;
+                IDBooker.UpdateDate = table.rows[j].cells.item(1).innerHTML;
+                IDBooker.CreateUp = table.rows[j].cells.item(2).innerHTML;
+                IDBooker.CompanyName = table.rows[j].cells.item(3).innerHTML;
+                IDBooker.Sales = table.rows[j].cells.item(4).innerHTML;
+                IDBooker.ID_Booker = table.rows[j].cells.item(5).innerHTML;
+                IDBooker.Name = table.rows[j].cells.item(6).innerHTML;
+                IDBooker.Tel = table.rows[j].cells.item(7).innerHTML;
+                IDBooker.BankNumber = table.rows[j].cells.item(8).innerHTML;
+                IDBooker.BankName = table.rows[j].cells.item(9).innerHTML;
+                IDBooker.BankAccount = table.rows[j].cells.item(10).innerHTML;
+
+                LisIDBooker.push(IDBooker);
+            }
+        }
+        let DataJson = JSON.stringify(LisIDBooker);
+        console.log(DataJson);
+        $.ajax({
+            type: "POST",
+            url: "../Data/ExportExcelIDBooker",
+            data: { data: DataJson },
+            success: function (response) {
+               
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

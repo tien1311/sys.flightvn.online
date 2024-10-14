@@ -1,0 +1,81 @@
+﻿@model TourLocation
+
+<link href="~/css/hotel/createhotel.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css" integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .chosen-select-tourlocation, {
+        width: 100%;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-image: none;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    select.chosen-select-tourlocation + .chosen-container.chosen-container-single .chosen-single {
+        height: 32px;
+    }
+</style>
+<div class="modal-dialog">
+    <input id="Id" name="Id" value="@Model.Id" hidden>
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo điểm tham quan mới</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="VoucherName" class="control-label">Tên điểm tham quan</label>
+                        <input class="form-control" id="Name" name="Name" value="@Model.Name">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">Email điểm tham quan</label>
+                        <input class="form-control" id="Email" name="Email" type="email" value="@Model.Email">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label">Số điện thoại điểm tham quan</label>
+                        <input class="form-control" id="Phone" name="Phone" type="number" value="@Model.Phone">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="province" class="control-label">Tỉnh/Thành</label>
+                        <select class="form-control chosen-select-tourlocation" data-placeholder="Chọn Tỉnh/Thành" id="province" name="province">
+                            <option selected disabled value="">-- Chọn Tỉnh/Thành --</option>
+                            @foreach (var province in ViewData["ListProvince"] as List<Province>)
+                            {
+                                if (Model.Province == province.Code)
+                                {
+                                    <option selected value="@province.Code">@province.Full_Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@province.Code">@province.Full_Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="GetDistricts" data-codedistrict="@Model.District">
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top:40px;">
+                <button onclick="Save()" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/TourLocation/UpsertTourLocation.js"></script>

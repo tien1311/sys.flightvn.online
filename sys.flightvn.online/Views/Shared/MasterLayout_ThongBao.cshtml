@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap -->
+
+
+    <link href="~/vendors/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="~/vendors/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <!-- NProgress -->
+    <link href="~/vendors/nprogress/nprogress.css" type="text/css" rel="stylesheet" />
+    <!-- bootstrap-progressbar -->
+    <link href="~/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendors/switchery/switchery.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" type="text/css" rel="stylesheet" />
+    <!-- Custom Theme Style -->
+    <link href="~/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/vendors/normalize-css/normalize.css" rel="stylesheet" />
+    <link href="~/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="~/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/custom.min.css" type="text/css" />
+    <link href="~/vendors/iCheck/skins/flat/green.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendors/cropper/dist/cropper.min.css" rel="stylesheet" />
+    <link href="~/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
+    <link href="~/MyCSS.css" rel="stylesheet" />
+    <script src="~/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+
+</head>
+<style>
+    .right_col {
+        min-height: 0px !important;
+        padding: 0px !important;
+    }
+</style>
+<body class="nav-md preloading">
+    @*<div class="load">
+    <img src="~/images/loading.gif" />
+    </div>*@
+    <div class="container body">
+        <div class="main_container">
+            <!-- page content -->
+            <div class="right_col" role="main" style="margin-left:0px;">
+
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        @RenderBody()
+
+                    </div>
+
+                </div>
+            </div>
+            @Html.Partial("_ContentFixed");
+            <!-- /page content -->
+            <!-- footer content -->
+            @{
+                await Html.PartialAsync("_Footer");
+            }
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    @Html.Partial("_Scripts")
+    <script>
+        $(document).ready(function () {
+            var TaiKhoanDaiLy = document.getElementById("gridTaiKhoanDaiLy");
+            var lengthTaiKhoan = TaiKhoanDaiLy.rows.length;
+
+            if (lengthTaiKhoan > 2) {
+                $('#gridTaiKhoanDaiLy').dataTable({
+                    "pageLength": 50,
+                    "language": {
+                        url: 'http://cdn.datatables.net/plug-ins/1.10.21/i18n/Vietnamese.json'
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+@Html.Partial("_NotificationPartial")
+

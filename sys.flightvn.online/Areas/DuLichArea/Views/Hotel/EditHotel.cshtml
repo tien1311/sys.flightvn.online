@@ -1,0 +1,216 @@
+﻿@model ProductsModel
+@inject IConfiguration _configuration
+
+<link href="~/css/hotel/edithotel.css" rel="stylesheet" />
+
+@{
+    var location_Rep = new LocationRepository(_configuration);
+    var listProvince = location_Rep.GetProvinces();
+
+    FlagRepository flagRepository = new FlagRepository(_configuration);
+    var listFlag = flagRepository.GetListFlag();
+}
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Chỉnh sửa hotel</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+
+            <form id="submitForm" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên</label>
+                            <input class="form-control" id="Name" name="Name" value="@Model.Name">
+                            <input type="hidden" id="ID" name="ID" value="@Model.ID">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Số điện thoại</label>
+                            <input class="form-control" id="Phone" name="Phone" placeholder="VD: 0912345678" value="@Model.Phone" type="tel">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Email</label>
+                            <input class="form-control" id="Email" name="Email" placeholder="VD: hotel@@gmail.com" value="@Model.Email" type="email">
+                        </div>
+                    </div>
+               
+
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label">Cờ</label>
+                            <select id="flagSelect" class="form-control" name="Flag" asp-for="Flag">
+                                <option value="0">Bình thường</option>
+                                @foreach (var flag in listFlag)
+                                {
+                                    <option value="@flag.Id" @(flag.Id == @Model.Flag ? "selected" : "")>
+                                        @flag.Name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Địa chỉ</label>
+                            <div>
+                                <input class="form-control" id="Address" name="Address" value="@Model.Address">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-12">
+
+                        <div class="row">
+                           
+
+                            <div class="col-sm-4">
+                                <label for="provinceSelect">Tỉnh/Thành:</label>
+                                <select id="provinceSelect" class="form-control" name="provinceName" asp-for="Province">
+                                    <option value="">Chọn Tỉnh/Thành</option>
+                                    @foreach (var province in listProvince)
+                                    {
+                                        <option value="@province.Code" @(province.Code == @Model.Province ? "selected" : "")>
+                                            @province.Full_Name
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="districtSelect">Quận/Huyện:</label>
+                                <select id="districtSelect" class="form-control" name="districtName">
+                                    <option value="">Chọn Quận/Huyện</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="wardSelect">Phường/Xã:</label>
+                                <select id="wardSelect" class="form-control" name="wardName">
+                                    <option value="">Chọn Phường/Xã</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Danh sách hình</label>
+                            @{
+                                int count = 1;
+                            }
+                            <div class="row">
+                                @foreach (var item in Model.ListImages)
+                                {
+                                    string MainImg = "MainImg" + count;
+                                    string ImageURL = "ImageURL" + count;
+                                    <div class="col-sm-6" id="ImageContainer_@item.ID">
+                                        <div class="contain-DetailImg">
+                                            <img src="@item.ImageURL" />
+                                            <input id="@ImageURL" type="hidden" value="@item.ImageURL" />
+                                            <span style="margin: 0 10px;"><a href="#" style="color: red" onclick="DeleteImg('@item.ID')"><i class="fa fa-trash"></i></a></span>
+                                            @if (item.MainImage == true)
+                                            {
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" checked id="@MainImg">
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="@MainImg">
+                                            }
+                                            <label class="form-check-label">
+                                                Hình đại diện
+                                            </label>
+                                        </div>
+                                    </div>
+                                    count++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="item form-group">
+                            <label class="control-label">
+                                Hình đại diện (800x450px)
+                            </label>
+                            <div class="row contain-listImg" id="RowImg1">
+                                <div class="col-sm-7 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-10">
+                                            <div class="inputfile-box">
+                                                <input type="file" id="file1" class="inputfile" onchange="previewImage(event)" accept="image/*">
+                                                <label for="file1">
+                                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                        Chọn file
+                                                    </span>
+                                                </label>
+                                                <input id="file-name-popup1" class="file-box" placeholder="Chọn tập tin">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <input class="btn btn-primary" onclick="CreateRowImg(this);" type="button" value="+" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-xs-6">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <label class="form-check-label">
+                                        Hình đại diện
+                                    </label>
+                                </div>
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="main-img" id="imagePreview1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="addRowsImg">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Mô tả ngắn</label>
+                            <div>
+                                <textarea class="form-control" id="ShortDescription" name="ShortDescription" maxlength="200"> @Model.ShortDescription
+                            </textarea>
+                                <small id="charCount" class="form-text text-muted">0/200 ký tự</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Mô tả chi tiết</label>
+                            <div>
+                                <textarea class="form-control" id="LongDescription">@Model.LongDescription
+                            </textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12" style="float:right">
+                        <div class="form-group" style="float:right;">
+                            <label for="inputEmail3" class="control-label">&nbsp;</label>
+                            <div>
+                                <button type="button" class="btn btn-primary" onclick="Save()">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="~/js/hotel/edithotel.js"></script>
+<script>
+    var initialData = @Html.Raw(JsonConvert.SerializeObject(Model));
+</script>

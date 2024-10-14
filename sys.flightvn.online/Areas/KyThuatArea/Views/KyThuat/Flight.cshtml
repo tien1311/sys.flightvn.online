@@ -1,0 +1,115 @@
+﻿@model List<FlightModel>
+@{
+    ViewData["Title"] = "Danh sách hành trình";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2 style="color: #000;">Danh sách hành trình</h2>
+@using (Html.BeginForm("Flight", "KyThuat", new { i = 14 }, FormMethod.Get))
+{
+    <div class="row">
+
+        @* @if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+
+                      alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+
+        } *@
+
+    </div>
+    <div class="row">
+
+        <div class="form-group">
+            <input class="btn btn-primary" id="saveBtn" type="button" name="saveBtn" value="Thêm hành trình" />
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div id="gridTable" class="gridTable table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>STT</th>
+                        <th>Hãng</th>
+                        <th>Hành Trình</th>
+                        <th>Ngày đi</th>
+                        <th>Giờ đi</th>                       
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Đơn giá giảm</th>
+                        <th>Loại chuyến</th>
+
+                        <th>Ngày tạo</th>
+
+                        <th>Số lượng người(Đoàn)</th>
+                        <th></th>
+                        @*<th>Update</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count < 1)
+                    {
+                        <tr class="even pointer">
+                            <td colspan="12">
+                                <i>Không có thông tin để hiển thị</i>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+
+                <tr id="@item.ID" style="cursor:pointer">
+                    <td style="text-align:center"><a class="Flight" style="color:red;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                    <td>@i</td>
+                    <td>@item.Airline</td>
+                    <td>@item.Itinerary</td>
+                    <td>
+                        @foreach (var detail in item.ListFlightDetail)
+                        {
+                            <div>@detail.FlightDate.ToString("dd/MM/yyyy")</div>
+                        }
+                    </td>
+                    <td>
+                        @foreach (var detail in item.ListFlightDetail)
+                        {
+                            <div>@detail.FlightHour</div>
+                        }
+                    </td>
+                    <td>@item.NumberOfGuests</td>
+                    <td>@string.Format("{0:0,0}", item.Price)</td>
+                    <td>@string.Format("{0:0,0}", item.PriceAgent)</td>
+                    <td>@item.KindTrip </td>
+                     <td>@item.CreatedDate </td>
+                    <td>@item.Specification </td>
+                    <td style="text-align:center;"><a class="DeleteFlight" style="color: red; font-size: 14px;" href="javascript:;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+
+                </tr>
+                            i++;
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="openPopup1" role="dialog">
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script src="~/js/kythuat/flight.js"></script>

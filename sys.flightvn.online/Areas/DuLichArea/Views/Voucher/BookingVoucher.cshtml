@@ -1,0 +1,70 @@
+﻿@model PaginationBase<OrderHeaderVoucher>
+@{
+    ViewData["Title"] = "Booking Voucher";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+    List<Status> listStatus = ViewData["listStatus"] as List<Status>;
+}
+<style>
+    table tr td {
+        vertical-align: middle !important;
+    }
+</style>
+
+<title>@ViewData["Title"]</title>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Tình trạng đơn</label>
+                    <select id="Filter_TinhTrang" class="form-control">
+                        <option value="0">Tất cả</option>
+                        @if (listStatus.Any() || listStatus != null)
+                        {
+                            @foreach (Status status in listStatus)
+                            {
+                                <option value="@status.Id">@status.StatusName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Khoảng ngày đặt</label>
+                    <input type="text" class="form-control datepicker date-range" placeholder="Chọn khoảng ngày" />
+                </div>
+            </div>
+        </div>
+        <hr style="margin:inherit !important;" />
+        @* // Số lượng hiển thị *@
+        <div style="margin: 10px 0px;">
+            <label style="margin-right: 5px;">Hiển thị</label>
+            <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                <option value="25">25</option>
+                <option selected value="50">50</option>
+            </select>
+            <label style="margin-left: 5px;">đơn hàng</label>
+        </div>
+        <div class="table-responsive" id="table_Pagination">
+            @await Html.PartialAsync("_TableVoucherPaginationPartial", Model)
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+
+@* DateRange Picker *@
+<link href="~/jquery-ui.css" rel="stylesheet" />
+<script src="~/js/Voucher/BookingVoucher.js"></script>

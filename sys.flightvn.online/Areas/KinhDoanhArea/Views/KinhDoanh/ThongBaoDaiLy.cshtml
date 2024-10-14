@@ -1,0 +1,257 @@
+﻿@model KhoaCodeDaiLyModel
+@{
+    ViewData["Title"] = "Thông báo đại lý";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2 style="color: #000;">Thông báo đại lý</h2>
+@using (Html.BeginForm("ThongBaoDaiLy", "KinhDoanh", new { i = 10 }, FormMethod.Post))
+{
+    <div class="row">
+        @* @if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+                alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+        } *@
+        <div class="col-md-6">
+            <div class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Mã KH</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input class="form-control" id="MaKHtxt" name="MaKHtxt" value="@ViewBag.MaKH" placeholder="">
+                                <input type="hidden" name="i" value="8" />
+                            </div>
+                            <div class="col-xs-6"><button type="submit" class="btn btn-primary btn-block" name="searchBtn" value="searchBtn">Tìm Kiếm</button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Tên ĐL</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" readonly id="tenDLtxt" name="tenDLtxt" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="col-sm-10">
+                        <input type="hidden" class="form-control" id="IDtxt" name="IDtxt" placeholder="" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Tình trạng</label>
+                    <div class="col-sm-10">
+                        <select id="TinhTrangKhoa" name="TinhTrangKhoa" asp-for="TinhTrangKhoa" class="select2_single form-control" onchange="getTieuDe()">
+                            <option value="0">-- Chọn tình trạng --</option>
+                            @foreach (var item in Model.DSTinhTrangKhoa)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">Tiêu đề</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" class="form-control" id="IDNoiDungKhoa" name="IDNoiDungKhoa" placeholder="" value="">
+                        <select id="ChuDe" name="ChuDe" asp-for="ChuDe" class="select2_single form-control" onchange="getNoiDung()">
+                            <option value="0">-- Chọn tiêu đề --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">MailCC</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="MailCC" name="MailCC" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 text-right">
+                        <button type="submit" class="btn btn-primary" name="saveBtn" value="saveBtn">Gửi thông tin</button>
+                        @*<button type="submit" class="btn btn-danger" name="delBtn" value="delBtn">Xóa</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label" style="text-align:left;">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" readonly id="Email" name="Email" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label" style="text-align:left;">Số điện thoại</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" readonly id="SoDT" name="SoDT" placeholder="">
+                    </div>
+                </div>
+                <p for="exampleInputEmail1">Công ty</p>
+                <div id="cty" class="cty table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Mã KH</th>
+                                <th>Tên đại lý</th>
+                                <th>Mail</th>
+                                <th>Số ĐT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DSDaiLy == null)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.DSDaiLy)
+                                {
+                                    <tr onclick="DL(this)" style="cursor:pointer">
+                                        <td style="text-align:center"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+                                        <td>@item.member_kh</td>
+                                        <td>@item.member_company</td>
+                                        <td>@item.member_email</td>
+                                        <td>@item.member_tel</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="" class="col-sm-12 control-label">Nội dung khóa</label>
+            <div class="col-sm-12">
+                <textarea class="form-control" name="noiDungKhoatxt" id="noiDungKhoatxt" rows="6"></textarea>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="row">
+        <h2>Danh sách</h2>
+        <div id="chitietPBL" class="chitietPBL table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã KH</th>
+                        <th>Tên đại lý</th>
+                        <th>Tình trạng</th>
+                        <th>Nội dung khóa</th>
+                        <th>Ngày lập</th>
+                        <th>NV lập</th>
+                        <th>Mail CC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.DSKhoaCodeDaiLy.Count < 1)
+                    {
+                        <tr class="even pointer">
+                            <td colspan="12">
+                                <i>Không có thông tin để hiển thị</i>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (var item in Model.DSKhoaCodeDaiLy)
+                        {
+                            <tr onclick="PBL(this)" style="cursor:pointer">
+                                <td style="display:none" id="IDpbl">@item.ID</td>
+                                <td style="text-align:center">@i</td>
+                                <td id="MaKHpbl">@item.MaKH</td>
+                                <td id="tenDLpbl">@item.TenDaiLy</td>
+                                <td id="tenDLpbl">@item.TinhTrangKhoa</td>
+                                <td id="ghichupbl">@Html.Raw(item.NoiDungKhoa)</td>
+                                <td style="display:none">@item.IDNoiDungKhoa</td>
+                                <td>@item.NgayLap</td>
+                                <td>@item.NguoiLap</td>
+                                <td>@item.MailCC</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('noiDungKhoatxt', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+</script>
+<script type="text/javascript">
+    function getTieuDe() {
+        var id = $('#TinhTrangKhoa option:selected').val();
+        var x = document.getElementById("ChuDe");
+        $.ajax({
+            type: "POST",
+            url: "../KinhDoanh/GetTieuDe",
+            data: { ID: id },
+            success: function (response) {
+                for (var i = 0; i < x.length; i++) {
+                    if (x.length > 1) {
+                        x.remove(x.length - 1);
+                    }
+                }
+                for (var i = 0; i < response.length; i++) {
+                    const node = document.createElement("option");
+                    const textnode = document.createTextNode(response[i].tieuDe);
+                    node.setAttribute("value", response[i].rowid);
+                    node.appendChild(textnode);
+                    document.getElementById("ChuDe").appendChild(node);
+                }
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    }
+    function DL(ctrl) {
+        document.getElementById("MaKHtxt").value = ctrl.getElementsByTagName('td')[1].textContent;
+        document.getElementById("tenDLtxt").value = ctrl.getElementsByTagName('td')[2].textContent;
+        document.getElementById("Email").value = ctrl.getElementsByTagName('td')[3].textContent;
+        document.getElementById("SoDT").value = ctrl.getElementsByTagName('td')[4].textContent;
+    }
+    function getNoiDung() {
+        var id = $('#ChuDe option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "../KinhDoanh/GetNoiDungThongBaoDL",
+            data: { ID: id },
+            success: function (response) {
+                document.getElementById("IDNoiDungKhoa").value = id;
+                CKEDITOR.instances["noiDungKhoatxt"].setData(response);
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    }
+</script>

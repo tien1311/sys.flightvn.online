@@ -1,0 +1,353 @@
+﻿@model List<FlightGroupModel>
+@{
+    ViewData["Title"] = "Danh sách hành trình";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2 style="color: #000;">Danh sách hành trình đoàn</h2>
+
+<div class="row">
+
+    @*@if (ViewBag.thongbao != null)
+    {
+        <script charset="UTF-8">
+
+                    alert('@Html.Raw(ViewBag.thongbao)');
+        </script>
+
+    }
+    *@
+</div>
+<div class="row">
+
+    <div class="form-group">
+        <input class="btn btn-primary" id="Create" type="button" name="Create" value="Thêm hành trình" />
+    </div>
+
+</div>
+<div class="row">
+    <div class="x_panel">
+        <div class="x_content">
+            @using (Html.BeginForm("SeachFlightGroup", "BPDoan", new { i = 14 }, FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label for="" class="col-sm-12 control-label">Tình trạng</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <select name="TinhTrang" id="TinhTrang" class="form-control">
+                                            <option value="-1">Chọn tình trạng</option>
+                                            <option value="1">Đang hoạt động</option>
+                                            <option value="0">Không hoạt động</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="" class="col-sm-12 control-label">Mã chuyến bay</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="MaChuyenBay" name="MaChuyenBay" placeholder="VN123">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="" class="col-sm-12 control-label">Nơi đi</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="NoiDi" name="NoiDi" placeholder="Nơi đi">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="" class="col-sm-12 control-label">Nơi đến</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="NoiDen" name="NoiDen" placeholder="Nơi đến">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="" class="col-sm-12 control-label">Ngày đi</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal5" placeholder="Ngày đi" name="cal_from" value=''>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <button type="submit" class="btn btn-primary">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_content">
+            <div id="gridTable" class="gridTable table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>STT</th>
+                            <th>Hãng</th>
+                            <th>Nơi đi</th>
+                            <th>Nơi đến</th>
+                            <th>Ngày đi</th>
+                            <th>Giờ đi</th>
+                            <th>Tổng SL</th>
+                            <th>SL</th>@*
+                            <th>Đơn giá</th>
+                            <th>Đơn giá giảm</th> *@
+                            <th>Giá</th>
+                            <th>Phí</th>
+                            <th>Giảm giá</th>
+                            <th>Đơn vị</th>
+                            <th>Loại chuyến</th>
+                            <th>Ngày tạo</th>
+                            <th>Người tạo</th>
+                            <th>SL giảm</th>
+                            <th></th>
+                            <th></th>
+                            @*<th>Update</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count < 1)
+                        {
+                            <tr class="even pointer">
+                                <td colspan="12">
+                                    <i>Không có thông tin để hiển thị</i>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr id="@item.ID" style="cursor:pointer">
+                                    <td style="text-align:center"><a class="Edit" style="color:red;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                    <td>@i</td>
+                                    <td>@item.Airline</td>
+                                    <td>
+                                        @foreach (var detail in item.ListFlightDetail)
+                                        {
+                                            <div>@detail.DepartureCode</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (var detail in item.ListFlightDetail)
+                                        {
+                                            <div>@detail.ArrivalCode</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (var detail in item.ListFlightDetail)
+                                        {
+                                            <div>@detail.DepartureDate.ToString("dd/MM/yyyy")</div>
+                                        }
+                                    </td>
+                                    <td>
+                                        @foreach (var detail in item.ListFlightDetail)
+                                        {
+                                            <div>@detail.DepartureHour</div>
+                                        }
+                                    </td>
+                                    <td>@item.TotalNumberOfGuests</td>
+                                    <td>@item.NumberOfGuests</td>
+                                    @* <td>@string.Format("{0:0,0}", item.Price)</td>
+                            <td>@string.Format("{0:0,0}", item.PriceAgent)</td> *@
+                                    <td>@string.Format("{0:0,0}", item.Fare)</td>
+                                    <td>@string.Format("{0:0,0}", item.Charge)</td>
+                                    <td>@string.Format("{0:0,0}", item.Discount)</td>
+                                    <td>@item.Unit </td>
+                                    <td>@item.TypeOfTrip </td>
+                                    <td>@item.CreatedDate </td>
+                                    <td>@item.CreatedBy </td>
+                                    <td>@item.Specification </td>
+                                    @if (item.active == "True")
+                                    {
+                                        <td style="text-align:center;"><a class="DeleteFlight" style="color: red; font-size: 14px;" href="javascript:;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:center;"><a class="ActiveFlight" style="color: green; font-size: 14px;" href="javascript:;"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
+                                    }
+                                    <td style="text-align:center">
+                                        <a class="Plus" style="color:green;" href="javascript:;"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="modal fade" id="openPopup1" role="dialog">
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+<script>
+    $("#Create").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "../BPDoan/CreateFlightGroup",
+            success: function (response) {
+                $('#openPopup1').html(response);
+                $('#openPopup1').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                }); 
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridTable .DeleteFlight").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        let text = "Bạn có chắc muốn xóa hành trình này.";
+        if (confirm(text) == true) {
+            $.ajax({
+                type: "POST",
+                url: "../BPDoan/DeleteFlightGroup",
+                data: { ID: id },
+                success: function (response) {
+                    if (response == "false") {
+                        alert("Xóa thất bại");
+                    }
+                    else {
+                        alert("Xóa thành công");
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    });
+    $("#gridTable .ActiveFlight").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        let text = "Bạn có chắc muốn khôi phục hành trình này.";
+        if (confirm(text) == true) {
+            $.ajax({
+                type: "POST",
+                url: "../BPDoan/ActiveFlightGroup",
+                data: { ID: id },
+                success: function (response) {
+                    if (response == "false") {
+                        alert("Khôi phục thất bại");
+                    }
+                    else {
+                        alert("Khôi phục thành công");
+                        location.reload();
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    });
+    $("#gridTable .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../BPDoan/EditFlightGroup",
+            data: { ID: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                }); 
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridTable .Plus").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../BPDoan/PlusFlightGroup",
+            data: { ID: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

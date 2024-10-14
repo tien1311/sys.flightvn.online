@@ -1,0 +1,14 @@
+﻿<config>
+  <row>
+    <key>easyInvoice_apiHost</key>
+    <value>http://0304955040.easyinvoice.vn</value>
+  </row>
+  <row>
+    <key>easyInvoice_apiUsername</key>
+    <value>api</value>
+  </row>
+  <row>
+    <key>easyInvoice_apiPassword</key>
+    <value>DtmVuFtpAm9NjmSU</value>
+  </row>
+</config>

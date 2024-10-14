@@ -1,0 +1,169 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+@{
+    ChiTietVe chiTiet = new ChiTietVe();
+    chiTiet = ViewBag.ChiTietVe;
+    string hidden_save = "";
+    string hidden_update = "";
+    if(chiTiet.MAKH != "" && chiTiet.MAKH != null)
+    {
+        hidden_save = "hidden";
+    }
+    else
+    {
+        hidden_update = "hidden";
+    }
+}
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Báo cáo vé sót</h1>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <input class="form-control" type="text" hidden name="CurrentIndex" id="CurrentIndex" value="@ViewBag.CurrentIndex" />
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="Hang" id="Hang" value="@ViewBag.HANG" readonly />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="PNR" id="PNR" value="@ViewBag.PNR" readonly />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="SoVe" id="SoVe" value="@ViewBag.SOVE" readonly />
+                    </div>
+                </div>
+            
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="item form-group">
+                                <input style="text-transform: uppercase;" class="form-control" type="text"   value="@chiTiet.MAKH" name="MaKH" id="MaKH" placeholder="Mã KH" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="check" class="btn btn-info" type="submit" style="box-shadow: 2px 2px 5px #838080; "><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" placeholder="Số lượng" onkeyup="ShowPhiXuatVe('PhiXuatVe', 'KindName', 'SoLuong')" type="text" name="SoLuong" id="SoLuong" value="@ViewBag.SOLUONG" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="GiaMua" id="GiaMua"  value="@chiTiet.GiaMua" placeholder="Giá mua" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <select onchange="ShowPhiXuatVe('PhiXuatVe', 'KindName', 'SoLuong')" class="form-control" id="KindName">
+                            @foreach (var item in ViewBag.ListLoaiPhi)
+                            {
+                                if(chiTiet.LoaiPhi == item.Name)
+                                {
+                                    <option selected value="@item.Amount">@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Amount">@item.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" disabled type="text" name="PhiXuatVe" id="PhiXuatVe" value="@chiTiet.PhiXuatVe" placeholder="Phí xuất vé" />
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control"  type="text" name="PhiBan" id="PhiBan" value="@chiTiet.PhiDVBan" placeholder="Phí dịch vụ bán" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control"  type="text" name="PhiHoan" id="PhiHoan" value="@chiTiet.PhiHoan" placeholder="Phí hoàn" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control"  type="text" name="ChietKhau" id="ChietKhau" value="@chiTiet.ChietKhau" placeholder="Chiết khấu" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control"  type="text" name="MaGioiThieu" id="MaGioiThieu" value="@chiTiet.MAGIOITHIEU" placeholder="Mã giới thiệu" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control" type="text" name="NguoiGioiThieu" id="NguoiGioiThieu" value="@chiTiet.NGUOIGIOITHIEU" placeholder="Người giới thiệu" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item form-group">
+                        <input class="form-control"  type="hidden" name="PhiMua" id="PhiMua" value="@chiTiet.PhiDVMua" placeholder="Phí dịch vụ mua" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="item form-group">
+                        <p id="tenCTY" style="color:red; font-size:14px"></p>
+                    </div>
+                </div>
+                @if(chiTiet.ID != 0)
+                {
+                    <div class="col-sm-12">
+                        <div class="item form-group">
+                            <p id="SoLanSua" style="color:red; font-size:14px">Số lần sửa: @chiTiet.SoLanSua
+                                @if (chiTiet.NgaySua_New != null)
+                                {
+                                    <span> - Ngày sửa gần nhất: @DateTime.Parse(chiTiet.NgaySua_New.ToString()).ToString("dd/MM/yyyy HH:mm:ss") </span>
+                                }
+                            </p>
+
+                        </div>
+                    </div>
+                }
+                <div class="col-sm-12">
+                        <div style="text-align:right">
+                            <input  type="hidden" name="ID" id="ID" value="@chiTiet.ID" placeholder="Phí dịch vụ mua" />
+                            <button id="update" @hidden_update  class="btn btn-success">Sửa</button>
+                            <button id="save" @hidden_save class="btn btn-primary" type="submit">Lưu</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/phongve/baocaovesot.js"></script>

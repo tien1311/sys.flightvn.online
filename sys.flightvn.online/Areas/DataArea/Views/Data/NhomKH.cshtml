@@ -1,0 +1,95 @@
+﻿@model List<NhomDL>
+@{
+    ViewData["Title"] = "Nhóm KH";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Nhóm KH</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridNhom" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>STT</th>
+                        <th>Tên VIP</th>
+                        <th>Nội dung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.IDNhom">
+                                <td><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td>@item.TenNhom</td>
+                                <td>@Html.Raw(item.NoiDung)</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+ @* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    $("#BtnCreate").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateNhomDL",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridNhom .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditNhomDL",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

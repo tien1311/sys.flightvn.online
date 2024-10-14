@@ -1,0 +1,358 @@
+﻿@model SideMenuModel
+@{
+    ViewData["Title"] = "MenuNews";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+
+<h2>Menu trang News</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <a id="BtnCreateParent" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới danh mục cha</a>
+                </div>
+                <div class="table-responsive">
+                    <table id="gridSideMenu_Parent" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>STT</th>
+                                <th>Danh mục cha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.ListSideMenu_Parent)
+                                {
+                                    <tr id="@item.ID">
+                                        <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                        <td>@i</td>
+                                        <td>@item.Name</td>
+                                        <td style="text-align: center;">
+                                            @if (item.Status == true)
+                                            {
+                                                <a class="Status" style="color:red;" href="#" onclick="UpdateStatusParent(this,0,@item.ID)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                <input type="hidden" id="StatusParent" value="0" />
+                                            }
+                                            else
+                                            {
+                                                <a class="Status" style="color:green;" href="#" onclick="UpdateStatusParent(this,1,@item.ID)"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <input type="hidden" id="StatusParent" value="1" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div>
+                    <a id="BtnCreateChild" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới danh mục con</a>
+                </div>
+                <div class="table-responsive">
+                    <table id="gridSideMenu_Child" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>STT</th>
+                                <th>Danh mục con</th>
+                                <th>Danh mục cha</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.ListSideMenu_Child)
+                                {
+                                    <tr id="@item.ID">
+                                        <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                        <td>@i</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Name_Parent</td>
+                                        <td style="text-align: center;">
+                                            @if (item.Status == true)
+                                            {
+                                                <a class="Status" style="color:red;" href="#" onclick="UpdateStatusChild(this,0,@item.ID)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                <input type="hidden" id="StatusChild" value="0" />
+                                            }
+                                            else
+                                            {
+                                                <a class="Status" style="color:green;" href="#" onclick="UpdateStatusChild(this,1,@item.ID)"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <input type="hidden" id="StatusChild" value="1" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2>Danh sách sân bay</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <a id="BtnCreateAirport" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới sân bay</a>
+                </div>
+                <div class="table-responsive">
+                    <table id="gridAirport" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>STT</th>
+                                <th>Tên sân bay</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.ListAirport)
+                                {
+                                    <tr id="@item.ID">
+                                        <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                        <td>@i</td>
+                                        <td>@item.Name</td>
+                                        <td style="text-align: center;">
+                                            @if (item.Status == true)
+                                            {
+                                                <a class="Status" style="color:red;" href="#" onclick="UpdateStatusAirport(this,0,@item.ID)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                <input type="hidden" id="StatusParent" value="0" />
+                                            }
+                                            else
+                                            {
+                                                <a class="Status" style="color:green;" href="#" onclick="UpdateStatusAirport(this,1,@item.ID)"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <input type="hidden" id="StatusParent" value="1" />
+                                            }
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    function UpdateStatusParent(ctrl, status, id) {
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/StatusMenuParent",
+            data: {
+                ID: id,
+                Status: status
+            },
+            success: function (response) {
+                location.reload();
+                if (response == true) {
+                    alert("Bạn đã lưu danh mục thành công");
+                }
+                else {
+                    alert("Bạn đã lưu danh mục không thành công");
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    function UpdateStatusChild(ctrl, status, id) {
+        $.ajax({
+            type: "POST",
+            url: "../Data/StatusMenuChild",
+            data: {
+                ID: id,
+                Status: status
+            },
+            success: function (response) {
+                location.reload();
+                if (response == true) {
+                    alert("Bạn đã lưu danh mục thành công");
+                }
+                else {
+                    alert("Bạn đã lưu danh mục không thành công");
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    function UpdateStatusAirport(ctrl, status, id) {
+        $.ajax({
+            type: "POST",
+            url: "../Data/StatusAirport",
+            data: {
+                ID: id,
+                Status: status
+            },
+            success: function (response) {
+                location.reload();
+                if (response == true) {
+                    alert("Bạn đã lưu danh mục thành công");
+                }
+                else {
+                    alert("Bạn đã lưu danh mục không thành công");
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    $("#gridSideMenu_Parent .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditMenuParent",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridSideMenu_Child .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditMenuChild",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridAirport .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/EditAirport",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#BtnCreateParent").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateMenuParent",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#BtnCreateChild").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateMenuChild",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#BtnCreateAirport").click(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "../Data/CreateAirport",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+

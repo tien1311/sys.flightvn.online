@@ -1,0 +1,66 @@
+﻿@model NhanVienModel
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">@Model.CongViec</h1>
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+            <li class="nav-item  active">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">@Model.CongViec chung</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">@Model.CongViec riêng</a>
+            </li>
+        </ul>
+        <div class="modal-body">
+
+            <div class="tab-content popup" id="myTabContent">
+                @if (Model != null)
+                {
+                    <div class="tab-pane fade active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        @Html.Raw(Model.Noidungchung)
+                    </div>
+                    <div class="tab-pane fade " id="home" role="tabpanel" aria-labelledby="home-tab">
+                        @Html.Raw(Model.Noidung)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

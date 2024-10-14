@@ -1,0 +1,24 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.BankAccount.BankAccount>
+
+<table id="gridItem" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="text-align:center;"></th>
+            <th style="text-align:center;"></th>
+            <th style="text-align: center;">STT</th>
+            <th style="text-align: center;">Code</th>
+            <th>Tên ngân hàng</th>
+            <th>Số định danh</th>
+            <th>Ngày tạo</th>
+            <th>Người tạo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("_BankAccountListPartial", Model)
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @await Html.PartialAsync("_NavPageBankAccountPartial", Model)
+</nav>

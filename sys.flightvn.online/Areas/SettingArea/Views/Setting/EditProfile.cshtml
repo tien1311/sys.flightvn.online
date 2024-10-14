@@ -1,0 +1,93 @@
+﻿@model DanhSachLienHeModel
+@{
+    ViewData["Title"] = "SDT nhận SMS";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<div class="x_panel">
+    <div class="x_content">
+
+        <div class="row">
+            <div class="col-xs-6 col-sm-offset-3">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="inputEmail3" class="col-sm-12 control-label">SĐT nhận tin nhắn</label>
+                                <div class="col-sm-12">
+                                    <input class="form-control" id="SDT" name="SDT" placeholder="" value="@Model.DienThoaiSMS">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="inputEmail3" class="col-sm-12 control-label">Email nhận thông báo</label>
+                                <div class="col-sm-12">
+                                    <input class="form-control" id="Email" name="Email" placeholder="" value="@Model.Email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-right">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success" id="SaveSDTSMS" name="SaveSDTSMS" value="SaveSDTSMS" onclick="SaveSDTSMS()">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+    function SaveSDTSMS() {
+        var sEmail = document.getElementById("Email").value.trim();
+        var validRegex = /^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        var SDT = document.getElementById("SDT").value;
+        var SaveSDTSMS = document.getElementById("SaveSDTSMS").value;
+
+        if (/^[a-zA-Z0-9- ]*$/.test(SDT) == false) {
+            alert('Số điện thoại không được chứa ký tự đặc biệt');
+            return;
+        }
+        var temp = "";
+        const myArray = SDT.split(" ");
+        for (var i = 0; i < myArray.length; i++) {
+            temp += myArray[i];
+        }
+        if (temp.length != 10) {
+            alert('số điện thoại phải có 10 số');
+            return;
+        }
+        if (validRegex.test(sEmail) == false) {
+            alert('email không đúng định dạng');
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "../Setting/EditProfile",
+            data: {
+                SDT: temp,
+                Email: sEmail,
+                SaveSDTSMS: SaveSDTSMS
+            },
+            success: function (response) {
+                alert(response);
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response.responseText);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response.responseText);
+            }
+        });
+    };
+</script>

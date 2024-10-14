@@ -1,0 +1,182 @@
+﻿@model List<KhachHangModel>
+@{
+    ViewData["Title"] = "Đối tác Vip";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<style>
+    tr th {
+        vertical-align: middle !important;
+    }
+</style>
+@* @if (ViewBag.thongbao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.thongbao)');
+    </script>
+} *@
+<h2>Đối tác Vip</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <a type="button" class="btn btn-primary" id="CreateCustomerVip" data-toggle="modal" data-target="#openPopup">Tạo mới</a>
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="KHV" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title"></th>
+                        <th class="column-title">STT</th>
+                        <th class="column-title">Họ tên</th>
+                        <th class="column-title">Chức vụ</th>
+                        <th class="column-title">Hãng</th>
+                        <th class="column-title">Miền</th>
+                        <th class="column-title">Ngày sinh</th>
+                        <th class="column-title">NGT</th>
+                        <th class="column-title">SĐT</th>
+                        <th class="column-title">Địa chỉ</th>
+                        <th class="column-title">Người lập</th>
+                        <th class="column-title">Ngày lập</th>
+                        <th class="column-title">Lý do</th>
+                        <th style="display:none" class="column-title"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        if (item.IsHotro == "True")
+                        {
+                            <tr id="@item.ID" class="even pointer" style="background: #f5811f; color: white;">
+                                <td style="text-align:center"><a class="Edit" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td style="text-align:center">@i</td>
+                                <td class="">@item.Hoten</td>
+                                <td class="">@item.Chuc</td>
+                                <td class="">@item.Hang</td>
+                                <td class="">@item.Mien</td>
+                                <td class="">@item.Ngaysinh</td>
+                                <td class="">@item.NGT</td>
+                                <td class="">@item.SDT</td>
+                                <td class="">@item.Diachi</td>
+                                <td class="">@item.Nguoilap</td>
+                                <td class="">@item.Ngaylap</td>
+                                <td class="">@item.Ghichu</td>
+                                <td style="display:none">@item.ID</td>
+                            </tr>
+                            i++;
+                        }
+                        else
+                        {
+                            if (DateTime.Now.Month.ToString() == item.Thangsinh)
+                            {
+                                <tr id="@item.ID" class="even pointer" style="background: #5bc0de; color: white;">
+                                    <td style="text-align:center"><a class="Edit" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                    <td style="text-align:center">@i</td>
+                                    <td class="">@item.Hoten</td>
+                                    <td class="">@item.Chuc</td>
+                                    <td class="">@item.Hang</td>
+                                    <td class="">@item.Mien</td>
+                                    <td class="">@item.Ngaysinh</td>
+                                    <td class="">@item.NGT</td>
+                                    <td class="">@item.SDT</td>
+                                    <td class="">@item.Diachi</td>
+                                    <td class="">@item.Nguoilap</td>
+                                    <td class="">@item.Ngaylap</td>
+                                    <td class="">@item.Ghichu</td>
+                                    <td style="display:none">@item.ID</td>
+                                </tr>
+                                i++;
+                            }
+                            else
+                            {
+                                <tr id="@item.ID" class="even pointer">
+                                    <td style="text-align:center"><a class="Edit" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                    <td style="text-align:center">@i</td>
+                                    <td class="">@item.Hoten</td>
+                                    <td class="">@item.Chuc</td>
+                                    <td class="">@item.Hang</td>
+                                    <td class="">@item.Mien</td>
+                                    <td class="">@item.Ngaysinh</td>
+                                    <td class="">@item.NGT</td>
+                                    <td class="">@item.SDT</td>
+                                    <td class="">@item.Diachi</td>
+                                    <td class="">@item.Nguoilap</td>
+                                    <td class="">@item.Ngaylap</td>
+                                    <td class="">@item.Ghichu</td>
+                                    <td style="display:none">@item.ID</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+
+
+@* <script src="~/js/jquery.dataTables.js"></script>   *@
+@* <script>
+    $(document).ready(function () {
+        var KHV = document.getElementById("KHV");
+        var lengthKHV = KHV.rows.length;
+
+        if (lengthKHV > 2) {
+            console.log(lengthKHV);
+            $('#KHV').dataTable({
+                "pageLength": 50
+            });
+        }
+    });
+</script> *@
+
+
+<script>
+    $("#KHV .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../KhachHang/ChiTietKhachHang",
+            data: { khoachinh: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#CreateCustomerVip").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../KhachHang/TaoMoiKhachHang",
+            success: function (response) {
+                debugger;
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+

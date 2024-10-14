@@ -1,0 +1,370 @@
+﻿@{
+    Dictionary<string, List<string>> arr = new Dictionary<string, List<string>>();
+    arr["PENDING"] = new List<string>() { "Mới", "btn-danger", "" };
+    arr["ACCEPT"] = new List<string>() { "Đã tiếp nhận", "btn-info", "" };
+    arr["CREATE"] = new List<string>() { "", "btn-warning", "Chờ xử lý" };
+    arr["WAITING"] = new List<string>() { "Đã xác nhận", "btn-primary", "Chờ xác nhận" };
+    arr["CONFIRM"] = new List<string>() { "Đã thanh toán", "btn-success", "Xác nhận chuyến" };
+    arr["COMPLETE"] = new List<string>() { "Đã hoàn thành", "btn-success", "Hoàn thành chuyến" };
+    arr["REJECT"] = new List<string>() { "", "btn-dark", "Hủy chuyến" };
+    arr["CANCEL"] = new List<string>() { "Đã hủy", "btn-dark", "Hủy chuyến" };
+
+    Dictionary<string, List<string>> pay = new Dictionary<string, List<string>>();
+    pay["Success"] = new List<string>() { "Thanh toán thành công" };
+    pay["Failure"] = new List<string>() { "Thanh toán thất bại" };
+    pay["Processing"] = new List<string>() { "Giao dịch đang xử lý" };
+    Request booking = ViewBag.booking_detail;
+}
+
+@if (booking != null)
+{
+    <div class="card booking_detail" style="margin-bottom:10px;border: 1px solid #CFCFCF;">
+        <div class="card-header" style="background:#E2E1E1;color: #F17B20;font-weight:bold">
+            MÃ BOOKING: <span id="header_booking_code"> @booking.evcode </span>
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding:10px 0px 0px 10px">
+                <div class="col-sm-12 col-md-4" id="status_box" style="display:flex;">
+                    <div class="form-group" style="width:auto">
+                        <select id="status_enviet" name="status_enviet" class="form-control" data-evcode="@booking.evcode">
+                            <option value="ACCEPT" @(booking.status_enviet == "ACCEPT" ? "selected" : "")>Đã tiếp nhận</option>
+                            <option value="WAITING" @(booking.status_enviet == "WAITING" ? "selected" : "")>Đã xác nhận</option>
+                            <option value="CONFIRM" @(booking.status_enviet == "CONFIRM" ? "selected='selected'" : "")>Đã thanh toán</option>
+                            <option value="COMPLETE" @(booking.status_enviet == "COMPLETE" ? "selected='selected'" : "")>Đã hoàn thành</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="btn_status_booking" style="height: 33px;margin: 0px 10px;" data-value="@booking.id" data-status="ACCEPT" @(booking.status_enviet == "COMPLETE" || booking.status_enviet == "CANCEL" ? "disabled='disabled'" : "")>
+                        Đổi trạng thái
+                    </button>
+                </div>
+                <div class="col-sm-12 col-md-8" id="button_box">
+                    <button class="btn btn-success" id="btn_send_booking" data-value="@booking.id" @(booking.email_send == true || booking.email_cancel == true || booking.status_enviet == "COMPLETE" ? "disabled='disabled'" : "")>
+                        Gửi booking
+                    </button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#cancel_booking_detail" data-value="@booking.id" @(booking.email_cancel == true || booking.status_enviet == "COMPLETE" ? "disabled='disabled'" : "")>
+                        Hủy booking
+                    </button>
+
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#add_other_fee" data-evcode="@booking.evcode" data-value="@booking.id" @( booking.email_send == true || booking.email_cancel == true || booking.status_enviet == "CONFIRM" || booking.status_enviet == "WAITING" || booking.status_enviet == "COMPLETE" ? "disabled='disabled'" : "")>
+                        Thêm phí
+                    </button>
+                </div>
+                @*                 <div class="col-sm-12 col-md-4" id="status_box" style="display:flex;">
+            <div class="form-group" style="width:auto">
+            <select id="payment_type" name="payment_type" class="form-control">
+            <option value="Online" @(booking.payment_type == "Online" ? "selected" : "")>Thanh toán online</option>
+            <option value="Debt" @(booking.payment_type == "Debt" ? "selected" : "")>Thanh toán công nợ</option>
+            </select>
+            </div>
+            <button class="btn btn-primary" id="btn_payment_status" style="height: 33px;margin: 0px 10px;" data-value="@booking.id" @(booking.payment_status == "Success" ? "disabled" : "")>
+            Lưu
+            </button>
+            </div> *@
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card booking_detail" style="margin-bottom:10px;border: 1px solid #CFCFCF;">
+        <div class="card-header" style="background:#E2E1E1;color: #F17B20;font-weight:bold">
+            THÔNG TIN BOOKING
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding:0px 10px">
+                <div class="col-sm-12 col-md-6" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Mã booking đối tác</th>
+                                <td style="">@(booking.id_booking == null ? "..." : booking.id_booking)</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Điểm đi</th>
+                                <td style="">@booking.location_from</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Điểm đến</th>
+                                <td style="">@booking.location_to</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Hành trình</th>
+                                <td style="">@(booking.type == "0" ? "Một chiều" : "Hai chiều")</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px; background:#F7F3F2">Loại xe</th>
+                                <td>@booking.type_car</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Khởi hành</th>
+                                <td>@booking.departure.ToString("dd/MM/yyyy HH:mm tt")</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px; background:#F7F3F2">Mã giảm giá</th>
+                                <td>@booking.coupon</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-sm-12 col-md-6" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2;">Giá</th>
+                                <td style="color:#1a75e5;font-weight:bold">@string.Format("{0:#,##0}", booking.price)</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2;">Giảm giá</th>
+                                <td style="color:#28a745;font-weight:bold">@string.Format("{0:#,##0}", booking.discount)</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2;">VAT (@booking.vat_percent%)</th>
+                                <td style="color:black;font-weight:bold">@string.Format("{0:#,##0}", booking.vat_price)</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2;">Phí khác</th>
+                                <td style="color:black;font-weight:bold"> <span id="otherFeeValue" style="line-height:unset"> @string.Format("{0:#,##0}", booking.other_fee ?? 0) </span></td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2;">Tổng tiền</th>
+                                <td style="color:#dc3545;font-weight:bold"> <span id="totalPriceValue" style="line-height:unset">@string.Format("{0:#,##0}", booking.total) </span></td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2;">Tiền khách trả</th>
+                                <td style="color:#dc3545;font-weight:bold">@string.Format("{0:#,##0}", booking.price_customer)</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Lý do phát sinh phí</th>
+                                <td> <span id="other_fee_reason_Value" style="line-height:unset;">@booking.other_fee_reason</span> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card booking_detail" style="margin-bottom:10px;border: 1px solid #CFCFCF;">
+        <div class="card-header" style="background:#E2E1E1;color: #F17B20;font-weight:bold">
+            THÔNG TIN THANH TOÁN
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding:0px 10px">
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Mã thanh toán</th>
+                                <td>@(booking.payment_id ?? "")</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">KH thanh toán</th>
+                                <td>@(booking.payment_makh ?? "")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Phương thức</th>
+                                <td>
+                                    @if (booking.payment_type == "Online")
+                                    {
+                                        <span>Online</span>
+                                    }
+                                    else if (booking.payment_type == "Debt")
+                                    {
+                                        <span>Công nợ</span>
+                                    }
+                                    else if (booking.payment_type == "chuyen-khoan")
+                                    {
+                                        <span>Chuyển khoản</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@booking.payment_type</span>
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Trạng thái</th>
+                                <td>
+                                    <div>
+                                        <span id="payment-status-@booking.evcode"> @(booking.payment_status == null ? "Chưa thanh toán" : pay[booking.payment_status][0]) </span>
+
+                                        @if (booking.payment_type == "chuyen-khoan" && booking.payment_status == "Processing")
+                                        {
+                                            <a href="#" class="btn btn-sm btn-primary btnApproveChuyenKhoan" id="btnApproveChuyenKhoan_@booking.evcode" data-evcode="@booking.evcode"> Xác nhận thanh toán </a>
+                                        }
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Link thanh toán</th>
+                                <td>
+                                    <div class="ui fluid action input responsive-input">
+                                        <div class="ui input">
+                                            <input type="text" style="border-radius:unset;" id="input_link_payment" value="" placeholder="Link thanh toán đơn hàng...">
+                                        </div>
+                                        <button class="ui labeled icon button" id="btn_copy_link">
+                                            <i class="copy icon"></i>Sao chép
+                                        </button>
+                                        <button class="positive ui button" id="btn_get_link" data-value="@booking.id" @(booking.payment_status == "Success" ? "disabled" : "")>
+                                            Lấy link
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card booking_detail" style="margin-bottom:10px;border: 1px solid #CFCFCF;">
+        <div class="card-header" style="background:#E2E1E1;color: #F17B20;font-weight:bold">
+            THÔNG TIN LIÊN HỆ
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding:0px 10px">
+                <div class="col-sm-12 col-md-6" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Mã khách hàng</th>
+                                <td>@booking.agent_code</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Họ tên</th>
+                                <td>@booking.fullname</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-sm-12 col-md-6" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Email</th>
+                                <td>@booking.email</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Số điện thoại</th>
+                                <td>@booking.phone</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Ghi chú</th>
+                                <td>@booking.booking_notes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card booking_detail" style="margin-bottom:10px;border: 1px solid #CFCFCF;">
+        <div class="card-header" style="background:#E2E1E1;color: #F17B20;font-weight:bold">
+            THÔNG TIN HÓA ĐƠN
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding:0px 10px">
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Cá nhân / Tổ chức</th>
+                                <td>@booking.vat_notes</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Mã số thuế</th>
+                                <td>@booking.vat_mst</td>
+                            </tr>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Địa chỉ</th>
+                                <td>@booking.vat_address</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card booking_detail" style="margin-bottom:10px;border: 1px solid #CFCFCF;">
+        <div class="card-header" style="background:#E2E1E1;color: #F17B20;font-weight:bold">
+            THÔNG TIN XỬ LÝ
+        </div>
+        <div class="card-body">
+            <div class="row" style="padding:0px 10px">
+                <div class="col-sm-12 col-md-6" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Người xử lý</th>
+                                <td>@booking.user_booking</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-12 col-md-6" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Tình trạng</th>
+                                <td>@(booking.user_booking != null ? @arr[booking.status_enviet][0] : "") </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Đối tác hủy do</th>
+                                <td>@booking.dt_cancellation_reason</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12" style="padding:0px">
+                    <table class="table" style="margin-bottom:0px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:150px;background:#F7F3F2">Flight VN hủy do</th>
+                                <td>@booking.ev_cancellation_reason</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

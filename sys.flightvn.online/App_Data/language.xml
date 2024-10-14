@@ -1,0 +1,8 @@
+﻿<language>
+  <row>
+    <key>This.That.Test</key>
+    <value>Đây là nội dung test</value>
+    <valueEn>This is a test message</valueEn>
+    <description>Dùng để test</description>
+  </row>
+</language>

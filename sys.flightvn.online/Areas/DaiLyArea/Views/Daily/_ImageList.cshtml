@@ -1,0 +1,59 @@
+﻿@model List<string>
+
+
+<ul class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <li class="page-item" data-page="@(@ViewBag.CurrentPage - 1)">
+            <a class="btn page-link">Trước</a>
+        </li>
+    }
+
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")" data-page="@i">
+            <a class="btn page-link ">@i</a>
+        </li>
+    }
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <li class="page-item" data-page="@(@ViewBag.CurrentPage + 1)">
+            <a class="btn page-link">Sau</a>
+        </li>
+    }
+</ul>
+
+<div class="image-list">
+    @foreach (var image in Model)
+    {
+        <div class="image-item">
+            <img src="https://Manager.airline24h.com/upload/@image" alt="FTP Image" style="width:100px; height:auto;" />
+            <span>@image</span>
+            <button class="select-image-btn btn-sm btn btn-primary" data-image-url="https://Manager.airline24h.com/upload/@image">Chọn ảnh</button>
+        </div>
+    }
+</div>
+
+<ul class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <li class="page-item" data-page="@(@ViewBag.CurrentPage - 1)">
+            <a class="btn page-link">Trước</a>
+        </li>
+    }
+
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")" data-page="@i">
+            <a class="btn page-link ">@i</a>
+        </li>
+    }
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <li class="page-item" data-page="@(@ViewBag.CurrentPage + 1)">
+            <a class="btn page-link">Sau</a>
+        </li>
+    }
+</ul>

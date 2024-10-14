@@ -1,0 +1,167 @@
+﻿@model ChiTietDoanhSoHang
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red"></h1>
+        </div>
+
+        @if (Model != null)
+        {
+            @if (Model.ChiTietDoanhSoHang_VN != null && Model.ChiTietDoanhSoHang_VN.Count > 0)
+            {
+                <div class="table-responsive" style="font-size:12px;">
+                    <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                        <tbody colspan="2">
+                            @foreach (var item in Model.ChiTietDoanhSoHang_VN)
+                            {
+                                <tr class="even pointer " style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">
+                                    <td class="" colspan="2">
+                                        <span>VN @item.Ngay</span>
+                                        <span style="float:right;"></span>
+                                    </td>
+                                </tr>
+
+                                <tr class="even pointer ">
+                                    <td class="">1A</td>
+                                    <td class="" style="color:black;">@string.Format("{0:0,0}", item.DS_1A)</td>
+                                </tr>
+                                <tr class="even pointer ">
+                                    <td class="">1B</td>
+                                    <td class="" style="color:black;">@string.Format("{0:0,0}", item.DS_1B)</td>
+                                </tr>
+                                <tr class="even pointer ">
+                                    <td class="">1G</td>
+                                    <td class="" style="color:black;">@string.Format("{0:0,0}", item.DS_1G)</td>
+                                </tr>
+                                <tr class="even pointer ">
+                                    <td class="">FHQ</td>
+                                    <td class="" style="color:black;">
+                                        @string.Format("{0:0,0}", item.FHQ)
+                                    </td>
+                                </tr>
+                                <tr class="even pointer ">
+                                    <td class="">UJU</td>
+                                    <td class="" style="color:black;"> @string.Format("{0:0,0}", item.UJU)</td>
+                                </tr>
+                                <tr class="even pointer ">
+                                    <td class="">JPQ</td>
+                                    <td class="" style="color:black;"> @string.Format("{0:0,0}", item.JPQ)</td>
+                                </tr>
+
+                                <tr class="even pointer ">
+                                    <td class="">LXQ</td>
+                                    <td class="" style="color:black;"> @string.Format("{0:0,0}", item.LXQ)</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                        @*<thead>
+                <tr class="headings">
+                <th class="column-title">Ngày</th>
+                <th class="column-title">1A</th>
+                <th class="column-title">1B</th>
+                <th class="column-title">1G</th>
+                <th class="column-title">FHQ</th>
+                <th class="column-title">UJU</th>
+                <th class="column-title">JPQ</th>
+                <th class="column-title">LXQ</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @{int i = 1;}
+                @if (Model != null)
+                {
+
+                @foreach (var item in Model.ChiTietDoanhSoHang_VN)
+                {
+                <tr class="even pointer">
+                <td>@item.Ngay</td>
+                <td class="">@string.Format("{0:0,0}", item.DS_1A)</td>
+                <td class="">@string.Format("{0:0,0}", item.DS_1B)</td>
+                <td class="">@string.Format("{0:0,0}", item.DS_1G)</td>
+                <td class="">@string.Format("{0:0,0}", item.FHQ)</td>
+                <td class="">@string.Format("{0:0,0}", item.UJU)</td>
+                <td class="">@string.Format("{0:0,0}", item.JPQ)</td>
+                <td class="">@string.Format("{0:0,0}", item.LXQ)</td>
+                </tr>
+                i++;
+
+                }
+                }
+                else
+                {
+                <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>
+                }
+                </tbody>*@
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive" style="font-size:12px;">
+                    <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title">Ngày</th>
+                                <th class="column-title">1A</th>
+                                <th class="column-title">1B</th>
+                                <th class="column-title">1G</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+                                int i = 1;
+                            }
+                            @if (Model != null)
+                            {
+
+                                @foreach (var item in Model.ChiTietDoanhSoHang_IATA)
+                                {
+                                    <tr class="even pointer">
+                                        <td>@item.Ngay</td>
+                                        <td class="">@string.Format("{0:0,0}", item.DS_1A)</td>
+                                        <td class="">@string.Format("{0:0,0}", item.DS_1B)</td>
+                                        <td class="">@string.Format("{0:0,0}", item.DS_1G)</td>
+                                    </tr>
+                                    i++;
+
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+﻿@model List<BookerClubDetail>
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" style=" color: #fff;" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">List xổ số</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="table-responsive" style="max-height: 700px; overflow: auto;">
+                    <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title">STT </th>
+                                <th class="column-title">Mã KH </th>
+                                <th class="column-title">Tiêu đề </th>
+                                <th class="column-title">Từ ngày </th>
+                                <th class="column-title">Đến ngày </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*@if (Model != null)
+                            {
+                                int i = 1;
+                                @foreach (var item in Model)
+                                {
+                                    string DaiLy = "DaiLy" + @i;
+                                    string MaKH = "txtMaKH" + @i;
+                                    string SoLuong = "txtSoLuong" + @i;
+                                    <tr>
+                                        <td class="">@i</td>
+                                        <td class="">
+                                            <span class="@DaiLy show">@item.MaKH</span>
+                                            <input class="form-control input-sm @DaiLy hide" type="text" id="@MaKH" name="MaKH" value="@item.MaKH" />
+                                        </td>
+                                        <td class="">
+                                            <span class="@DaiLy show">@item.SoLuong</span>
+                                            <input class="form-control input-sm @DaiLy hide" type="text" id="@SoLuong" name="SoLuong" value="@item.SoLuong" />
+                                        </td>
+                                        <td class="">@item.Title</td>
+                                        <td class="">@item.DateFrom.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                                        <td class="">@item.DateTo.ToString("dd/MM/yyyy hh:mm:ss")</td>
+                                        <td>
+                                            <a class="Status" href="#" onclick="EditDaiLy(this,@i)">Edit</a> |
+                                            <a class="Status" href="#" onclick="SaveDaiLy(this,@i,@item.ID)">Save</a>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }*@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="~/js/data/listbookerclub.js"></script>
+

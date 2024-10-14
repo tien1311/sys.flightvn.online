@@ -1,0 +1,201 @@
+﻿@model KhachHangVIPModel
+@{
+    ViewData["Title"] = "Nhóm Đại Lý";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<h2>Nhóm Đại Lý</h2>
+@using (Html.BeginForm("NhomDL", "KhachHang", FormMethod.Get))
+{
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Mã KH</label>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input type="hidden" name="i" value="11" />
+                                <input class="form-control" name="MaKH" id="MaKH" placeholder="">
+                            </div>
+                            <div class="col-xs-6"><button type="submit" class="btn btn-primary" name="searchKH" value="searchBtn">Tìm Kiếm</button></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Mã KH</label>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <input class="form-control" readonly asp-for="MaKHtxt" id="MaKHtxt" name="MaKHtxt" placeholder="">
+                            </div>
+                            <div class="col-xs-6">
+                                <select name="NhomDL1" id="NhomDL1" class="form-control" onchange="getDept()">
+                                    <option value="0">-- Chọn nhóm VIP --</option>
+                                    @foreach (var item in Model.ListNhomDL)
+                                    {
+                                        <option value="@item.IDNhom">@item.TenNhom</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Tên Công Ty</label>
+                        <input class="form-control" readonly asp-for="TenCtytxt" id="TenCtytxt" name="TenCtytxt">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="control-label">Ghi chú</label>
+                        <textarea class="form-control" name="ghichutxt" id="ghichutxt" rows="5"></textarea>
+                    </div>
+                    <div class="form-group" style="text-align:right">
+                        <button type="submit" class="btn btn-primary" name="save" value="save">Lưu</button>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div id="cty" class="cty table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Mã KH</th>
+                                    <th>Tên Công Ty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    if (Model.ListNhomKhachHangVIP != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var item in Model.ListNhomKhachHangVIP)
+                                        {
+                                            <tr onclick="DL(this)" style="cursor:pointer">
+                                                <td style="text-align:center"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+
+                                                <td>@item.MaKH</td>
+                                                <td>@item.TenCty</td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="inputEmail3" class="control-label">Nội dung VIP</label>
+                        <div id="NDVIP" style=" height: 153px; background: #dddada; padding: 10px; border-radius: 4px; overflow: auto;">   </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <select name="NhomDL2" class="form-control">
+                                    @foreach (var item in Model.ListNhomDL)
+                                    {
+                                        <option value="@item.IDNhom">@item.TenNhom</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-xs-6"><button type="submit" class="btn btn-primary" name="searchNhom" value="searchNhom">Tìm Kiếm</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" style="font-size:12px;">
+                <table id="KHV" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>STT</th>
+                            <th>Mã KH</th>
+                            <th>Tên Công Ty</th>
+                            <th>Nhóm</th>
+                            <th>Ghi Chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            if (Model.ListKhachHangVIP != null)
+                            {
+                                int i = 1;
+                                foreach (var item in Model.ListKhachHangVIP)
+                                {
+                                    <tr id="@item.ID" class="even pointer">
+                                        <td style="text-align:center"><a class="Edit" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                        <td style="text-align:center">@i</td>
+                                        <td>@item.MaKH</td>
+                                        <td>@item.TenCty</td>
+                                        <td>@item.Nhom</td>
+                                        <td>@item.Ghichu</td>
+                                        <td style="display:none">@item.ID</td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script type="text/javascript">
+    function DL(ctrl) {
+        document.getElementById("MaKHtxt").value = ctrl.getElementsByTagName('td')[1].textContent;
+        document.getElementById("TenCtytxt").value = ctrl.getElementsByTagName('td')[2].textContent;
+    }
+</script>
+@if (ViewBag.ThongBaoKhachHang != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBaoKhachHang)');
+    </script>
+}
+<script>
+    function getDept() {
+        var id = $('#NhomDL1 option:selected').val();
+        /*$("#CatagoryId").val(id);*/
+        $.get("GetDepartments?id=" + id, function (data) {
+            console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                var optionText = data[i].noiDung;
+                document.getElementById("NDVIP").innerHTML = optionText;
+            }
+        }, "json");
+    }
+    $("#KHV .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../KhachHang/EditKhachHang",
+            data: { khoachinh: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

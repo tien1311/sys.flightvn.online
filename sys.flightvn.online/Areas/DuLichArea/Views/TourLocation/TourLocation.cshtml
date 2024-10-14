@@ -1,0 +1,173 @@
+﻿@model List<TourLocation>
+
+@{
+    ViewData["Title"] = "Voucher";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridVoucher" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th style="width:29px; text-align:center;"></th>
+                        <th style="width: 42px; text-align: center;">STT</th>
+                        <th style="width: 260px; text-align: center;">Tên điểm tham quan</th>
+                        <th style="width: 260px; text-align: center;">Email</th>
+                        <th style="width: 140px; text-align: center;">Số điện thoại</th>
+                        <th style="width: 260px; text-align: center;">Tỉnh/Thành</th>
+                        <th style="width: 260px; text-align: center;">Quận/Huyện</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.Id">
+                                <td onclick="EditTourLocation(this)" style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td style="text-align: center;">@i</td>
+                                <td style="text-align: center;">@item.Name</td>
+                                <td style="text-align: center;">@item.Email</td>
+                                <td style="text-align: center;">@item.Phone</td>
+                                <td style="text-align: center;">@item.Province</td>
+                                <td style="text-align: center;">@item.District</td>
+                                <td>
+                                    <a title="Xóa Điểm tham quan" class="h3" style="color:red; cursor: pointer;" onclick="DeleteTourLocation(this)">
+                                        <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog" style="padding:0px;">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+@*  //Handle Voucher Page *@
+@* <script src="~/js/Voucher/Voucher.js"></script>*@
+
+<script>
+    // Handle Create
+    document.getElementById('BtnCreate').onclick = (e) => {
+        // Call Create Popup
+        $.get(
+            '../TourLocation/CreateTourLocation',
+            (data, status) => {
+                if (status == 'success') {
+                    $('#openPopup').html(data);
+                    $('#openPopup').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                } else {
+                    Swal.fire({
+                        imageUrl: "/images/fail.png",
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        title: "Thao tác thất bại.",
+                        button: "Đóng",
+                    });
+                }
+            }
+        )
+    };
+
+    function EditTourLocation(element) {
+        var id = element.closest('tr').getAttribute('id')
+        // Call Edit Popup
+        $.get(
+            '../TourLocation/EditTourLocation',
+            { id: id },
+            (data, status) => {
+                if (status == 'success') {
+                    $('#openPopup').html(data);
+                    $('#openPopup').modal({
+                        backdrop: 'static',
+                        keyboard: true,
+                        show: true
+                    });
+                } else {
+                    Swal.fire({
+                        imageUrl: "/images/fail.png",
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        title: "Thao tác thất bại.",
+                        button: "Đóng",
+                    });
+                }
+            }
+        )
+    }
+
+    function DeleteTourLocation(element) {
+        var id = element.closest('tr').getAttribute('id')
+        Swal.fire({
+            title: 'Bạn thực sự muốn xoá?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Huỷ bỏ',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../TourLocation/DeleteTourLocation',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            Swal.fire({
+                                imageUrl: "/images/success.png",
+                                imageWidth: 100,
+                                imageHeight: 100,
+                                title: "Xóa thành công.",
+                                button: "Đóng",
+                            })
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                imageUrl: "/images/fail.png",
+                                imageWidth: 100,
+                                imageHeight: 100,
+                                title: "Xóa thất bại.",
+                                button: "Đóng",
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            imageUrl: "/images/fail.png",
+                            imageWidth: 100,
+                            imageHeight: 100,
+                            title: "Thao tác thất bại.",
+                            button: "Đóng",
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@

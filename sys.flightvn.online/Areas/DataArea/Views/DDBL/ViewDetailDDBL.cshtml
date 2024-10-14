@@ -1,0 +1,60 @@
+﻿@model List<TenHanhKhach>
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Danh sách khách bay</h1>
+        </div>
+        <div class="">
+            <table id="" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th>STT</th>
+                        <th>Tên khách</th>
+                        <th>Giá bán</th>
+                        <th>Giá giảm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.TenHK</td>
+                                <td>@item.GiaBan</td>
+                                <td>@item.GiaGiam</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>

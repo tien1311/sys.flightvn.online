@@ -1,0 +1,26 @@
+﻿@using Manager.Model.Models.PaginationBase
+@model PaginationBase<Manager.Model.Models.VeDoan.YeuCauVeDoan>
+
+<table id="gridVisa" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="width: 42px; text-align: center;">STT</th>
+            <th style="width: 150px;">Code</th>
+            <th style="text-align: center;">Hành trình</th>
+            <th style="width: 130px; text-align: center;">Nơi đi</th>
+            <th style="width: 130px; text-align: center;">Nơi đến</th>
+            <th style="text-align: center;">Số lượng</th>
+            <th style="text-align: center;">Tên công ty</th>
+            <th style="text-align: center;">Người đại diện</th>
+            <th style="text-align: center;">Số điện thoại</th>
+            <th style="text-align: center;">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("_OrderListPartial", Model)
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @await Html.PartialAsync("_NavPageListPartial", Model)
+</nav>

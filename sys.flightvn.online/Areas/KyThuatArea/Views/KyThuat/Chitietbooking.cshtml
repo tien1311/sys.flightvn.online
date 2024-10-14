@@ -1,0 +1,227 @@
+﻿@model List<ChitietBooking>
+
+
+
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="sidebar-package">
+
+            <div class="table-responsive">
+                <table class="table jambo_table bulk_action " style="margin-bottom:0">
+                    <tbody>
+                        <tr class="even pointer " style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">
+                            <td >
+                                <span>Chi tiết booking</span>
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Họ tên</td>
+                            <td class="" style="color:black;">@Model[0].Name</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Code</td>
+                            <td class="" style="color:black;">@Model[0].Code</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Sdt</td>
+                            <td class="" style="color:black;"><a href="tel:@Model[0].Sdt">@Model[0].Sdt</a></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Email</td>
+                            <td class="" style="color:black;">@Model[0].Email</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Mã kh</td>
+                            <td class="" style="color:black;">@Model[0].Makh</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Số lượng</td>
+                            <td class="" style="color:black;">@Model[0].Soluong</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Tổng tiền</td>
+                            <td class="" style="color:black;">@string.Format("{0:0,0}", Model[0].Tongtien).Replace(".", ",") VNĐ</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Ghi chú</td>
+                            <td class="" style="color:black;">@Model[0].Ghichu</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Ngày gửi</td>
+                            <td class="" style="color:black;">@Model[0].Ngaygui</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @if (Model[0].bookingdetail != null)
+                        {                          
+                       <tr>
+
+                     <td style="font-weight: bold;">Thời gian đi</td>
+                            <td>@Model[0].bookingdetail[0].Mabay</td> 
+                        
+
+
+                            <td> @Model[0].bookingdetail[0].Ngaybay</td>
+                                     
+                         
+
+                            <td>  @Model[0].bookingdetail[0].giobay </td>
+                      
+                    </tr>
+                            @if (Model[0].bookingdetail.Count > 1)
+                            {
+                    <tr>
+                        <td style="font-weight: bold;">Thời gian về</td>
+                        <td>    @Model[0].bookingdetail[1].Mabay </td>
+
+                        <td>  @Model[0].bookingdetail[1].Ngaybay</td>
+
+                        <td> @Model[0].bookingdetail[1].giobay</td>
+
+
+                    </tr>
+                            }
+                            else
+                            {
+                    <tr>
+                        <div class="form-group" id="chieuve">
+                            <div class="col-sm-4 col-md-4">
+                                <input type="text" class="form-control" name="FlightNumber2" id="FlightNumber2" placeholder="Mã chuyến bay">
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="FlightDate2" value=''>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input type="time" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">
+                                    </div>
+                                </div>
+                                @*<input type="text" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">*@
+
+                            </div>
+                        </div>
+                    </tr>
+                            }
+
+                        }
+                        else
+                        {
+                    <tr>
+                        <div class="form-group" id="chieudi">
+                            <div class="col-sm-4 col-md-4">
+                                <input type="text" class="form-control" name="FlightNumber1" id="FlightNumber1" placeholder="Mã chuyến bay">
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+
+
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="Ngày đi" name="FlightDate1" value=''>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+
+                                <input type="time" class="form-control" name="Hour1" id="Hour1" placeholder="Thời gian đi">
+                            </div>
+                        </div>
+                        <div class="form-group" id="chieuve">
+                            <div class="col-sm-4 col-md-4">
+                                <input type="text" class="form-control" name="FlightNumber2" id="FlightNumber2" placeholder="Mã chuyến bay">
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="FlightDate2" value=''>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <input type="time" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">
+                                    </div>
+                                </div>
+                                @*<input type="text" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">*@
+
+                            </div>
+                        </div>
+                    </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<!-- Modal content-->
+
+<style>
+    .all-browsers {
+        margin: 0;
+        border: 1px solid #D3D3D3;
+        background: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

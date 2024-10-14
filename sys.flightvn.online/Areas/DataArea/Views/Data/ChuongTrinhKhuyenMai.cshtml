@@ -1,0 +1,95 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@model List<ChuongTrinhKhuyenMai>
+@{
+    ViewData["Title"] = "Chương trình khuyến mãi";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Chương trình khuyến mãi</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridCTKM" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>STT</th>
+                        <th>Tên bài viết</th>
+                        <th>Từ ngày</th>
+                        <th>Đến ngày</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    { 
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            if (DateTime.Parse(item.DateTo) < DateTime.Now)
+                            {
+                                <tr id="@item.RowID" style="background-color: lightgray;">
+                                    <td><a class="Edit" style="color:blue;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                    <td>@i</td>
+                                    <td>@item.Title</td>
+
+                                    <td>@DateTime.Parse(item.DateFrom).ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>@DateTime.Parse(item.DateTo).ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td style="text-align: center;">
+                                        @if (item.Status == true)
+                                        {
+                                            <a class="Status" style="color:red;" href="#" onclick="UpdateStatusCTKM(0,'@item.RowID')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="Status" style="color:green;" href="#" onclick="UpdateStatusCTKM(1,'@item.RowID')"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                            else
+                            {
+                                <tr id="@item.RowID">
+                                    <td><a class="Edit" style="color:blue;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                    <td>@i</td>
+                                    <td>@item.Title</td>
+                                    <td>@DateTime.Parse(item.DateFrom).ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>@DateTime.Parse(item.DateTo).ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td style="text-align: center;">
+                                        @if (item.Status == true)
+                                        {
+                                            <a class="Status" style="color:red;" href="#" onclick="UpdateStatusCTKM(0,'@item.RowID')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a class="Status" style="color:green;" href="#" onclick="UpdateStatusCTKM(1,'@item.RowID')"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+
+<script src="~/js/data/chuongtrinhkhuyenmai.js"></script>

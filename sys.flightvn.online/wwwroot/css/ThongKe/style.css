@@ -1,0 +1,11 @@
+﻿@media only screen and (min-width: 768px) {
+    .btn-container {
+        margin-top: 23px;
+    }
+}
+
+@media only screen and ( max-width: 767px) {
+    .btn-container {
+        margin-bottom: 12px;
+    }
+}

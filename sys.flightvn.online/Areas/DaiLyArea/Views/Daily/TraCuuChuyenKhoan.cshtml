@@ -1,0 +1,479 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<BienDongSoDuModel>;
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Tra cứu chuyển khoản";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+
+<title>@ViewData["Title"]</title>
+<link href="~/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    .form-horizontal .has-feedback .form-control-feedback {
+        right: 0;
+    }
+
+    #gridVeHoan th {
+        padding: 10px 6px;
+    }
+
+    .pagination {
+        margin: 8px 0;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        vertical-align: middle;
+    }
+
+    .table {
+        margin-bottom: 0px;
+    }
+
+</style>
+<h2>Tra cứu chuyển khoản</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("TraCuuChuyenKhoan", "DaiLy", new { i = 8 }, FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+
+                        <div class="col-sm-8" style="font-size:15px;">
+                            <label for="" style="padding-top:11px">Mặc định</label>
+                            <span style="color:red">(Từ ngày: @DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy") -> Đến ngày: @DateTime.Now.ToString("dd/MM/yyyy"))</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12 col-md-4">
+                    <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="radio">
+                                <label>
+                                    @if (ViewBag.SelectOptions != "CheckSoTien")
+                                    {
+                                        <input type="radio" checked="checked" value="CheckMaKH" id="CheckMaKH" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="CheckMaKH" id="CheckMaKH" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+
+                                    <span style="font-size:14px;font-weight:700"> Tra cứu Mã KH</span>
+
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="radio">
+                                <label>
+                                    @if (ViewBag.SelectOptions == "CheckSoTien")
+                                    {
+                                        <input type="radio" checked="checked" value="CheckSoTien" id="CheckSoTien" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="CheckSoTien" id="CheckSoTien" onclick="checkRadio(value);" name="SelectOptions">
+                                    }
+
+                                    <span style="font-size:14px;font-weight:700">Tra cứu số tiền</span>
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="TraCuuMaKH">
+                <div class="form-group col-sm-4">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Mã KH
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="MAKH" name="MAKH" value="@ViewBag.MAKH" placeholder="">
+
+                    </div>
+
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <button type="submit" value="Search" class="btn btn-primary" name="search">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="row" id="TraCuuSoTien" style="display:none;">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Ngân Hàng
+                        </label>
+                        <div class="col-sm-8">
+                            <select id="NGANHANG" name="NGANHANG" class="form-control">
+                                @if (ViewBag.NganHang == "All")
+                                {
+                                    <option selected="selected" value="All">Tất cả</option>
+                                }
+                                else
+                                {
+                                    <option value="All">Tất cả</option>
+                                }
+
+                                @if (ViewBag.NganHang == "ACB")
+                                {
+                                    <option selected="selected" value="ACB">ACB</option>
+                                }
+                                else
+                                {
+                                    <option value="ACB">ACB</option>
+                                }
+                                @if (ViewBag.NganHang == "VCB")
+                                {
+                                    <option selected="selected" value="VCB">VCB</option>
+                                }
+                                else
+                                {
+                                    <option value="VCB">VCB</option>
+                                }
+                                @if (ViewBag.NganHang == "TCB")
+                                {
+                                    <option selected="selected" value="TCB">TCB</option>
+                                }
+                                else
+                                {
+                                    <option value="TCB">TCB</option>
+                                }
+                                @if (ViewBag.NganHang == "STB")
+                                {
+                                    <option selected="selected" value="STB">STB</option>
+                                }
+                                else
+                                {
+                                    <option value="STB">STB</option>
+                                }
+                                @if (ViewBag.NganHang == "VTB")
+                                {
+                                    <option selected="selected" value="VTB">VTB</option>
+                                }
+                                else
+                                {
+                                    <option value="VTB">VTB</option>
+                                }
+                                @if (ViewBag.NganHang == "OCB")
+                                {
+                                    <option selected="selected" value="OCB">OCB</option>
+                                }
+                                else
+                                {
+                                    <option value="OCB">OCB</option>
+                                }
+                                @if (ViewBag.NganHang == "MB")
+                                {
+                                    <option selected="selected" value="MB">MB</option>
+                                }
+                                else
+                                {
+                                    <option value="MB">MB</option>
+                                }
+                                @if (ViewBag.NganHang == "BIDV")
+                                {
+                                    <option selected="selected" value="BIDV">BIDV</option>
+                                }
+                                else
+                                {
+                                    <option value="BIDV">BIDV</option>
+                                }
+
+
+
+
+
+
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">Số tiền</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="SOTIEN" name="SOTIEN" value="@ViewBag.SOTIEN" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <input id="i" name="i" hidden value="8" />
+                            <button type="submit" value="SearchOther" class="btn btn-primary" name="search">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+
+            <table id="gridTable" class="table jambo_table bulk_action info">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title"> STT</th>
+                        <th class="column-title"> Mã CK </th>
+                        <th class="column-title"> Ngân hàng  </th>
+                        <th class="column-title"> Mã KH </th>
+                        <th class="column-title"> Số tiền </th>
+                        <th class="column-title"> Nợ có </th>
+
+                        <th class="column-title"> Nội dung </th>
+                        <th class="column-title"> Ngày CK </th>
+                        <th class="column-title"> Ngày nhận </th>
+                        <th class="column-title"> Ngày gửi </th>
+                        <th class="column-title"> Ngày sửa </th>
+                        <th class="column-title"> Người sửa </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || Model.Count == 0)
+                    {
+                        <tr class="even pointer">
+                            <td colspan="12" style="text-align:center;">
+                                <i>Không có thông tin để hiển thị</i>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        if (Model[0].NOIDUNG == "1")
+                        {
+                            <tr class="even pointer">
+                                <td colspan="12" style="text-align:center;">
+                                    <i>Mã KH này không tồn tại</i>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model)
+                            {
+                                @if (item.MAKH.Trim() != "")
+                                {
+                                    string NgayCK = item.NGAYCK.Substring(0, 10);
+                                    string NgayHT = DateTime.Now.ToString("dd/MM/yyyy");
+                                    TimeSpan time = DateTime.Now - DateTime.ParseExact(item.NGAYCK.Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                                    if (time.Days == 0)
+                                    {
+                                        <tr id="@item.MACK" class="even pointer info">
+                                            <td style="text-align:center">@item.STT</td>
+                                            <td class="">@item.MACK</td>
+                                            <td class="">@item.NGANHANG</td>
+
+                                            <td class="">@item.MAKH</td>
+                                            <td class="">@item.SOTIEN</td>
+
+                                            <td class="">@item.NOCO</td>
+
+                                            <td class="">@item.NOIDUNG</td>
+                                            <td class="">@item.NGAYCK</td>
+                                            <td class="">@item.NGAYNHAN</td>
+                                            <td class="">@item.NGAYGUI</td>
+                                            <td class="">@item.NGAYSUA</td>
+                                            <td class="">@item.NGUOISUA</td>
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr id="@item.MACK" class="even pointer">
+                                            <td style="text-align:center">@item.STT</td>
+                                            <td class="">@item.MACK</td>
+                                            <td class="">@item.NGANHANG</td>
+
+                                            <td class="">@item.MAKH</td>
+                                            <td class="">@item.SOTIEN</td>
+
+                                            <td class="">@item.NOCO</td>
+
+                                            <td class="">@item.NOIDUNG</td>
+                                            <td class="">@item.NGAYCK</td>
+                                            <td class="">@item.NGAYNHAN</td>
+                                            <td class="">@item.NGAYGUI</td>
+                                            <td class="">@item.NGAYSUA</td>
+                                            <td class="">@item.NGUOISUA</td>
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+
+                                    string NgayCK = item.NGAYCK.Substring(0, 10);
+                                    string NgayHT = DateTime.Now.ToString("dd/MM/yyyy");
+                                    TimeSpan time = DateTime.Now - DateTime.ParseExact(item.NGAYCK.Substring(0, 10), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                                    if (time.Days == 0)
+                                    {
+                                        <tr id="@item.MACK" class="even pointer info">
+                                            <td style="text-align:center">@item.STT</td>
+                                            <td class="">@item.MACK</td>
+                                            <td class="">@item.NGANHANG</td>
+                                            @{
+                                                if (time.Days < 2)
+                                                {
+                                                    <td class=""><a class="CapNhatMaKH" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" style="font-size: 16px;" aria-hidden="true"></i></a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="">@item.MAKH</td>
+                                                }
+                                            }
+                                            <td class="">@item.SOTIEN</td>
+                                            <td class="">@item.NOCO</td>
+                                            <td class="">@item.NOIDUNG</td>
+                                            <td class="">@item.NGAYCK</td>
+                                            <td class="">@item.NGAYNHAN</td>
+                                            <td class="">@item.NGAYGUI</td>
+                                            <td class="">@item.NGAYSUA</td>
+                                            <td class="">@item.NGUOISUA</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr id="@item.MACK" class="even pointer">
+                                            <td style="text-align:center">@item.STT</td>
+                                            <td class="">@item.MACK</td>
+                                            <td class="">@item.NGANHANG</td>
+                                            @{
+                                                if (time.Days < 2)
+                                                {
+                                                    <td class=""><a class="CapNhatMaKH" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" style="font-size: 16px;" aria-hidden="true"></i></a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="">@item.MAKH</td>
+                                                }
+                                            }
+                                            <td class="">@item.SOTIEN</td>
+                                            <td class="">@item.NOCO</td>
+                                            <td class="">@item.NOIDUNG</td>
+                                            <td class="">@item.NGAYCK</td>
+                                            <td class="">@item.NGAYNHAN</td>
+                                            <td class="">@item.NGAYGUI</td>
+                                            <td class="">@item.NGAYSUA</td>
+                                            <td class="">@item.NGUOISUA</td>
+                                        </tr>
+
+                                    }
+
+
+
+
+                                }
+
+                            }
+                        }
+
+                    }
+                </tbody>
+            </table>
+            @if (Model != null)
+            {
+
+                <nav style="float:right;">
+                    <vc:pager paging-list="@Model"></vc:pager>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+
+
+
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+
+        alert('@Html.Raw(ViewBag.msg)');
+
+    </script>
+} *@
+
+<script>
+
+    $("#gridTable .CapNhatMaKH").click(function () {
+
+        var MACK = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../Daily/EditMaKH",
+            data: { MaCK: MACK },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+
+                alert(response.responseText);
+            },
+            error: function (response) {
+
+                alert(response.responseText);
+            }
+        });
+    });
+
+</script>
+
+<script>
+
+    var name = document.querySelector('input[name="SelectOptions"]:checked').id;
+
+    checkRadio(name);
+
+    function checkRadio(name) {
+
+        if (name == "CheckMaKH") {
+            document.getElementById("TraCuuMaKH").style.display = "block";
+            document.getElementById("TraCuuSoTien").style.display = "none";
+        }
+        else {
+
+            document.getElementById("TraCuuMaKH").style.display = "none";
+            document.getElementById("TraCuuSoTien").style.display = "block";
+        }
+    }
+</script>

@@ -1,0 +1,266 @@
+﻿@model DaiLyModel
+@{
+    ViewData["Title"] = "Thông tin đại lý";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    a {
+        color: #006eff;
+    }
+</style>
+<title>@ViewData["Title"]</title>
+
+<h2 style="color: #000;">Thông tin đại lý</h2>
+<div class="row">
+    <label for="inputEmail3" class="col-sm-2 control-label">Tìm theo</label>
+    <div class="col-sm-10">
+        <div class="row">
+            @using (Html.BeginForm("Search", "Daily", new { i = 8 }, FormMethod.Post))
+            {
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <select name="DieuKien" id="DieuKien" class="form-control">
+                            <option value="0">Mã KH</option>
+                            <option value="3">Tên CTY</option>
+                            <option value="1">Nick Skype</option>
+                            <option value="2">Số điện thoại</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4"><input class="form-control" name="GiaTri" id="GiaTri" placeholder=""></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <input type="submit" class="btn btn-primary" value="Search" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding: 0 10px">
+    <p style="font-size: 16px;font-weight: bold;">Đại lý</p>
+    <div id="cty" class="cty table-responsive">
+        <table id="datatable1" class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th>Mã KH</th>
+                    <th>Tên Đại Lý</th>
+                    <th>Tình trạng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    if (Model.DSDaiLy.Count > 0)
+                    {
+                        foreach (var item in Model.DSDaiLy)
+                        {
+                            <tr>
+                                <td style="display:none">@item.member_id</td>
+                                <td style="display:none">@item.checkMaKH</td>
+                                <td>@item.member_kh</td>
+                                <td><a href="#">@item.member_company</a></td>
+                                @if (item.tinhtrang == "2")
+                                {
+                                    <td><a href="#" style="color:red">Không hoạt động</a></td>
+                                }
+                                else
+                                {
+                                    <td><a href="#" style="color:blue">Đang hoạt động</a></td>
+                                }
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">@ViewBag.thongbao </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <p style="margin-top: 20px;font-size: 16px;font-weight: bold;">Thông tin đại lý</p>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Tên đại lý</label>
+            <div class="col-sm-10  col-xs-8"><label id="member_company"></label> </div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Mã KH</label>
+            <div class="col-sm-10 col-xs-8" style="color: red; font-weight: bold;"><label id="member_kh"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Tình trạng đại lý</label>
+            <div class="col-sm-10 col-xs-8" style="color: red; font-weight: bold;"><label id="tentinhtrangagent"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Địa chỉ</label>
+            <div class="col-sm-10 col-xs-8"><label id="member_address"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Điện thoại</label>
+            <div class="col-sm-10 col-xs-8"><label id="member_tel"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Email</label>
+            <div class="col-sm-10 col-xs-8"><label id="member_email"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Kinh doanh EV</label>
+            <div class="col-sm-10 col-xs-8"><label id="NVKinhDoanh"></label> (<a id="SDTKinhDoanh"></a>)</div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Kế toán EV</label>
+            <div class="col-sm-10 col-xs-8"><label id="KeToan"></label> (<a id="SDTKeToan"></a>)</div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Số dư</label>
+            <div class="col-sm-10 col-xs-8" style="color: red; font-weight: bold;"><label id="SoDu"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Ghi chú kế toán</label>
+            <div class="col-sm-10 col-xs-8" style="color: red; font-weight: bold;"><label id="GhiChu"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Hạng</label>
+            <div class="col-sm-10 col-xs-8"><label id="Hang"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Âm quỹ cho phép</label>
+            <div class="col-sm-10 col-xs-8"><label id="AmQuyChoPhep"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Tiền bảo lãnh</label>
+            <div class="col-sm-10 col-xs-8"><label id="TienBaoLanh"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Hiệu Lực</label>
+            <div class="col-sm-10 col-xs-8"><label id="SoPhut"></label> phút, từ <label id="NgayLap"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Tình trạng Airline24h</label>
+            <div class="col-sm-10 col-xs-8"><label id="tinhtrang" style="color:red"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Lý do</label>
+            <div class="col-sm-10 col-xs-8"><label id="lydo"></label></div>
+        </div>
+
+    </div>
+    <div class="col-sm-6">
+        <p style="margin-top: 20px;font-size: 16px;font-weight: bold;">Chăm sóc khách hàng</p>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Nhóm</label>
+            <div class="col-sm-10 col-xs-8"><label id="NhomVIP" style="font-weight:bold;color:red;"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px 10px 10px ">
+            <label class="col-xs-12 control-label">Nội dung</label>
+            <div class="col-xs-12" style="border: 1px solid #bbb; border-radius: 4px; padding: 10px; height: 300px; overflow: auto;"><label id="NoiDungVIP"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-2 col-xs-4 control-label">Ghi chú</label>
+            <div class="col-sm-10 col-xs-8"><label id="GhiChuVIP"></label></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <p style="margin-top: 20px;font-size: 16px;font-weight: bold;">Thông tin hợp đồng</p>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-3 col-xs-4 control-label">Mã hợp đồng</label>
+            <div class="col-sm-9 col-xs-8"><label id="MaHopDong"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-3 col-xs-4 control-label">Ngày lập hợp đồng</label>
+            <div class="col-sm-9 col-xs-8"><label id="NgayLapHopDong"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-3 col-xs-4 control-label">Loại hợp đồng</label>
+            <div class="col-sm-9 col-xs-8"><label id="LoaiHopDong"></label></div>
+        </div>
+        <div class="row" style="padding: 0 10px">
+            <label class="col-sm-3 col-xs-4 control-label">Ghi chú hợp đồng</label>
+            <div class="col-sm-9 col-xs-8"><label id="GhiChuHopDong"></label></div>
+        </div>
+    </div>
+</div>
+<p style="margin-top: 20px;font-size: 16px;font-weight: bold;">Danh sách nick Skype</p>
+<div id="danhsachSkype" class="danhsachSkype">
+    <table id="datatable2" class="table table-bordered " role="grid" aria-describedby="datatable_info">
+        <thead>
+            <tr>
+                <th style="text-align:center">Nick Skype</th>
+                <th style="text-align:center">Họ tên</th>
+                <th style="text-align:center">Ngày cập nhật</th>
+                <th style="text-align:center">Tình trạng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                if (Model.DSLienHe != null)
+                {
+                    if (Model.DSLienHe.Count > 0)
+                    {
+                        foreach (var item1 in Model.DSLienHe)
+                        {
+                            <tr>
+                                <td>@item1.Nick</td>
+                                <td>@item1.HoTen</td>
+                                <td>@item1.NgayCapNhat</td>
+                                <td>@item1.TinhTrang</td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+<p style="margin-top: 20px;font-size: 16px;font-weight: bold;">Danh sách số điện thoại</p>
+<div id="danhsachPhone" class="danhsachSkype">
+    <table id="datatable3" class="table table-bordered " role="grid" aria-describedby="datatable_info">
+        <thead>
+            <tr>
+                <th style="text-align:center">Bộ phận</th>
+                <th style="text-align:center">Họ tên</th>
+                <th style="text-align:center">Điện thoại</th>
+                <th style="text-align:center">Ngày cập nhật</th>
+                <th style="text-align:center">Tình trạng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                if (Model.ListPhone != null)
+                {
+                    if (Model.ListPhone.Count > 0)
+                    {
+                        foreach (var item2 in Model.ListPhone)
+                        {
+                            <tr>
+                                <td>@item2.OFFICE</td>
+                                <td>@item2.FULLNAME</td>
+                                <td>@item2.PHONE</td>
+                                <td>@item2.DATE</td>
+                                <td>@item2.TINHTRANG</td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/DaiLy/DaiLy.js"></script>

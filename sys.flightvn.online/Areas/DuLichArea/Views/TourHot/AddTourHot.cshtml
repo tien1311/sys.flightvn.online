@@ -1,0 +1,538 @@
+﻿
+
+
+<style>
+   
+   
+
+    .modal-dialog {
+        max-width: 1000px !important;
+        margin: 1.75rem auto;
+    }
+    /* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+    .table-responsive::-webkit-scrollbar {
+        width: 4px; /* Chiều rộng của thanh cuộn dọc */
+        height: 4px; /* Chiều cao của thanh cuộn ngang */
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Màu nền của track */
+        border-radius: 8px; /* Bo tròn góc của track */
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: orange; /* Màu của thanh cuộn */
+        border-radius: 8px; /* Bo tròn góc của thanh cuộn */
+    }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: #e69500; /* Màu khi hover của thanh cuộn */
+        }
+
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        table-layout: auto; /* Điều này sẽ giúp các ô bảng tự động điều chỉnh kích thước dựa trên nội dung */
+    }
+
+    .action-group {
+        float: right;
+    }
+
+    .x_panel {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .x_content {
+        overflow-x: auto;
+    }
+
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+
+    th, td {
+        white-space: nowrap;
+    }
+
+
+
+    .modal-header .close {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 20px; /* Adjust as necessary */
+        right: 10px; /* Adjust as necessary */
+    }
+
+    .modal-title {
+        flex-grow: 1;
+        text-align: left;
+    }
+
+    @@media (min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+
+
+
+    #custom-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    .custom-loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo mới loại</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <form id="createTourForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Thông tin tour</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Loại tour</label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="col-xs-3">
+                                            <input class="form-check-input" type="radio" name="tour_type" id="domestic" value="domestic" checked>
+                                            <label class="form-check-label" for="domestic">Tour nội địa</label>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <input class="form-check-input" type="radio" name="tour_type" id="international" value="international">
+                                            <label class="form-check-label" for="international">Tour quốc tế</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Tên tour</label>
+                                    <input class="form-control" type="text" name="tour_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Điểm đi</label>
+                                    <select class="form-control" name="diem_di">
+                                        @foreach (var item in ViewBag.listTinhThanh)
+                                        {
+                                            <option value="@item.IDTinh">@item.TenTinh</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Điểm đến</label>
+                                    <select name="diem_den[]" multiple id="chosen-select" class="chosen-select form-control">
+                                        @foreach (var item in ViewBag.listTinhThanh)
+                                        {
+                                            <option value="@item.IDTinh">@item.TenTinh</option>
+                                        }
+                                        <!-- Nội dung này sẽ được thay đổi bởi jQuery -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Điểm đón</label>
+                                    <input class="form-control" type="text" name="diem_don" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Loại phương tiện</label>
+                                    <select class="form-control" name="loai_xe">
+                                        <option value="Xe khách">Xe khách</option>
+                                        <option value="Máy bay">Máy bay</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Hướng dẫn viên</label>
+                                    <input class="form-control" type="text" name="hdv" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Số ngày</label>
+                                    <input class="form-control" type="number" step="1" min="1" name="so_ngay" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Số đêm</label>
+                                    <input class="form-control" type="number" min="1" step="1" name="so_dem" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Gắn cờ</label>
+                                    <select class="form-control" name="gan_co">
+                                        @foreach (var item in ViewBag.listFlag)
+                                        {
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">File chương trình</label>
+                                    <div class="inputfile-box">
+                                        <input type="file" id="fileProgram" class="inputfile" name="files" onchange="handleFileChange(event, 'fileProgramName')">
+                                        <label for="fileProgram">
+                                            <span class="file-button btn btn-primary" style="margin-bottom: 6px;">Chọn file</span>
+                                        </label>
+                                        <input id="fileProgramName" class="file-box" placeholder="Chọn tập tin" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Thông tin người bán</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Tên người bán</label>
+                                    <input class="form-control" type="text" name="sales_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input class="form-control" type="email" name="sales_email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input class="form-control" type="tel" name="sales_phoneNumber" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Ghi chú</label>
+                                    <input class="form-control" type="tel" name="note" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày đi</label>
+                                    <input class="form-control" type="date" name="ngay_di" value="" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày về</label>
+                                    <input class="form-control" type="date" name="ngay_ve" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày đóng tour</label>
+                                    <input class="form-control" type="date" name="ngay_dong_tour" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Tổng</label>
+                                    <input class="form-control" type="number" name="tong" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Đã đặt</label>
+                                    <input class="form-control" type="number" name="da_dat" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Giữ chỗ</label>
+                                    <input class="form-control" type="number" name="giu_cho" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="item form-group">
+                            <label class="control-label">
+                                Hình đại diện (800x450px)
+                            </label>
+                            <div class="row contain-listImg" id="RowImg1">
+                                <div class="col-sm-7 col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-10">
+                                            <div class="inputfile-box">
+                                                <input type="file" id="file1" class="inputfile" onchange="previewImage(event)" accept="image/*">
+                                                <label for="file1">
+                                                    <span class="file-button btn btn-primary" style="margin-bottom: 6px;">
+                                                        Chọn file
+                                                    </span>
+                                                </label>
+                                                <input id="file-name-popup1" class="file-box" placeholder="Chọn tập tin">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <input class="btn btn-primary" onclick="CreateRowImg();" type="button" value="+" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-xs-6">
+                                    <input class="form-check-input" type="radio" name="mainImage" id="flexRadioDefault1" value="1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Hình đại diện
+                                    </label>
+                                </div>
+                                <div class="col-sm-2 col-xs-6">
+                                    <div class="main-img" id="imagePreview1"></div>
+                                </div>
+                            </div>
+                            <div id="addRowsImg"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Mô tả ngắn</label>
+                            <textarea class="form-control" name="short_notes" id="short_notes"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="form-label" class="control-label">Mô tả dài</label>
+                            <textarea class="form-control" name="long_notes" id="long_notes"></textarea>
+                        </div>
+                    </div>
+                    <br />
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-price">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="width: 150px">Loại khách sạn</th>
+                                        <th>Giá người lớn</th>
+                                        <th>Giá trẻ em</th>
+                                        <th>Giá em bé</th>
+                                        <th>Phụ thu đơn</th>
+                                        <th>Phụ thu quốc tịch</th>
+                                        <th>HH người lớn</th>
+                                        <th>HH trẻ em</th>
+                                        <th>HH em bé</th>
+                                        <th>KM Giá người lớn</th>
+                                        <th>KM Giá trẻ em</th>
+                                        <th>KM Giá em bé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input class="btn btn-primary" onclick="CreateRowTable();" type="button" value="+" />
+
+                                            @* Nếu dòng đầu sẽ không có dấu - *@
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="gia_loai">
+
+                                                <option value="1s">KS 1s</option>
+                                                <option value="2s">KS 2s</option>
+                                                <option value="3s">KS 3s</option>
+                                                <option value="4s">KS 4s</option>
+                                                <option value="5s">KS 5s</option>
+                                                <option value="rs3s">RS 3s</option>
+                                                <option value="rs4s">RS 4s</option>
+                                                <option value="rs5s">RS 5s</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="gia_nguoi_lon[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="gia_tre_em[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="gia_em_be[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="phu_thu_don[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="phu_thu_quoctich[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="hh_gia_nguoi_lon[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="hh_gia_tre_em[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="hh_gia_em_be[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="km_gia_nguoi_lon[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="km_gia_tre_em[]" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control priceInput" name="km_gia_em_be[]" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="action-group form-group">
+                            <button type="button" id="submitForm" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/dulich/AddTourHot.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script src="~/js/DuLich/chosen.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".chosen-select").chosen();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Hàm cập nhật danh sách điểm đến
+        function updateDestinations(list) {
+            var $select = $('#chosen-select');
+            $select.empty(); // Xóa tất cả các tùy chọn hiện có
+            $.each(list, function(index, item) {
+                $select.append($('<option>', {
+                    value: item.IDTinh,
+                    text: item.TenTinh
+                }));
+            });
+            $select.trigger("chosen:updated"); 
+        }
+
+        // Danh sách điểm đến
+        var domesticList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.listTinhThanh));
+        var internationalList = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.listTinhThanhQT));
+
+        // Sự kiện khi thay đổi loại tour
+        $('input[name="tour_type"]').on('change', function() {
+            if ($('#domestic').is(':checked')) {
+                updateDestinations(domesticList);
+            } else if ($('#international').is(':checked')) {
+                updateDestinations(internationalList);
+            }
+        });
+        
+        updateDestinations(domesticList);
+    });
+</script>

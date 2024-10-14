@@ -1,0 +1,25 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@model List<SubjectModel>
+
+
+
+<style type="text/css">
+    .info_right a:hover {
+        color: #337ab7 !important;
+    }
+</style>
+
+@foreach (var item in Model) {
+    <ul class="info_right" style="color:black;padding-left:15px;">
+        <li>
+         
+            @Html.ActionLink(item.Title, "Content", "Home", new { area = AreaNameConst.AREA_Home ,subject_id = @item.subject_id },new { Style = "color:black" })
+
+
+
+
+        </li>
+    </ul>
+}
+
+

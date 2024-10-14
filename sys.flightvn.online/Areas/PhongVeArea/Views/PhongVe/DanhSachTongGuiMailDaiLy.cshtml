@@ -1,0 +1,290 @@
+﻿@model DanhSachTongNhanVienXuatDoiVe
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Báo cáo tổng nhân viên Xuất vé - Đổi vé";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+
+<title>@ViewData["Title"]</title>
+<link href="~/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    .form-horizontal .has-feedback .form-control-feedback {
+        right: 0;
+    }
+
+    #gridVeHoan th {
+        padding: 10px 6px;
+    }
+
+    .pagination {
+        margin: 8px 0;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        vertical-align: middle;
+    }
+
+    .table {
+        margin-bottom: 0px;
+    }
+</style>
+<h2>Báo cáo tổng nhân viên Xuất vé - Đổi vé</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("DanhSachTongGuiMailDaiLy", "PhongVe", new { i = 3 }, FormMethod.Post))
+        {
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="col-sm-4 col-xs-8">
+                    <div class="form-group">
+                        <label for="" class="col-sm-4 col-xs-2" style="padding-top:11px">Ngày</label>
+                        <div class="col-sm-8 col-xs-10">
+                            <select id="NGAYTIMKIEM" name="NGAYTIMKIEM" class="form-control">
+                                @if (ViewBag.NGAY == "HN")
+                                {
+                                    <option selected value="HN">Hôm nay</option>
+                                }
+                                else
+                                {
+                                    <option value="HN">Hôm nay</option>
+                                }
+
+                                @if (ViewBag.NGAY == "HT")
+                                {
+                                    <option selected value="HT">Hôm qua</option>
+                                }
+                                else
+                                {
+                                    <option value="HT">Hôm qua</option>
+                                }
+                                @if (ViewBag.NGAY == "TuanT")
+                                {
+                                    <option selected value="TuanT">Tuần trước</option>
+                                }
+                                else
+                                {
+                                    <option value="TuanT">Tuần trước</option>
+                                }
+                                @if (ViewBag.NGAY == "ThangT")
+                                {
+                                    <option selected value="ThangT">Tháng trước</option>
+                                }
+                                else
+                                {
+                                    <option value="ThangT">Tháng trước</option>
+                                }
+                                @if (ViewBag.NGAY == "NamT")
+                                {
+                                    <option selected value="NamT">Năm trước</option>
+                                }
+                                else
+                                {
+                                    <option value="NamT">Năm trước</option>
+                                }
+
+
+
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-3">
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <button type="submit" class="btn btn-primary" value="Search" name="search">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel" style="height:auto;">
+                    <div class="x_title">
+                        <span style="font-size: 16px;color: red;">Tính năng tìm kiếm mở rộng</span>
+
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li style="float:right;">
+                                <a class="collapse-link"><i class="fa fa-chevron-up" style="color:red"></i></a>
+                            </li>
+
+
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="x_content" style="display:none;">
+
+
+                        <div class="row">
+
+                            <div class="form-horizontal">
+                                <div class="item col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                                            Từ Ngày
+                                        </label>
+                                        <div class="col-md-8 col-sm-6 col-xs-12 ">
+
+                                            <fieldset class="col-xs-12" style="padding:0px">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                                            <input type="text" class="form-control has-feedback-right" id="single_cal5" name="cal_from" value='@ViewBag.DateFrom'>
+                                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*Muốn cho trường tháng năm rỗng ko lấy ngày hiện tại vào file custom.min.js dòng 1230*@
+                                <div class="item col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                                            Đến Ngày
+                                        </label>
+                                        <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                            <fieldset class="col-xs-12" style="padding:0px">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                            <input type="text" class="form-control has-feedback-right" id="single_cal6" name="cal_to" value='@ViewBag.DateTo'>
+                                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="form-horizontal">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4" style="padding-top:11px">Nhân viên</label>
+                                        <div class="col-sm-8">
+                                            <select id="NHANVIEN" name="NHANVIEN" class="form-control">
+                                                @if (Model.ListNhanVien != null)
+                                                {
+                                                <option value="All">Tất cả</option>
+                                                    foreach (var item in Model.ListNhanVien)
+                                                    {
+                                                <option value="@item.TenDangNhap">
+                                                    @item.TenNhanVien
+                                                </option>
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+
+
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+
+                                    <div class="col-xs-6">
+                                        <button type="submit" class="btn btn-primary" value="SearchMoRong" name="search">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-sm-8">
+                        <span style="color:red;font-size:14px;">@ViewBag.ThongBao</span>
+                    </div>
+                </div>
+            </div>
+
+                        }
+                    </div>
+                </div>
+
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="table-responsive" style="font-size:12px;">
+
+                            <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title"> STT</th>
+                                        <th class="column-title"> Mã NV </th>
+                                        <th class="column-title"> Tên NV  </th>
+                                        <th class="column-title"> SL xuất vé </th>
+                                        <th class="column-title"> SL đổi vé </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model == null)
+                                {
+                                    <tr class="even pointer">
+                                        <td colspan="12" style="text-align:center;">
+                                            <i>Không có thông tin để hiển thị</i>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    foreach (var item in Model.ListNhanVienXuatDoiVe)
+                                    {
+                                    <tr class="even pointer">
+                                        <td style="text-align:center">@item.STT</td>
+                                        <td class="">@item.MaNV</td>
+                                        <td class="">@item.TenNV</td>
+                                        <td class="">@item.SLXuatVe</td>
+                                        <td class="">@item.SLDoiVe</td>
+
+
+                                    </tr>
+                                    }
+                                }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="openPopup" role="dialog">
+                </div>
+
+                <script src="~/js/jquery.1.7.2.min.js"></script>
+                <script src="~/js/jquery-ui.1.8.9.js"></script>
+                <link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+

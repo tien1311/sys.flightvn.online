@@ -1,0 +1,241 @@
+﻿
+@{
+    ViewData["Title"] = "Phòng vé";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<style>
+    .container-login100 {
+        width: 100%;
+        min-height: 100vh;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .img-responsive {
+        border-radius: 7px;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .container-login100 {
+        background-image: url('/images/2.png');
+    }
+
+    .container-content {
+        background: #fff;
+        border-radius: 5px;
+        padding: 0px;
+        text-align: justify;
+    }
+
+    .content-iframe {
+        margin: auto;
+        width: 100%;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        font-weight: bold;
+    }
+
+    .nav > li.nav-item > a:focus, .nav > li.nav-item > a:hover {
+        color: #000 !important;
+    }
+
+    .content-iframe iframe {
+        height: 800px;
+        width: 100%;
+        border-radius: 7px;
+    }
+
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .btn-BSP {
+        color: #fff;
+        background-color: #6c0678;
+        border-color: #6c0678;
+    }
+
+    .nav > li > a {
+        padding: 8px 13px 8px !important;
+    }
+
+    @@media (max-width: 768px) {
+        .logo {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 30px;
+        }
+
+        .container-login100 {
+            background-image: url('/images/5.jpg');
+            background-position: inherit;
+        }
+
+        .content-iframe {
+            width: 100%;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .modal-dialog {
+            width: 100%;
+            margin: auto;
+        }
+    }
+</style>
+<div class="limiter">
+    <div class="container-login100" style="">
+        <div class="content-iframe">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+                        <li class="nav-item active">
+                            <a class="btn btn-success" id="Hang-tab" data-toggle="tab" href="#Hang" role="tab" aria-controls="Hang" aria-selected="false">NEWS</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="btn btn-info" id="SGN-tab" data-toggle="tab" href="#SGN" role="tab" aria-controls="SGN" aria-selected="true">SGN</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="btn btn-danger" id="DAD-tab" data-toggle="tab" href="#DAD" role="tab" aria-controls="DAD" aria-selected="true">DAD</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="btn btn-dark" id="HAN-tab" data-toggle="tab" href="#HAN" role="tab" aria-controls="HAN" aria-selected="true">HAN</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="btn btn-warning" id="CA-tab" data-toggle="tab" href="#CA" role="tab" aria-controls="CA" aria-selected="true">CA</a>
+                        </li>
+                       @*  <li class="nav-item ">
+                            <a class="btn btn-primary" id="CC-tab" data-toggle="tab" href="#CC" role="tab" aria-controls="CC" aria-selected="true"><span class="bt">GIÁ CORPORATE BSP</span><span class="rg">GIÁ CORP</span></a>
+                        </li> *@
+                        <li class="nav-item ">
+                            <a class="btn btn-success" id="Q-tab" data-toggle="tab" href="#Q" role="tab" aria-controls="Q" aria-selected="true">QUEUE</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="btn btn-info" id="QD-tab" data-toggle="tab" href="#QD" role="tab" aria-controls="QD" aria-selected="true">QUY ĐỊNH</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-danger" id="BK-tab" data-toggle="tab" href="#BK" role="tab" aria-controls="BK" aria-selected="true">PHÒNG VÉ</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="btn btn-dark" id="LH-tab" data-toggle="tab" href="#LH" role="tab" aria-controls="LH" aria-selected="true">LỊCH HỌC</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="btn btn-warning" id="FAM-tab" data-toggle="tab" href="#FAM" role="tab" aria-controls="FAM" aria-selected="true">FARMTRIP</a>
+                        </li>
+                        @*<li class="nav-item">
+                            <a class="btn btn-warning" id="LT-tab" data-toggle="tab" href="#LT" role="tab" aria-controls="LT" aria-selected="true">Lịch trực</a>
+                        </li>*@
+                    </ul>
+                    <div class="modal-body">
+                        <div class="tab-content popup" id="myTabContent">
+                            <div class="tab-pane fade active" id="Hang" role="tabpanel" aria-labelledby="Hang-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe id="IF2" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTSEmku_LgUr84_cRh3hHYo03MAnVFVgBnzM9L9EE1HqGVYUdkLcCM2DBSVq0HKfFCFhUCX_UkRTsP3/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade " id="SGN" role="tabpanel" aria-labelledby="SGN-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=757147068&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="DAD" role="tabpanel" aria-labelledby="DAD-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=1925200341&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="HAN" role="tabpanel" aria-labelledby="HAN-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=209059366&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="CA" role="tabpanel" aria-labelledby="CA-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=1700233071&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            @* <div class="tab-pane fade" id="CC" role="tabpanel" aria-labelledby="CC-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ_2SYWQs83Rz1jt8BJ1eRx-q14nyG_Gg8vgPi3ecMvrfQJstJXDIIor9duVe9mWyJCDQ-VjCy4a0CE/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div> *@
+                            <div class="tab-pane fade" id="Q" role="tabpanel" aria-labelledby="Q-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=526321010&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="QD" role="tabpanel" aria-labelledby="QD-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTSEmku_LgUr84_cRh3hHYo03MAnVFVgBnzM9L9EE1HqGVYUdkLcCM2DBSVq0HKfFCFhUCX_UkRTsP3/pubhtml?gid=150335414&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="BK" role="tabpanel" aria-labelledby="BK-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vSW_JmfBejBS_m3MEii2_PllptatICb6UP1S8FfY9zB3ne30dC12m4MNlbSkAw2mjxaOhnKsrUsRPvu/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="LH" role="tabpanel" aria-labelledby="LH-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=1723227470&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="FAM" role="tabpanel" aria-labelledby="FAM-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJVW8nAnij9iYv4QOPdG4SAf7fZsFvNdFzLB4RIdGNtzuznz1aDhdLvY_l/pubhtml?gid=1249332348&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="tab-pane fade" id="LT" role="tabpanel" aria-labelledby="LT-tab">
+            <div class="row">
+                <div class="col-xs-12 container-content">
+                    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSnqzo4aunCyXlQ3rSZCNcJ...rs=false"></iframe>
+                </div>
+            </div>
+        </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var h = window.innerHeight;
+    document.getElementById("IF2").style.height = h - 160 + "px";
+</script>

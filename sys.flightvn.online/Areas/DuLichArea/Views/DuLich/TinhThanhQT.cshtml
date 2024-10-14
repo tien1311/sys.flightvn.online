@@ -1,0 +1,104 @@
+﻿@model List<Destination>
+
+@{
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css" integrity="sha512-0nkKORjFgcyxv3HbE4rzFUlENUMNqic/EzDIeYCgsKa/nwqr2B91Vu/tNAu4Q0cBuG4Xe/D1f/freEci/7GDRA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<style>
+    .row {
+        justify-content: space-between;
+    }
+
+    .col-6 {
+        width: 48%;
+    }
+
+    .chosen-select-trangThai,
+    .chosen-select-TrangThaiTinh {
+        width: 100%;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-image: none;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        .chosen-select-trangThai:focus,
+        .chosen-select-TrangThaiTinh:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+    .chosen-container-multi {
+        width: 100% !important;
+    }
+
+    .h4, .h5, .h6, h4, h5, h6 {
+        margin-top: 0;
+        margin-bottom: 0px;
+        padding: 5px;
+    }
+    .outer-div {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px; 
+    }
+    h5 {
+        font-weight: bold; /* Đặt font-weight là bold */
+    }
+    .chosen-container-multi .chosen-choices {
+        border-radius: 4px;
+        padding: 5px;
+    }
+</style>
+<h2>Cấu hình Tỉnh/Thành</h2>
+
+
+@if (Model != null && Model.Any())
+{
+<div class="outer-div">
+    <h5>1. Các tỉnh phổ biến</h5>
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <select name="selectedOptions" multiple class="chosen-select-trangThaiQT form-control">
+                            @foreach (var item in Model)
+                            {
+                                <option value="@item.TenTinh" @(item.Trangthai == 1 ? "selected" : "")>@item.TenTinh</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <h5>2. Các tỉnh loại trừ</h5>
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+
+                        <select name="selectedOptions" multiple class="chosen-select-TrangThaiTinhQT form-control">
+                            @foreach (var item in Model)
+                            {
+                                <option value="@item.TenTinh" @(item.TrangThaiTinh == 0 ? "selected" : "")>@item.TenTinh</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+}

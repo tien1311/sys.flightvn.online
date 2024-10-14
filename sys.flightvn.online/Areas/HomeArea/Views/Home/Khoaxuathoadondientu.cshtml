@@ -1,0 +1,508 @@
+﻿@model KhoaHoaDon
+@{
+    ViewData["Title"] = "Khóa xuất hóa đơn điện tử";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<div class="col-md-4">
+    <div class="form-horizontal" role="form">
+        <div class="col-sm-12" style=" border: 1px solid black; padding: 5px 5px 5px 5px;">
+            <label for="" style="color:red" class="col-sm-12">Chọn khóa điện tử</label>
+            <div class="form-group">
+                <div class="col-sm-12 form-group">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <select id="khoa" name="khoa" asp-for="khoa" class="select2_single form-control" onchange="getKhoa()">
+                                @foreach (var item in Model.KieuKhoa)
+                                {
+                                    <option value="@item.ItemKey">@item.ItemValue</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-4"> <input type="submit" class="btn btn-danger btn-block" id="khoatongBtn" value="Khóa" /></div>
+                    </div>
+                </div>
+            </div>
+            <label for="" class="col-sm-12">Khóa xuất hóa đơn phòng vé</label>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Loại1</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="txt_PVL1" name="txt_PVL1" placeholder="" value="@Model.txt_PVL1" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Loại 2</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="txt_PVL2" name="txt_PVL2" placeholder="" value="@Model.txt_PVL2" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Loại 3</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="txt_PVL3" name="txt_PVL3" placeholder="" value="@Model.txt_PVL3" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">Loại 4</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="txt_PVL4" name="txt_PVL4" placeholder="" value="@Model.txt_PVL4" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-4" style="margin-bottom: 15px;">
+                    <button type="submit" class="btn btn-primary btn-block" id="Laydata" name="Laydata" value="Laydata">LẤY DATA</button>
+                </div>
+                <div class="col-md-push-4 col-md-4" style="text-align:right;">
+                    <button type="submit" class="btn btn-success btn-block" id="khoaBtn1" name="khoaBtn1" value="searchBtn1" disabled>KHÓA</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 form-group" style="border: 1px solid black; padding: 5px 5px 5px 5px;">
+            <div class="col-sm-12 form-group">
+                <label for="" style="color:red" class="col-sm-12">Ngày tự khóa hóa đơn</label>
+            </div>
+            <div class="col-sm-12 form-group">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="txt_NgayKhoa" name="txt_NgayKhoa" placeholder="" value="@Model.txt_NgayKhoa">
+                    </div>
+                    <div class="col-sm-4"><button type="submit" class="btn btn-danger btn-block" id="Ngaykhoa" name="Ngaykhoa" value="Ngaykhoa">KHÓA</button></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" style="color:red" class="col-sm-12">Khóa xuất hóa đơn phòng vé</label>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-6 ">Giới hạn hợp đồng 1 ngày</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="txt_GHTN" name="txt_GHTN" placeholder="" value="@Model.txt_GHTN">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-6 ">Chữa số hợp đồng loại 1</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="txt_ChuaL1" name="txt_ChuaL1" placeholder="" value="@Model.txt_ChuaL1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-6 ">Chữa số hợp đồng loại 2</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="txt_ChuaL2" name="txt_ChuaL2" placeholder="" value="@Model.txt_ChuaL2">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-6 ">Chữa số hợp đồng loại 3</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="txt_ChuaL3" name="txt_ChuaL3" placeholder="" value="@Model.txt_ChuaL3">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-6 ">Chữa số hợp đồng loại 4</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="txt_ChuaL4" name="txt_ChuaL4" placeholder="" value="@Model.txt_ChuaL4">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-push-8 col-md-4" style="text-align:right;">
+                    <button type="submit" class="btn btn-primary btn-block" id="Gioihanngay" name="Gioihanngay" value="Gioihanngay">CẬP NHẬT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-8">
+    <div class="form-horizontal" role="form">
+        <div class="form-group">
+            <div class="col-sm-12">
+                <div class="col-md-12" style="border: 1px solid black; padding: 5px 5px 5px 5px;">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" style="color:red; text-align:center" class="col-sm-12">Mẫu số</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_KHHD_1" name="txt_KHHD_1" placeholder="" value="@Model.txt_KHHD_1">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_KHHD_2" name="txt_KHHD_2" placeholder="" value="@Model.txt_KHHD_2">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_KHHD_3" name="txt_KHHD_3" placeholder="" value="@Model.txt_KHHD_3">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_KHHD_4" name="txt_KHHD_4" placeholder="" value="@Model.txt_KHHD_4">
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label for="" style="color:red;text-align:center" class="col-sm-12">KHHD</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_Serial_L1" name="txt_Serial_L1" placeholder="" value="@Model.txt_Serial_L1">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_Serial_L2" name="txt_Serial_L2" placeholder="" value="@Model.txt_Serial_L2">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_Serial_L3" name="txt_Serial_L3" placeholder="" value="@Model.txt_Serial_L3">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="txt_Serial_L4" name="txt_Serial_L4" placeholder="" value="@Model.txt_Serial_L4">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" id="updateKHHD" name="updateKHHD" value="update">CẬP NHẬT</button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-3" style="border:1px solid black;">
+                    <div class="form-group">
+                        <label for="" style="color:red;" class="col-sm-12">Nội dung thông báo chữ</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="" style="text-align:center;" class="col-sm-12">Chọn phần mềm</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="khoaphanmem" name="khoaphanmem" asp-for="khoaphanmem" class="select2_single form-control" onchange="getPhanmem()">
+                            @foreach (var item in Model.PhanMem)
+                            {
+                                <option @item.Select class="Phanmem">@item.Phanmem</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block" id="updatePhanmem" name="updatePhanmem" value="updatePhanmem">CẬP NHẬT</button>
+                    </div>
+                </div>
+                <div class="col-md-9 " style="border: 1px solid black; padding: 5px 5px 5px 5px; margin-bottom:40px;">
+                    <div class="form-group">
+                        @*<input type="text" id="Noidung" value="@Model.PhanMem[0].Thongbao"/>*@
+                        <h5 id="Noidung">@Html.Raw(Model.PhanMem[0].Thongbao)</h5>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" class="col-sm-12">Nhập mật khẩu để xác nhận</label>
+                </div>
+                <div class="form-group col-md-3">
+                    <input type="password" class="form-control" id="nhapmk" name="nhapmk" placeholder="" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+    .boderexam1 {
+        border: 2px solid black;
+        padding: 5px 5px 5px 5px;
+    }
+</style>
+
+<!-- Modal content-->
+<script type="text/javascript">
+    function getKhoa() {
+        var id = $('#khoa option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "../Home/GetKey",
+            data: { khoachinh: id },
+
+            success: function (response) {
+
+                if (response == 1) {
+
+                    document.getElementById("khoatongBtn").value = "Mở";
+
+                } else {
+
+                    document.getElementById("khoatongBtn").value = "Khóa";
+
+                }
+            },
+            failure: function (response) {
+
+                alert(response);
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+
+
+        });
+    }
+</script>
+<script>
+    $("#khoatongBtn").click(function () {
+        var id = $('#khoa option:selected').val();
+        var khoatong = document.getElementById("khoatongBtn").value;
+        var nhapmk = document.getElementById("nhapmk").value;
+        if (nhapmk == "") {
+            alert("Vui lòng nhập mã mật khẩu");
+            return;
+        }
+        if (id == "0") {
+            alert("Xin vui lòng chọn để khóa");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "../Home/Khoahoadon",
+            data: {
+                nhapmk: nhapmk,
+                id: id
+
+            },
+            success: function (response) {
+                if (response == true) {
+                    if (khoatong == "Khóa") {
+                        document.getElementById("khoatongBtn").value = "Mở";
+                        alert("KHÓA / MỞ KHÓA XUẤT HĐ THÀNH CÔNG!");
+                    } else {
+                        document.getElementById("khoatongBtn").value = "Khóa";
+                        alert("KHÓA / MỞ KHÓA XUẤT HĐ THÀNH CÔNG!");
+                    }
+
+                } else {
+                    alert("Mật khẩu xác nhận không đúng!");
+                }
+
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response);
+            }
+        });
+    });
+</script>
+<script>
+    $("#Laydata").click(function () {
+        document.getElementById('txt_PVL1').readOnly = false;
+        document.getElementById('txt_PVL2').readOnly = false;
+        document.getElementById('txt_PVL3').readOnly = false;
+        document.getElementById('txt_PVL4').readOnly = false;
+        document.getElementById('khoaBtn1').disabled = false;
+    });
+</script>
+<script>
+    $("#khoaBtn1").click(function () {
+
+        var txt_PVL1 = document.getElementById("txt_PVL1").value;
+        var txt_PVL2 = document.getElementById("txt_PVL2").value;
+        var txt_PVL3 = document.getElementById("txt_PVL3").value;
+        var txt_PVL4 = document.getElementById("txt_PVL4").value;
+        var nhapmk = document.getElementById("nhapmk").value;
+        $.ajax({
+            type: "POST",
+            url: "../Home/KhoaPVL",
+            data: {
+                txt_PVL1: txt_PVL1,
+                txt_PVL2: txt_PVL2,
+                txt_PVL3: txt_PVL3,
+                txt_PVL4: txt_PVL4,
+                nhapmk: nhapmk
+
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Khóa xuất hóa đơn PV THÀNH CÔNG!");
+                } else {
+                    alert("Mật khẩu xác nhận không đúng!");
+                }
+
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response);
+            }
+        });
+    });
+</script>
+<script>
+    $("#updateKHHD").click(function () {
+
+        var txt_KHHD_1 = document.getElementById("txt_KHHD_1").value;
+        var txt_KHHD_2 = document.getElementById("txt_KHHD_2").value;
+        var txt_KHHD_3 = document.getElementById("txt_KHHD_3").value;
+        var txt_KHHD_4 = document.getElementById("txt_KHHD_4").value;
+
+        var txt_Serial_L1 = document.getElementById("txt_Serial_L1").value;
+        var txt_Serial_L2 = document.getElementById("txt_Serial_L2").value;
+        var txt_Serial_L3 = document.getElementById("txt_Serial_L3").value;
+        var txt_Serial_L4 = document.getElementById("txt_Serial_L4").value;
+
+        var nhapmk = document.getElementById("nhapmk").value;
+        $.ajax({
+            type: "POST",
+            url: "../Home/UpdateKHHD",
+            data: {
+                txt_KHHD_1: txt_KHHD_1,
+                txt_KHHD_2: txt_KHHD_2,
+                txt_KHHD_3: txt_KHHD_3,
+                txt_KHHD_4: txt_KHHD_4,
+                txt_Serial_L1: txt_Serial_L1,
+                txt_Serial_L2: txt_Serial_L2,
+                txt_Serial_L3: txt_Serial_L3,
+                txt_Serial_L4: txt_Serial_L4,
+                nhapmk: nhapmk
+
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("CẬP NHẬT KÝ HIỆU HĐ THÀNH CÔNG!");
+                } else {
+                    alert("Mật khẩu xác nhận không đúng!");
+                }
+
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response);
+            }
+        });
+    });
+</script>
+<script>
+    $("#updatePhanmem").click(function () {
+        var khoaphanmem = $('#khoaphanmem option:selected').val();
+        var nhapmk = document.getElementById("nhapmk").value;
+        var noidung = document.getElementById("Noidung").innerHTML;
+        $.ajax({
+            type: "POST",
+            url: "../Home/UpdatePhanmem",
+            data: {
+                khoaphanmem: khoaphanmem,
+                noidung: noidung,
+                nhapmk: nhapmk
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Đã lưu thành công!");
+                } else {
+                    alert("Mật khẩu xác nhận không đúng!");
+                }
+
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response);
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    function getPhanmem() {
+        var khoaphanmem = $('#khoaphanmem option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "../Home/GetPhanMem",
+            data: { khoaphanmem: khoaphanmem },
+
+            success: function (response) {
+
+                document.getElementById("Noidung").innerHTML = response;
+            },
+            failure: function (response) {
+
+                alert(response);
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+
+
+        });
+    }
+</script>
+<script>
+    $("#Ngaykhoa").click(function () {
+        var txt_NgayKhoa = document.getElementById("txt_NgayKhoa").value;
+        var nhapmk = document.getElementById("nhapmk").value;
+        $.ajax({
+            type: "POST",
+            url: "../Home/UpdateNgayKhoa",
+            data: {
+                txt_NgayKhoa: txt_NgayKhoa,
+                nhapmk: nhapmk
+
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Đã lưu thành công!");
+                } else {
+                    alert("Mật khẩu xác nhận không đúng!");
+                }
+
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response);
+            }
+        });
+    });
+</script>
+<script>
+    $("#Gioihanngay").click(function () {
+        var txt_GHTN = document.getElementById("txt_GHTN").value;
+        var txt_ChuaL1 = document.getElementById("txt_ChuaL1").value;
+        var txt_ChuaL2 = document.getElementById("txt_ChuaL2").value;
+        var txt_ChuaL3 = document.getElementById("txt_ChuaL3").value;
+        var txt_ChuaL4 = document.getElementById("txt_ChuaL4").value;
+        var nhapmk = document.getElementById("nhapmk").value;
+        $.ajax({
+            type: "POST",
+            url: "../Home/UpdateGHN",
+            data: {
+                txt_GHTN: txt_GHTN,
+                txt_ChuaL1: txt_ChuaL1,
+                txt_ChuaL2: txt_ChuaL2,
+                txt_ChuaL3: txt_ChuaL3,
+                txt_ChuaL4: txt_ChuaL4,
+                nhapmk: nhapmk
+
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Đã lưu thành công!");
+                } else {
+                    alert("Mật khẩu xác nhận không đúng!");
+                }
+
+            },
+            failure: function (response) {
+                console.log(response);
+                alert(response);
+            },
+            error: function (response) {
+                console.log(response);
+                alert(response);
+            }
+        });
+    });
+</script>
+

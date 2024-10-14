@@ -1,0 +1,26 @@
+﻿@model PaginationBase<OrderHeaderVoucher>
+
+<table id="gridVisa" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="width: 42px; text-align: center;">STT</th>
+            <th style="width: 200px; text-align: center;">Tình trạng</th>
+            <th style="width: 130px; text-align: center;">Code</th>
+            <th>Tên Voucher</th>
+            <th style="text-align: center;">Điểm tham quan</th>
+            <th style="text-align: center;">Giá</th>
+            <th style="text-align: center;">Tên khách</th>
+            <th style="text-align: center;">SĐT</th>
+            <th style="text-align: center;">Email</th>
+            <th style="text-align: center;">Ngày sử dụng</th>
+            <th style="text-align: center;">Ngày đặt</th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("_OrderListVoucherPartial", Model)
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @await Html.PartialAsync("_NavPageListVoucherPartial", Model)
+</nav>

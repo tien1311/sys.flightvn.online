@@ -1,0 +1,165 @@
+﻿@model TongQuatMail
+@{
+    ViewData["Title"] = "Nhập báo cáo vé";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title> @ViewData["Title"] </title>
+<h2>Nhập báo cáo vé</h2>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div id="demo-form3" class="form-horizontal form-label-left">
+                <div class="row">
+                    <div class="col-sm-4 col-xs-6">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file btn btn-primary" style="width:100%;" id="files_new" name="files_new">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-xs-3">
+                        <div class="form-group" style="font-size: 14px;padding-top: 10px;">
+                            <a href="http://gateway.enviet-group.com/Files/FileMauXuatDoiVe.xlsx">File Mẫu</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-xs-3">
+                        <div class="form-group">
+                            <input class="btn btn-primary" onclick="ImportExcel(this);" type="button" value="Import">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <span style="color:red;font-size:14px">
+                                Lưu ý khi nhập báo cáo vé:
+                            </span>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li style="float:right;">
+                                    <a class="collapse-link" style="padding:0px !important;color:red;"><i class="fa fa-angle-double-down fa-2x"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            @Html.Raw(@ViewBag.NoiDung)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style=" margin-top: 10px; margin-left: 10px;">
+                        <div class="item form-group">
+                            <span style="color:red;font-size:14px">
+                                Số tiền mặc định: VNĐ
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="Rows">
+                    <div class="row" id="RowTenKH">
+                        <div style="margin-top: 10px;margin-left: 10px;">
+                            <div class="item form-group" style="margin-bottom: 0px;">
+                                <span style="font-size: 12px;color: #3300ff">
+                                    <label id="TENKH_NEW"></label>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row" id="SoDong">
+                        <div class="col-md-1 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Hãng" id="MAHHK" asp-for="MAHHK" name="MAHHK" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-8">
+                            <div class="item form-group">
+                                <div class="input-group" style="margin:0px">
+                                    <input type="text" placeholder="Mã KH" id="MAKH_NEW" asp-for="MAKH_NEW" name="MAKH_NEW" class="form-control ">
+                                    <span class="input-group-btn">
+                                        <button id="check" onclick="CheckMaKH('MAKH_NEW','TENKH_NEW');" class="btn btn-info" type="button" style="margin-bottom:0px; "><i class="fa fa-search" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="PNR" id="PNR_NEW" asp-for="PNR_NEW" name="PNR_NEW" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Số vé" id="SoVe" asp-for="SoVe" name="SoVe" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Giá mua" onkeyup="formatNumber(document.getElementById(this.id).value,this.id);" id="GiaMua" asp-for="GiaMua" name="GiaMua" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4" hidden>
+                            <div class="item form-group">
+                                <input type="text" placeholder="Phí DV mua" onkeyup="formatNumber(document.getElementById(this.id).value,this.id);" id="PhiDVMua" asp-for="PhiDVMua" name="PhiDVMua" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Phí DV bán" onkeyup="formatNumber(document.getElementById(this.id).value,this.id);" id="PhiDVBan" asp-for="PhiDVBan" name="PhiDVBan" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Phí hoàn" onkeyup="formatNumber(document.getElementById(this.id).value,this.id);" id="PhiHoan" asp-for="PhiHoan" name="PhiHoan" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Chiết khấu" onkeyup="formatNumber(document.getElementById(this.id).value,this.id);" id="ChietKhau" asp-for="ChietKhau" name="ChietKhau" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Ghi chú" id="GhiChu" asp-for="GhiChu" name="GhiChu" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Mã giới thiệu" id="MaGioiThieu" asp-for="MaGioiThieu" name="MaGioiThieu" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <div class="item form-group">
+                                <input type="text" placeholder="Người giới thiệu" id="NguoiGioiThieu" asp-for="NguoiGioiThieu" name="NguoiGioiThieu" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-xs-6">
+                            <div class="item form-group">
+                                <input class="btn btn-primary" onclick="ThemDong(this);" type="button" value="+" />
+                            </div>
+                        </div>
+                    </div>
+                    <div id="addRows">
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input class="btn btn-success" onclick="LuuBaoCao(this);" type="button" id="SaveData" style="float:right" value="Lưu báo cáo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/PhongVe/GuiMailDaiLy.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.msg)');
+    </script>
+} *@

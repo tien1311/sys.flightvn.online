@@ -1,0 +1,604 @@
+﻿@model HotelBooking
+@* @using Manager.Model.Models.Hotel;
+@using Manager.Common.Helpers
+@using Manager.DataAccess.Repository
+@using Microsoft.Extensions.Configuration *@
+@inject IConfiguration _configuration
+@using Manager.Common.Helpers.AreaHelpers
+
+@{
+    HotelRepository hotelRepository = new HotelRepository(_configuration);
+    LocationRepository locationRepository = new LocationRepository(_configuration);
+    var listStatus = hotelRepository.GetListHotelBookingStatus();
+    string fullHotelAddress = Model.HotelInfo.Address + ", " + locationRepository.GetWardNameByCode(Model.HotelInfo.Ward) + ", " + locationRepository.GetDistrictNameByCode(Model.HotelInfo.District) + ", " + locationRepository.GetProvinceNameByCode(Model.HotelInfo.Province);
+    double remainingAmount = Model.TotalPrice - Model.AmountPaid;
+    string settingsArea = AreaNameConst.AREA_Setting;
+}
+<link href="~/css/hotel/detailhotelbooking.css" rel="stylesheet" />
+
+<style>
+    .truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+
+    input#linkGateway {
+        margin: 2px 0;
+    }
+
+    #group-payment-action {
+        display: flex;
+    }
+
+    div#group-btn-gateway {
+        margin-top: 2px;
+        margin-left: 8px;
+    }
+
+    .group-action-btn {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .listRoomTable .table thead tr {
+        background-color: #f7f3f3;
+    }
+
+        .listRoomTable .table tbody tr td:first-child,
+        .listRoomTable .table thead tr th:first-child {
+            border-left: 1px solid #ddd
+        }
+
+        .listRoomTable .table tbody tr td:last-child,
+        .listRoomTable .table thead tr th:last-child {
+            border-right: 1px solid #ddd
+        }
+
+    .listRoomTable .table thead {
+        border-top: 1px solid #ddd;
+    }
+
+    .listRoomTable .table tbody {
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Custom modal container */
+    .customModal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Custom modal content */
+    .customModal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+        border-radius: 8px;
+    }
+
+    /* Close button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    a#openStatusHistoryModal {
+        color: #1a75e5;
+    }
+
+</style>
+
+
+<div class="overlay" id="loadingOverlay">
+    <div class="loading-container">
+        <img src="~/images/logo ev-none br.png" alt="Logo" class="logo">
+        <div class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+</div>
+
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">CHI TIẾT HOTEL BOOKING</h1>
+            <input type="text" hidden value="@settingsArea" id="SettingAreaString" />
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="title-detail-BK" style="margin-bottom:10px;">BOOKING: @Model.BookingCode <input type="hidden" id="bookingCode" value="@Model.BookingCode" /></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="group-action-btn">
+                                <div class="form-group">
+                                    @if (Model.StatusID == 7 || Model.StatusID == 6)
+                                    {
+                                        <button type="button" class="btn btn-primary" id="openModalChangeStatusBookingHotel" disabled href="#">Đổi tình trạng</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-primary" id="openModalChangeStatusBookingHotel" href="#">Đổi tình trạng</button>
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    @if (Model.StatusID >= 3)
+                                    {
+                                        <button type="button" class="btn btn-primary" id="openOtherFeeModal" disabled href="#">Thêm phí</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-primary" id="openOtherFeeModal">Thêm phí</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ThongTinChiTietBK show">
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px;padding: 0;">
+                        THÔNG TIN BOOKING
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã khách sạn</label>
+                            <div class="col-xs-8">
+                                <span>@Model.HotelCode</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên khách sạn</label>
+                            <div class="col-xs-8">
+                                <span>@Model.HotelInfo.Name</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa chỉ khách sạn</label>
+                            <div class="col-xs-8">
+                                <span class="truncate" title="@fullHotelAddress">@fullHotelAddress </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email khách sạn</label>
+                            <div class="col-xs-8">
+                                <span>@Model.HotelInfo.Email </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số điện thoại khách sạn</label>
+                            <div class="col-xs-8">
+                                <span>@Model.HotelInfo.Phone </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày nhận phòng</label>
+                            <div class="col-xs-2">
+                                <span>@Model.CheckinDate.ToString("dd/MM/yyyy") </span>
+                            </div>
+                            <label class="col-xs-4 control-label bg">Ngày trả phòng</label>
+                            <div class="col-xs-2">
+                                <span>@Model.CheckoutDate.ToString("dd/MM/yyyy") </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số lượng người</label>
+                            <div class="col-xs-8">
+                                <span> @Model.Adults Người lớn, @Model.Childs Trẻ em, @Model.Babies Em bé </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày đặt booking</label>
+                            <div class="col-xs-8">
+                                <span>@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss") </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người tiếp nhận</label>
+                            <div class="col-xs-8">
+                                <span id="reciever">@Model.Reciever </span>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        @*             <div class="row" style="">
+                        <label class="col-xs-4 control-label bg">Danh sách phòng</label>
+                        <div class="col-xs-8">
+                        <ul>
+
+                        @foreach (var room in Model.BookingDetails)
+                        {
+                        <li>@room.LoaiPhong - @room.SoLuong - @room.SoTien</li>
+                        }
+                        </ul>
+
+                        </div>
+                        </div> *@
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giá</label>
+                            <div class="col-xs-8">
+                                <span class="text-primary" style="font-weight:bold;font-size: 12px;">@Common.FormatNumber(Model.SoTien, 0)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">VAT (@hotelRepository.GetHotelVATRates()%)</label>
+                            <div class="col-xs-8">
+                                <span class="text-dark" style="font-weight:bold;font-size: 12px;">@Common.FormatNumber(Model.VAT, 0)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giảm giá</label>
+                            <div class="col-xs-8">
+                                <span class="text-success" style="font-weight:bold;font-size: 12px;">@Common.FormatNumber(Model.Commission, 0)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Phí khác</label>
+                            <div class="col-xs-8">
+                                <span id="otherFeeAmount" class="text-dark" style="font-weight:bold;font-size: 12px;">@Common.FormatNumber(Model.OtherFee, 0) </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tổng tiền</label>
+                            <div class="col-xs-8">
+                                <span id="totalPriceAmount" class="text-danger" style="font-weight:bold;font-size: 12px;"> @Common.FormatNumber(Model.TotalPrice, 0) </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số tiền đã thanh toán</label>
+                            <div class="col-xs-8">
+                                <span id="paidAmount" class="text-success" style="font-weight:bold;font-size: 12px;">@Common.FormatNumber(Model.AmountPaid, 0)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số tiền còn lại</label>
+                            <div class="col-xs-8">
+                                <span id="remainingAmount" class="text-danger" style="font-weight:bold;font-size: 12px;">@Common.FormatNumber(remainingAmount, 0)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Lý do phát sinh phí</label>
+                            <div class="col-xs-8">
+                                <span id="otherFeeReason">@Model.OtherFeeReason </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tình trạng
+                                <span style="float:right"><a href="#" id="openStatusHistoryModal">Xem lịch sử</a></span>
+                            </label>
+                            <div class="col-xs-8">
+                                <span id="statusText_@Model.BookingCode"> @hotelRepository.GetStatusStringByStatusId(Model.StatusID)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 border-table" style="margin-top:12px;">
+                        <div class="listRoomTable" style="width: 100%; margin: 0 auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Loại phòng</th>
+                                        <th class="text-center">Số lượng phòng</th>
+                                        <th class="text-right">Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var room in Model.BookingDetails)
+                                    {
+                                        <tr>
+                                            <td class="text-left">@room.LoaiPhong</td>
+                                            <td class="text-center">@room.SoLuong</td>
+                                            <td class="text-right">@Common.FormatNumber(room.SoTien, 0)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px;padding: 0;">
+                        THÔNG TIN THANH TOÁN
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã thanh toán</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentId</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">KH thanh toán</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentAgentCode</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Trạng thái</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentStatus</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Phương thức</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentMethod</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12 borber-table" style="border-top:unset;">
+                        <div class="row" style="">
+                            <label class="col-xs-2 control-label bg" style="border-top:unset;">Link thanh toán</label>
+                            <div class="col-xs-10" style="border-top:unset;">
+                                <div class="row">
+                                    <div class="col-xs-12">
+
+                                        <div class="group-payment-action" id="group-payment-action">
+                                            <input type="text" class="form-control" id="inputLinkGateway" style="width:300px;" />
+                                            <div class="" id="group-btn-gateway">
+                                                <a href="#" id="copyToClipboard" class="btn btn-sm btn-primary">
+                                                    <i class="fa fa-clone" aria-hidden="true"></i>
+                                                    Copy
+                                                </a>
+                                                <a href="#" id="getLinkGateway" data-orderId="@Model.BookingCode" class="btn btn-sm btn-success">
+                                                    Lấy link
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN LIÊN HỆ
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Họ tên</label>
+                            <div class="col-xs-8"><span>@Model.FullName</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số điện thoại</label>
+                            <div class="col-xs-8"><span>@Model.Phone </span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email</label>
+                            <div class="col-xs-8"><span>@Model.Email</span></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                @if (Model.IsVAT == true)
+                {
+                    <div class="title-detail-BK">
+                        <div class="" style="line-height: 34px; padding: 0;">
+                            THÔNG TIN HOÁ ĐƠN
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 0 10px;">
+                        <div class="col-sm-12 borber-table">
+                            <div class="row" style="">
+                                <label class="col-xs-2 control-label bg">Cá nhân/Tổ chức</label>
+                                <div class="col-xs-10"><span>@Model.HotelVAT.TenCongTy</span></div>
+                            </div>
+                            <div class="row" style="">
+                                <label class="col-xs-2 control-label bg">Mã số thuế</label>
+                                <div class="col-xs-10"><span>@Model.HotelVAT.MaSoThue </span></div>
+                            </div>
+                            <div class="row" style="">
+                                <label class="col-xs-2 control-label bg">Địa chỉ</label>
+                                <div class="col-xs-10"><span>@Model.HotelVAT.DiaChi </span></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div id="cancelSection">
+
+                    @if (!string.IsNullOrEmpty(Model.Canceller))
+                    {
+                        <div class="title-detail-BK">
+                            <div class="" style="line-height: 34px; padding: 0;">
+                                THÔNG TIN HUỶ
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 0 10px;">
+                            <div class="col-sm-12 borber-table">
+                                <div class="row" style="">
+                                    <label class="col-xs-2 control-label bg">Người huỷ</label>
+                                    <div class="col-xs-10"><span id="hotelBooking_Canceller">@Model.Canceller</span></div>
+                                </div>
+                                <div class="row" style="">
+                                    <label class="col-xs-2 control-label bg">Lý do</label>
+                                    <div class="col-xs-10"><span id="hotelBooking_CancelReason">@Model.CancelReason </span></div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="row" style="margin-top:16px;">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn" style="float:right;" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal OtherFee -->
+<div id="customModal-otherFee" class="customModal">
+    <div class="customModal-content">
+        @*  <div class="customModal-header">
+        <h1>THÊM PHÍ</h1>
+        </div> *@
+        <div class="customModal-body">
+            <form id="otherFeeForm">
+                <div class="form-group">
+                    <label>Phí <span style="color:red">(*)</span></label>
+                    <input class="form-control price-input" name="otherFee" id="otherFee" placeholder="Phí khác" />
+                    <input type="hidden" name="bookingCode" value="@Model.BookingCode" />
+                </div>
+                <div class="form-group">
+                    <label>Nội dung <span style="color:red">(*)</span></label>
+                    <textarea class="form-control" id="other_fee_reason" name="otherFeeReason" placeholder="Nội dung"></textarea>
+                </div>
+                <div style="text-align:right">
+                    <button type="submit" class="btn btn-primary" id="saveOtherFeeBtn">Lưu</button>
+                    <button type="button" class="btn btn-secondary" id="closeModalBtn-otherFee">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Đổi status Booking -->
+<div id="customModal-changeStatus" class="customModal">
+    <div class="customModal-content">
+        @*   <div class="customModal-header">
+        <h1>HUỶ BOOKING</h1>
+        </div> *@
+        <div class="customModal-body">
+            <form id="changeStatusBookingForm">
+                <div class="form-group">
+                    <label>Tình trạng <span style="color:red">(*)</span></label>
+                    <select id="tinhTrang" name="tinhTrang" class="select2_single form-control">
+                        @for (int i = 0; i < listStatus.Count; i++)
+                        {
+                            if (listStatus[i].Id != 1)
+                            {
+                                if (listStatus[i].Id == Model.StatusID)
+                                {
+                                    <option selected value="@listStatus[i].Id">@listStatus[i].Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@listStatus[i].Id">@listStatus[i].Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nội dung <span style="color:red">(*)</span></label>
+                    <textarea class="form-control" name="statusDescription" placeholder="Nội dung"></textarea>
+                    <input type="hidden" name="bookingCode" value="@Model.BookingCode" />
+                    <input type="hidden" name="currentStatus" value="@Model.StatusID" />
+                </div>
+                <div style="text-align:right">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" id="closeModalBtn-changeStatus">Đóng</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Xem lịch sử tình trạng -->
+<div id="customModal-statusHistory" class="customModal">
+    <div class="customModal-content">
+        @*  <div class="customModal-header">
+        <h1>THÊM PHÍ</h1>
+        </div> *@
+        <div class="customModal-body">
+           <div class="table-responsive">
+               <table class="table">
+                   <thead>
+                       <tr>
+                           <th>STT</th>
+                           <th>Trạng thái</th>
+                           <th>Nội dung</th>
+                           <th>Ngày cập nhật</th>
+                           <th>Tạo bởi</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                        @if (Model.BookingStatus != null && Model.BookingStatus.Any())
+                        {
+                            int sttStatus = 0;
+                            foreach (var statusDetail in Model.BookingStatus.OrderByDescending(x=>x.CreatedDate))
+                            {
+                                sttStatus++;
+                                <tr>
+                                    <td>@sttStatus</td>
+                                    <td>@hotelRepository.GetStatusStringByStatusId(statusDetail.StatusId)</td>
+                                    <td>@statusDetail.Description</td>
+                                    <td>@statusDetail.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>@statusDetail.CreatedBy</td>
+                                </tr>
+                            }
+                        }
+                   </tbody>
+               </table>
+           </div>
+            <div style="text-align:right">
+                <button type="button" class="btn btn-secondary" id="closeModalBtn-statusHistory">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/hotel/detailhotelbooking.js"></script>

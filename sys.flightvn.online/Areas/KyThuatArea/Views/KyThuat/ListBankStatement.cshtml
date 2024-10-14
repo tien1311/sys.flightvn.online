@@ -1,0 +1,104 @@
+﻿@model List<BankStatement_Request_Params_Model>
+@{
+    ViewData["Title"] = "Danh sách sao kê ngân hàng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Sao kê ngân hàng</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+       @using (Html.BeginForm("ListBankStatement", "KyThuat", new { i = 12 }, FormMethod.Post))
+       {
+            <div class="row">
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Từ Ngày
+                    </label>
+                    <div class="col-md-8 col-sm-8 col-xs-8 ">
+
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal2" name="cal_from" value='@ViewBag.DateFrom'>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Đến Ngày
+                    </label>
+                    <div class="col-md-8 col-sm-8 col-xs-8 ">
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal3" name="cal_to" value='@ViewBag.DateTo'>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-3 col-xs-3" style="text-align:center;">
+                    <input type="submit" class="btn btn-primary" value="Tìm Kiếm" name="searchBtn" />
+                </div>
+            </div>
+            <div class="table-responsive" style="font-size:12px;">
+                <table id="gridViewStatement" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th></th>
+                            <th>CreatedDate</th>
+                            <th>TransactionDate</th>
+                            <th>TransactionDateVN</th>
+                            <th>EffectiveDate</th>
+                            <th>DebitOfCredit</th>
+                            <th>Amount</th>
+                            <th>TransactionContent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr id="@item.ID">
+                                    <td>@i</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>@item.TransactionDate</td>
+                                    <td>@item.TransactionDateVN</td>
+                                    <td>@item.EffectiveDate</td>
+                                    <td>@item.DebitOrCredit</td>
+                                    <td>@string.Format("{0:0,0}", item.Amount)</td>
+                                    <td>@item.TransactionContent</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+       }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#gridViewStatement').DataTable();
+    });
+</script>
+    
+
+

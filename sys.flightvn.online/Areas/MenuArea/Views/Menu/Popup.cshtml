@@ -1,0 +1,21 @@
+﻿@model string
+@using Microsoft.AspNetCore.Html;
+@{
+    HtmlString html =  new HtmlString(Model);
+}
+<link rel="shortcut icon" href="~/images/favicon.ico">
+<style>
+    .ResizeHinhAnh {
+        width: 100% !important;
+        height: auto !important;
+    }
+</style>
+<div class="modal fade" id="myModal" style=" padding-top: 70px;" role="dialog">
+    <div class="modal-dialog" style="position:relative;">
+        <div id="resize_hinhanh" class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 8px; top: 3px;">&times;</button>
+            @html
+        </div>
+    </div>
+</div>
+

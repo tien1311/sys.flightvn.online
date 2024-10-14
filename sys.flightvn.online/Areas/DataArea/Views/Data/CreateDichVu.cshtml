@@ -1,0 +1,93 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Tạo mới dịch vụ</h1>
+        </div>
+        <div class="modal-body">
+            <form  asp-controller="Data" asp-route-i="9" asp-action="SaveCreateDichVu" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên dịch vụ</label>
+                            <input class="form-control" name="Name" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Giá show</label>
+                            <input class="form-control" name="GiaShow" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Giá đăng nhập</label>
+                            <input class="form-control" name="GiaDN" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label"></label>
+                            <div>
+                                <button type="submit" class="btn btn-primary" name="searchKH" value="searchBtn">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="item form-group">
+                            <label class="control-label">
+                                Hình đại diện
+                            </label>
+                            <input type="file" class="form-control-file btn btn-primary" name="files" accept="image/*" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="inputEmail3" class="control-label">Mô tả</label>
+                        <div>
+                            <textarea class="form-control" name="MoTa" id="">
+                            
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="inputEmail3" class="control-label"></label>
+                        <textarea name="CreateContent" id="CreateContent">
+                            
+                    </textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('CreateContent', {
+            height: 200,
+            filebrowserUploadUrl: '../Data/UploadCKEditor'
+        });
+    });
+</script>

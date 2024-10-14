@@ -1,0 +1,482 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ThongTinXoSoModel
+
+@{
+    ViewData["Title"] = "Tạo chương trình xổ số";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewData["Title"]</title>
+<style>
+    .container-login100 {
+        width: 100%;
+        min-height: 100vh;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .img-responsive {
+        border-radius: 7px;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .container-content {
+        background: #fff;
+        border-radius: 5px;
+        padding: 0px;
+        text-align: justify;
+    }
+
+    .content-iframe {
+        margin: auto;
+        width: 100%;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        font-weight: bold;
+    }
+
+
+
+    .content-iframe iframe {
+        height: 800px;
+        width: 100%;
+        border-radius: 7px;
+    }
+
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .btn-BSP {
+        color: #fff;
+        background-color: #6c0678;
+        border-color: #6c0678;
+    }
+
+    .btn-organ {
+        background-color: #f5821f;
+        border-color: #f5821f;
+        color: #fff;
+    }
+
+    .nav > li > a {
+        padding: 8px 13px 8px !important;
+    }
+
+    @@media (max-width: 768px) {
+        .logo {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 30px;
+        }
+
+        .content-iframe {
+            width: 100%;
+        }
+    }
+</style>
+<h2>Tạo chương trình xổ số</h2>
+
+
+<div class="limiter">
+    <div class="container-login100" style="">
+        <div class="content-iframe">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="x_panel">
+                        <div class="x_content">
+                            <div class="row">
+                                <div class="col-xs-12 container-content">
+                                    <form asp-controller="Data" asp-route-i="9" asp-action="CreateChuongTrinhXoSo" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Tiêu đề</label>
+                                                    <input class="form-control" id="title" name="title" placeholder="Tiêu đề" value="">
+                                                    <input class="form-control" id="ID" name="ID" hidden value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <label>Từ thời gian</label>
+                                                    <input type="datetime-local" id="datefrom" class="form-control" name="datefrom" placeholder="" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="form-group">
+                                                    <label>Đến thời gian</label>
+                                                    <input type="datetime-local" id="dateto" class="form-control" name="dateto" placeholder="" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <div class="form-group">
+                                                    <label>Số lượng</label>
+                                                    <input type="text" class="form-control" id="soluong" name="soluong" placeholder="" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <div>
+                                                            <input type="submit" class="btn btn-success btn-block" id="buttonName" name="buttonName" value="Save" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <div>
+                                                            <input type="submit" class="btn btn-primary btn-block" id="buttonName" name="buttonName" value="New" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>&nbsp;</label>
+                                                        <div>
+                                                            <input type="submit" class="btn btn-primary btn-block" id="buttonName" name="buttonName" value="Export" />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Mô tả</label>
+                                                    <textarea class="form-control" id="description" name="description" rows="3"> </textarea>
+                                                </div>
+                                            </div>
+                                            @*<div class="col-sm-1">
+                                            <div class="form-group">
+                                            <label>&nbsp;</label>
+                                            <div>
+                                            <button type="submit" class="btn btn-success btn-block" name="Import" value="Import">Import</button>
+                                            </div>
+                                            </div>
+                                            </div>*@
+
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive">
+                                        <table id="gridXoSoDetail" class="table table-striped jambo_table bulk_action">
+                                            <thead>
+                                                <tr class="headings">
+                                                    <th class="column-title">STT </th>
+                                                    <th class="column-title">Tiêu đề </th>
+                                                    <th class="column-title">Từ ngày </th>
+                                                    <th class="column-title">Đến ngày </th>
+                                                    <th class="column-title">Số lượng </th>
+                                                    <th class="column-title">Mô tả </th>
+                                                    <th class="column-title">Import </th>
+                                                    <th class="column-title"> </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model != null)
+                                                {
+                                                    if (Model.ListXoSo != null)
+                                                    {
+                                                        int i = 1;
+                                                        @foreach (var item in Model.ListXoSo)
+                                                        {
+                                                            <tr id="@item.ID">
+                                                                <td class="">@i</td>
+                                                                <td><a class="ChiTietXoSo" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.Title</a></td>
+                                                                <td class="">@item.DateFrom</td>
+                                                                <td class="">@item.DateTo</td>
+                                                                <td class="">@item.SoLuong</td>
+                                                                <td><a class="MoTa" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></td>
+                                                                <td><a class="ImportData" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i style="font-size:14px;color:red" class="fa fa-arrow-circle-down" aria-hidden="true"></i></a></td>
+                                                                <td style="text-align: center;">
+
+                                                                    @if (item.Status == true)
+                                                                    {
+
+                                                                        <a class="Status" style="color:red;" href="javascript:;" onclick="UpdateStatusCTXS(0,@item.ID)"><i class="fa fa-trash" style="font-size:14px;" aria-hidden="true"></i></a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a class="Status" style="color:green;" href="javascript:;" onclick="UpdateStatusCTXS(1,@item.ID)"><i class="fa fa-eye" style="font-size:14px;" aria-hidden="true"></i></a>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            i++;
+                                                        }
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@if (ViewBag.ThongBaoPop != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBaoPop)');
+    </script>
+}
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('description', {
+            height: 200,
+            filebrowserUploadUrl: '../Data/UploadCKEditor'
+        });
+    });
+    $("#gridXoSoDetail .MoTa").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/DescriptionXoSo",
+            data: { khoachinh: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridXoSoDetail .ChiTietXoSo").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/DetailXoSo",
+            data: { khoachinh: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridXoSoDetail .ImportData").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Data/ImportDataXoSo",
+            data: { khoachinh: id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    function ListXoSo(tit) {
+        $.ajax({
+            type: "POST",
+            url: "../Data/ListXoSo",
+            data: {
+                title: tit
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+    function UpdateStatusCTXS(status, ID) {
+        let text;
+        if (status == false) {
+            text = "Bạn có chắc muốn ẩn chương trình ?";
+        }
+        else {
+            text = "Bạn có chắc muổn mở lại chương trình ?"
+        }
+        if (confirm(text) == true) {
+            $.ajax({
+                type: "POST",
+                url: "../Data/UpdateStatusCTXS",
+                data: {
+                    Status: status,
+                    id: ID
+                },
+                success: function (response) {
+                    if (response == true) {
+                        alert("Chương trình đã được được mở khóa !");
+                    }
+                    else {
+                        alert("Chương trình đã bị khóa !")
+                    }
+                    window.location.href = "../Data/CreateChuongTrinhXoSo?i=9";
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        }
+    };
+
+    function SaveDataXoSo() {
+        var table = document.getElementById("gridXoSoDetail");
+        var data = [];
+        for (var i = 1; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            var rowData = {
+                MaKH: row.cells[1].textContent.trim(),
+                SoLuong: row.cells[2].textContent.trim(),
+                Title: row.cells[3].textContent.trim(),
+                DateFrom: row.cells[4].textContent.trim(),
+                DateTo: row.cells[5].textContent.trim(),
+                SoLuongXoSo: row.cells[6].textContent.trim()
+            };
+            data.push(rowData);
+        }
+        var jsonData = JSON.stringify(data);
+
+        $.ajax({
+            type: "POST",
+            processData: true,
+            url: "../Data/SaveDataXoSo",
+            data: {
+                data: jsonData
+            },
+            success: function (response) {
+                alert(response);
+                //location.reload(true);
+                window.location.href = "../Data/CreateChuongTrinhXoSo?i=9";
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+
+
+    function selectedRow() {
+        var index;
+        table = document.getElementById("gridXoSoDetail");
+
+        for (var i = 1; i < table.rows.length; i++) {
+            table.rows[i].onclick = function () {
+                // remove the background from the previous selected row
+                if (typeof index !== "undefined") {
+                    table.rows[index].classList.toggle("selected");
+                }
+                console.log(typeof index);
+                // get the selected row index
+                index = this.rowIndex;
+                // add class selected to the row
+                this.classList.toggle("selected");
+
+                var ID = table.getElementsByTagName('tr')[index].id;
+                console.log(ID);
+                $.ajax({
+                    type: "GET",
+                    url: "../Data/GetChuongTrinhXoSo",
+                    data: { id: ID },
+                    dataType: "json",
+                    beforeSend: function () {
+                        //show loading
+                    },
+                    complete: function () {
+                        //hide loading
+                    },
+                    success: function (resultData) {
+                        document.getElementById("buttonName").value = "Update";
+                        document.getElementById("ID").value = ID;
+                        document.getElementById("title").value = resultData.title;
+                        document.getElementById("datefrom").value = resultData.dateFrom;
+                        document.getElementById("dateto").value = resultData.dateTo;
+                        document.getElementById("soluong").value = resultData.soLuong;
+                        document.getElementById("soluong").disabled = true;
+                        //CKEDITOR.instances["description"].setData(** your data **)
+                        //document.getElementById("description").value = resultData.description;
+                        CKEDITOR.instances.description.setData(resultData.description);
+                        //ClassicEditor
+                        //    .create(document.querySelector('#description'))
+                        //    .then(editor => {
+                        //        // Set the editor's text content
+                        //        let text = "Hello, CKEditor!";
+                        //        editor.setData(text);
+
+                        //        // Retrieve the editor's text content
+                        //        let content = editor.getData();
+                        //        console.log(content);
+                        //    })
+                        //    .catch(error => {
+                        //        console.error(error);
+                        //    });
+
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        var err = "Error " + " " + status + " " + p3 + " " + p4;
+                        if (xhr.responseText)
+                            err = xhr.responseText;
+                        alert(err);
+                        console.log(err);
+                    }
+                })
+            };
+        }
+
+
+    }
+
+    selectedRow();
+
+
+
+
+
+</script>
+
+

@@ -1,0 +1,92 @@
+﻿@model List<VoucherModel>
+@{
+    ViewData["Title"] = "Voucher";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridVoucher" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th style="width:30px; text-align:center;"></th>
+                        <th style="width: 42px; text-align: center;">STT</th>
+                        <th style="width: 150px; text-align: center;">Code</th>
+                        <th style="width: 150px; text-align: center;">Tên Voucher</th>
+                        <th style="width: 150px; text-align: center;">Giá bán</th>
+                        <th style="width: 150px; text-align: center;">Giá giảm</th>
+                        @* <th style="width: 130px; text-align: center;">Mức độ giảm</th>
+                        <th style="width: 130px; text-align: center;">Đơn có giá từ</th> *@
+                        <th style="width: 150px; text-align: center;">Điểm tham quan</th>
+                        <th>Hiển thị</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.Id">
+                                <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td style="text-align: center;">@i</td>
+                                <td style="text-align: center;">@item.VoucherCode</td>
+                                <td>@item.VoucherName</td>
+                                <td style="text-align: center;">@String.Format("{0:#,0}", item.Price)</td>
+                                <td style="text-align: center;">@String.Format("{0:#,0}", item.DiscountPrice)</td>
+                                @* @if (item.VoucherType.Id == 1)
+                                {
+                                    // Giảm theo phần trăm
+                                    <td style="text-align: center;">@item.DiscountAmountWhenUse.ToString()%</td>
+                                }
+                                else
+                                {
+                                    // Giảm theo số tiền
+                                    <td style="text-align: center;">@String.Format("{0:#,0}", item.DiscountAmountWhenUse)</td>
+                                } *@
+                                @* <td style="text-align: center;">@String.Format("{0:#,0}", item.PriceMinRequired)</td> *@
+                                <td style="text-align: center;">@item.ServiceName</td>
+                                <td>
+                                    @if (item.IsActive == true)
+                                    {
+                                        <input type="checkbox" class="js-switch" data-switchery="true" style="display: none;" checked onchange="ActiveVoucher(0,@item.Id);" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="js-switch" data-switchery="true" style="display: none;" onchange="ActiveVoucher(1,@item.Id);" />
+                                    }
+                                </td>
+                                <td>
+                                    <a title="Xóa Voucher" class="h3" style="color:red; cursor: pointer;" onclick="DeleteVoucher(@item.Id)">
+                                        <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog" style="padding:0px;">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+@*  //Handle Voucher Page *@
+<script src="~/js/Voucher/Voucher.js"></script>
+
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Connected Services\SMSService\ConnectedService.json" />
+		<None Include="bin\Release\netcoreapp2.1\refs\System.Text.Encoding.CodePages.dll" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Connected Services\SMSService\ConnectedService.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.ServiceModel.Http" Version="4.4.*" />
+	</ItemGroup>
+
+</Project>

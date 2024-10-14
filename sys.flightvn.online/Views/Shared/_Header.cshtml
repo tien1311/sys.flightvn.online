@@ -1,0 +1,238 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@inject IUnitOfWork_Repository _unitOfWork_Repository;
+
+@{
+
+    AccountModel acc = new AccountModel();
+
+    var maNV = Context.User.Claims.First(claim => claim.Type == "MaNV").Value;
+    var tenNV = Context.User.Claims.First(claim => claim.Type == "Ten").Value;
+    var Active = Task.Run(() => _unitOfWork_Repository.Login_Rep.GetActiveUserAsync(maNV).GetAwaiter().GetResult()).Result;
+    Task<Manager.Model.Models.DuNoDaiLy> duNoDaiLy = _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV);
+    string tongNo = "";
+
+    if (duNoDaiLy.Result != null)
+    {
+        if (duNoDaiLy.Result.Balance != null && duNoDaiLy.Result.Balance != "")
+        {
+            tongNo = string.Format("{0:0,0}", double.Parse(duNoDaiLy.Result.Balance));
+            if (double.Parse(duNoDaiLy.Result.Balance) > 0)
+            {
+                tongNo = "+" + tongNo;
+            }
+        }
+    }
+}
+
+<style>
+    .m {
+        display: none;
+    }
+
+    .d {
+        display: block;
+    }
+
+    .QT {
+        background: #f5811f;
+        padding: 10px 5px;
+        border-radius: 4px;
+        line-height: 10px;
+    }
+
+    .DB {
+        background: #2aa7dd;
+        border-radius: 4px;
+        padding: 6px 5px;
+        line-height: 10px;
+    }
+
+    .ND {
+        background: #5bc0de;
+        border-radius: 4px;
+        padding: 10px 5px;
+        line-height: 10px;
+    }
+
+    @@media (max-width: 768px) {
+        .d {
+            display: none;
+        }
+
+        .m {
+            display: block;
+        }
+    }
+</style>
+<input type="hidden" name="maNV" id="maNV" value="@maNV" />
+<div class="top_nav">
+    <div class="nav_menu" style="box-shadow: 4px 10px 8px -3px #888888;background:#ffffff">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right" id="header_sodu" style="width:85%">
+                <li class="nav-item dropdown">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" style="color: #fff !important; font-weight: bold; padding: 6px 10px 0px !important;" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                        <span class="DB">Chính sách <span class="fa fa-chevron-down"></span></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 28px; right: -84px; transform: translate3d(-88px, 21px, 0px);">
+                        <a class="dropdown-item" href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachDB?&i=8">Chính sách đặc biệt</a>
+                        <a class="dropdown-item" href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachQN?&i=8">Chính sách quốc nội</a>
+                        <a class="dropdown-item" href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachQT?&i=8">Chính sách quốc tế</a>
+                        <a class="dropdown-item" href="javascript:;" style="border-top: 1px solid #ddd;" onclick="logOut(this);"><i style="color:#ff8300;" class="fa fa-sign-out pull-right" aria-hidden="true"></i>Log Out</a>
+                    </div>
+                </li>
+                <li class="">
+                    <a id="StickNote" data-toggle="modal" data-target="#openPopup" href="javascript:;" style="padding: 4px 0px 4px 4px !important">
+                        <img style="width: 25px;" src="~/images/btn-sticknote.png" />
+                        @*<i style="color:#ff8300; padding: 6px; border-radius: 4px; background: #d2d2d2;" class="fa fa-sticky-note" aria-hidden="true"></i>*@
+                    </a>
+                </li>
+                <li>
+                    @if (Active == "1")
+                    {
+                        <label style="margin-left: 10px; padding-top: 10px;">
+                            <input id="ActiveUser2" onclick="CheckActiveUser2();" type="checkbox" class="js-switch" data-switchery="true" style="display: none;" checked="checked">
+                        </label>
+                    }
+                    else
+                    {
+                        <label style="margin-left: 10px; padding-top: 10px;">
+                            <input id="ActiveUser2" onclick="CheckActiveUser2();" type="checkbox" class="js-switch" data-switchery="true" style="display: none;">
+                        </label>
+                    }
+                </li>
+                @*<li class="">
+                @if (double.Parse(duNoDaiLy.Result.Balance) > 0)
+                {
+                <a href="#" style="font-weight: bold; padding: 7px 0px 0px !important;"><span>@tongNo</span> VNĐ</a>
+                }
+                else
+                {
+                <a href="#" style="color: red !important; font-weight: bold; padding: 7px 0px 0px !important;"><span>@tongNo</span> VNĐ</a>
+                }
+                </li>*@
+                <li>
+                    <div id='loader_sodu'>
+                        <img src="~/images/loading_SoDu.gif" style="width: 150px;  " />
+                    </div>
+                </li>
+
+                @*<li><a href="http://gateway.enviet-group.com/template/zalo/thongtinck.html" target="_blank" style="padding:8px 1px!important;"><img src="../images/BANK.png" alt="Alternate Text" style="width:30px"></a></li>*@
+                <li role="presentation" class="dropdown">
+                    @*<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-green">6</span>
+                    </a>*@
+                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                        <li>
+                            <a>
+                                <span class="image"><img src="~/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="~/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="~/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a>
+                                <span class="image"><img src="~/images/img.jpg" alt="Profile Image" /></span>
+                                <span>
+                                    <span>John Smith</span>
+                                    <span class="time">3 mins ago</span>
+                                </span>
+                                <span class="message">
+                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="text-center">
+                                <a>
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@*
+    @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+}
+*@
+<script>
+    $("#StickNote").click(function () {
+        var maNV = document.getElementById("maNV").value;
+        $.ajax({
+            type: "POST",
+            url: "/@AreaNameConst.AREA_Home/Home/StickNote",
+            data: {
+                maNV: maNV
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+
+<script>
+    function logOut(obj) {
+
+        $.ajax({ url: '/@AreaNameConst.AREA_Login/Login/Logout', method: 'POST' })
+            .done(function () {
+                window.location.replace("/@AreaNameConst.AREA_Login/Login/Index");
+
+            })
+
+    }
+</script>

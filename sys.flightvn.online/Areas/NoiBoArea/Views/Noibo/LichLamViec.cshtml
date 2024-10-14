@@ -1,0 +1,712 @@
+﻿@model List<LichLamViecModel>
+@{
+    ViewData["Title"] = "Lịch làm việc";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<style>
+    thead th, tbody td {
+        text-align: center;
+    }
+    .file{
+        background: red;
+        color: #fff;
+    }
+    .tab-content > .active {
+        opacity: 1;
+    }
+    li.active a.nav-link {
+        font-weight: bold;
+        background-color: #f5811f !important;
+        color: #fff !important;
+        margin-right: 0!important;
+        border: 0!important;
+    }
+    .nav-tabs > li.nav-item {
+        box-shadow: 0px 0px 2px #adacac;
+    }
+    .nav-tabs > li.nav-item a {
+        color: #f5811f;
+    }
+    li.nav-item:last-child {
+        border-radius: 0 4px 0 0;
+    }
+    li.nav-item:first-child {
+        border-radius: 4px 0 0 0;
+    }
+</style>
+<title>@ViewData["Title"]</title>
+<h2>Lịch làm việc</h2>
+
+<div class="row">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item active">
+            <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Phòng vé</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Kế toán</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Kinh doanh</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="IT-tab" data-toggle="tab" href="#IT" role="tab" aria-controls="IT" aria-selected="false">IT</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="dulich-tab" data-toggle="tab" href="#dulich" role="tab" aria-controls="dulich" aria-selected="false">Du lịch</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="khac-tab" data-toggle="tab" href="#khac" role="tab" aria-controls="khac" aria-selected="false">Khác</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">STT</th>
+                            <th style="vertical-align: middle;">Họ tên</th>
+                            <th>@DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")<br/>@Model[0].ThuHwa</th>
+                            <th class="info">@DateTime.Now.ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay1</th>
+                            <th>@DateTime.Now.AddDays(+1).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay2</th>
+                            <th>@DateTime.Now.AddDays(+2).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay3</th>
+                            <th>@DateTime.Now.AddDays(+3).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay4</th>
+                            <th>@DateTime.Now.AddDays(+4).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            @if (item.PhongBan.ToUpper() == "PHÒNG VÉ" || item.PhongBan.ToUpper() == "CALL CENTER")
+                            {
+                                <tr>
+                                    <td style=" width: 45px; vertical-align: middle">@i</td>
+                                    <td style="width:300px; text-align:left;">
+                                        @item.Ten <br />
+                                        @item.DT&emsp;@{
+                                            if (item.Line != null && item.Line != "")
+                                            {
+                                                string Line = "Ext:" + item.Line;
+                                                @Line;
+                                            }
+                                        }
+                                    </td>
+                                    <td style="">
+                                        @if (item.Gio == "False")
+                                        {
+                                            @item.GioHwa_1 <br /> @item.GioHwa_2 <br />
+                                        }
+                                        else { @item.Gio <br/><br /> }
+                                        @if (item.DemFileHW != "0")
+                                        {
+                                            <a href="@item.FileHwa" target="_blank"><strong class="file">@item.HWA</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.HWA</strong>}
+                                    </td>
+                                    <td class="info" style="">
+                                        @if (item.Gio == "False")
+                                        {
+                                            @item.GioNgay1_1 <br /> @item.GioNgay1_2 <br />
+                                        }
+                                        else
+                                        { @item.Gio <br /><br />}
+
+                                        @if (item.DemFileNgay1 != "0")
+                                        {
+                                            <a href="@item.FileNgay1" target="_blank"><strong class="file">@item.Ngay1</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay1</strong>}
+                                    </td>
+                                    <td style="">
+                                        @if (item.Gio == "False")
+                                        {
+                                            @item.GioNgay2_1 <br /> @item.GioNgay2_2 <br />
+                                        }
+                                        else
+                                        { @item.Gio <br /><br />}
+
+                                        @if (item.DemFileNgay2 != "0")
+                                        {
+                                            <a href="@item.FileNgay2" target="_blank"><strong class="file">@item.Ngay2</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay2</strong>}
+                                    </td>
+                                    <td style="">
+                                        @if (item.Gio == "False")
+                                        {
+                                            @item.GioNgay3_1 <br /> @item.GioNgay3_2 <br />
+                                        }
+                                        else
+                                        { @item.Gio <br /><br />}
+
+                                        @if (item.DemFileNgay3 != "0")
+                                        {
+                                            <a href="@item.FileNgay3" target="_blank"><strong class="file">@item.Ngay3</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay3</strong>}
+                                    </td>
+                                    <td style="">
+                                        @if (item.Gio == "False")
+                                        {
+                                            @item.GioNgay4_1 <br /> @item.GioNgay4_2 <br />
+                                        }
+                                        else
+                                        { @item.Gio <br /><br />}
+
+                                        @if (item.DemFileNgay4 != "0")
+                                        {
+                                            <a href="@item.FileNgay4" target="_blank"><strong class="file">@item.Ngay4</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay4</strong>}
+                                    </td>
+                                    <td style="">
+                                        @if (item.Gio == "False")
+                                        {
+                                            @item.GioNgay5_1 <br /> @item.GioNgay5_2 <br />
+                                        }
+                                        else
+                                        { @item.Gio <br /><br />}
+
+                                        @if (item.DemFileNgay5 != "0")
+                                        {
+                                            <a href="@item.FileNgay5" target="_blank"><strong class="file">@item.Ngay5</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay5</strong>}
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="home-tab">
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">STT</th>
+                            <th style="vertical-align: middle;">Họ tên</th>
+                            <th>@DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")<br />@Model[0].ThuHwa</th>
+                            <th class="info">@DateTime.Now.ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay1</th>
+                            <th>@DateTime.Now.AddDays(+1).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay2</th>
+                            <th>@DateTime.Now.AddDays(+2).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay3</th>
+                            <th>@DateTime.Now.AddDays(+3).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay4</th>
+                            <th>@DateTime.Now.AddDays(+4).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            @if (item.PhongBan.ToUpper() == "KẾ TOÁN")
+                            {
+                                <tr>
+                                    <td style=" width: 45px; vertical-align: middle">@i</td>
+                                    <td style="width:300px; text-align:left;">
+                                        @item.Ten <br />
+                                        @item.DT&emsp;@{
+                                            if (item.Line != null && item.Line != "")
+                                            {
+                                                string Line = "Ext:" + item.Line;
+                                                @Line;
+                                            }
+                                        }
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+                                        @if (item.DemFileHW != "0")
+                                        {
+                                            <a href="@item.FileHwa" target="_blank"><strong class="file">@item.HWA</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.HWA</strong>}
+                                    </td>
+                                    <td class="info" style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay1 != "0")
+                                        {
+                                            <a href="@item.FileNgay1" target="_blank"><strong class="file">@item.Ngay1</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay1</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay2 != "0")
+                                        {
+                                            <a href="@item.FileNgay2" target="_blank"><strong class="file">@item.Ngay2</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay2</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay3 != "0")
+                                        {
+                                            <a href="@item.FileNgay3" target="_blank"><strong class="file">@item.Ngay3</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay3</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay4 != "0")
+                                        {
+                                            <a href="@item.FileNgay4" target="_blank"><strong class="file">@item.Ngay4</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay4</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay5 != "0")
+                                        {
+                                            <a href="@item.FileNgay5" target="_blank"><strong class="file">@item.Ngay5</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay5</strong>}
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="home-tab">
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">STT</th>
+                            <th style="vertical-align: middle;">Họ tên</th>
+                            <th>@DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")<br />@Model[0].ThuHwa</th>
+                            <th class="info">@DateTime.Now.ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay1</th>
+                            <th>@DateTime.Now.AddDays(+1).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay2</th>
+                            <th>@DateTime.Now.AddDays(+2).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay3</th>
+                            <th>@DateTime.Now.AddDays(+3).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay4</th>
+                            <th>@DateTime.Now.AddDays(+4).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            @if (item.PhongBan.ToUpper() == "KINH DOANH")
+                            {
+                                <tr>
+                                    <td style=" width: 45px; vertical-align: middle">@i</td>
+                                    <td style="width:300px; text-align:left;">
+                                        @item.Ten <br />
+                                        @item.DT&emsp;@{
+                                            if (item.Line != null && item.Line != "")
+                                            {
+                                                string Line = "Ext:" + item.Line;
+                                                @Line;
+                                            }
+                                        }
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+                                        @if (item.DemFileHW != "0")
+                                        {
+                                            <a href="@item.FileHwa" target="_blank"><strong class="file">@item.HWA</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.HWA</strong>}
+                                    </td>
+                                    <td class="info" style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay1 != "0")
+                                        {
+                                            <a href="@item.FileNgay1" target="_blank"><strong class="file">@item.Ngay1</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay1</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay2 != "0")
+                                        {
+                                            <a href="@item.FileNgay2" target="_blank"><strong class="file">@item.Ngay2</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay2</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay3 != "0")
+                                        {
+                                            <a href="@item.FileNgay3" target="_blank"><strong class="file">@item.Ngay3</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay3</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay4 != "0")
+                                        {
+                                            <a href="@item.FileNgay4" target="_blank"><strong class="file">@item.Ngay4</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay4</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay5 != "0")
+                                        {
+                                            <a href="@item.FileNgay5" target="_blank"><strong class="file">@item.Ngay5</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay5</strong>}
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="IT" role="tabpanel" aria-labelledby="home-tab">
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">STT</th>
+                            <th style="vertical-align: middle;">Họ tên</th>
+                            <th>@DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")<br />@Model[0].ThuHwa</th>
+                            <th class="info">@DateTime.Now.ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay1</th>
+                            <th>@DateTime.Now.AddDays(+1).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay2</th>
+                            <th>@DateTime.Now.AddDays(+2).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay3</th>
+                            <th>@DateTime.Now.AddDays(+3).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay4</th>
+                            <th>@DateTime.Now.AddDays(+4).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            @if (item.PhongBan.ToUpper() == "IT")
+                            {
+                                <tr>
+                                    <td style=" width: 45px; vertical-align: middle">@i</td>
+                                    <td style="width:300px; text-align:left;">
+                                        @item.Ten <br />
+                                        @item.DT&emsp;@{
+                                            if (item.Line != null && item.Line != "")
+                                            {
+                                                string Line = "Ext:" + item.Line;
+                                                @Line;
+                                            }
+                                        }
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+                                        @if (item.DemFileHW != "0")
+                                        {
+                                            <a href="@item.FileHwa" target="_blank"><strong class="file">@item.HWA</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.HWA</strong>}
+                                    </td>
+                                    <td class="info" style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay1 != "0")
+                                        {
+                                            <a href="@item.FileNgay1" target="_blank"><strong class="file">@item.Ngay1</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay1</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay2 != "0")
+                                        {
+                                            <a href="@item.FileNgay2" target="_blank"><strong class="file">@item.Ngay2</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay2</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay3 != "0")
+                                        {
+                                            <a href="@item.FileNgay3" target="_blank"><strong class="file">@item.Ngay3</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay3</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay4 != "0")
+                                        {
+                                            <a href="@item.FileNgay4" target="_blank"><strong class="file">@item.Ngay4</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay4</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay5 != "0")
+                                        {
+                                            <a href="@item.FileNgay5" target="_blank"><strong class="file">@item.Ngay5</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay5</strong>}
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="dulich" role="tabpanel" aria-labelledby="home-tab">
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">STT</th>
+                            <th style="vertical-align: middle;">Họ tên</th>
+                            <th>@DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")<br />@Model[0].ThuHwa</th>
+                            <th class="info">@DateTime.Now.ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay1</th>
+                            <th>@DateTime.Now.AddDays(+1).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay2</th>
+                            <th>@DateTime.Now.AddDays(+2).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay3</th>
+                            <th>@DateTime.Now.AddDays(+3).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay4</th>
+                            <th>@DateTime.Now.AddDays(+4).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            @if (item.PhongBan.ToUpper() == "DU LỊCH")
+                            {
+                                <tr>
+                                    <td style=" width: 45px; vertical-align: middle">@i</td>
+                                    <td style="width:300px; text-align:left;">
+                                        @item.Ten <br />
+                                        @item.DT&emsp;@{
+                                            if (item.Line != null && item.Line != "")
+                                            {
+                                                string Line = "Ext:" + item.Line;
+                                                @Line;
+                                            }
+                                        }
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+                                        @if (item.DemFileHW != "0")
+                                        {
+                                            <a href="@item.FileHwa" target="_blank"><strong class="file">@item.HWA</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.HWA</strong>}
+                                    </td>
+                                    <td class="info" style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay1 != "0")
+                                        {
+                                            <a href="@item.FileNgay1" target="_blank"><strong class="file">@item.Ngay1</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay1</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay2 != "0")
+                                        {
+                                            <a href="@item.FileNgay2" target="_blank"><strong class="file">@item.Ngay2</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay2</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay3 != "0")
+                                        {
+                                            <a href="@item.FileNgay3" target="_blank"><strong class="file">@item.Ngay3</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay3</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay4 != "0")
+                                        {
+                                            <a href="@item.FileNgay4" target="_blank"><strong class="file">@item.Ngay4</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay4</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay5 != "0")
+                                        {
+                                            <a href="@item.FileNgay5" target="_blank"><strong class="file">@item.Ngay5</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay5</strong>}
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="khac" role="tabpanel" aria-labelledby="home-tab">
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="vertical-align: middle;">STT</th>
+                            <th style="vertical-align: middle;">Họ tên</th>
+                            <th>@DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")<br />@Model[0].ThuHwa</th>
+                            <th class="info">@DateTime.Now.ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay1</th>
+                            <th>@DateTime.Now.AddDays(+1).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay2</th>
+                            <th>@DateTime.Now.AddDays(+2).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay3</th>
+                            <th>@DateTime.Now.AddDays(+3).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay4</th>
+                            <th>@DateTime.Now.AddDays(+4).ToString("dd/MM/yyyy")<br />@Model[0].ThuNgay5</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ i = 1; }
+                        @foreach (var item in Model)
+                        {
+                            @if (item.PhongBan.ToUpper() == "BẢO VỆ" || item.PhongBan.ToUpper() == "PUBLIC RELATION" || item.PhongBan.ToUpper() == "TÀI XẾ" || item.PhongBan.ToUpper() == "TẠP VỤ" || item.PhongBan.ToUpper() == "THIẾT KẾ" || item.PhongBan.ToUpper() == "NHÂN SỰ" || item.PhongBan.ToUpper() == "GIAO VÉ")
+                            {
+                                <tr>
+                                    <td style=" width: 45px; vertical-align: middle">@i</td>
+                                    <td style="width:300px; text-align:left;">
+                                        @item.Ten <br />
+                                        @item.DT&emsp;@{
+                                            if (item.Line != null && item.Line != "")
+                                            {
+                                                string Line = "Ext:" + item.Line;
+                                                @Line;
+                                            }
+                                        }
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+                                        @if (item.DemFileHW != "0")
+                                        {
+                                            <a href="@item.FileHwa" target="_blank"><strong class="file">@item.HWA</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.HWA</strong>}
+                                    </td>
+                                    <td class="info" style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay1 != "0")
+                                        {
+                                            <a href="@item.FileNgay1" target="_blank"><strong class="file">@item.Ngay1</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay1</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay2 != "0")
+                                        {
+                                            <a href="@item.FileNgay2" target="_blank"><strong class="file">@item.Ngay2</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay2</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay3 != "0")
+                                        {
+                                            <a href="@item.FileNgay3" target="_blank"><strong class="file">@item.Ngay3</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay3</strong>}
+                                    </td>
+                                    <td style="">
+                                        @item.Gio <br />
+
+                                        @if (item.DemFileNgay4 != "0")
+                                        {
+                                            <a href="@item.FileNgay4" target="_blank"><strong class="file">@item.Ngay4</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay4</strong>}
+                                    </td>
+                                    <td style="">
+                                         @item.Gio <br/>
+
+                                        @if (item.DemFileNgay5 != "0")
+                                        {
+                                            <a href="@item.FileNgay5" target="_blank"><strong class="file">@item.Ngay5</strong></a>
+                                        }
+                                        else
+                                        {<strong>@item.Ngay5</strong>}
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    

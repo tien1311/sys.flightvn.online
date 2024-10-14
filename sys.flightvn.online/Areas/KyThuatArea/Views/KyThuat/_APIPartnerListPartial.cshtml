@@ -1,0 +1,57 @@
+﻿@using Manager.Model.Models.PaginationBase
+@model PaginationBase<Manager.Model.Models.IP.APIPartner>
+
+@if (Model != null)
+{
+    int soThuTu = (@Model.CurrentPage - 1) * Model.PageSize;
+    var groupedData = Model.ListProduct.GroupBy(x => new { x.Company, x.PhysicalAddress, x.CreatedDate, x.CreatedBy });
+
+    foreach (var group in groupedData)
+    {
+        var firstItem = group.First(); // Lấy item đầu tiên để hiển thị thông tin công ty
+        var panelId = $"collapse{firstItem.Id}";
+
+        <tr data-toggle="collapse" data-parent="#accordion" href="#@panelId" class="clickable-row">
+            <td style="text-align: center;">@firstItem.RowNum</td>
+            <td style="text-align: center;"> <a style="color:blue" class="EditAPIPartner" data-id="@firstItem.Id" href="javascrip:;"> @firstItem.Company  </a> </td>
+            <td style="text-align: center;">@firstItem.PhysicalAddress</td>
+            <td style="text-align: center;">@firstItem.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+            <td style="text-align: center;">@firstItem.CreatedBy</td>
+            <td style="text-align: center;"> <a style="color:blue" class="EditIPAddress" data-id="@firstItem.Id" href="javascrip:;"> Cập nhật IP  </a> </td>
+        </tr>
+        <tr id="@panelId" class="collapse">
+            <td colspan="5">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;">STT</th>
+                            <th>Địa chỉ IP</th>
+                            <th style="width:200px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @* Tách chuỗi IPAddresses và hiển thị *@
+                        @{
+
+                            var ipAddresses = firstItem.IPAddresses.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                            var ipAddressIDs = firstItem.IPAddressIDs.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                            int stt = 1;
+                            for (int i = 0; i < ipAddresses.Length; i++)
+                            {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>@ipAddresses[i]</td>
+                                    <td style="text-align:center">
+                                        <a class="Detail" data-id="@ipAddressIDs[i]" style="color:blue;" href="javascript:;">Xem danh sách Endpoint</a>
+                                    </td>
+                                </tr>
+                                stt++;
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    }
+}

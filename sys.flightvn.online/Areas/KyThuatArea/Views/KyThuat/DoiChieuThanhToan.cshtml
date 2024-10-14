@@ -1,0 +1,192 @@
+﻿@{
+    ViewData["Title"] = "Đối chiếu thanh toán Online";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<link href="~/css/paymentgateway/doichieuthanhtoanonline.css" rel="stylesheet" />
+
+<h2>Đối chiếu thanh toán online</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="@Url.Action("SearchThanhToanGateway", "KyThuat")" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Từ ngày</label>
+                                <input type="date" name="fromDate" class="form-control" id="fromDate" />
+
+                            </div>
+                            <div class="col-md-4">
+                                <label>Đến ngày</label>
+                                <input type="date" name="toDate" class="form-control" id="toDate" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Mã đơn</label>
+                                <input type="text" name="orderIds" placeholder="VD: EVSB......" class="form-control" id="orderId" />
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:8px;">
+                            <div class="col-md-4">
+                                <label>Phương thức thanh toán</label>
+                                <select name="paymentType" id="paymentType" class="form-control">
+                                    <option value="All">Tất cả</option>
+                                    <option value="VNPAY">VNPAY</option>
+                                    <option value="Appota">Appota</option>
+                                    <option value="MoMo">MoMo</option>
+                                    <option value="ZaloPay">ZaloPay</option>
+                                    <option value="Paypal">Paypal</option>
+                                    <option value="Debt">Công nợ</option>
+                                    <option value="chuyen-khoan">Chuyển khoản</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tình trạng</label>
+                                <select name="resultCode" id="resultCode" class="form-control">
+                                    <option value="999">Tất cả</option>
+                                    <option value="0">Thanh toán thành công</option>
+                                    <option value="-1">Thanh toán thất bại</option>
+                                    <option value="2">Giao dịch đang xử lý</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 24px;">
+                                <input type="submit" class="btn btn-primary" value="Tìm kiếm" id="btnSearch" />
+                                <input type="button" class="btn btn-success" value="Xuất excel" id="btnExportExcel" />
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#columnModal">
+                                    Chọn Cột Hiển Thị
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content" id="userpayData">
+                    @Html.Partial("Partial_UserPayData")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-right">
+                <ul id="pagination">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="columnModal" tabindex="-1" role="dialog" aria-labelledby="columnModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="columnModalLabel">Chọn Cột Hiển Thị</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="stt" checked disabled>
+                                <label class="form-check-label">STT</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="makh" checked disabled>
+                                <label class="form-check-label">Mã KH</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="madonhang" checked disabled>
+                                <label class="form-check-label">Mã đơn hàng</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="mathamchieu" checked >
+                                <label class="form-check-label">Mã tham chiếu</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="mathanhtoan" checked >
+                                <label class="form-check-label">Mã thanh toán</label>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="phuongthuc" checked>
+                                <label class="form-check-label">Phương thức</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="loai" checked>
+                                <label class="form-check-label">Loại</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="trangthai" checked>
+                                <label class="form-check-label">Trạng thái</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="sotien" checked>
+                                <label class="form-check-label">Số tiền</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="ngaylap" checked>
+                                <label class="form-check-label">Ngày lập</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="tên" checked>
+                                <label class="form-check-label">Tên</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="sdt" checked>
+                                <label class="form-check-label">SĐT</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="email" checked>
+                                <label class="form-check-label">Email</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="diachi" checked>
+                                <label class="form-check-label">Địa chỉ</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="ghichu" checked>
+                                <label class="form-check-label">Ghi chú</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="maloi" checked>
+                                <label class="form-check-label">Mã lỗi</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input toggle-column" data-column="nguyennhan" checked>
+                                <label class="form-check-label">Nguyên nhân</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+<script src="~/js/doichieuthanhtoanonline/doichieuthanhtoanonline.js"></script>

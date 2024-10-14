@@ -1,0 +1,1653 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@using Manager.DataAccess.IRepository.IUnitOfWork_Repository
+@using Microsoft.AspNetCore.Html
+@using System.IO
+@inject IUnitOfWork_Repository _unitOfWork_Repository;
+
+@functions {
+    HtmlString ToHtmlString(IHtmlContent htmlContent)
+    {
+        using (var writer = new StringWriter())
+        {
+            htmlContent.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+            return new HtmlString(writer.ToString());
+        }
+    }
+    IHtmlContent RenderLoading3Dot(string tagName = "span", string className = null, string styleName = null)
+    {
+        var tagBuilder = new TagBuilder(tagName);
+        if (!string.IsNullOrEmpty(className))
+            tagBuilder.AddCssClass(className);
+
+        var imageBuilder = new TagBuilder("img");
+        if (!String.IsNullOrEmpty(styleName))
+        {
+            imageBuilder.MergeAttribute("style", styleName);
+        }
+        imageBuilder.MergeAttribute("src", "/images/Loading/loading_3dot.gif");
+
+        tagBuilder.InnerHtml.AppendHtml(imageBuilder);
+        return tagBuilder;
+    }
+    IHtmlContent RenderSoDuHang(string maNV)
+    {
+        var htmlContent = string.Empty;
+        if (maNV == "NV00006" || maNV == "NV00016" || maNV == "NV00001" || maNV == "NV00035" || maNV == "NV00391")
+        {
+            htmlContent = $@"<a href='/{AreaNameConst.AREA_Menu}/Hang/SoDuHang?&i=99' target='_blank'>  <img src='/images/Logo ev-none br.png' class='img-responsive logophu' style='display: none;'/></a>
+                            <a href='/{AreaNameConst.AREA_Menu}/Hang/SoDuHang?&i=99' target='_blank'><img style='width: 100px' src='/images/Logo ev-none br.png' class='img-responsive logochinh' /> </a>";
+        }
+        else
+        {
+            htmlContent = @"<img src='/images/Logo ev-none br.png' class='img-responsive logophu' style='display: none;' />
+                            <img style='width: 100px' src='/images/Logo ev-none br.png' class='img-responsive logochinh' />";
+        }
+        return new HtmlString(htmlContent);
+    }
+    IHtmlContent RenderThongBaoVe()
+    {
+        var loadingVeSot = RenderLoading3Dot(tagName: "span", className: "loading_3dot_SoLuongVeSot", styleName: "width: 30px;");
+        var loadingVeHoan = RenderLoading3Dot(tagName: "span", className: "loading_3dot_SoLuongVeHoan", styleName: "width: 30px;");
+        var loadingVeDangHoan = RenderLoading3Dot(tagName: "span", className: "loading_3dot_SoLuongVeDangHoan", styleName: "width: 30px;");
+
+        return new HtmlString($@"
+            <p>
+                Bạn có
+                <span style='color: red; font-weight:bold'>
+    {ToHtmlString(loadingVeSot)}
+                </span> vé sót chưa báo cáo.
+                <a href='/{AreaNameConst.AREA_PhongVe}/PhongVe/VeSot?&i=13'>Chi tiết</a>
+            </p>
+            <p>
+                Hiện tại có
+                <span style='color:red; font-weight:bold'>
+    {ToHtmlString(loadingVeHoan)}
+                </span> vé hoàn đang ở tình trạng
+                <span style='color: red; font-weight: bold;'>MỚI</span>.
+                <a class='chiTietVeHoanLink' href='#'>Chi tiết</a>
+            </p>
+            <p>
+                Hiện tại có
+                <span style='color:red; font-weight:bold'>
+    {ToHtmlString(loadingVeDangHoan)}
+                </span> vé hoàn đang ở tình trạng
+                <span style='color: red; font-weight: bold;'>ĐANG HOÀN</span>.
+                <a class='chiTietVeDangHoanLink' href='#'>Chi tiết</a>
+            </p>");
+    }
+}
+@{
+
+    AccountModel acc = new AccountModel();
+    // truy cập database một lần để lấy tất cả claims cần lấy
+    var requiredClaimTypes = new HashSet<string>
+    {
+        "MaNV", "Ten", "TNMoi", "TBao", "BCVe", "NBo", "DLi", "KToan", "KDoanh", "PVe",
+        "BPDoan", "HDon", "CA", "YSao", "CS", "DTa", "STing", "KThuat", "Dulich",
+        "TNMoiTV", "TBaoTV", "BCVeTV", "NBoTV", "DLiTV", "KToanTV", "KDoanhTV", "PVeTV",
+        "BPDoanTV", "HDonTV", "CATV", "YSaoTV", "CSTV", "DTaTV", "STingTV", "KThuatTV", "DulichTV"
+    };
+
+    // Lấy ra danh sách claim theo requiredClaimTypes
+    var claimsDictionary = Context.User.Claims
+        .Where(claim => requiredClaimTypes.Contains(claim.Type)) // Filter claims
+        .GroupBy(claim => claim.Type)
+        .ToDictionary(group => group.Key, group => group.First().Value);
+
+    // Helper method để lấy lấy value từ claimsDictionary
+    string GetClaimValue(string key) => claimsDictionary.TryGetValue(key, out var value) ? value : null;
+
+    string maNV = GetClaimValue("MaNV");
+    string tenNV = GetClaimValue("Ten");
+
+    string TNMoi = GetClaimValue("TNMoi");
+    string TBao = GetClaimValue("TBao");
+    string BCVe = GetClaimValue("BCVe");
+    string NBo = GetClaimValue("NBo");
+    string DLi = GetClaimValue("DLi");
+    string KToan = GetClaimValue("KToan");
+    string KDoanh = GetClaimValue("KDoanh");
+    string PVe = GetClaimValue("PVe");
+    string BPDoan = GetClaimValue("BPDoan");
+    string HDon = GetClaimValue("HDon");
+    string CA = GetClaimValue("CA");
+    string YSao = GetClaimValue("YSao");
+    string CS = GetClaimValue("CS");
+    string DTa = GetClaimValue("DTa");
+    string STing = GetClaimValue("STing");
+    string KThuat = GetClaimValue("KThuat");
+    string Dulich = GetClaimValue("Dulich");
+
+    // Phan quyen member
+    string TNMoiTV = GetClaimValue("TNMoiTV");
+    string TBaoTV = GetClaimValue("TBaoTV");
+    string BCVeTV = GetClaimValue("BCVeTV");
+    string NBoTV = GetClaimValue("NBoTV");
+    string DLiTV = GetClaimValue("DLiTV");
+    string KToanTV = GetClaimValue("KToanTV");
+    string KDoanhTV = GetClaimValue("KDoanhTV");
+    string PVeTV = GetClaimValue("PVeTV");
+    string BPDoanTV = GetClaimValue("BPDoanTV");
+    string HDonTV = GetClaimValue("HDonTV");
+    string CATV = GetClaimValue("CATV");
+    string YSaoTV = GetClaimValue("YSaoTV");
+    string CSTV = GetClaimValue("CSTV");
+    string DTaTV = GetClaimValue("DTaTV");
+    string STingTV = GetClaimValue("STingTV");
+    string KThuatTV = GetClaimValue("KThuatTV");
+    string DulichTV = GetClaimValue("DulichTV");
+
+    // var tasks = new List<Task>
+    // {
+    //     _unitOfWork_Repository.Login_Rep.GetActiveUserAsync(maNV),
+    //     _unitOfWork_Repository.VeSot_Rep.SoLuongVeSotAsync(maNV),
+    //     _unitOfWork_Repository.VeHoan_Rep.SoLuongVeHoanAsync(),
+    //     _unitOfWork_Repository.VeHoan_Rep.SoLuongVeDangHoanAsync(),
+    //     _unitOfWork_Repository.GuiMail_DaiLy_Rep.SLVeSotBCCTCAsync(maNV),
+    //     _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangIndexAsync(),
+    //     _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangVNIndexAsync(),
+    //     _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangAirInternationIndexAsync(),
+    //     _unitOfWork_Repository.ThongTinDaiLy_Rep.CongNoNVAsync(),
+    //     _unitOfWork_Repository.CongNoQuaHan_Rep.DSCongNoNVQuaHanAsync(),
+    //     _unitOfWork_Repository.Forum_Rep.SoLuongBaiVietAsync(),
+    //     _unitOfWork_Repository.Popup_Rep.LoadPopup(),
+    //     _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV)
+    // };
+
+    //  Task.WhenAll(tasks);
+    // Khởi tạo các task mà không chờ đợi
+    // var taskActiveUser = Task.Run(() => _unitOfWork_Repository.Login_Rep.GetActiveUserAsync(maNV));
+    // var taskSoLuongVeSot = Task.Run(() => _unitOfWork_Repository.VeSot_Rep.SoLuongVeSotAsync(maNV));
+    // var taskSLVeSotBCCTC = Task.Run(() => _unitOfWork_Repository.GuiMail_DaiLy_Rep.SLVeSotBCCTCAsync(maNV));
+    // var taskDuNoDaiLy = Task.Run(() => _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV));
+    // var taskDemTBChuaXem = Task.Run(() => _unitOfWork_Repository.ThongBao_Rep.DemTBChuaXem(maNV));
+    // var taskSoLuongVeHoan = Task.Run(() => _unitOfWork_Repository.VeHoan_Rep.SoLuongVeHoanAsync());
+    // var taskSoLuongVeDangHoan = Task.Run(() => _unitOfWork_Repository.VeHoan_Rep.SoLuongVeDangHoanAsync());
+    // var taskSD_Hang = Task.Run(() => _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangIndexAsync());
+    // var taskSD_HangVN = Task.Run(() => _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangVNIndexAsync());
+    // var taskSD_HangAir_Inter = Task.Run(() => _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangAirInternationIndexAsync());
+    // var taskCNNV = Task.Run(() => _unitOfWork_Repository.ThongTinDaiLy_Rep.CongNoNVAsync());
+    // var taskCNQH = Task.Run(() => _unitOfWork_Repository.CongNoQuaHan_Rep.DSCongNoNVQuaHanAsync());
+    // var taskSoLuong_BVForum = Task.Run(() => _unitOfWork_Repository.Forum_Rep.SoLuongBaiVietAsync());
+    // var taskPopup = Task.Run(() => _unitOfWork_Repository.Popup_Rep.LoadPopup());
+
+    // string Active = "0";
+    // string SLVeSotBCCTC = "...";
+    // string SoLuongVeSot = "...";
+    // string SoLuongVeHoan = "...";
+    // string SoLuongVeDangHoan = "...";
+    // int SoLuong_BVForum = 0;
+    // string popup = "...";
+
+    // var SD_Hang = taskSD_Hang.Result;
+    // var SD_HangVN = taskSD_HangVN.Result;
+    // var SD_HangAir_Inter = taskSD_HangAir_Inter.Result;
+    // var CNNV = taskCNNV.Result;
+    // var CNQH = taskCNQH.Result;
+    // var duNoDaiLy = taskDuNoDaiLy.Result;
+    // Khi các task hoàn thành, cập nhật kết quả
+
+    // Active = taskActiveUser.Result;
+    // SLVeSotBCCTC = taskSLVeSotBCCTC.Result;
+    // SoLuongVeSot = taskSoLuongVeSot.Result;
+    // SoLuongVeHoan = taskSoLuongVeHoan.Result;
+    // SoLuongVeDangHoan = taskSoLuongVeDangHoan.Result;
+    // SoLuong_BVForum = taskSoLuong_BVForum.Result;
+    // popup = taskPopup.Result;
+    // var demTBChuaXem = taskDemTBChuaXem.Result;
+
+    // string tongNo = "...";
+
+    // if (!String.IsNullOrEmpty(popup))
+    // {
+    //     Html.Partial("Popup", popup);
+    // }
+
+    // if (duNoDaiLy != null)
+    // {
+    //     if (duNoDaiLy.Balance != null && duNoDaiLy.Balance != "")
+    //     {
+    //         tongNo = string.Format("{0:0,0}", double.Parse(duNoDaiLy.Balance));
+    //         if (double.Parse(duNoDaiLy.Balance) > 0)
+    //         {
+    //             tongNo = "+" + tongNo;
+    //         }
+    //     }
+    // }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EV Manager</title>
+    <link rel="stylesheet" type="text/css" href="~/vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/style-menu.css">
+    <link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/vendors/switchery/switchery.css" rel="stylesheet" />
+    <style>
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: grey;
+            border-radius: 10px;
+        }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #4c4a4a;
+            }
+
+        .hinhthuc a {
+            padding: 4px 6px;
+            font-size: 12px;
+        }
+
+        .thongbao {
+            position: absolute;
+            padding: 5px 10px;
+            background: red;
+            color: #fff;
+            top: 0;
+            right: 42px;
+            border-radius: 4px;
+        }
+
+        .QT {
+            background: #f5811f;
+            padding: 5px;
+            border-radius: 4px;
+            line-height: 10px;
+        }
+
+        .DB {
+            background: #2aa7dd;
+            border-radius: 4px;
+            padding: 5px;
+            line-height: 10px;
+        }
+
+        .ND {
+            background: #5bc0de;
+            border-radius: 4px;
+            padding: 5px;
+            line-height: 10px;
+        }
+
+        .switchery {
+            width: 32px;
+            height: 20px;
+        }
+
+            .switchery > small {
+                width: 20px;
+                height: 20px;
+            }
+
+        .contain-thongbao {
+            max-height: 70px;
+            border-radius: 5px;
+            background: #fff;
+            margin: auto;
+            overflow: auto;
+            padding: 5px 10px
+        }
+
+        .ResizeImage {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .header {
+            display: none;
+        }
+
+        @@media(max-width: 475px) {
+            .thongbao {
+                right: 12px;
+            }
+
+            .contain-thongbao {
+                width: 92%;
+            }
+
+            .header1 {
+                display: none;
+            }
+
+            .header {
+                display: block;
+            }
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="background" class="background">
+        <div class="bgi">
+            <img src="../images/1.png" class="bg-phu" style="display: none;">
+            <img src="../images/2.png" class="bg-chinh">
+        </div>
+        <div class="r full-mask">
+        </div>
+    </div>
+    <div id="master" class="main-contain-news">
+        <div class="render_Popup"></div>
+        <div class="header">
+            <div class="row">
+                <div class="col-xs-4 main-logo" style="padding:0px">
+                    @RenderSoDuHang(maNV)
+
+                   @*  @if (maNV == "NV00006" || maNV == "NV00016" || maNV == "NV00001" || maNV == "NV00035")
+                    {
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank">  <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" /> </a>
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank"><img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" /> </a>
+                    }
+                    else
+                    {
+                        <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" />
+                        <img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" />
+                    } *@
+                    <div style="margin-top:5px">
+                        <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachDB?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="DB">ĐB</a>
+                        <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachQN?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="ND">NĐ</a>
+                        <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachQT?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="QT">QT</a>
+                    </div>
+                </div>
+                <div class="col-xs-8 main-user">
+                    <p>
+                        <a href="/@AreaNameConst.AREA_Setting/Setting/EditProfile?&i=1" style="text-decoration: none; color: #26b99a;"><i class="fa fa-cogs" aria-hidden="true"></i></a> <a href="/@AreaNameConst.AREA_Setting/Setting/profile?&i=1" style="text-decoration: none; color: #f1e490;">Hi,<span>@tenNV</span> (<span>@maNV</span>)</a>
+                        @*<a href="mail.html" class="" style="position: relative;margin-left: 10px;">
+                        <i class="fa fa-bell-o fa-12x" style="color: #fff;"></i>
+                        <span class="badge bg-green">6</span>
+                        </a>*@
+                        @*  @if (Active == "1")
+                        {
+                        <label>
+                        <input id="ActiveUser" onclick="CheckActiveUser();" checked="checked" type="checkbox" class="js-switch" data-switchery="true" style="display: none;">
+                        </label>
+                        }
+                        else
+                        {
+                        <label>
+                        <input id="ActiveUser" onclick="CheckActiveUser();" type="checkbox" class="js-switch" data-switchery="true" style="display: none;">
+                        </label>
+                        } *@
+                        @RenderLoading3Dot(tagName: "span", className: "loading_3dot_ActiveUser", styleName: "width: 40px;")
+                        <a id="StickNote" data-toggle="modal" data-target="#openPopup" href="javascript:;" style="padding: 4px 0px 4px 0px !important">
+                            <img style=" width: 25px; height: 25px; margin: 0px;" src="~/images/btn-sticknote.png" />
+                        </a>
+                        <a href="javascript:;" onclick="logOut(this);" style="padding: 8px 0px 8px 0px !important"><i style=" color: #ff8300; padding: 5px; border-radius: 4px; background: #d2d2d200; border: 1px solid;" class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    </p>
+                    <p style="margin-top: 8px;">
+                        Số dư: <span>@RenderLoading3Dot(tagName: "span", className: "loading_3dot_tongNo", styleName: "width: 30px;")</span> VNĐ
+                    </p>
+                    <div id="CongViec" class="hinhthuc">
+                        <a id="CSKH" style="margin:10px 0 0 0; " href="#" class="btn btn-danger">Quy định</a>
+                        <a id="nghiepvu" style="margin:10px 0 0 0; " href="#" class="btn btn-warning">Nghiệp vụ</a>
+                        @*<a class="phanviec btn btn-success" style="margin:10px 0 0 0; " data-toggle="modal" data-target="#openPopup" href="javascript:;">Phân việc</a>*@
+                        @*<a class="quydinh btn btn-success" style="margin:10px 0 0 0; " data-toggle="modal" data-target="#openPopup" href="javascript:;">Quy định</a>*@
+                        <input type="hidden" id="IDphanviec" value="@maNV" />
+
+                        <a id="khenthuong" style="margin:10px 0 0 0; " href="#" class="btn btn-primary">Thưởng & Phạt</a>
+                        @*<a id="kyluat" style="margin:10px 0 0 0; " href="#" class="btn btn-info">Kỷ Luật</a>*@
+                    </div>
+                    @*<div class="text-right" style="color: #000; margin-top: 15px;">
+                    <span style="background:#fff;border-radius:5px; padding:7px 10px">Bạn có <span style="color:red; font-weight:bold">@SoLuongVeSot</span> vé sót chưa báo cáo. <a href="/PhongVe/VeSot?&i=13">Chi tiết</a></span>
+                    </div>*@
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+                <div class="contain-thongbao thongbao-ve">
+                    @RenderThongBaoVe()
+                    @*<p>Bạn có <span style="color:red; font-weight:bold">@SLVeSotBCCTC</span> số vé báo cáo chưa thành công. Vui lòng liên hệ kế toán. <a href="/BaoCaoVe/VeSotBCCTC?&i=13">Chi tiết</a></p>*@
+                </div>
+            </div>
+            <div class="row">
+                <div class="contain-thongbao" style="padding: 5px 0px; max-height: 130px;">
+                    <div class="col-sm-12 col-xs-12" style="padding-left:10px;">
+                        @* <p>Hãng VN & NON BSP <strong>@DateTime.Parse(SD_HangVN[0].NgayLap).ToString("dd/MM/yyyy HH:mm:ss")</strong></p> *@
+                        <p>Hãng VN & NON BSP <strong>@RenderLoading3Dot(tagName: "span", className: "loading_3dot_SD_HangVN_HangInter_Ngay", styleName: "width: 30px;")</strong></p>
+                    </div>
+                    <div class="render_SD_HangVN_HangInter"></div>
+                    @* @foreach (var item in SD_HangVN)
+                    {
+                    if (item.Hang.Contains("UJU") || item.Hang.Contains("LXQ"))
+                    {
+                    string Hang = item.Hang.Substring(0, 3);
+                    double sotienTest;
+                    @if (item.SoTien == null || !double.TryParse(item.SoTien, out sotienTest))
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:#000;font-weight:bold;"></span></div>
+                    }
+                    else
+                    {
+                    @if (double.Parse(item.SoTien) <= double.Parse(item.WarningAmount.ToString()))
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:red;font-weight:bold;">@string.Format("{0:0,0}", double.Parse(@item.SoTien))</span></div>
+                    }
+                    else
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color: #0023F5;">@string.Format("{0:0,0}", double.Parse(@item.SoTien))</span></div>
+                    }
+                    }
+                    }
+
+                    } *@
+                    @* @foreach (var item in SD_HangAir_Inter)
+                    {
+                    string Hang = item.Hang;
+                    double sotienTest;
+                    @if (item.SoTien == null || !double.TryParse(item.SoTien, out sotienTest))
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:#000;font-weight:bold;"></span></div>
+                    }
+                    else
+                    {
+                    @if (double.Parse(item.SoTien) <= double.Parse(item.WarningAmount.ToString()))
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:red;font-weight:bold;">@string.Format("{0:0,0}", double.Parse(@item.SoTien))</span></div>
+                    }
+                    else
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color: #0023F5;">@string.Format("{0:0,0}", double.Parse(@item.SoTien))</span></div>
+                    }
+                    }
+                    } *@
+                    <div class="col-sm-12 col-xs-12" style="padding-left:10px;">
+                        <p>Hãng <strong> @RenderLoading3Dot(tagName: "span", className: "loading_3dot_SD_Hang_Ngay", styleName: "width: 30px;")</strong></p>
+                    </div>
+                    @* @RenderLoading3Dot(tagName: "div", className: "render_SD_Hang", styleName: "width: 30px;") *@
+                    <div class="render_SD_Hang"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="contain-thongbao" style="padding: 5px 0px;">
+                    @* <p style="padding-left: 10px;">Công nợ NV @DateTime.Parse(CNNV[0].CREATEDATE).ToString("dd/MM/yyyy hh:mm:ss"). <a id="CNNV1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
+                    <p style="padding-left: 10px;">Công nợ NV @RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNNV_Ngay", styleName: "width: 30px;") <a id="CNNV1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
+                    <div class="render_CNNV"></div>
+                    @*  @for (int i = 0; i <= 3; i++)
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@CNNV[i].MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@CNNV[i].SoTienNo))</span></div>
+                    } *@
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="contain-thongbao" style="padding: 5px 0px;">
+                    @* <p style="padding-left: 10px;">@CNQH.TieuDe tháng @CNQH.Thang. <a id="CNQH1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
+                    <p style="padding-left: 10px;">@RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNQH_Ngay", styleName: "width: 30px;") <a id="CNQH1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
+                    <div class="render_CNQH"></div>
+                    @*  @foreach (var item in CNQH.ListCongNoNVQuaHan)
+                    {
+                    if (item.TenNV == "" && item.MaNV == "")
+                    {
+                    <div class="col-xs-12" style="padding: 0 10px;"><span style="color: #0023F5; font-weight: bold;">TUẦN NÀY KHÔNG CÓ NHÂN VIÊN NỢ QUÁ HẠN. GOOD TEAM</span></div>
+                    }
+                    else
+                    {
+                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@item.MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@item.SoTienNo))</span></div>
+                    }
+                    } *@
+                </div>
+            </div>
+            @* <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="contain-thongbao" style="padding: 5px 0px;">
+            <p style="padding-left: 10px;">Có <span style="color:red;font-weight:bold;">@SoLuong_BVForum</span> bài viết Forum chưa được duyệt. <a href="/Forum/DuyetBaiViet?&i=9">Chi tiết</a></p>
+            </div>
+            </div> *@
+        </div>
+        <div class="header1">
+            <div class="row">
+                <div class="col-xs-3 main-logo" style="padding:0px">
+                    @RenderSoDuHang(maNV)
+                    @* @if (maNV == "NV00006" || maNV == "NV00016" || maNV == "NV00001" || maNV == "NV00035")
+                    {
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank">  <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" /> </a>
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank"><img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" /> </a>
+                    }
+                    else
+                    {
+                        <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" />
+                        <img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" />
+                    } *@
+                    <div style="margin-top:5px"> 
+                        <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachDB?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="DB">ĐB</a>
+                        <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachQN?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="ND">NĐ</a>
+                        <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachQT?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="QT">QT</a>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row" style="margin-top: 5px; margin-bottom: 10px;">
+                        <div class="contain-thongbao thongbao-ve">
+                            @RenderThongBaoVe()
+                            @*     <p>
+                            Bạn có <span class="SoLuongVeSot" style="color:red; font-weight:bold">
+                            <span class='loading_3dot_SoLuongVeSot'>
+                            <img src="~/images/Loading/loading_3dot.gif" style="width: 20px;  " />
+                            </span>
+                            </span> vé sót chưa báo cáo.
+                            <a href="/@AreaNameConst.AREA_PhongVe/PhongVe/VeSot?&i=13">Chi tiết</a>
+                            </p>
+                            <p>
+                            Hiện tại có <span class="SoLuongVeHoan" style="color:red; font-weight:bold">
+                            <span class='loading_3dot_SoLuongVeHoan'>
+                            <img src="~/images/Loading/loading_3dot.gif" style="width: 20px;  " />
+                            </span>
+                            </span> vé hoàn đang ở tình trạng <span style="color: red; font-weight: bold;">"MỚI"</span>.  <a class="chiTietVeHoanLink" href="#">Chi tiết</a>
+                            </p>
+                            <p>
+                            Hiện tại có <span class="SoLuongVeDangHoan" style="color:red; font-weight:bold">
+                            <span class='loading_3dot_SoLuongVeDangHoan'>
+                            <img src="~/images/Loading/loading_3dot.gif" style="width: 20px;  " />
+                            </span>
+                            </span> vé hoàn đang ở tình trạng <span style="color: red; font-weight: bold;">"ĐANG HOÀN"</span>. <a class="chiTietVeDangHoanLink" href="#">Chi tiết</a>
+                            </p> *@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="contain-thongbao" style="padding: 5px 0px; max-height: 130px;">
+                            <div class="col-sm-12 col-xs-12" style="padding-left:10px;">
+                                @* <p>Hãng VN & NON BSP <strong>@DateTime.Parse(SD_HangVN[0].NgayLap).ToString("dd/MM/yyyy HH:mm:ss")</strong></p> *@
+                                <p>Hãng VN & NON BSP <strong>@RenderLoading3Dot(tagName: "span", className: "loading_3dot_SD_HangVN_HangInter_Ngay", styleName: "width: 30px;")</strong></p>
+
+                            </div>
+                            <div class="render_SD_HangVN_HangInter "></div>
+                            @*   @foreach (var item in SD_HangVN)
+                            {
+                            if (item.Hang.Contains("UJU") || item.Hang.Contains("LXQ"))
+                            {
+                            string Hang = item.Hang.Substring(0, 3);
+                            double sotienTest;
+                            @if (item.SoTien == null || !double.TryParse(item.SoTien, out sotienTest))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:#000;font-weight:bold;"></span></div>
+                            }
+                            else
+                            {
+                            @if (double.Parse(item.SoTien) <= double.Parse(item.WarningAmount.ToString()))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:red;font-weight:bold;">@string.Format("{0:0,0}", double.Parse(@item.SoTien))</span></div>
+                            }
+                            else
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color: #0023F5;">@string.Format("{0:0,0}", double.Parse(@item.SoTien))</span></div>
+                            }
+                            }
+                            }
+
+                            } *@
+                            @*  @foreach (var item in SD_HangAir_Inter)
+                            {
+                            string Hang = item.Hang;
+                            double sotienTest;
+                            @if (item.SoTien == null || !double.TryParse(item.SoTien, out sotienTest))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:#000;font-weight:bold;"></span></div>
+                            }
+                            else
+                            {
+                            @if (double.Parse(item.SoTien.ToString()) <= double.Parse(item.WarningAmount.ToString()))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:red;font-weight:bold;">@string.Format("{0:0,0}", double.Parse(item.SoTien))</span></div>
+                            }
+                            else
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color: #0023F5;">@string.Format("{0:0,0}", double.Parse(item.SoTien))</span></div>
+
+                            }
+                            }
+                            } *@
+                            <div class="col-sm-12 col-xs-12" style="padding-left:10px;">
+                                <p>Hãng <strong> @RenderLoading3Dot(tagName: "span", className: "loading_3dot_SD_Hang_Ngay", styleName: "width: 30px;")</strong></p>
+                            </div>
+                            @* @RenderLoading3Dot(tagName: "span", className: "render_SD_Hang", styleName: "width: 30px;") *@
+                            <div class="render_SD_Hang"> </div>
+                            @*         @for (int i = 0; i < 4; i++)
+                            {
+                            if (!SD_Hang[i].Hang.Trim().Contains("BAMBOO AIRWAYS MT"))
+                            {
+                            string Hang = "";
+                            if (SD_Hang[i].Hang.Trim().Contains("FHQ"))
+                            {
+                            Hang = "FHQ";
+                            }
+                            if (SD_Hang[i].Hang.Trim().Contains("UJU"))
+                            {
+                            Hang = "UJU";
+                            }
+                            if (SD_Hang[i].Hang.Trim().Contains("LXQ"))
+                            {
+                            Hang = "LXQ";
+                            }
+                            if (SD_Hang[i].Hang.Trim().Contains("JPQ"))
+                            {
+                            Hang = "JPQ";
+                            }
+                            if (SD_Hang[i].Hang.Trim() != "UJU" && SD_Hang[i].Hang.Trim() != "LXQ")
+                            {
+                            double sotienTest;
+                            @if (SD_Hang[i].SoTien == null || !double.TryParse(SD_Hang[i].SoTien, out sotienTest))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:#000;font-weight:bold;"></span></div>
+                            }
+                            else
+                            {
+                            @if (double.Parse(SD_Hang[i].SoTien) <= double.Parse((SD_Hang[i].WarningAmount.ToString())))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:red;font-weight:bold;">@string.Format("{0:0,0}", double.Parse(@SD_Hang[i].SoTien))</span></div>
+                            }
+                            else
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color: #0023F5;">@string.Format("{0:0,0}", double.Parse(@SD_Hang[i].SoTien))</span></div>
+                            }
+                            }
+                            }
+                            }
+                            }
+                            @for (int i = 4; i < SD_Hang.Count; i++)
+                            {
+                            if (!SD_Hang[i].Hang.Trim().Contains("BAMBOO AIRWAYS MT"))
+                            {
+                            string Hang = SD_Hang[i].Hang.Trim();
+                            double sotienTest;
+                            @if (SD_Hang[i].SoTien == null || !double.TryParse(SD_Hang[i].SoTien, out sotienTest))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:#000;font-weight:bold;"></span></div>
+                            }
+                            else
+                            {
+                            @if (double.Parse(SD_Hang[i].SoTien) <= double.Parse((SD_Hang[i].WarningAmount.ToString())))
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color:red;font-weight:bold;">@string.Format("{0:0,0}", double.Parse(@SD_Hang[i].SoTien))</span></div>
+                            }
+                            else
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@Hang:</span> <span style="color: #0023F5;">@string.Format("{0:0,0}", double.Parse(@SD_Hang[i].SoTien))</span></div>
+
+                            }
+                            }
+                            }
+                            } *@
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="contain-thongbao" style="padding: 5px 0px;">
+                            @* <p style="padding-left: 10px;">Công nợ NV @DateTime.Parse(CNNV[0].CREATEDATE).ToString("dd/MM/yyyy hh:mm:ss"). <a id="CNNV" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
+                            <p style="padding-left: 10px;">Công nợ NV @RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNNV_Ngay", styleName: "width: 30px;") <a id="CNNV1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
+                            <div class="render_CNNV"></div>
+                            @*  @for (int i = 0; i <= 3; i++)
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@CNNV[i].MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@CNNV[i].SoTienNo))</span></div>
+                            } *@
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="contain-thongbao" style="padding: 5px 0px;">
+                            @* <p style="padding-left: 10px;">@CNQH.TieuDe tháng @CNQH.Thang. <a id="CNQH" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
+                            <p style="padding-left: 10px;">@RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNQH_Ngay", styleName: "width: 30px;") <a id="CNQH" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
+                            <div class="render_CNQH"></div>
+                            @* @foreach (var item in CNQH.ListCongNoNVQuaHan)
+                            {
+                            if (item.TenNV == "" && item.MaNV == "")
+                            {
+                            <div class="col-xs-12" style="padding: 0 10px;"><span style="color: #0023F5; font-weight: bold;">TUẦN NÀY KHÔNG CÓ NHÂN VIÊN NỢ QUÁ HẠN. GOOD TEAM</span></div>
+                            }
+                            else
+                            {
+                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@item.MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@item.SoTienNo))</span></div>
+                            }
+                            } *@
+                        </div>
+                    </div>
+                    @* <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                    <div class="contain-thongbao" style="padding: 5px 0px;">
+                    <p style="padding-left: 10px;">Có <span style="color:red;font-weight:bold;">@SoLuong_BVForum</span> bài viết Forum chưa được duyệt. <a href="/Forum/DuyetBaiViet?&i=9">Chi tiết</a></p>
+                    </div>
+                    </div> *@
+                </div>
+                <div class="col-xs-3 main-user">
+                    <p>
+                        <a href="/@AreaNameConst.AREA_Setting/Setting/EditProfile?&i=1" style="text-decoration: none; color: #26b99a;"><i class="fa fa-cogs" aria-hidden="true"></i></a> <a href="/@AreaNameConst.AREA_Setting/Setting/profile?&i=1" style="text-decoration: none; color: #f1e490;">Hi,<span>@tenNV</span> (<span>@maNV</span>)</a>
+                        @*<a href="mail.html" class="" style="position: relative;margin-left: 10px;">
+                        <i class="fa fa-bell-o fa-12x" style="color: #fff;"></i>
+                        <span class="badge bg-green">6</span>
+                        </a>*@
+                        @*  @if (Active == "1")
+                        {
+                        <label>
+                        <input id="ActiveUser1" onclick="CheckActiveUser1();" checked="checked" type="checkbox" class="js-switch" data-switchery="true" style="display: none;">
+                        </label>
+                        }
+                        else
+                        {
+                        <label>
+                        <input id="ActiveUser1" onclick="CheckActiveUser1();" type="checkbox" class="js-switch" data-switchery="true" style="display: none;">
+                        </label>
+                        } *@
+                        @RenderLoading3Dot(tagName: "span", className: "loading_3dot_ActiveUser", styleName: "width: 40px;")
+                        <a id="StickNote1" data-toggle="modal" data-target="#openPopup" href="javascript:;" style="padding: 4px 0px 4px 0px !important">
+                            <img style=" width: 25px; height: 25px; margin: 0px;" src="~/images/btn-sticknote.png" />
+                        </a>
+                        <a href="javascript:;" onclick="logOut(this);" style="padding: 8px 0px 8px 0px !important"><i style=" color: #ff8300; padding: 5px; border-radius: 4px; background: #d2d2d200; border: 1px solid;" class="fa fa-sign-out" aria-hidden="true"></i></a>
+                    </p>
+                    <p style="margin-top: 8px;">
+                        Số dư: <span>@RenderLoading3Dot(tagName: "span", className: "loading_3dot_tongNo", styleName: "width: 30px;")</span> VNĐ
+                    </p>
+                    <div id="CongViec" class="hinhthuc">
+                        <a id="CSKH1" style="margin:10px 0 0 0; " href="#" class="btn btn-danger">Quy định</a>
+                        <a id="nghiepvu1" style="margin:10px 0 0 0; " href="#" class="btn btn-warning">Nghiệp vụ</a>
+                        @*<a class="phanviec btn btn-success" style="margin:10px 0 0 0; " data-toggle="modal" data-target="#openPopup" href="javascript:;">Phân việc</a>*@
+                        @*<a class="quydinh btn btn-success" style="margin:10px 0 0 0; " data-toggle="modal" data-target="#openPopup" href="javascript:;">Quy định</a>*@
+                        <input type="hidden" id="IDphanviec" value="@maNV" />
+
+                        <a id="khenthuong1" style="margin:10px 0 0 0; " href="#" class="btn btn-primary">Thưởng & Phạt</a>
+                        @*<a id="kyluat" style="margin:10px 0 0 0; " href="#" class="btn btn-info">Kỷ Luật</a>*@
+                    </div>
+                    @*<div class="text-right" style="color: #000; margin-top: 15px;">
+                    <span style="background:#fff;border-radius:5px; padding:7px 10px">Bạn có <span style="color:red; font-weight:bold">@SoLuongVeSot</span> vé sót chưa báo cáo. <a href="/PhongVe/VeSot?&i=13">Chi tiết</a></span>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row" style="text-align: center;">
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="tinhnang" data-value="7">
+                        <img src="../images/base.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Marketing</p>
+                    </a>
+                    <span class="thongbao">Mới</span>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="thongbao">
+                        <img src="../images/message.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Thông Báo</p>
+                    </a>
+                    @* @{
+
+                    if (demTBChuaXem > 0)
+                    {
+                    }
+                    } *@
+                    @*  <span class="thongbao">
+                    @RenderLoading3Dot(tagName: "span", className: "loading_3dot_tbChuaXem", styleName: "width: 30px;")
+                    </span> *@
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="baocaove" data-value="13">
+                        <img src="../images/inside.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Báo cáo vé</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="noibo" data-value="7">
+                        <img src="../images/knowledge.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Nội Bộ</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="daily" data-value="8">
+                        <img src="../images/refer4.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Đại Lý</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="ketoan" data-value="5">
+                        <img src="../images/hiring.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Kế Toán</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="kinhdoanh" data-value="10">
+                        <img src="../images/request.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Kinh Doanh</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="phongve" data-value="3">
+                        <img src="../images/booking.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Phòng Vé</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="doan" data-value="14">
+                        <img src="../images/wework.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">BP Đoàn</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="dulich" data-value="15">
+                        <img src="../images/workflow.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Du Lịch</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="hoadon" data-value="2">
+                        <img src="../images/testcenter.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Hóa Đơn</p>
+                    </a>
+                </div>
+
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="corprate" data-value="4">
+                        <img src="../images/drive.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Corprate</p>
+                    </a>
+                </div>
+
+                @*<div class="col-sm-2 col-xs-3 main-icon">
+                <a href="#" class="link-main-icon" id="congno" data-value="6">
+                <img src="../images/inside.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                <p class="name-main-icon">Công Nợ NV</p>
+                </a>
+                </div>*@
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="yensao" data-value="6">
+                        <img src="../images/refer.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Yến Sào</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="VIP" data-value="11">
+                        <img src="../images/workflow.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">CS</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="data" data-value="9">
+                        <img src="../images/office.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Data</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="setting" data-value="1">
+                        <img src="../images/account.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Setting</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="kythuat" data-value="12">
+                        <img src="../images/kythuat.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Kỹ thuật</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="landingpage" data-value="16">
+                        <img src="../images/wework.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">Landing Page</p>
+                    </a>
+                </div>
+                <input id="MANV" name="MANV" value="@maNV" hidden />
+                <!-- <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon">
+                         <img src="../images/request.png" class="img-responsive" alt="logo" style="display: inline-block;"/>
+                         <p class="name-main-icon">VMB Trực Tuyến</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon">
+                         <img src="../images/base.png" class="img-responsive" alt="logo" style="display: inline-block;"/>
+                         <p class="name-main-icon">Airline24h</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon">
+                         <img src="../images/workflow.png" class="img-responsive" alt="logo" style="display: inline-block;"/>
+                         <p class="name-main-icon">Vận Chuyển</p>
+                    </a>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="openPopup" role="dialog">
+    </div>
+
+    @*Note:  GD 1, NS 2, PV 3, KD 4, KT 5, CSKH 6, DL 7, IT 8, KHAC 9, CALL 10, PR 11*@
+
+
+    @*<script src="/js/jquery.min.js"></script>*@
+    <script src="~/js/jquery.1.7.2.min.js"></script>
+    <script src="~/js/jquery-ui.1.8.9.js"></script>
+    <link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+    <script>
+        function getAirlineCodeSD_Hang(hang) {
+            hang = hang.trim();
+            if (hang.includes("FHQ")) return "FHQ";
+            if (hang.includes("UJU")) return "UJU";
+            if (hang.includes("LXQ")) return "LXQ";
+            if (hang.includes("JPQ")) return "JPQ";
+            return hang;
+        }
+
+        function getFormattedAmount(soTien, warningAmount) {
+            if (!soTien || isNaN(soTien)) {
+                return "<span style='color:#000;font-weight:bold;'></span>";
+            }
+            const formattedSoTien = parseFloat(soTien).toLocaleString();
+            const color = (parseFloat(soTien) <= parseFloat(warningAmount)) ? "red" : "#0023F5";
+            return `<span style='color:${color};font-weight:bold;'>${formattedSoTien}</span>`;
+        }
+
+        function CustomDateTime_MMDDYYY_DDMMYYYY(dateInput) {
+            const [datePart, timePart] = dateInput.split(' ');
+            const [month, day, year] = datePart.split('/');
+            return `${day}/${month}/${year} ${timePart}`;
+        }
+
+        function RenderAirlineAmounts_SD_HangVN_HangInter(SD_HangVN, SD_HangInter) {
+            let htmlContent = '';
+            SD_HangVN.forEach(item => {
+                if (item.hang.includes("UJU") || item.hang.includes("LXQ")) {
+                    let Hang = item.hang.substring(0, 3);
+                    let formattedHtml = getFormattedAmount(item.soTien, item.warningAmount);
+                    let container = document.createElement('div');
+                    container.classList.add('col-sm-3', 'col-xs-6');
+                    container.style.padding = '0 10px';
+                    container.innerHTML = `<span style="font-weight:bold;">${Hang}:</span> ${formattedHtml}`;
+                    htmlContent += container.outerHTML;
+
+                }
+            });
+
+            SD_HangInter.forEach(item => {
+                let Hang = item.hang;
+                let formattedHtml = getFormattedAmount(item.soTien, item.warningAmount);
+                let container = document.createElement('div');
+                container.classList.add('col-sm-3', 'col-xs-6');
+                container.style.padding = '0 10px';
+                container.innerHTML = `<span style="font-weight:bold;">${Hang}:</span> ${formattedHtml}`;
+                htmlContent += container.outerHTML;
+            });
+            return htmlContent;
+        }
+
+        function RenderAirlineAmounts_SD_Hang(SD_Hang) {
+            let htmlContent = '';
+            for (let i = 0; i < SD_Hang.length; i++) {
+                const hang = i < 4 ? getAirlineCodeSD_Hang(SD_Hang[i].hang) : SD_Hang[i].hang.trim();
+                if (!hang.includes("BAMBOO AIRWAYS MT")) {
+                    if (hang != "UJU" && hang != "LXQ") {
+                        const formattedAmount = getFormattedAmount(SD_Hang[i].soTien, SD_Hang[i].warningAmount);
+                        htmlContent += `<div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">${hang}:</span> ${formattedAmount}</div>`;
+                    }
+                }
+            }
+            return htmlContent;
+        }
+        function Render_CNNV(CNNV) {
+            let htmlContent = ``;
+            for (let i = 0; i <= 3; i++) {
+                htmlContent += `<div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">${CNNV[i].maNV}:</span> <span style="color: red;">${Number((CNNV[i].soTienNo)).toLocaleString()} </span></div > `;
+            }
+            return htmlContent;
+        }
+        function Render_CNQH(CNQH) {
+            const length_CNQH = CNQH.listCongNoNVQuaHan.length;
+            let htmlContent = '';
+            if (length_CNQH == 0) {
+                return `<div class="col-xs-12" style="padding: 0 10px;"><span style="color: #0023F5; font-weight: bold;">TUẦN NÀY KHÔNG CÓ NHÂN VIÊN NỢ QUÁ HẠN. GOOD TEAM</span></div>`;
+            } else {
+                CNQH.listCongNoNVQuaHan.forEach((item) => {
+                    if (item.tenNV == "" && item.maNV == "") {
+                        return `<div class="col-xs-12" style="padding: 0 10px;"><span style="color: #0023F5; font-weight: bold;">TUẦN NÀY KHÔNG CÓ NHÂN VIÊN NỢ QUÁ HẠN. GOOD TEAM</span></div>`;
+                    }
+                    else {
+                        htmlContent += `<div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">${item.maNV}:</span> <span style="color: red;">${Number(item.soTienNo).toLocaleString()}</span></div>`;
+                    }
+                });
+            }
+            return htmlContent;
+        }
+        let GetValueOfPromieAjax = (url, param = null) => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    data: { key: param, maNV: param },
+                    success: function (response) {
+                        resolve(response);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        reject(errorThrown);
+                    }
+                });
+            });
+        };
+
+        // Hàm lấy Claim Value
+        let GetClaimValue = (key) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetClaimValue`;
+            return GetValueOfPromieAjax(url, key);
+        }
+
+        //#region <!-- Các Task cần có MaNV -->
+
+        let TaskActiveUser = (maNV) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetActiveUserAsync`;
+            return GetValueOfPromieAjax(url, maNV);
+        };
+        let TaskSoLuongVeSot = (maNV) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSoLuongVeSotAsync`;
+            return GetValueOfPromieAjax(url, maNV);
+        };
+        let TaskSLVeSotBCCTC = (maNV) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSLVeSotBCCTCAsync`;
+            return GetValueOfPromieAjax(url, maNV);
+        };
+        let TaskDuNoDaiLy = (maNV) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetLayCongNoNhanVien`;
+            return GetValueOfPromieAjax(url, maNV);
+        };
+        let TaskDemTBChuaXem = (maNV) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetDemTBChuaXem`;
+            return GetValueOfPromieAjax(url, maNV);
+        };
+
+        //#endregion <!-- endregion -->
+
+        //#region <!-- Các Task còn lại -->
+
+        let TaskSoLuongVeHoan = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSoLuongVeHoanAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskSoLuongVeDangHoan = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSoLuongVeDangHoanAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskSD_Hang = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSD_HangIndexAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskSD_HangVN = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSD_HangVNIndexAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskSD_HangAir_Inter = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSD_HangAirInternationIndexAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskCNNV = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetCongNoNVAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskCNQH = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetDSCongNoNVQuaHanAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskSoLuong_BVForum = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetSoLuongBaiVietAsync`;
+            return GetValueOfPromieAjax(url);
+        }
+        let TaskPopup = () => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetLoadPopup`;
+            return GetValueOfPromieAjax(url);
+        }
+        let GetPopupPartial = (popup) => {
+            let url = `/@AreaNameConst.AREA_Menu/Menu/GetPopupPartial`;
+            return GetValueOfPromieAjax(url, popup);
+        }
+
+        //#endregion
+
+        // Thực thi TASK ASYNC
+        const MaNV = "@maNV";
+
+        TaskPopup().then((popup) => {
+            if (popup) {
+                GetPopupPartial(popup).then((popupPartial) => {
+                    document.querySelector('.render_Popup').innerHTML = popupPartial;
+                });
+            }
+
+            return Promise.allSettled([
+                TaskActiveUser(MaNV),
+                // TaskSLVeSotBCCTC(MaNV),
+                TaskDuNoDaiLy(MaNV),
+                TaskDemTBChuaXem(MaNV),
+                TaskCNQH(),
+                TaskSoLuongVeSot(MaNV),
+                TaskSoLuongVeHoan(MaNV),
+                TaskSoLuongVeDangHoan(MaNV),
+                TaskSD_Hang(),
+                TaskSD_HangVN(),
+                TaskSD_HangAir_Inter(),
+                TaskCNNV(),
+            ]);
+        }).then((results) => {
+            const [
+                ActiveResult, /* SLVeSotBCCTCResult, */ DuNoDaiLyResult, DemTBChuaXemResult, CNQHResult,
+                SoLuongVeSotResult, SoLuongVeHoanResult, SoLuongVeDangHoanResult,
+                SD_HangResult, SD_HangVNResult, SD_HangInterResult, CNNVResult
+            ] = results;
+
+            $(document).ready(() => {
+                // Active user
+                if (ActiveResult.status === 'fulfilled') {
+                    const Active = ActiveResult.value;
+                    document.querySelectorAll('.loading_3dot_ActiveUser').forEach((item, index) => {
+                        item.innerHTML = (index == 1) ?
+                            `<label><input id="ActiveUser" onclick="CheckActiveUser();" ${Active == "1" ? 'checked="checked"' : ''} type="checkbox" class="js-switch" data-switchery="true" style="display: none;"></label>` :
+                            `<label><input id="ActiveUser1" onclick="CheckActiveUser1();" ${Active == "1" ? 'checked="checked"' : ''} type="checkbox" class="js-switch" data-switchery="true" style="display: none;"></label>`;
+                    });
+                }
+                // Initialize the switchery for Active user
+                var elems = Array.from(document.querySelectorAll('.js-switch'));
+                elems.forEach(function (html) {
+                    new Switchery(html);
+                });
+
+                // SL Ve Sot - SL Ve Hoan - SL Ve Dang Hoan
+                if (SoLuongVeSotResult.status === 'fulfilled') {
+                    document.querySelectorAll(".loading_3dot_SoLuongVeSot").forEach((item) => {
+                        item.innerHTML = `${SoLuongVeSotResult.value}`;
+                    });
+                }
+
+                if (SoLuongVeHoanResult.status === 'fulfilled') {
+                    document.querySelectorAll(".loading_3dot_SoLuongVeHoan").forEach((item) => {
+                        item.innerHTML = `${SoLuongVeHoanResult.value}`;
+                    });
+                }
+
+                if (SoLuongVeDangHoanResult.status === 'fulfilled') {
+                    document.querySelectorAll(".loading_3dot_SoLuongVeDangHoan").forEach((item) => {
+                        item.innerHTML = `${SoLuongVeDangHoanResult.value}`;
+                    });
+                }
+
+                // Du No Dai Ly
+                if (DuNoDaiLyResult.status === 'fulfilled') {
+                    const DuNoDaiLy = DuNoDaiLyResult.value;
+                    document.querySelectorAll(".loading_3dot_tongNo").forEach((item) => {
+                        if (DuNoDaiLy && DuNoDaiLy.balance) {
+                            let tongNo = Number(DuNoDaiLy.balance).toLocaleString();
+                            item.innerHTML = `${tongNo}`;
+                        }
+                    });
+                }
+
+                // Dem thong bao chua xem
+                if (DemTBChuaXemResult.status === 'fulfilled' && Number(DemTBChuaXemResult.value) > 0) {
+                    document.querySelector("#thongbao").insertAdjacentHTML('afterend',
+                        `<span class="thongbao">${DemTBChuaXemResult.value}</span>`
+                    );
+                }
+
+                // SD_Hang
+                if (SD_HangResult.status === 'fulfilled') {
+                    document.querySelectorAll(".loading_3dot_SD_Hang_Ngay").forEach((item) => {
+                        item.innerHTML = `${CustomDateTime_MMDDYYY_DDMMYYYY(SD_HangResult.value[0].ngayLap)}`;
+                    });
+                    document.querySelectorAll(".render_SD_Hang").forEach((item) => {
+                        item.innerHTML = `${RenderAirlineAmounts_SD_Hang(SD_HangResult.value)}`;
+                    });
+                }
+
+                // SD_HangVN_HangInter
+                if (SD_HangVNResult.status === 'fulfilled' && SD_HangInterResult.status === 'fulfilled') {
+                    document.querySelectorAll('.loading_3dot_SD_HangVN_HangInter_Ngay').forEach((item) => {
+                        item.innerHTML = `${CustomDateTime_MMDDYYY_DDMMYYYY(SD_HangVNResult.value[0].ngayLap)}`;
+                    });
+                    document.querySelectorAll('.render_SD_HangVN_HangInter').forEach((item) => {
+                        item.innerHTML = `${RenderAirlineAmounts_SD_HangVN_HangInter(SD_HangVNResult.value, SD_HangInterResult.value)}`;
+                    });
+                }
+
+                // Cong No Nhan Vien
+                if (CNNVResult.status === 'fulfilled') {
+                    document.querySelectorAll('.loading_3dot_CNNV_Ngay').forEach((item) => {
+                        item.innerHTML = `${CNNVResult.value[0].createdate}`;
+                    });
+                    document.querySelectorAll('.render_CNNV').forEach((item) => {
+                        item.innerHTML = `${Render_CNNV(CNNVResult.value)}`;
+                    });
+                }
+
+                // Cong No QH
+                if (CNQHResult.status === 'fulfilled') {
+                    const CNQH = CNQHResult.value;
+                    document.querySelectorAll('.loading_3dot_CNQH_Ngay').forEach((item) => {
+                        item.innerHTML = `${CNQH.tieuDe} tháng ${CNQH.thang}`;
+                    });
+                    document.querySelectorAll('.render_CNQH').forEach((item) => {
+                        item.innerHTML = `${Render_CNQH(CNQH)}`;
+                    });
+                }
+                // console.log(results)
+            });
+
+        }).catch(error => {
+            console.error('Error in the tasks:', error);
+        }).finally(() => {
+            // Any final cleanup or actions
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        $("#CNNV").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Menu/Menu/DS_CNNV",
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#CNNV1").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Menu/Menu/DS_CNNV",
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#CNQH").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_KeToan/KeToan/DS_CNNVQH",
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#CNQH1").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_KeToan/KeToan/DS_CNNVQH",
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $('.chiTietVeHoanLink').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/@AreaNameConst.AREA_PhongVe/PhongVe/HoanVe',
+                type: 'GET',
+                success: function (response) {
+                    debugger;
+                    if (response.error == 1) {
+                        myFunction();
+                    }
+                    else {
+                        window.location.href = '/@AreaNameConst.AREA_PhongVe/PhongVe/HoanVe?&i=13';
+                    }
+                }
+            });
+        });
+        $('.chiTietVeDangHoanLink').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/@AreaNameConst.AREA_PhongVe/PhongVe/VeDangHoan',
+                type: 'GET',
+                success: function (response) {
+                    debugger;
+                    if (response.error == 1) {
+                        myFunction();
+                    }
+                    else {
+                        window.location.href = '/@AreaNameConst.AREA_PhongVe/PhongVe/VeDangHoan?&i=13';
+                    }
+                }
+            });
+        });
+        $("#StickNote1").click(function () {
+            var maNV = document.getElementById("IDphanviec").value;
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/StickNote",
+                data: {
+                    maNV: maNV
+                },
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#StickNote").click(function () {
+            var maNV = document.getElementById("IDphanviec").value;
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/StickNote",
+                data: {
+                    maNV: maNV
+                },
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#CongViec .phanviec").click(function () {
+            var subject_id = document.getElementById("IDphanviec").value;
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Setting/Setting/PhanViec",
+                data: { khoachinh: subject_id },
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#CongViec .quydinh").click(function () {
+            var subject_id = document.getElementById("IDphanviec").value;
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Setting/Setting/QuyDinh",
+                data: { khoachinh: subject_id },
+                success: function (response) {
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+        $("#setting").click(function () {
+            if (@STing== true || @STingTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Home/Home/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#baocaove").click(function () {
+            if (@BCVe== true || @BCVeTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_BaoCaoVe/BaoCaoVe/IndexBaoCaoVe?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#kythuat").click(function () {
+            if (@KThuat== true || @KThuatTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_KyThuat/KyThuat/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#landingpage").click(function () {
+            if (@KThuat== true || @KThuatTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_LandingPage/LandingPage/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#dulich").click(function () {
+            if (@Dulich== true || @DulichTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_DuLich/DuLich/IndexDuLich?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#doan").click(function () {
+            var manv = document.getElementById('MANV').value;
+            if (@BPDoan== true || @BPDoanTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_BPDoan/BPDoan/Index_DOAN?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#kinhdoanh").click(function () {
+            if (@KDoanh == true || @KDoanhTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/Index_KD?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#thongbao").click(function () {
+            if (@TBao== true || @TBaoTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_ThongBao/ThongBao/ThongBao');
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#tinhnang").click(function () {
+            if (@TNMoi == true || @TNMoiTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Menu/Menu/TinhNangMoi?' + "&i=" + i, "_blank");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#yensao").click(function () {
+            if (@YSao== true || @YSaoTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Content/Content/ViewContent?' + "&i=" + i + "&subject_id=141", "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#nghiepvu1").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Menu/Menu/NghiepVu?' + "&i=" + 7, "_self");
+        });
+        $("#khenthuong1").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Menu/Menu/KhenThuong_KyLuat?' + "&i=" + 7, "_self");
+        });
+        //$("#kyluat").click(function () {
+        //i = $(this).data("value");
+        //window.open('/Content/ViewContent?' + "&subject_id=" + 145 + "&i=" + 7, "_self");
+        //});
+        $("#CSKH1").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Menu/Menu/CSKH?' + "&i=" + 7, "_self");
+        });
+        $("#nghiepvu").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Menu/Menu/NghiepVu?' + "&i=" + 7, "_self");
+        });
+        $("#khenthuong").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Menu/Menu/KhenThuong_KyLuat?' + "&i=" + 7, "_self");
+        });
+        //$("#kyluat").click(function () {
+        //i = $(this).data("value");
+        //window.open('/Content/ViewContent?' + "&subject_id=" + 145 + "&i=" + 7, "_self");
+        //});
+        $("#CSKH").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Menu/Menu/CSKH?' + "&i=" + 7, "_self");
+        });
+        $("#hoadon").click(function () {
+            if (@HDon== true || @HDonTV== true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Home/Home/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#phongve").click(function () {
+            if (@PVe== true || @PVeTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_PhongVe/PhongVe/Index_BK?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#corprate").click(function () {
+            if (@CA== true || @CATV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Corprate/Corprate/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#ketoan").click(function () {
+            if (@KToan== true || @KToanTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_KeToan/Ketoan/Index_KT?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#congno").click(function () {
+            i = $(this).data("value");
+            window.open('/@AreaNameConst.AREA_Home/Home/Index?' + "&i=" + i, "_self");
+        });
+        $("#noibo").click(function () {
+            if (@NBo == true || @NBoTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Menu/Menu/CSKH?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#daily").click(function () {
+            if (@DLi == true || @DLiTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_DaiLy/Daily/AllCongVan?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#data").click(function () {
+            if (@DTa == true || @DTaTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Home/Home/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        $("#VIP").click(function () {
+            if (@CS== true || @CSTV == true) {
+                i = $(this).data("value");
+                window.open('/@AreaNameConst.AREA_Home/Home/Index?' + "&i=" + i, "_self");
+            }
+            else {
+                myFunction();
+            }
+        });
+        function myFunction() {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Menu/Menu/ThongBao",
+                success: function (response) {
+                    document.getElementById("openPopup").innerHTML = "Paragraph changed!";
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal('show');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        function logOut(obj) {
+
+            $.ajax({ url: '/@AreaNameConst.AREA_Login/Login/Logout', method: 'POST' })
+                .done(function () {
+                    window.location.replace("/@AreaNameConst.AREA_Login/Login/Index");
+
+                })
+
+        }
+    </script>
+    @Html.Partial("_Scripts")
+</body>
+</html>

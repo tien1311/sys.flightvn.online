@@ -1,0 +1,251 @@
+﻿@model Manager.Model.Models.Post.PostModel
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@{
+    PostRepository post_Rep = new PostRepository(_configuration);
+    var listCategory = post_Rep.GetAllCategory();
+}
+<link href="~/css/paymentgateway/customfileinput.css" rel="stylesheet" />
+<style>
+    /* Custom modal container */
+    .customModal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1000; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Custom modal content */
+    .customModal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* Centered with some margin from top */
+        padding: 0; /* No extra padding */
+        border: 1px solid #888;
+        width: 50%; /* Width of modal */
+        max-height: 80vh; /* Maximum height of modal content area */
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Modal Header */
+    .customModal-header {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Modal Body */
+    .customModal-body {
+        padding: 10px;
+        flex: 1; /* Take up remaining space */
+        overflow-y: auto; /* Enable vertical scroll if content exceeds */
+    }
+
+    /* Modal Footer */
+    .customModal-footer {
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        text-align: right;
+    }
+
+    /* Close button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    input[type=checkbox] {
+        vertical-align: middle;
+        margin: 0px 0px 1px;
+    }
+</style>
+
+<div class="modal-dialog">
+    <form id="submitForm" enctype="multipart/form-data">
+        <!-- Modal content-->
+        <div class="modal-content" style=" background: #2A3F54;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 style="color:#fff">Tạo mới Bài viết</h1>
+            </div>
+            <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="subject_name" class="control-label">Tiêu đề (*)</label>
+                            <input class="form-control" id="subject_name" value="@Model.subject_name" name="subject_name" placeholder="">
+                            <input class="form-control" hidden id="subject_id" value="@Model.subject_id" name="subject_id" placeholder="">
+                            <input class="form-control" hidden id="currentImage" value="@Model.subject_picture" name="currentImage" placeholder="">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Mô tả ngắn</label> <br />
+                            <textarea style="width:100%" name="subject_header">@Model.subject_header</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Mô tả chi tiết (*)</label>
+                            <textarea type="text" placeholder="" id="LongDescription" name="Description" class="form-control"> @Model.subject_content </textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Danh mục</label>
+                            <select id="Filter_TinhTrang" name="section_id" class="form-control">
+                                @if (listCategory.Any() || listCategory != null)
+                                {
+                                    // Lặp qua các mục có parent_id = null (tức là các mục cha)
+                                    var parentGroups = listCategory.Where(c => c.parent_id == 0);
+                                    foreach (var parent in parentGroups)
+                                    {
+                                        // Hiển thị mục cha với style in đậm
+
+                                        if(Model.section_id == parent.section_id) {
+                                            <option value="@parent.section_id" selected style="font-weight: bold;">- @parent.section_name</option>
+                                        }
+                                        else {
+                                            <option value="@parent.section_id" style="font-weight: bold;">- @parent.section_name</option>
+                                        }
+                                        // Lặp qua các mục con của mục cha hiện tại
+                                        var childItems = listCategory.Where(c => c.parent_id == parent.section_id);
+                                        foreach (var item in childItems)
+                                        {
+                                            if (Model.section_id == item.section_id)
+                                            {
+                                                <option selected value="@item.section_id">&nbsp;&nbsp;&nbsp;&nbsp;+ @item.section_name</option>
+
+                                            }
+                                            else {
+                                                <option value="@item.section_id">&nbsp;&nbsp;&nbsp;&nbsp;+ @item.section_name</option>
+                                            }
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Hiển thị</label>
+
+                            @if (Model.subject_isshow == 1) {
+                                <input type="checkbox" value="1" id="subject_isshow" checked name="subject_isshow" />
+                            }
+                            else {
+                                <input type="checkbox" value="1" id="subject_isshow" name="subject_isshow" />
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Tin Mới</label>
+
+                            @if (Model.subject_isnew == 1) {
+                                <input type="checkbox" value="1" id="subject_isnew" checked name="subject_isnew" />
+                            }
+                            else {
+                                <input type="checkbox" value="1" id="subject_isnew" name="subject_isnew" />
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Tin Nóng</label>
+                            @if (Model.subject_ishot == 1) {
+                                <input type="checkbox" value="1" id="subject_ishot" checked name="subject_ishot" />
+                            }
+                            else {
+                                <input type="checkbox" value="1" id="subject_ishot" name="subject_ishot" />
+
+                            }
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="control-label">Bình luận</label>
+                            @if (Model.subject_com == 1) {
+                                <input type="checkbox" value="1" id="subject_com" checked name="subject_com" />
+                            }
+                            else {
+                                <input type="checkbox" value="1" id="subject_com" name="subject_com" />
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="openGalleryModal">Thư viện ảnh</button>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input id="inputImage" name="ImageInputValue" type="text" class="ImageInputValue" readonly />
+                    </div>
+              
+
+                    <div class="col-sm-3">
+                        <div id="image-container">
+                            <img src="https://Manager.airline24h.com/upload/subject/@Model.subject_picture" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label">Chú thích ảnh</label>
+                            <input type="text" value="@Model.subject_picnote" id="subject_picnote" name="subject_picnote" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+<script src="~/js/daily/createpost.js"></script>
+<!-- Modal  -->
+<div id="customModal" class="customModal">
+    <div class="customModal-content">
+        <div class="customModal-header">
+            <h1>Chọn Ảnh từ FTP</h1>
+        </div>
+        <div class="customModal-body">
+            <div id="imageListContainer">
+                @await Html.PartialAsync("_ImageList", new List<string>())
+            </div>
+        </div>
+        <div class="customModal-footer">
+            <form id="uploadImageForm" enctype="multipart/form-data" method="post">
+                <label for="inputImageFTP" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload"></i> Chọn ảnh
+                </label>
+                <input id="inputImageFTP" name="ImageInputValueFTP" type="file" class="ImageInputValueFTP" />
+                <input type="text" id="inputImageFTPName" readonly />
+                <button type="submit" class="btn btn-primary">Upload</button>
+                <button type="button" class="btn btn-secondary" id="closeModalBtn">Đóng</button>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@model List<ConfigPhiXuatModel>
+@{
+    ViewData["Title"] = "Cấu hình phí dịch vụ";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2>Cấu hình phí xuất</h2>
+
+    <div class="x_content">
+        <div class="row" style="margin-bottom:10px;text-align:right;padding:0 10px;">
+            <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                <table id="datatable1" class="table table-bordered " role="grid" aria-describedby="datatable_info" style="white-space:nowrap">
+
+                    <thead>
+                        <tr role="row">
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 10%;text-align:center;">ID</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 10%;text-align:center;">Tên</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 20%;text-align:center;">Giá</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 20%;text-align:center;">Tỷ giá</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 30%;text-align:center;">Thành tiền</th>
+                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 10%;text-align:center;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr role="row"  class="even" style="text-align:center;cursor:pointer;">
+                                    <td>@item.ID</td>
+                                    <td>@item.Name</td>
+                                    <td><input type="text" onkeyup="ThanhTien(this)" class="form-control has-feedback-right" value="@string.Format("{0:0,0}", item.Price)" />  </td>
+                                    <td><input type="text" onkeyup="ThanhTien(this)" class="form-control has-feedback-right" value="@string.Format("{0:0,0}",item.ExchangeRate)" /></td>
+                                    <td><input disabled=disabled type="text" class="form-control has-feedback-right" value="@string.Format("{0:0,0}",item.Amount)" /></td>
+                                    <td><a class="UpdatePhiXuat" style="color:blue;font-size:22px;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+<script src="~/js/ketoan/cauhinhphixuat.js"></script>

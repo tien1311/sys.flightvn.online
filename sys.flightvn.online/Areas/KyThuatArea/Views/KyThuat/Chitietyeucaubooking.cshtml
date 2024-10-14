@@ -1,0 +1,137 @@
+﻿@model List<Luuthongtin>
+
+
+
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="sidebar-package">
+
+            <div class="table-responsive">
+                <table class="table jambo_table bulk_action " style="margin-bottom:0">
+                    <tbody>
+                        <tr class="even pointer " style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">
+                            <td>
+                                <span>Chi tiết yêu cầu booking</span>
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Họ tên</td>
+                            <td class="" style="color:black;">@Model[0].Name</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Code</td>
+                            <td class="" style="color:black;">@Model[0].Code</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Sdt</td>
+                            <td class="" style="color:black;"><a href="tel:@Model[0].Sdt">@Model[0].Sdt</a></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Email</td>
+                            <td class="" style="color:black;">@Model[0].Email</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Mã kh</td>
+                            <td class="" style="color:black;">@Model[0].Makh</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Hãng</td>
+                            <td class="" style="color:black;">@Model[0].Hang</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Số lượng</td>
+                            <td class="" style="color:black;">@Model[0].SoLuongKhach</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Ngày đi</td>
+                            <td class="" style="color:black;">@Model[0].Ngaydi</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Ngày về</td>
+                            <td class="" style="color:black;">@Model[0].Ngayve</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Nơi đi</td>
+                            <td class="" style="color:black;">@Model[0].Noidi</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Nơi đến</td>
+                            <td class="" style="color:black;">@Model[0].Noiden</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Ghi chú</td>
+                            <td class="" style="color:black;">@Model[0].Note</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="even pointer ">
+                            <td style="font-weight: bold;">Ngày gửi</td>
+                            <td class="" style="color:black;">@Model[0].CreateDate</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<!-- Modal content-->
+
+<style>
+    .all-browsers {
+        margin: 0;
+        border: 1px solid #D3D3D3;
+        background: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

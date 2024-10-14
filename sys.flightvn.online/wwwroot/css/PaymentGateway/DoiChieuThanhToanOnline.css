@@ -1,0 +1,89 @@
+﻿ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+    #pagination li {
+        display: inline-block;
+    }
+
+
+.resultStatus span {
+    padding: 4px 6px;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.totalAmountTitle {
+    font-weight:bold;
+    font-size: 18px;
+}
+
+.totalAmount {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+#pagination {
+    float: right;
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+
+    #pagination .btn {
+        display: inline;
+        font-weight: 400;
+        padding: 0.5rem 1rem;
+        line-height: 1.25;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        cursor: pointer;
+    }
+
+        #pagination .btn:hover {
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+
+        #pagination .btn.active {
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #337ab7;
+        }
+
+        #pagination .btn i {
+            font-size: 16px;
+        }
+
+
+li.btn.page-btn {
+    margin: 0;
+    border-radius: unset;
+}
+
+li.btn#prevPage {
+    margin: 0;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+li.btn#nextPage {
+    margin: 0;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+li#nextPage{
+    padding: 0.5rem 1rem 0.5rem 0.75rem !important;
+}
+li#prevPage {
+    padding: 0.5rem 0.75rem 0.5rem 1rem !important;
+}

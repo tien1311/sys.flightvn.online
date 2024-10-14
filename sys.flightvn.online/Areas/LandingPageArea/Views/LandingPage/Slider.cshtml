@@ -1,0 +1,150 @@
+﻿@model List<Manager.Model.Models.LandingPage.Slider>
+@{
+    ViewData["Title"] = "Danh sách các slider";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<style>
+    table tr td {
+        vertical-align: middle !important;
+    }
+
+    .collapse.show {
+        display: table-row !important;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+    .switch-group {
+        display: inline-block;
+    }
+
+    #gridHotel.table > tbody > tr > td {
+        vertical-align: middle;
+    }
+    /* Ẩn checkbox mặc định */
+    .form-check-input[type="checkbox"] {
+        display: none;
+    }
+
+    /* Tạo giao diện cho nút switch */
+    .switch-label {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 25px;
+        background-color: #ccc;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: -3px;
+    }
+
+    /* Tạo giao diện cho nút switch khi checked */
+    .form-check-input[type="checkbox"]:checked + .switch-label {
+        background-color: #66bb6a;
+    }
+
+    .switch-label:before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 21px;
+        height: 21px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.2s;
+    }
+
+    .form-check-input[type="checkbox"]:checked + .switch-label:before {
+        transform: translateX(25px);
+    }
+
+    a > i {
+        font-size: 18px !important;
+    }
+</style>
+
+@Html.Partial("_EnvietOverlay")
+
+
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <hr style="margin:inherit !important;" />
+        @* // Số lượng hiển thị *@
+        <div class="table-responsive" id="table_Pagination">
+            <table id="gridVisa" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th style="width: 42px; text-align: center;">STT</th>
+                        <th>Ảnh</th>
+                        <th style="width: 150px;">Header</th>
+                        <th style="width: 150px;">Title</th>
+                        <th style="width: 150px;">Thứ tự</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        int stt = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@stt</td>
+                                <td> <img src="@item.Image" style="width:50px; height:50px" /> </td>
+                                <td>@item.Header</td>
+                                <td>@item.Title</td>
+                                <td>@item.Position</td>
+                                <td>
+                                    <a class="Detail" style="color:blue;" data-id="@item.Id" href="javascript:;">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+
+                                    &ensp;
+
+                                    <a class="btnDelete" style="color:red;" data-id="@item.Id" href="javascript:;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                    &ensp;
+
+                                    <div class="switch-group">
+                                        <input class="form-check-input isActived" data-id="@item.Id" type="checkbox" id="switch-checkbox-@item.Id" role="switch" @(item.IsActived ? "checked" : "")>
+                                        <label class="switch-label" for="switch-checkbox-@item.Id"></label>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" style="color:red">Không có dữ liệu</td>
+                        </tr>
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script src="~/js/landingpage/slider/slider.js"></script>

@@ -1,0 +1,190 @@
+﻿@model List<BookingFlightGroup>
+
+
+@{
+    ViewData["Title"] = "Danh Sách Booking";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+
+<h2>Danh sách booking</h2>
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("DanhSachBooking", "BPDoan", new { i = 14 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Từ Ngày
+                    </label>
+                    <div class="col-md-8 col-sm-8 col-xs-8 ">
+
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal2" name="cal_from" value='@ViewBag.DateFrom'>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </div>
+
+                <div class="item form-group col-md-3 col-sm-12 col-xs-12">
+                    <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                        Đến Ngày
+                    </label>
+                    <div class="col-md-8 col-sm-8 col-xs-8 ">
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="single_cal3" name="cal_to" value='@ViewBag.DateTo'>
+                                        <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="item form-group col-md-3 col-sm-3 col-xs-3" style="text-align:center;">
+                    <input type="submit" class="btn btn-primary" value="Tìm Kiếm" name="searchBtn" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="table-responsive" style="font-size:12px;">
+    <table id="gridTable" class="table table-striped jambo_table bulk_action">
+        <thead>
+            <tr class="headings">
+                <th class="column-title"></th>
+                <th class="column-title text-center">STT</th>
+                <th class="column-title text-center">AgentCode</th>
+                <th class="column-title">Remark</th>
+                <th class="column-title">Email</th>
+                <th class="column-title text-center">Phone</th>
+                <th class="column-title text-center">Phone remark</th>
+                <th class="column-title text-center">Book type</th>
+                <th class="column-title text-center">Fare</th>
+                <th class="column-title text-center">Charge</th>
+                <th class="column-title text-center">Discount</th>
+                <th class="column-title text-center">NumberOfGuests</th>
+                <th class="column-title text-center">Price</th>
+                <th class="column-title text-center">Total</th>
+                <th class="column-title">CreateDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+            }
+            @if (Model != null)
+            {
+                @if (Model.Count >0)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr id="@item.ID" class="even pointer">
+                            <td class="text-center"><a class="Chitiet" style="color:red;" href="javascript:;" data-toggle="modal" data-target="#openPopup"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                            <td class="text-center">@i</td>
+                            <td class="text-center">@item.AgentCode</td>
+                            <td class="">@item.Remark</td>
+                            <td class="">@item.Email</td>
+                            <td class="text-center">@item.Phone</td>
+                            <td class="text-center">@item.PhoneRemark</td>
+                            <td class="text-center">@item.BookType</td>
+                            <td class="text-center">@string.Format("{0:0,0}", item.Fare)</td>
+                            <td class="text-center">@string.Format("{0:0,0}", item.Charge)</td>
+                            <td class="text-center">@string.Format("{0:0,0}", item.Discount)</td>
+                            <td class="text-center">@item.NumberOfGuests</td>
+                            <td class="text-center">@string.Format("{0:0,0}", item.Price)</td>
+                            <td class="text-center">@string.Format("{0:0,0}", item.Total)</td>
+                            <td class="">@item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        </tr>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    $("#gridTable .Chitiet").click(function () {
+
+        /*var index = $('#gridVeHoan tr').index($(this).closest('tr'));*/
+        var ID = String($(this).closest('tr').attr('id'));
+
+        $.ajax({
+            type: "POST",
+            url: "../BPDoan/DetailBooking",
+            data: { ID: ID },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+

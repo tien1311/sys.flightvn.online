@@ -1,0 +1,568 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@{
+    var ID = Context.User.Claims.First(claim => claim.Type == "RowID").Value;
+}
+
+<input type="hidden" id="ID" value="@ID" />
+<!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+
+<script src="~/vendors/ckeditor/ckeditor.js"></script>
+
+<script src="~/js/jquery.dataTables.js"></script>   @*phân trang table đại lý*@
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+@*<script src="~/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+
+<script src="~/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+<!-- FastClick -->
+<script src="~/vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="~/vendors/nprogress/nprogress.js"></script>
+<!-- Chart.js -->
+<script src="~/vendors/Chart.js/dist/Chart.min.js"></script>
+<!-- jQuery Sparklines -->
+<script src="~/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- morris.js -->
+<script src="~/vendors/raphael/raphael.min.js"></script>
+<script src="~/vendors/morris.js/morris.min.js"></script>
+<!-- gauge.js -->
+<script src="~/vendors/gauge.js/dist/gauge.min.js"></script>
+<!-- bootstrap-progressbar -->
+<script src="~/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<!-- Skycons -->
+<script src="~/vendors/skycons/skycons.js"></script>
+<!-- Flot -->
+<script src="~/vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
+<script src="~/vendors/Flot/jquery.flot.js"></script>
+<script src="~/vendors/Flot/jquery.flot.pie.js"></script>
+<script src="~/vendors/Flot/jquery.flot.time.js"></script>
+<script src="~/vendors/Flot/jquery.flot.stack.js"></script>
+<script src="~/vendors/Flot/jquery.flot.resize.js"></script>
+<!-- Flot plugins -->
+<script src="~/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src="~/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+<script src="~/vendors/flot.curvedlines/curvedLines.js"></script>
+<!-- DateJS -->
+<script src="~/vendors/DateJS/build/date.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="~/js/custom.min.js"></script>
+<script src="~/vendors/iCheck/icheck.min.js"></script>
+
+<script src="~/vendors/google-code-prettify/src/prettify.js"></script>
+<script src="~/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+@*<script src="~/vendors/switchery/dist/switchery.min.js"></script>*@
+<script src="~/vendors/switchery/dist/switchery.js"></script>
+<script src="~/vendors/select2/dist/js/select2.full.min.js"></script>
+<script src="~/vendors/parsleyjs/dist/parsley.min.js"></script>
+<script src="~/vendors/autosize/dist/autosize.min.js"></script>
+<script src="~/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+<script src="~/vendors/starrr/dist/starrr.js"></script>
+<script src="~/vendors/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha512-eSeh0V+8U3qoxFnK3KgBsM69hrMOGMBy3CNxq/T4BArsSQJfKVsKb5joMqIPrNMjRQSTl4xG8oJRpgU2o9I7HQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    //$(window).on('load', function (event) {
+    //    $('body').removeClass('preloading');
+    //    $('.load').delay(500).fadeOut('fast');
+    //});
+</script>
+<script>
+    $(document).ready(function () {
+        $(".chosen-select").chosen();
+    });
+</script>
+<script>
+    function closeSideMenu() {
+        $BODY = $('body');
+        if ($BODY.hasClass("nav-sm")) {
+            $BODY.removeClass("nav-sm");
+            $BODY.addClass("nav-md");
+        }
+    }
+    function uploadFile(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("file-name").value = target.files[i].name;
+        }
+    }
+    function uploadFilePop_Sys(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("file-namePop_Sys").value = target.files[i].name;
+        }
+    }
+    function uploadFileBan_Air(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("file-nameBan_Air").value = target.files[i].name;
+        }
+    }
+
+    function uploadFileKM(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("file-nameKM").value = target.files[i].name;
+        }
+    }
+    function uploadFileBan_Evbay(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("nameBan_Evbay").value = target.files[i].name;
+        }
+    }
+    function uploadFileADV_Evbay(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("nameADV_Evbay").value = target.files[i].name;
+        }
+    }
+    function uploadFileADV_VeDoanEvbay(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("nameADV_VeDoanEvbay").value = target.files[i].name;
+        }
+    }
+    function uploadFilebannerADS_EnvietGroup(target) {
+        for (var i = 0; i < target.files.length; i++) {
+            document.getElementById("nameADS_EnvietGroup").value = target.files[i].name;
+        }
+    }
+</script>
+<script>
+    var nodeNoiDungScriptPartial = document.getElementById('NoiDung');
+    if (nodeNoiDungScriptPartial) {
+        $(document).ready(function () {
+            CKEDITOR.replace('NoiDung', {
+                height: 400,
+                filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+            });
+        });
+    }
+    $.ajax({
+        type: "POST",
+        url: "/@AreaNameConst.AREA_Home/Home/SoDuHeader",
+        dataType: "json",
+        beforeSend: function () {
+            $("#loader_sodu").show();
+            //show loading
+
+        },
+        complete: function (response) {
+            $("#loader_sodu").hide();
+            $("#header_sodu").show();
+            //hide loading
+        },
+        success: function (resultData) {
+            console.log(resultData);
+            if (resultData >= 0) {
+
+                // Create an "li" node:
+                const node = document.createElement("li");
+
+                // Create a text node:
+
+                node.innerHTML = `<a href="" style="color: #2A3F54 !important; font-weight: bold; padding: 5px 0px 8px !important;"><span>+ ` + formatNumber(resultData) + ` </span> VNĐ</a>`;
+
+                // Append the "li" node to the list:
+                var nodeHeaderSoDu = document.getElementById("header_sodu");
+                if (nodeHeaderSoDu) {
+                    nodeHeaderSoDu.appendChild(node);
+                }
+            }
+            else {
+                // Create an "li" node:
+                const node = document.createElement("li");
+
+                // Create a text node:
+
+                node.innerHTML = `<a href="" style="color: red !important; font-weight: bold; padding: 5px 0px 8px !important;"><span>` + formatNumber(resultData) + ` </span> VNĐ</a>`;
+
+                // Append the "li" node to the list:
+                document.getElementById("header_sodu").appendChild(node);
+            }
+
+        },
+        error: function (xhr, status, p3, p4) {
+            $("#loader_sodu").hide();
+
+        }
+    });
+    function formatNumber(number) {
+        number = number.toFixed(0) + '';
+        x = number.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+</script>
+<script type="text/javascript">
+    function CheckActiveUser() {
+        var n = document.getElementById("ActiveUser").checked;
+        var z = document.getElementById("ID").value;
+        if (n == true) {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/ActiveUser",
+                data: {
+                    Active: 1,
+                    RowID: z
+                },
+                success: function (response) {
+                    document.getElementById("ActiveUser").setAttribute("checked", "checked");
+                    CustomSweetAlert_Success("Thành công");
+                    return;
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/ActiveUser",
+                data: {
+                    Active: 0,
+                    RowID: z
+                },
+                success: function (response) {
+                    document.getElementById("ActiveUser").removeAttribute("checked");
+                    CustomSweetAlert_Success("Thành công");
+                    return;
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    }
+    function CheckActiveUser1() {
+        var n = document.getElementById("ActiveUser1").checked;
+        var z = document.getElementById("ID").value;
+        if (n == true) {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/ActiveUser",
+                data: {
+                    Active: 1,
+                    RowID: z
+                },
+                success: function (response) {
+                    document.getElementById("ActiveUser").setAttribute("checked", "checked");
+                    return;
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/ActiveUser",
+                data: {
+                    Active: 0,
+                    RowID: z
+                },
+                success: function (response) {
+                    document.getElementById("ActiveUser").removeAttribute("checked");
+                    return;
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    }
+    function CheckActiveUser2() {
+        var n = document.getElementById("ActiveUser2").checked;
+        var z = document.getElementById("ID").value;
+        if (n == true) {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/ActiveUser",
+                data: {
+                    Active: 1,
+                    RowID: z
+                },
+                success: function (response) {
+                    document.getElementById("ActiveUser").setAttribute("checked", "checked");
+                    return;
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/@AreaNameConst.AREA_Home/Home/ActiveUser",
+                data: {
+                    Active: 0,
+                    RowID: z
+                },
+                success: function (response) {
+                    document.getElementById("ActiveUser").removeAttribute("checked");
+                    return;
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+    }
+    function altRows(id) {
+
+
+        var rows = document.getElementsByClassName(id);
+
+
+
+        for (i = 0; i < rows.length; i++) {
+            if (i % 2 == 0) {
+                rows[i].classList.add("dark_row");
+
+            } else {
+                rows[i].classList.add("light_row");
+
+            }
+        }
+
+    }
+
+    function SideMenuHome(id) {
+
+        var ID = document.getElementById("myModal");
+
+        if (ID != null) {
+
+            var a = function () {
+                $(".right_col").css("min-height", $(window).height());
+                var a = $("body").outerHeight(),
+                    b = $("body").hasClass("footer_fixed") ? -10 : $("footer").height(),
+                    c = $(".left_col").eq(1).height() + $(".sidebar-footer").height(),
+                    d = a < c ? c : a;
+                d -= $(".nav_menu").height() + b, $(".right_col").css("min-height", d)
+            };
+
+            var screen_width = $(window).width();
+            if (screen_width <= 768) {
+                $("body").removeClass("nav-md");
+                $("body").addClass("nav-sm");
+
+                ($("#sidebar-menu").find("li").removeClass("active active-sm"), $("#sidebar-menu").find("li ul").slideUp());
+            }
+
+            a();
+
+            if (typeof (Storage) !== 'undefined') {
+                if ($("body").hasClass("nav-md")) {
+                    sessionStorage.setItem('resize-menu', "nav-md");
+                }
+                else {
+                    sessionStorage.setItem('resize-menu', "nav-sm");
+                }
+
+            }
+        }
+    }
+
+
+
+
+    function ResizeImage(id) {
+
+
+        var ID = document.getElementById(id);
+
+        if (ID != null) {
+
+            var a = function () {
+                $(".right_col").css("min-height", $(window).height());
+                var a = $("body").outerHeight(),
+                    b = $("body").hasClass("footer_fixed") ? -10 : $("footer").height(),
+                    c = $(".left_col").eq(1).height() + $(".sidebar-footer").height(),
+                    d = a < c ? c : a;
+                d -= $(".nav_menu").height() + b, $(".right_col").css("min-height", d)
+            };
+            if (sessionStorage.getItem('resize-menu') == "nav-sm") {
+                var screen_width = $(window).width();
+                if (screen_width <= 768) {
+                    $("body").removeClass("nav-md");
+                    $("body").addClass("nav-sm");
+
+                    ($("#sidebar-menu").find("li").removeClass("active active-sm"), $("#sidebar-menu").find("li ul").slideUp());
+                }
+            }
+            a();
+
+
+
+            var rows = ID.getElementsByTagName("img");
+            if (rows != null) {
+                for (i = 0; i < rows.length; i++) {
+                    if (sessionStorage.getItem("resize-menu") == "nav-sm") {
+                        rows[i].classList.add("ResizeImage2");
+                    }
+                    else {
+
+                        rows[i].classList.add("ResizeImage");
+                    }
+
+                }
+
+            }
+            var rows_table = ID.getElementsByTagName("table");
+            if (rows_table != null) {
+                var html_header = `<div id="resize_table" class="row"><div class="x_panel">
+                                                  <div class="x_content">  <div class="table-responsive">     <table class="table table-striped jambo_table bulk_action">`;
+                var html_footer = `</table></div> </div>  </div>  </div>`;
+                for (i = 0; i < rows_table.length; i++) {
+                    rows_table[i].classList.add("MsoNormalTable");
+                    var content = rows_table[i].innerHTML;
+                    var html_content = html_header + content + html_footer;
+
+                }
+
+                document.querySelector('.MsoNormalTable').insertAdjacentHTML(
+                    'beforebegin',
+                    html_content
+                )
+
+                var element = document.getElementById("resize_image");
+                element.classList.remove("resize");
+
+
+                $('.MsoNormalTable').remove();
+
+
+
+
+
+
+
+            }
+
+        }
+
+
+
+    }
+    window.onload = function () {
+        SideMenuHome();
+        $('#myModal').modal('show');
+        $('#myPopupHoanVe').modal('show');
+
+        altRows('change_color');
+        ResizeImage('resize_image');
+
+
+    }
+
+</script>
+<script>
+    $(".chosen-select-trangThai").chosen();
+    $(".chosen-select-TrangThaiTinh").chosen();
+
+    $(document).ready(function () {
+        $(".chosen-select-trangThai").chosen();
+        $(".chosen-select-trangThai").on('change', function (evt, params) {
+            var selectedOptions = $(this).val();
+            $.ajax({
+                url: '/@AreaNameConst.AREA_DuLich/DuLich/GetTinhThanh',
+                type: 'POST',
+                traditional: true,
+                data: { selectedOptions: selectedOptions },
+                success: function (data) {
+                    // Xử lý kết quả nếu cần
+                },
+                error: function () {
+                    // Xử lý lỗi nếu có
+                }
+            });
+        });
+
+        $(".chosen-select-TrangThaiTinh").chosen();
+        $(".chosen-select-TrangThaiTinh").on('change', function (evt, params) {
+            var selectedOptions = $(this).val();
+            $.ajax({
+                url: '/@AreaNameConst.AREA_DuLich/DuLich/GetTinhThanhOther',
+                type: 'POST',
+                traditional: true,
+                data: { selectedOptions: selectedOptions },
+                success: function (data) {
+                    // Xử lý kết quả nếu cần
+                },
+                error: function () {
+                    // Xử lý lỗi nếu có
+                }
+            });
+        });
+    });
+
+    $(".chosen-select-trangThaiQT").chosen();
+    $(".chosen-select-TrangThaiTinhQT").chosen();
+
+    $(document).ready(function () {
+        $(".chosen-select-trangThaiQT").chosen();
+        $(".chosen-select-trangThaiQT").on('change', function (evt, params) {
+            var selectedOptions = $(this).val();
+            $.ajax({
+                url: '/@AreaNameConst.AREA_DuLich/DuLich/GetTinhThanhQT',
+                type: 'POST',
+                traditional: true,
+                data: { selectedOptions: selectedOptions },
+                success: function (data) {
+                    // Xử lý kết quả nếu cần
+                },
+                error: function () {
+                    // Xử lý lỗi nếu có
+                }
+            });
+        });
+
+        $(".chosen-select-TrangThaiTinhQT").chosen();
+        $(".chosen-select-TrangThaiTinhQT").on('change', function (evt, params) {
+            var selectedOptions = $(this).val();
+            $.ajax({
+                url: '/@AreaNameConst.AREA_DuLich/DuLich/GetTinhThanhOtherQT',
+                type: 'POST',
+                traditional: true,
+                data: { selectedOptions: selectedOptions },
+                success: function (data) {
+                    // Xử lý kết quả nếu cần
+                },
+                error: function () {
+                    // Xử lý lỗi nếu có
+                }
+            });
+        });
+    });
+</script>
+
+
+
+

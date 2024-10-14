@@ -1,0 +1,117 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.ProductsModel>
+
+@inject IConfiguration _configuration
+@{
+    ViewData["Title"] = "Hotel";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+    HotelRepository hotel_Rep = new HotelRepository(_configuration);
+    List<Province> listProvince = hotel_Rep.GetListProvinceHasHotel();
+    var location_Rep = new LocationRepository(_configuration);
+
+}
+<title>@ViewData["Title"]</title>
+
+<style>
+    .truncate {
+        max-width: 200px; /* Chiều rộng tối đa của ô */
+        white-space: nowrap; /* Ngăn không cho văn bản xuống dòng */
+        overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước của ô */
+        text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi văn bản quá dài */
+    }
+
+    #province_chosen {
+        width: 100% !important;
+    }
+
+</style>
+
+<link href="~/css/hotel/indexhotel.css" rel="stylesheet" />
+
+<div class="overlay" id="loadingOverlay">
+    <div class="loading-container">
+        <img src="~/images/logo ev-none br.png" alt="Logo" class="logo">
+        <div class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+    <a id="btnDeleteSelected" href="javascript:;" class="btn btn-danger">Xoá các mục đã chọn</a>
+    <a id="btnUndo" href="javascript:;" class="btn btn-warning">Hoàn tác các nội dung đã xoá </a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="@Url.Action("SearchListHotel", "Hotel")" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Mã khách sạn</label>
+                                <input type="text" name="hotelCodes" placeholder="VD: SPHT..,SPHT..." class="form-control" id="hotelCodes" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tên khách sạn</label>
+                                <input type="text" name="hotelNames" placeholder="VD: Khách sạn A, Khách sạn B......" class="form-control" id="hotelNames" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tỉnh/Thành phố</label>
+                                <select class="form-control chosen-select" id="province" name="province">
+                                    <option value="">Tất cả</option>
+                                    @foreach (Province province in listProvince)
+                                    {
+                                        <option value="@province.Code">@province.Full_Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:8px;">
+                            <div class="col-md-4">
+                                <label>Trạng thái hoạt động</label>
+                                <select name="isActived" id="isActived" class="form-control">
+                                    <option value="999">Tất cả</option>
+                                    <option value="1">Hoạt động</option>
+                                    <option value="0">Tạm dừng hoạt động</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 24px;">
+                                <input type="submit" class="btn btn-primary" value="Tìm kiếm" id="btnSearch" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content" id="listHotelData">
+                    @* @Html.Partial("Partial_ListHotelData") *@
+
+                    <div style="margin: 10px 0px;">
+                        <label style="margin-right: 5px;">Hiển thị</label>
+                        <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                            <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                            <option value="25">25</option>
+                            <option selected value="50">50</option>
+                        </select>
+                        <label style="margin-left: 5px;">dòng</label>
+                    </div>
+
+                    <div class="table-responsive" id="table_Pagination">
+                        @await Html.PartialAsync("_TableHotelPaginationPatial", Model)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/hotel/hotel.js"></script>

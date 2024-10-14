@@ -1,0 +1,32 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@{
+    string url = "";
+    if (Context.User.Claims.First(claim => claim.Type == "TenHinh").Value != "")
+    {
+        url = "http://daily.airline24h.com/upload/hinhnv/" + Context.User.Claims.First(claim => claim.Type == "TenHinh").Value;
+    }
+    else
+    {
+        url = "/images/img.jpg";
+    }
+}
+
+
+
+<!-- menu profile quick info -->
+<div class="profile clearfix" style=" background: #323232; border-top: 1px solid #484747; box-shadow: -4px 0px 9px #000; border-bottom: 1px solid #484747;">
+    <div class="profile_pic" style="width:28% !important">
+        <img src="@url" alt="..." class="img-circle profile_img">
+    </div>
+    <div class="profile_info" style="font-size:10px;width:72% !important">
+        <h2>
+            <a href="/@AreaNameConst.AREA_Setting/Setting/EditProfile?&i=1" style="font-size: 12px; font-weight: normal; color: #f1e490; margin-bottom: 4px; "> Hi! @Context.User.Claims.First(claim => claim.Type == "Ten").Value</a>&nbsp;<a href="/Setting/EditProfile?&i=1" style="font-size: 12px; font-weight: bold; color: #26b99a; margin-bottom: 4px;"><i class="fa fa-cogs" aria-hidden="true"></i></a>
+        </h2>
+        <h2 style="font-size: 12px; font-weight: normal; color: #f1e490; margin-bottom: 4px;">
+            @Context.User.Claims.First(claim => claim.Type == "MaNV").Value
+        </h2>
+
+
+
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿
+<link href="~/css/paymentgateway/customfileinput.css" rel="stylesheet" />
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">Tạo mới mạng xã hội </h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+
+            <form id="submitForm">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tên mạng xã hội</label>
+                            <input class="form-control" type="text" id="Name" name="Name" placeholder="Tên mạng xã hội" required>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="inputImage" class="control-label">Ảnh</label>
+                            <br />
+                            <label for="inputImage" class="custom-file-upload">
+                                <i class="fa fa-cloud-upload"></i> Chọn ảnh
+                            </label>
+                            <input id="inputImage" name="ImageValue" type="file" class="ImageValue" />
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="image-container">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Đường dẫn</label>
+                            <input class="form-control" type="text" id="Link" name="Link" placeholder="Đường dẫn" required>
+                        </div>
+                    </div>
+
+                </div>
+                <button id="btnSave" type="submit" class="btn btn-primary">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/hotel/generateimagetoview.js"></script>
+<script src="~/js/LandingPage/SocialMedia/CreateSocialMedia.js"></script>

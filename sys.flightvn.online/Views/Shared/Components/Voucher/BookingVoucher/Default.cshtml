@@ -1,0 +1,51 @@
+﻿@model OrderHeaderVoucher
+
+@{
+    string customColor = string.Empty;
+    switch (@Model.OrderStatusId)
+    {
+        case StaticDetailVoucher.OrderStatusId_INFORMATION_RECEIVED:
+            customColor = "btn-info";
+            break;
+        case StaticDetailVoucher.OrderStatusId_PROCESSED:
+            customColor = "btn-primary";
+            break;
+        case StaticDetailVoucher.OrderStatusId_CANCELLED:
+            customColor = "btn-dark";
+            break;
+        case StaticDetailVoucher.OrderStatusId_PAYMENT_SUCCESS:
+            customColor = "btn-success";
+            break;
+        case StaticDetailVoucher.OrderStatusId_COMPLETED:
+            customColor = "btn-success";
+            break;
+        case StaticDetailVoucher.OrderStatusId_NEW:
+            customColor = "btn-danger";
+            break;
+    }
+}
+
+<button class="btn btn-xs @customColor p-3" style="border-radius: 15px;">@Model.Status </button>
+
+@* 
+@if (@Model.Id == StaticDetailVoucher.OrderStatusId_CANCELLED)
+{
+    <button class="btn btn-xs btn-danger p-3" style="border-radius: 15px;">@Model.StatusName </button>
+}
+@if (@Model.Id == StaticDetailVoucher.OrderStatusId_PROCESSED)
+{
+    <button class="btn btn-xs btn-secondary p-3" style="border-radius: 15px;">@Model.StatusName </button>
+}
+@if (@Model.Id == StaticDetailVoucher.OrderStatusId_PAYMENT_SUCCESS)
+{
+    <button class="btn btn-xs btn-warning p-3" style="border-radius: 15px;">@Model.StatusName </button>
+}
+@if (@Model.Id == StaticDetailVoucher.OrderStatusId_INFORMATION_RECEIVED)
+{
+    @* <td class="text-center "><span style="padding: 5px 10px;border-radius: 15px;" class="btn-primary">@Model.Status</span></td> *@
+@*     <button class="btn btn-xs btn-primary p-3" style="border-radius: 15px;">@Model.StatusName </button>
+ *@@* }
+@if (@Model.Id == StaticDetailVoucher.OrderStatusId_COMPLETED)
+{
+    <button class="btn btn-xs btn-success p-3" style="border-radius: 15px;">@Model.StatusName </button>
+} *@ 

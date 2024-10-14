@@ -1,0 +1,170 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+
+@model string
+
+
+<style>
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+
+    .popup .table thead th, .table td {
+        padding: 6px 20px !important;
+        text-align: left;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    #home td:first-child {
+        width: 145px;
+    }
+
+    #home td:last-child {
+        width: calc(100% - 145px);
+    }
+</style>
+<div class="modal-dialog" style="margin-top: 20%;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red;text-align:center;font-size:20px;">Cập nhật mã KH </h1>
+
+            <form role="form" style="margin-top:12px;">
+
+                <div class="form-group">
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <div class="item form-group">
+                            <label class="col-form-label">
+                                Mã KH
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-9 col-xs-12">
+                        <div class="item form-group">
+                            <input id="MaKH" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-3">
+                        <a id="btn_chuyen" class="btn btn-primary" href="javascript:;" onclick="CheckMaKH();" style="float:right; margin-right:0px;"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        @*<button id="check" class="btn btn-info" type="submit" style="box-shadow: 2px 2px 5px #838080; "><i class="fa fa-search" aria-hidden="true"></i></button>*@
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="item form-group">
+                        <p id="tenCTY" style="color:red; font-size:14px"></p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="color:red">
+                        <div class="item form-group">
+                            <label class="col-form-label">
+                                * Vui lòng nhập chính xác Mã kế toán. Hệ thống chỉ cho phép sửa 1 lần.
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <input id="MaChuyenKhoan" value="@Model" name="MaChuyenKhoan" hidden />
+                <a id="btn_chuyen" class="btn btn-primary" href="javascript:;" onclick="CapNhat();" style="float:right; margin-right:0px;">Cập nhật</a>
+            </form>
+        </div>
+
+
+        <div class="tab-content popup" id="myTabContent">
+            <div class="tab-pane fade  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function CapNhat() {
+        var maCK = document.getElementById("MaChuyenKhoan").value;
+        var maKH = document.getElementById("MaKH").value;
+        var length = Number(maKH.length);
+        if (length != 8 && length != 7) {
+            alert("Phải 7 ký tự hoặc 8 ký tự");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "../DaiLy/UpdateMaKH",
+            data: {
+                MaCK: maCK,
+                MaKH: maKH
+
+            },
+            success: function (response) {
+                if (response == "TrungKH") {
+                    alert("Mã chuyển khoản này đã có người cập nhật");
+                }
+                else {
+                    if (response == "KhongTonTai") {
+                        alert("Mã KH không tồn tại");
+                    }
+                    else {
+                        alert("Cập nhật thành công");
+                    }
+                }
+
+                location.reload(true);
+            },
+            failure: function (response) {
+
+                alert(response.responseText);
+            },
+            error: function (response) {
+
+                alert(response.responseText);
+            }
+        });
+
+
+    };
+    function CheckMaKH() {
+        var makh = document.getElementById("MaKH").value;
+        if (makh == '') {
+            alert("Mã KH không dc để trống");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/@AreaNameConst.AREA_PhongVe/PhongVe/SearchMaKHBaoCaoVeSot",
+            data: {
+                MaKH: makh,
+            },
+            success: function (response) {
+
+                document.getElementById("tenCTY").innerHTML = makh + " : " + response
+                return;
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    };
+
+</script>
+
+
+

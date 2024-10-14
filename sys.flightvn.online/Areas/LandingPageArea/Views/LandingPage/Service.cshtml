@@ -1,0 +1,103 @@
+﻿@model List<Manager.Model.Models.LandingPage.Service>
+@{
+    ViewData["Title"] = "Danh sách các dịch vụ";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+
+<style>
+    table tr td {
+        vertical-align: middle !important;
+    }
+
+    .collapse.show {
+        display: table-row !important;
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+
+    a > i {
+        font-size: 18px !important;
+    }
+
+
+</style>
+
+@Html.Partial("_EnvietOverlay")
+
+
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <hr style="margin:inherit !important;" />
+        @* // Số lượng hiển thị *@
+        <div class="table-responsive" id="table_Pagination">
+            <table id="gridVisa" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th style="width: 42px; text-align: center;">STT</th>
+                        <th>Ảnh</th>
+                        <th style="width: 150px;">Tên sản phẩm/dịch vụ</th>
+                        <th style="width: 150px;">Mô tả</th>
+                        <th style="width: 150px;">Đường dẫn</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        int stt = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@stt</td>
+                                <td> <img src="@item.Image" style="width:50px; height:50px" /> </td>
+                                <td>@item.Name</td>
+                                <td>@item.ShortDescription</td>
+                                <td>@item.Link</td>
+
+                                <td>
+                                    <a class="Detail" style="color:blue;" data-id="@item.Id" href="javascript:;">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a>
+
+                                    &ensp;
+
+                                    <a class="btnDelete" style="color:red;" data-id="@item.Id" href="javascript:;">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" style="color:red">Không có dữ liệu</td>
+                        </tr>
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script src="~/js/landingpage/service/service.js"></script>

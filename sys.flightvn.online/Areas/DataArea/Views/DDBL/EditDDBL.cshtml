@@ -1,0 +1,485 @@
+﻿@model DinhDanhBaoLuuModel
+<!-- bootstrap-daterangepicker -->
+<link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/custom.min.css" type="text/css" />
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+
+
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Chỉnh sửa Định danh / Bảo lưu</h1>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <label for="" class="col-sm-12 control-label">Hạn đăng bán</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group ">
+                                        <input type="text" name="to_date" value='@Model.HanDangBan' class="form-control has-feedback-left" id="single_cal4" placeholder="Đến Ngày">
+                                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">Loại</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="hidden" id="ID_DDBL" value="@Model.ID" />
+                                        <input type="hidden" id="loaive" value="@Model.Loai" />
+                                        <select id="Loai" name="Loai" class="form-control">
+                                            <option value="DD">Định danh</option>
+                                            <option value="BL">EMDS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">Trạng thái</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <label class="radio-inline" style="line-height:20px;">
+                                            <input type="radio" name="inlineRadioOptions" id="Trangthai1" value="option1" checked="checked"> Mở bán
+                                        </label>
+                                        <label class="radio-inline" style="line-height:20px;">
+                                            <input type="radio" name="inlineRadioOptions" id="Trangthai2" value="option2"> Ngưng bán
+                                        </label>
+                                        <label class="checkbox-inline" style="line-height:20px;margin-left:10px;">
+                                            <input type="checkbox" id="Hidden"> Ẩn
+                                        </label>
+                                        <input type="hidden" id="TrangThai" value="@Model.TrangThai" />
+                                        <input type="hidden" id="Hiddentxt" value="@Model.Hidden" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">Hãng</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="hidden" id="CacHang" value="@Model.Hang" />
+                                        <select id="HangBay" name="HangBay" class="form-control">
+                                            <option value="VU">
+                                                Vietravel Airlines
+                                            </option>
+                                            <option value="QH">
+                                                Bamboo Airways
+                                            </option>
+                                            <option value="VJ">
+                                                VietJet Air
+                                            </option>
+                                            <option value="BSP">
+                                                Quốc Tế Các Hãng Khác
+                                            </option>
+                                            <option value="VN">
+                                                VietnamAirline
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">PNR</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="PNR" name="PNR" placeholder="PNR" value="@Model.PNR">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<label for="" class="col-sm-12 control-label">Giá gốc</label>
+                        <div class="col-sm-12">
+                        <div class="control-group">
+                        <div class="controls">
+                        <div class=" xdisplay_inputx form-group has-feedback">
+                        <input type="text" class="form-control" id="Giagoc" name="Giagoc" placeholder="Giá gốc">
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">Giá bán</label>
+                        <div class="col-sm-12">
+                        <div class="control-group">
+                        <div class="controls">
+                        <div class=" xdisplay_inputx form-group has-feedback">
+                        <input type="text" class="form-control" id="Giaban" name="Giaban" placeholder="Giá bán">
+                        </div>
+                        </div>
+                        </div>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <label for="" class="col-sm-12 control-label">Tên người bán (*)</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="TenNB" name="TenNB" value="@Model.TenNB" placeholder="Tên người bán">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">Điện thoại (*)</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="DienthoaiNB" name="DienthoaiNB" value="@Model.DienThoaiNB" placeholder="Điện thoại người bán">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">Ghi chú</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <textarea class="form-control" id="Ghichu" rows="3"> @Model.GhiChu</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label for="" class="col-sm-12 control-label">Số vé</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="Sove" name="Sove" value="@Model.SoVe" placeholder="Số vé">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="SoDong">
+                <div class="col-xs-12">
+                    <div class="row">
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var item in Model.ListTenHK)
+                        {
+                            string TenHK_ID = "TenHK" + i;
+                            string GiaBan_ID = "GiaBan" + i;
+                            string GiaGiam_ID = "GiaGiam" + i;
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div class="row">
+                                            <label for="" class="col-sm-12 control-label">Tên khách (*)</label>
+                                            <div class="col-sm-12">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                                            <input type="text" class="form-control" id="@TenHK_ID" name="TenHK" value="@item.TenHK" placeholder="Tên khách bay">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <div class="row">
+                                            <label for="" class="col-sm-12 control-label">Giá bán</label>
+                                            <div class="col-sm-12">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                                            <input type="text" class="form-control" id="@GiaBan_ID" name="GiaBan" value="@item.GiaBan" placeholder="Giá bán">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <div class="row">
+                                            <label for="" class="col-sm-12 control-label">Giá giảm</label>
+                                            <div class="col-sm-12">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                                            <input type="text" class="form-control" id="@GiaGiam_ID" name="GiaGiam" value="@item.GiaGiam" placeholder="Giá giảm">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <div class="row">
+                                    <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                                    <div class="col-sm-12">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <div class=" xdisplay_inputx form-group has-feedback">
+                                                    <input class="btn btn-primary" onclick="ThemDong(this);" type="button" value="+" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            i++;
+                        }
+                        <input type="hidden" id="count" value="@i" />
+                    </div>
+                </div>
+            </div>
+            <div id="addRows">
+            </div>
+            <div class="row">
+                <div class="col-sm-12" style="text-align:right">
+                    <button id="BtnCreate" type="button" class="btn btn-primary" onclick="LuuBaoCao(this);" style="margin-bottom:10px">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="~/js/custom.min.js"></script>
+<script>
+    var make = document.getElementById("CacHang").value;
+    $("#HangBay option[value='" + make + "']").attr("selected", "selected");
+
+    var item = document.getElementById("loaive").value;
+    $("#Loai option[value='" + item + "']").attr("selected", "selected");
+
+    var hid = document.getElementById("Hiddentxt").value;
+    if (hid == "True") {
+        document.getElementById("Hidden").setAttribute("checked", "checked");
+    }
+    var TT = document.getElementById("TrangThai").value;
+    if (TT == "True") {
+        document.getElementById("Trangthai1").setAttribute("checked", "checked");
+    }
+    else {
+        document.getElementById("Trangthai2").setAttribute("checked", "checked");
+    }
+    var count = document.getElementById("count").value;
+    function ThemDong() {
+        document.querySelector('#addRows').insertAdjacentHTML(
+            'beforebegin',
+            `<div class="row" id="SoDong` + count + `">
+                <div class="col-xs-10">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <label for="" class="col-sm-12 control-label">Tên khách (*)</label>
+                                <div class="col-sm-12">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="TenHK`+ count + `" name="TenHK" placeholder="Tên khách bay">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="row">
+                                <label for="" class="col-sm-12 control-label">Giá bán</label>
+                                <div class="col-sm-12">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="GiaBan`+ count + `" name="GiaBan" placeholder="Giá bán">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
+                            <div class="row">
+                                <label for="" class="col-sm-12 control-label">Giá giảm</label>
+                                <div class="col-sm-12">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control" id="GiaGiam`+ count + `" name="GiaGiam" placeholder="Giá giảm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="row">
+                        <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input class="btn btn-danger" onclick="XoaDong(`+ count + `);" type="button" value="-" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>` );
+
+        count++;
+
+    }
+
+    function XoaDong(SoDong) {
+        var e = 'SoDong' + SoDong;
+        const element = document.getElementById(e);
+        element.remove();
+        count--;
+
+    }
+    function LuuBaoCao() {
+        var TRANGTHAI = '';
+        var TenKhachBays = new Array();
+        var ID = document.getElementById("ID_DDBL").value.toUpperCase();
+        var HANBAN = document.getElementById("single_cal4").value.toUpperCase();
+        var LOAI = document.getElementById("Loai").value.toUpperCase();
+        var Hidden = document.getElementById("Hidden").checked;
+        var TRANGTHAI1 = document.getElementById("Trangthai1").checked;
+        if (TRANGTHAI1 == true) {
+            TRANGTHAI = true;
+        }
+        else {
+            TRANGTHAI = false;
+        }
+        var HANGBAY = document.getElementById("HangBay").value.toUpperCase();
+        //var GIAGOC = document.getElementById("Giagoc").value.toUpperCase();
+        //var GIABAN = document.getElementById("Giaban").value.toUpperCase();
+        var TENNB = document.getElementById("TenNB").value.toUpperCase();
+        var DIENTHOAINB = document.getElementById("DienthoaiNB").value.toUpperCase();
+        var GHICHU = document.getElementById("Ghichu").value.toUpperCase();
+        var PNR = document.getElementById("PNR").value.toUpperCase();
+        var SOVE = document.getElementById("Sove").value.toUpperCase();
+        var TENHK = document.getElementById("TenHK1").value.toUpperCase();
+        var GiaBan = document.getElementById("GiaBan1").value.toUpperCase();
+        var GiaGiam = document.getElementById("GiaGiam1").value.toUpperCase();
+        if (TENNB == null || TENNB == "") {
+            alert("Bạn chưa tên người bán");
+            return;
+        }
+        if (DIENTHOAINB == null || DIENTHOAINB == "") {
+            alert("Bạn chưa sdt người bán");
+            return;
+        }
+        if (TENHK == null || TENHK == "") {
+            alert("Bạn chưa tên hành khách");
+            return;
+        }
+        var TENHK_BODAU = removeAccents(TENHK);
+        var TENNB_BODAU = removeAccents(TENNB);
+        var ThongTinDDBL = {};
+        ThongTinDDBL.Hidden = Hidden;
+        ThongTinDDBL.ID = ID;
+        ThongTinDDBL.HanDangBan = HANBAN;
+        ThongTinDDBL.Loai = LOAI;
+        ThongTinDDBL.TrangThai = TRANGTHAI;
+        ThongTinDDBL.Hang = HANGBAY;
+        ThongTinDDBL.TenNB = TENNB_BODAU;
+        ThongTinDDBL.DienThoaiNB = DIENTHOAINB;
+        ThongTinDDBL.GhiChu = GHICHU;
+        ThongTinDDBL.PNR = PNR;
+        ThongTinDDBL.SoVe = SOVE;
+        var TenKhachBay = {};
+        TenKhachBay.TenHK = TENHK_BODAU;
+        TenKhachBay.GiaBan = GiaBan;
+        TenKhachBay.GiaGiam = GiaGiam;
+
+        TenKhachBays.push(TenKhachBay);
+        for (var i = 2; i < count; i++) {
+            var tenHK = "TenHK" + i;
+            var giaBan = "GiaBan" + i;
+            var giaGiam = "GiaGiam" + i;
+            var TenHK_NEW = document.getElementById(tenHK).value.toUpperCase().replace(/\$|\,/g, '');
+            var GiaBan_NEW = document.getElementById(giaBan).value.toUpperCase().replace(/\$|\,/g, '');
+            var GiaGiam_NEW = document.getElementById(giaGiam).value.toUpperCase().replace(/\$|\,/g, '');
+            if (TenHK_NEW == null || TenHK_NEW == "") {
+                alert("Bạn chưa tên hành khách");
+                return;
+            }
+            var TenHK_NEW_BODAU = removeAccents(TenHK_NEW);
+            var TenKhachBay = {};
+            TenKhachBay.TenHK = TenHK_NEW_BODAU;
+            TenKhachBay.GiaBan = GiaBan_NEW;
+            TenKhachBay.GiaGiam = GiaGiam_NEW;
+            TenKhachBays.push(TenKhachBay);
+        }
+        $.ajax({
+            type: "POST",
+            url: "../DDBL/SaveEditDDBL",
+            data: {
+                DDBL: ThongTinDDBL,
+                ListTenHK: TenKhachBays
+            },
+            success: function (response) {
+                alert(response);
+                location.reload();
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+    function removeAccents(str) {
+        return str.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+    }
+</script>
+

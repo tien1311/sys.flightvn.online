@@ -1,0 +1,74 @@
+﻿@media(min-width: 768px) {
+    .modal-dialog {
+        width: 1000px;
+        margin: 30px auto;
+    }
+}
+
+@media(max-width: 767px) {
+    .table-responsive {
+        margin-top: 8px;
+    }
+}
+
+.modal-body img {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.modal-header {
+    padding: 6px 15px;
+    border-bottom: none;
+}
+
+.main-img img {
+    width: 100px !important;
+}
+
+.contain-listImg {
+    padding: 5px 0;
+    flex-wrap: wrap !important;
+    display: flex !important;
+    align-items: center;
+}
+
+.modal-header .close {
+    color: #fff;
+}
+
+/* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+.table-responsive::-webkit-scrollbar {
+    width: 4px; /* Chiều rộng của thanh cuộn dọc */
+    height: 4px; /* Chiều cao của thanh cuộn ngang */
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Màu nền của track */
+    border-radius: 8px; /* Bo tròn góc của track */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: orange; /* Màu của thanh cuộn */
+    border-radius: 8px; /* Bo tròn góc của thanh cuộn */
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #e69500; /* Màu khi hover của thanh cuộn */
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    min-width: 800px; /* Đặt min-width để bảng không bị bóp nhỏ hơn mức này */
+    table-layout: auto; /* Điều này sẽ giúp các ô bảng tự động điều chỉnh kích thước dựa trên nội dung */
+}
+
+
+@media (max-width: 991px) {
+    .contain-listImg > * {
+        flex: 0 0 100% !important;
+    }
+}

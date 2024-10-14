@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.0.78" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.14" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
+		<PackageReference Include="StackExchange.Redis" Version="1.2.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\EVC.Common\EVC.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="EasyInvoice.Client">
+	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
+	  </Reference>
+	  <Reference Include="EasyInvoice.Json">
+	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+</Project>

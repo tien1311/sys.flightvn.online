@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap -->
+
+    <link href="~/css/cards.css" rel="stylesheet" />
+    <link href="~/vendors/bootstrap/dist/css/bootstrap.css" type="text/css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="~/vendors/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <!-- NProgress -->
+    <link href="~/vendors/nprogress/nprogress.css" type="text/css" rel="stylesheet" />
+    <!-- bootstrap-progressbar -->
+    <link href="~/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" type="text/css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" type="text/css" rel="stylesheet" />
+    <!-- Custom Theme Style -->
+    <link href="~/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/vendors/normalize-css/normalize.css" rel="stylesheet" />
+    <link href="~/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="~/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/custom.min.css" type="text/css" />
+    <link href="~/vendors/iCheck/skins/flat/green.css" type="text/css" rel="stylesheet" />
+    <link href="~/vendors/cropper/dist/cropper.min.css" rel="stylesheet" />
+    <link href="~/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
+    <link href="~/MyCSS.css" rel="stylesheet" />
+    <script src="~/vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
+
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <button type="button" class="close" onclick="closeSideMenu()">&times;</button>
+                        <a href="#" class="site_title">
+                            <img src="~/images/logoev.png" style="width: 50px;height: 50px;" alt="homepage" class="light-logo" />
+                            <img src="~/images/logo-text.png" alt="homepage" class="light-logo" />
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+
+
+                    @{
+
+                        AccountModel acc = new AccountModel();
+                        var username = Context.User.Identity.Name;                     
+                      
+                        acc.HoTen = username;                      
+                        
+                       
+
+                        Html.RenderPartial("_SideProfile", acc);
+                    }
+
+
+
+
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    @Html.Partial("_SideMenu", acc);
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    @Html.Partial("_SideFooter")
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            @Html.Partial("_Header")
+            <!-- /top navigation -->
+            <!-- page content -->
+          
+            }
+            else
+            {
+                <div class="right_col" role="main">
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            @RenderBody()
+
+                        </div>
+
+                    </div>
+                </div>
+
+            }
+            <!-- /page content -->
+            <!-- footer content -->
+            @{
+                await Html.PartialAsync("_Footer");
+            }
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    @Html.Partial("_Scripts")
+
+</body>
+</html>
+
+

@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Cập Nhật Cấu Hình";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+@model CapNhatCauHinh
+@using (Html.BeginForm("CapNhat", "Setting", new { i = 1 }, FormMethod.Post))
+{
+    <div class="modal-content" style=" margin: 10px 0px !important;">
+        <ul class="nav nav-tabs" style="border-bottom: 0px solid #ddd !important; " id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="btn btn-primary" id="Invoice-tab" data-toggle="tab" href="#Invoice" role="tab" aria-controls="Invoice" aria-selected="true">Cấu hình hóa đơn</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-warning" id="BankStatement-tab" data-toggle="tab" href="#BankStatement" role="tab" aria-controls="BankStatement" aria-selected="false">Cấu hình báo cáo SMS</a>
+            </li>
+        </ul>
+        <div class="modal-body" style="padding: 0 10px; background: #ffffff;">
+            <div class="tab-content popup" id="myTabContent">
+                <div class="tab-pane fade active in" id="Invoice" role="tabpanel" aria-labelledby="Lottery-tab">
+                    <div class="row">
+                        <div class="item form-group col-md-7 col-sm-12 col-xs-12">
+                            <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                Ngày bắt đầu
+                            </label>
+                            <div class="col-md-5 col-sm-6 col-xs-12 ">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal1" name="HDMoi" value="@Model.HDMoi">
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align">
+                                Ngày kết thúc
+                            </label>
+                            <div class="col-md-5 col-sm-6 col-xs-12 ">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal2" name="HDKT" value="@Model.HDKT">
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+
+                            @*<div>
+                        <a type="button" class="btn btn-primary" id="save" data-toggle="modal" data-target="#openPopup" href="javascript:;">Update</a>
+                        </div>*@
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Nôi dung 1</label>
+                                <textarea name="FirstCheckBox" id="FirstCheckBox">
+                                    @Model.FristCheckBoxHDDT
+                                                                    </textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Nội dung 2</label>
+                                <textarea name="SecondCheckBox" id="SecondCheckBox">
+                                    @Model.SecondCheckBoxHDDT
+                                                                    </textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="text-align:right;">
+                        <button type="submit" class="btn btn-success" value="UpdateHoaDon" name="button">Cập nhật</button>
+                    </div>
+                    <input type="hidden" class="form-control" name="RowID" value="@Model.RowID" id="RowID" />
+                </div>
+                <div class="tab-pane fade" id="BankStatement" role="tabpanel" aria-labelledby="BankStatement-tab">
+                    <div class="row">
+                        <div class="item form-group col-md-7 col-sm-12 col-xs-12">
+                            <label class="col-form-label pad-top-6 col-md-2 col-sm-4 col-xs-12 label-align">
+                                ACB
+                            </label>
+                            <div class="col-md-5 col-sm-6 col-xs-12 ">
+                                <fieldset class="col-xs-8" style="padding:0px">
+                                    <div class="control-group">
+                                        <select id="Status" name="Status" class="form-control">
+                                            @if (Model.Status == "True")
+                                            {
+                                                <option selected value="true">True</option>
+                                                <option value="false">False</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="true">True</option>
+                                                <option selected value="false">False</option>
+                                            }
+
+
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <div class="col-md-2 col-sm-3 col-xs-4">
+                                    <button type="submit" class="btn btn-success" value="UpdateStatus" name="button">Cập nhật</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+}
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.Message)');
+    </script>
+} *@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
+
+<script>
+    $(document).ready(function () {
+        CKEDITOR.replace('FirstCheckBox', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+        CKEDITOR.replace('SecondCheckBox', {
+            height: 200,
+            filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+        });
+    });
+</script>
+

@@ -1,0 +1,702 @@
+﻿@model TourEV
+@inject IConfiguration _configuration
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1200px;
+            margin: 30px auto;
+        }
+    }
+
+    select option[disabled] {
+        color: #999;
+    }
+
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .bg {
+        font-weight: bold;
+        background: #f7f3f3;
+    }
+
+    .borber-table {
+        border: 1px solid #ddd;
+    }
+
+        .borber-table > div > label {
+            border-top: 1px solid #ddd;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .borber-table > div > div {
+            border-top: 1px solid #ddd;
+            margin: 0;
+        }
+
+            .borber-table > div > div > span {
+                padding: 10px;
+                display: block;
+                float: left;
+            }
+
+            .borber-table > div > div input, .borber-table > div > div select {
+                margin-top: 4px;
+            }
+
+    .title-detail-BK {
+        background: #e2e1e1 !important;
+        color: #f76f09 !important;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-size: 14px;
+        display: table;
+        width: 100%;
+    }
+
+    .note-section {
+        height: auto;
+        min-height: calc(2 * 24px);
+    }
+
+    .bg label,
+    .bg div {
+        background: #f7f3f3;
+    }
+
+
+
+    @@media (min-width: 768px) {
+        #cancel_booking_detail .modal-dialog {
+            width: 500px;
+        }
+    }
+
+
+    #custom-loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        z-index: 1000;
+    }
+
+    .custom-loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+
+<div id="custom-loading-overlay">
+    <div class="custom-loading-spinner"></div>
+</div>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header" style=" background: #2A3F54;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">CHI TIẾT TOUR BOOKING</h1>
+        </div>
+        <div class="modal-body">
+            <div class="title-detail-BK" style="margin-bottom:10px;">MÃ BOOKING:@Model.DetailTourBooking.TourID <input id="TourCodeInputValue" type="text" hidden name="TourCode" value="@Model.DetailTourBooking.TourID" /> </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <div class="form-group">
+
+                                @{
+
+                                    DulichRepository dulichRepository = new DulichRepository(_configuration);
+                                    var TourCode = Model.DetailTourBooking.TourID;
+                                    var itemBooking = dulichRepository.NewDetailBookingTourHot(TourCode);
+                                    // var itemBooking = itemsBooking.Where(x => x.TourCode == TourCode).FirstOrDefault();
+                                }
+
+                                @if (itemBooking.IDStatus == "6")
+                                {
+                                    <input type='text' id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control" readonly value="Hủy booking">
+                                }
+                                else if (itemBooking.IDStatus == "3")
+                                {
+                                    <select id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control">
+                                        <option value="3">Đã giữ chỗ</option>
+                                        <option value="2">Đã tiếp nhận</option>
+                                        <option value="4">Đã đặt cọc</option>
+                                        <option value="5">Hoàn tất thanh toán</option>
+                                        <option value="7">Đã hoàn thành</option>
+
+                                    </select>
+                                }
+                                else if (itemBooking.IDStatus == "4")
+                                {
+                                    <select id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control">
+                                        <option value="4">Đã đặt cọc</option>
+                                        <option value="2">Đã tiếp nhận</option>
+                                        <option value="3">Đã giữ chỗ</option>
+                                        <option value="5">Hoàn tất thanh toán</option>
+                                        <option value="7">Đã hoàn thành</option>
+
+                                    </select>
+                                }
+                                else if (itemBooking.IDStatus == "5")
+                                {
+                                    <select id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control">
+                                        <option value="5">Hoàn tất thanh toán</option>
+                                        <option value="2">Đã tiếp nhận</option>
+                                        <option value="4">Đã đặt cọc</option>
+                                        <option value="3">Đã giữ chỗ</option>
+                                        <option value="7">Đã hoàn thành</option>
+
+                                    </select>
+                                }
+                                else if (itemBooking.IDStatus == "2")
+                                {
+                                    <select id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control">
+                                        <option value="2">Đã tiếp nhận</option>
+                                        <option value="4">Đã đặt cọc</option>
+                                        <option value="3">Đã giữ chỗ</option>
+                                        <option value="5">Hoàn tất thanh toán</option>
+                                        <option value="7">Đã hoàn thành</option>
+                                    </select>
+                                }
+                                else if (itemBooking.IDStatus == "7")
+                                {
+                                    <input type='text' id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control" readonly value="Đã hoàn thành">
+                                }
+                                else
+                                {
+                                    <select id="TinhTrang(@itemBooking.tourID)" name="TinhTrang" class="select2_single form-control">
+                                        <option value="1" disabled selected>Mới</option>
+                                        <option value="2">Đã tiếp nhận</option>
+                                        <option value="4">Đã đặt cọc</option>
+                                        <option value="3">Đã giữ chỗ</option>
+                                        <option value="5">Hoàn tất thanh toán</option>
+                                        <option value="7">Đã hoàn thành</option>
+                                    </select>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                @if (itemBooking.IDStatus == "6" || itemBooking.IDStatus == "7")
+                                {
+                                    <button class="btn btn-primary" disabled>Đổi trạng thái</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary actionBookingBtn(@itemBooking.tourID)" id="changeStatus" onclick="changeStatus()" value="changeStatus">Đổi trạng thái</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @if (itemBooking.IDStatus == "6" || itemBooking.IDStatus == "7")
+                    {
+                        <button class="btn btn-success" disabled>Gửi Booking</button>
+
+                    }
+                    else
+                    {
+                        <button class="btn btn-success actionBookingBtn(@itemBooking.TourCode)" onclick="sendDataBtn()" id="sendDataBtn">Gửi Booking</button>
+                    }
+                    @if (itemBooking.IDStatus == "6" || itemBooking.IDStatus == "7")
+                    {
+                        <button class="btn btn-danger" disabled>Hủy Booking</button>
+
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger actionBookingBtn(@itemBooking.TourCode)" onclick="showCancelBookingModal()" id="huyBooking" value="huyBooking">Hủy Booking</button>
+
+                    }
+
+                </div>
+
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-xs-7">
+
+                            @{
+                                MemberRepository memberRepository = new MemberRepository();
+                                var listMember = memberRepository.DanhSachNhanVienDuLich();
+
+
+                                <select id="NguoiNhan" name="NguoiNhan" class="select2_single form-control">
+                                    @foreach (var item in listMember.listNhanVienDuLich)
+                                    {
+                                        var isSelected = item.Ten == Model.DetailTourBooking.NguoiNhan ? "selected" : "";
+                                        if (item.Ten == Model.DetailTourBooking.NguoiNhan)
+                                        {
+
+                                            <option value="@item.Ten" @isSelected>@item.Ten</option>
+                                        }
+                                    }
+                                    @foreach (var item in listMember.listNhanVienDuLich)
+                                    {
+                                        var isSelected = item.Ten == Model.DetailTourBooking.NguoiNhan ? "selected" : "";
+                                        if (item.Ten != Context.User.Claims.First(claim => claim.Type == "HoTen").Value && item.Ten != Model.DetailTourBooking.NguoiNhan)
+                                        {
+
+                                            <option value="@item.Ten" @isSelected>@item.Ten</option>
+                                        }
+                                    }
+                                </select>
+
+
+                            }
+
+                        </div>
+                        <div class="col-xs-5">
+                            @if (itemBooking.IDStatus == "6" || itemBooking.IDStatus == "7")
+                            {
+                                <button class="btn btn-success" disabled>Chuyển người</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-success actionBookingBtn(@itemBooking.TourCode)" onclick="chuyenBooking()" id="sendDataBtn">Chuyển người</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="codetrienkhai" value="@Model.DetailTourBooking.TourID" />
+
+            </div>
+            <div class="ThongTinChiTietBK show">
+                <div class="title-detail-BK">
+                    <div class="col-xs-12" style="line-height: 34px;padding: 0;">
+                        THÔNG TIN TOUR
+                    </div>
+                    @*<div class="col-sm-6 col-xs-7" style="text-align: right;">
+                    <button style="margin: 0; display: inline;" onclick="EditTinhTrang()" id="btnEditTinhTrang" class="btn btn-default">Hiệu chỉnh</button>
+                    <button style="margin: 0; display: none;" onclick="UpdateTinhTrang()" id="btnUpdateTinhTrang" class="btn btn-primary">Cập nhật</button>
+                    <button style="margin: 0; display: none;" onclick="CancelTinhTrang()" id="btnCancelTinhTrang" class="btn btn-danger">Hủy</button>
+                    </div>*@
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên tour</label>
+                            <div class="col-xs-8">
+                                <span>@(Model?.Name_Tour)</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Code sản phẩm</label>
+                            <div class="col-xs-8">
+                                <span>@Model.Tour_Id</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tổng</label>
+                            <div class="col-xs-8">
+                                <span>@Model.Tong</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Chỗ đã đặt </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Da_Dat </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giữ chỗ </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Giu_Cho </span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ghi chú </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Note </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày đi </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Ngay_Di?.ToString("dd/MM/yyyy") </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày về </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Ngay_Ve?.ToString("dd/MM/yyyy")</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số ngày </label>
+                            <div class="col-xs-8">
+                                <span>@Model.So_Ngay</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số đêm </label>
+                            <div class="col-xs-8">
+                                <span>@Model.So_Dem</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên kinh doanh </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Sale.Name</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email kinh doanh </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Sale.Email</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">SDT kinh doanh  </label>
+                            <div class="col-xs-8">
+                                <span>@Model.Sale.Phone</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-detail-BK">
+                    <div class="col-xs-12" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN BOOKING
+                    </div>
+
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Số tiền</label>
+                            <div class="col-xs-8"><span style="color:#1a75e5;">@String.Format("{0:#,0}", Model.DetailTourBooking.Price) </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Hoa hồng</label>
+                            <div class="col-xs-8"><span style="color:#28a745;">@String.Format("{0:#,0}", Model.DetailTourBooking.Commission) </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Vat</label>
+                            <div class="col-xs-8"><span style="color:black;">@String.Format("{0:#,0}", Model.DetailTourBooking.Vat) </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tổng tiền</label>
+                            <div class="col-xs-8"><span style="color:#dc3545;">@String.Format("{0:#,0}", Model.DetailTourBooking.Price) </span></div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Loai KS</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.HotelTour</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">SL người lớn</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.AdultQuantity </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Sl trẻ em</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.ChildQuantity </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Sl em bé</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.KidQuantity </span></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-xs-12" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN LIÊN HỆ
+                    </div>
+
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên công ty</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.NameCompany</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã KH</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.MaKH </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người liên hệ</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.CustomerName </span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email</label>
+                            <div class="col-xs-8">
+                                <span class="LienHe show" id="lblEmail">@Model.DetailTourBooking.CustomerEmail</span>
+                                <input class="form-control input-sm LienHe hide" type="text" id="txtEmail" name="Email" value="@Model.DetailTourBooking.CustomerEmail" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">SDT</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.CustomerPhone</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã BK</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.TourID</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ngày tạo</label>
+                            <div class="col-xs-8"><span>@DateTime.Parse(Model.DetailTourBooking.CreateDate.ToString()).ToString("dd/MM/yyyy hh:mm:ss")</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ghi chú</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.CustomerNote</span></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-xs-12" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN HÓA ĐƠN
+                    </div>
+
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã số thuế</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.MaSoThue</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa chỉ</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.DiaChi </span></div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên công ty</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.TenCaNhanToChuc </span></div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-xs-12" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN XỬ LÝ
+                    </div>
+
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người xử lý</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.NguoiNhan</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Lý do hủy</label>
+                            <div class="col-xs-8"><span>@Model.DetailTourBooking.LyDoHuy </span></div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tình trạng</label>
+                            @{
+                                var status = dulichRepository.GetBookingStatus(Model.DetailTourBooking.IDStatus);
+                                <div class="col-xs-8"><span id="tinhtrang"> @status </span></div>
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="title-detail-BK">
+                    <div class="col-xs-12" style="line-height: 34px; padding: 0;">
+                        GIÁ TOUR NHÀ CUNG CẤP
+                    </div>
+                </div>
+
+                <div class="row" style="padding: 0 10px;">
+                    <div style="background: #f76f09; color: #fff; font-weight: bold; padding:5px 10px;">
+                        <span>Khách sạn @Model.DetailTourBooking.HotelTour </span>
+                    </div>
+                    <div id="chuyenBay" class="chuyenBay table-responsive">
+                        <table class="table table-bordered table-hover" style="margin-bottom: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>Giá người lớn </th>
+                                    <th>Giá trẻ em</th>
+                                    <th>Giá em bé</th>
+                                    <th>Phụ thu đơn</th>
+                                    <th>Phụ thu quốc tịch</th>
+                                    <th>Hh người lớn </th>
+                                    <th>Hh trẻ em</th>
+                                    <th>Hh em bé</th>
+                                    <th>Km giá người lớn</th>
+                                    <th>Km giá trẻ em</th>
+                                    <th>Km giá em bé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    @if (Model.Gias != null)
+                                    {
+                                        <td>
+                                            <span id="lblAirline_LD" class="ThongTinCBLD show">@Model.Gias[0].gia_nguoi_lon</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtSoHieu_LD" name="SoHieu_LD" value="@Model.Gias[0].gia_nguoi_lon" />
+                                        </td>
+                                        <td>
+                                            <span id="lblSoHieu_LD" class="ThongTinCBLD show">@Model.Gias[0].gia_tre_em</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtSoHieu_LD" name="SoHieu_LD" value="@Model.Gias[0].gia_tre_em" />
+                                        </td>
+                                        <td>
+                                            <span id="lblHang_LD" class="ThongTinCBLD show">@Model.Gias[0].hh_gia_em_be</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtHang_LD" name="Hang_LD" value="@Model.Gias[0].hh_gia_em_be" />
+                                        </td>
+                                        <td>
+                                            <span id="lblCode_LD" class="ThongTinCBLD show">@Model.Gias[0].phu_thu_don</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtCode_LD" name="Code_LD" value="@Model.Gias[0].phu_thu_don" />
+                                        </td>
+                                        <td>
+                                            <span id="lblDiemDi_LD" class="ThongTinCBLD show">@Model.Gias[0].phu_thu_quoctich</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtDiemDi_LD" name="DiemDi_LD" value="@Model.Gias[0].phu_thu_quoctich" />
+                                        </td>
+                                        <td>
+                                            <span id="lblDiemDen_LD" class="ThongTinCBLD show">@Model.Gias[0].hh_gia_nguoi_lon</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtDiemDen_LD" name="DiemDen_LD" value="@Model.Gias[0].hh_gia_nguoi_lon" />
+                                        </td>
+                                        <td>
+                                            <span id="lblNgayDi_LD" class="ThongTinCBLD show">@Model.Gias[0].hh_gia_tre_em</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtNgayDi_LD" name="NgayDi_LD" value="@Model.Gias[0].hh_gia_tre_em" />
+                                        </td>
+                                        <td>
+                                            <span id="lblGioDi_LD" class="ThongTinCBLD show">@Model.Gias[0].hh_gia_em_be</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGioDi_LD" name="GioDi_LD" value="@Model.Gias[0].hh_gia_em_be" />
+                                        </td>
+                                        <td>
+                                            <span id="lblGioDen_LD" class="ThongTinCBLD show">@Model.Gias[0].km_gia_nguoi_lon</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGioDen_LD" name="GioDen_LD" value="@Model.Gias[0].km_gia_nguoi_lon" />
+                                        </td>
+                                        <td>
+                                            <span id="lblGiaNet_LD" class="ThongTinCBLD show">@Model.Gias[0].km_gia_tre_em</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtGiaNet_LD" name="GiaNet_LD" value="@Model.Gias[0].km_gia_tre_em" />
+                                        </td>
+                                        <td>
+                                            <span id="lblThuePhi_LD" class="ThongTinCBLD show">@Model.Gias[0].km_gia_em_be</span>
+                                            <input class="ThongTinCBLD hide form-control input-sm" type="text" id="txtThuePhi_LD" name="ThuePhi_LD" value="@Model.Gias[0].km_gia_em_be" />
+                                        </td>
+                                    }
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="cancel_booking_detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: #2A3F54;">
+                    <button type="button" class="close" id="closeModal1Button" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <h1 style="color:#fff">LÝ DO HỦY BOOKING</h1>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" id="cancellation_reason" placeholder="Nội dung"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn_cancel_booking" onclick="saveCancellationReason()">Lưu</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+
+        var element = document.getElementById("IconTrangThai(" + '@Html.Raw(ViewBag.code)' + ")");
+        element.innerHTML = '<span class="btn-info rounded-text"><span>Đã tiếp nhận</span></span>';
+    </script>
+} *@
+
+
+
+
+
+
+<script src="~/js/DuLich/ListTour.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

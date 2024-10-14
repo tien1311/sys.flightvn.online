@@ -1,0 +1,99 @@
+﻿@model List<TypeVisa>
+@{
+    ViewData["Title"] = "Visa Booking";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a id="BtnCreate" data-toggle="modal" data-target="#openPopup" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+        </div>
+        <div class="table-responsive">
+            <table id="gridType" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th style="width:29px; text-align:center;"></th>
+                        <th style="width: 42px; text-align: center;">STT</th>
+                        <th>Tên loại</th>
+                        <th>Giá</th>
+                        <th>Giá giảm</th>
+                        <th>Sản phẩm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td style="text-align: center;"><a class="Edit" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td style="text-align: center;">@i</td>
+                                <td>@item.Name</td>
+                                <td>@String.Format("{0:#,0}", item.Price)</td>
+                                <td>@String.Format("{0:#,0}", item.DiscountPrice)</td>
+                                <td>@item.ProductName</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    $("#BtnCreate").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../Visa/CreateType",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridType .Edit").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Visa/EditType",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

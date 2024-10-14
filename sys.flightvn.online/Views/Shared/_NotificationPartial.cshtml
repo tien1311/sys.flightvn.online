@@ -1,0 +1,141 @@
+﻿@* SweetAlert2 Library *@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Lưu trữ phương thức alert gốc để sử dụng ở mấy trường hợp khác (nếu có)
+    const defaultAlert = window.alert;
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-outline-primary",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+    function CustomSweetAlert_Confirm(title, text = '', isReason = false, initInputValue = '') {
+        if (!isReason) {
+            return swalWithBootstrapButtons.fire({
+                title: title,
+                text: text,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Xác nhận",
+                cancelButtonText: "Hủy",
+                reverseButtons: true
+            })
+        } else {
+            return swalWithBootstrapButtons.fire({
+                title: title,
+                text: text,
+                inputAttributes: {
+                    autocapitalize: "off"
+                },
+                inputValue: initInputValue,
+                input: 'text', // Kiểu input (text, email, password, etc.)
+                inputPlaceholder: 'Nhập lý do tại đây...',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Xác nhận",
+                cancelButtonText: "Hủy",
+                reverseButtons: true,
+                preConfirm: (value) => {
+                    if (!value) {
+                        Swal.showValidationMessage('Bạn cần nhập lý do');
+                    }
+                    // Đếm số từ
+                    const wordCount = value.trim().split(/\s+/).length;
+                    if (wordCount > 250) {
+                        Swal.showValidationMessage(`Bạn đã nhập quá ${wordCount} từ. Vui lòng giới hạn dưới 250 từ.`);
+                        return false; // Ngăn đóng popup
+                    }
+                    return value;
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            })
+        }
+    };
+    function CustomSweetAlert_Success(title, text = '') {
+        swalWithBootstrapButtons.fire({
+            imageUrl: '/images/success.png',
+            imageWidth: 100,
+            imageHeight: 100,
+            title: `${title}`,
+            text: `${text}`,
+            confirmButtonText: 'Đóng',
+        })
+    }
+
+    function CustomSweetAlert_Success_ReloadPage(message) {
+        swalWithBootstrapButtons.fire({
+            imageUrl: '/images/success.png',
+            imageWidth: 100,
+            imageHeight: 100,
+            title: `${message}`,
+            confirmButtonText: 'Đóng',
+        }).then(() => {
+            location.reload();
+        });
+    }
+
+    function CustomSweetAlert_Error(title, text = '') {
+        swalWithBootstrapButtons.fire({
+            imageUrl: "/images/fail.png",
+            imageWidth: 100,
+            imageHeight: 100,
+            title: `${title}`,
+            text: `${text}`,
+            confirmButtonText: 'Đóng',
+        })
+    }
+    function CustomSweetAlert_Info(title, text = '') {
+        swalWithBootstrapButtons.fire({
+            imageUrl: "/images/info.png",
+            imageWidth: 100,
+            imageHeight: 100,
+            title: `${title}`,
+            text: `${text}`,
+            confirmButtonText: 'Đóng',
+        })
+    }
+
+
+    // Ghi đè window.alert thành SweetAlert
+    window.alert = function (message) {
+        if (message.toLowerCase().includes('thành công')) {
+            CustomSweetAlert_Success(message);
+        } else if (message.toLowerCase().includes('không thành công') || message.toLowerCase().includes('thất bại')) {
+            CustomSweetAlert_Error(message);
+        } else {
+            CustomSweetAlert_Info(message);
+        }
+    };
+</script>
+
+@if (TempData["thongbaoError"] != null)
+{
+    <script charset="UTF-8">
+        CustomSweetAlert_Error(`@TempData["thongbaoError"]`)
+    </script>
+}
+@if (TempData["thongbaoSuccess"] != null)
+{
+    <script charset="UTF-8">
+        CustomSweetAlert_Success(`@TempData["thongbaoSuccess"]`)
+    </script>
+}
+@if (TempData["thongbaoInfo"] != null)
+{
+    <script charset="UTF-8">
+        CustomSweetAlert_Info(`@TempData["thongbaoInfo"]`)
+    </script>
+}
+@if (ViewBag.code != null)
+{
+    <script>
+        var element = document.getElementById("IconTrangThai(" + '@Html.Raw(ViewBag.code)' + ")");
+        element != null ? (element.innerHTML = '<span class="btn-info rounded-text"><span>Đã tiếp nhận</span></span>') : null;
+    </script>
+}

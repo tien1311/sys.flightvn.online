@@ -1,0 +1,78 @@
+﻿@model List<Rules_Airlines>
+@{
+    // FareRulesRepository Rules_Rep = new FareRulesRepository();
+    var ListAirlines = Model;
+}
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Create Category</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            @using (Html.BeginForm("SaveCreateRules_Categories", "FareRules", new { i = 12 }, FormMethod.Post))
+            {
+                <div class="col-sm-12">
+                    <div class="row">
+                        <label for="" class="col-sm-12 control-label">Airline</label>
+                        <div class="col-sm-12">
+                            <fieldset style="padding:0px">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class=" xdisplay_inputx form-group has-feedback">
+                                            <select id="AirlineID" name="AirlineID" class="select2_single form-control">
+                                                @for (int i = 0; i < ListAirlines.Count; i++)
+                                                {
+                                                    <option value="@ListAirlines[i].AirlineID">@ListAirlines[i].AirlineName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">CategoryName</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control" id="CategoryName" name="CategoryName" placeholder="CategoryName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="col-sm-12 control-label">&nbsp;</label>
+                        <div class="col-sm-12">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

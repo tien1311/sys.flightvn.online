@@ -1,0 +1,146 @@
+﻿@model DetailBookingFlightGroup
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 style="color: #fff; margin: 0px;">Chi tiết Booking</h4>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row" role="form">
+                <div style="font-weight:bold; font-size: 14px;">
+                    Danh sách hành trình
+                </div>
+                <div class="table-responsive" style="font-size:12px;">
+                    <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title text-center">STT</th>
+                                <th class="column-title text-center">FlightAirline</th>
+                                <th class="column-title text-center">FlightCode</th>
+                                <th class="column-title text-center">DepartureCode</th>
+                                <th class="column-title text-center">ArrivalCode</th>
+                                <th class="column-title text-center">DepartureDate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                            }
+                            @if (Model != null)
+                            {
+                                @if (Model.ListFlights.Count > 0)
+                                {
+                                    @foreach (var item in Model.ListFlights)
+                                    {
+                                        <tr id="@item.ID" class="even pointer">
+                                            <td class="text-center">@i</td>
+                                            <td class="text-center">@item.FlightAirline</td>
+                                            <td class="text-center">@item.FlightCode</td>
+                                            <td class="text-center">@item.DepartureCode</td>
+                                            <td class="text-center">@item.ArrivalCode</td>
+                                            <td class="text-center">@item.DepartureDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" role="form">
+                <div style="font-weight:bold; font-size: 14px;">
+                    Danh sách khách
+                </div>
+                <div class="table-responsive" style="font-size:12px;">
+                    <table id="gridTable" class="table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title text-center">STT</th>
+                                <th class="column-title text-center">Title</th>
+                                <th class="column-title">LastName</th>
+                                <th class="column-title">FirstName</th>
+                                <th class="column-title">DateOfBirth</th>
+                                <th class="column-title text-center">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int y = 1;
+                            }
+                            @if (Model != null)
+                            {
+                                @if (Model.ListPassenger.Count > 0)
+                                {
+                                    @foreach (var item in Model.ListPassenger)
+                                    {
+                                        <tr id="@item.ID" class="even pointer">
+                                            <td class="text-center">@y</td>
+                                            <td class="text-center">@item.Title</td>
+                                            <td class="">@item.LastName</td>
+                                            <td class="">@item.FirstName</td>
+                                            <td class="">@item.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                                            <td class="text-center">@item.Type</td>
+                                        </tr>
+                                        y++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('input[name="DepartureDate1"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+        $('input[name="DepartureDate2"]').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+        function TypeOfTripChange() {
+            var Kind = document.getElementById("TypeOfTrip").value;
+            var x = document.getElementById("chieuve");
+            if (Kind == "ONEWAY") {
+                x.style.display = "none";
+            }
+            else {
+                x.style.display = "block";
+            }
+        }
+        function formatNumber(id) {
+            var number = document.getElementById(id).value
+            number = number.replaceAll(",", "");
+            x = number.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            var tong = x1 + x2;
+            document.getElementById(id).value = x1 + x2;
+            return x1 + x2;
+        }
+        function FormatDateTime(x) {
+            const [day, month, year] = x.split('/');
+            const date = new Date(year, month - 1, day);
+            return date.toISOString();
+        }
+
+    </script>
+
+
+</div>

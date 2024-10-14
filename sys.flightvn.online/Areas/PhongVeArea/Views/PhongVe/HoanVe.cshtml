@@ -1,0 +1,343 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<VeHoanModel>
+
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Danh Sách Vé Hoàn";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<script type="text/javascript">
+    //Set thời gian Refesh
+    const myTimeout = setTimeout(function () {
+        location.reload();
+    }, 300 * 1000);
+
+    let myTimeout1;
+    function StartRefesh() {
+        myTimeout1 = setTimeout(function () {
+            location.reload();
+        }, 300 * 1000);
+    }
+    function StopRefesh() {
+        clearTimeout(myTimeout);
+        clearTimeout(myTimeout1);
+    }
+    function CheckRefesh() {
+        var n = document.getElementById("RefeshCheck").checked;
+        if (n == true) {
+            StartRefesh();
+        }
+        else {
+            StopRefesh();
+
+        }
+    }
+
+</script>
+<title>@ViewData["Title"]</title>
+<link href="~/jquery.dataTables.css" rel="stylesheet" />
+<style>
+    .form-horizontal .has-feedback .form-control-feedback {
+        right: 0;
+    }
+
+    #gridVeHoan th {
+        padding: 10px 6px;
+    }
+
+    .pagination {
+        margin: 8px 0;
+    }
+
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        vertical-align: middle;
+    }
+
+    .table {
+        margin-bottom: 0px;
+    }
+</style>
+<h2>Danh sách vé hoàn</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("SearchVeHoan", "PhongVe", new { i = 3 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 " style="padding-top:11px">Loại vé</label>
+                            <div class="col-sm-8">
+                                <select id="loaive" name="loaive" class="form-control">
+                                    <option selected="selected" value="0">Chọn loại vé</option>
+                                    @if (ViewBag.listHang != null)
+                                    {
+                                        foreach (var item in ViewBag.listHang)
+                                        {
+                                            <option value="@item.RefundID">
+                                                @item.RefundName
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 " style="padding-top:11px">Tìm theo</label>
+                            <div class="col-sm-8">
+                                <select id="Dieukien" name="Dieukien" class="form-control">
+                                    <option selected="selected" value="1">Số vé</option>
+                                    <option value="2">ID Hoàn </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input class="form-control" type="text" id="Giatri" name="Giatri" placeholder="Số vé/ID Hoàn" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4" style="padding-top:11px">Tình trạng</label>
+                            <div class="col-sm-8">
+                                <select id="tinhtrang" name="tinhtrang" class="form-control">
+                                    <option value="All">Tất Cả</option>
+                                    <option selected="selected" value="1">Mới</option>
+                                    <option value="2">Đang Hoàn</option>
+                                    <option value="3">Hoàn thành - chờ Hãng chi tiền hoàn</option>
+                                    <option value="8">Hoàn thành - Hãng đã chi tiền</option>
+                                    <option value="9">Đang chờ điện SC</option>
+                                    <option value="10">Đang chuyển Nogo</option>
+                                    <option value="11">Đang chờ hãng kiểm trả</option>
+                                    <option value="12">Đang chờ mở OK hoàn</option>
+                                    <option value="4">DeLay</option>
+                                    <option value="0">Đã Hủy</option>
+                                    <option value="5">Sự Cố</option>
+                                    <option value="6">EMD</option>
+                                    <option value="7">Đã Nhận</option>
+                                    <option value="13">Chờ đến ngày hoàn</option>
+                                    <option value="14">Đã hoàn sang EMD-S</option>
+                                    <option value="15">Đã báo khách đổi yêu cầu khác</option>
+                                    <option value="16">Đang xử lý</option>
+                                    <option value="17">Noshow</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="item col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                                Từ Ngày
+                            </label>
+                            <div class="col-md-8 col-sm-6 col-xs-12 ">
+
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal5" name="cal_from">
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    @*Muốn cho trường tháng năm rỗng ko lấy ngày hiện tại vào file custom.min.js dòng 1230*@
+                    <div class="item col-sm-3">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                                Đến Ngày
+                            </label>
+                            <div class="col-md-8 col-sm-6 col-xs-12 ">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal6" name="cal_to">
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="" class="col-sm-4 " style="padding-top:11px">Người xử lý</label>
+                            <div class="col-sm-8">
+                                <select id="nguoixuly" name="nguoixuly" class="form-control">
+                                    <option selected="selected" value="0">Chọn người xử lý</option>
+                                    @if (ViewBag.listNguoiXuLy != null)
+                                    {
+                                        foreach (var item in ViewBag.listNguoiXuLy)
+                                        {
+                                            <option value="@item.Name">
+                                                @item.Name
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="vedenhan">
+                                        <span style="font-size:14px">Vé đến hạn hoàn</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="submit" class="btn btn-primary" name="search">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="" class="col-sm-8"> Tự động reload trang sau 5 phút</label>
+                        <div class="col-sm-4">
+                            <label>
+                                <input id="RefeshCheck" onclick="CheckRefesh();" type="checkbox" class="js-switch" checked="" data-switchery="true" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+
+            <table id="gridVeHoan" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title"> STT</th>
+                        <th class="column-title" style="width:76px"> Hãng </th>
+                        <th class="column-title" style="width:71px">  </th>
+                        <th class="column-title" style="width:93px"> ID hoàn </th>
+                        <th class="column-title" style="width:160px"> Đại lý </th>
+                        <th class="column-title"> Ghi chú </th>
+                        <th class="column-title"> Tình trạng </th>
+                        <th class="column-title"> Ngày gửi </th>
+                        <th class="column-title"> NV xử lý </th>
+                        <th class="column-title"> Số vé EMD </th>
+                        <th class="column-title"> Ngày xử lý </th>
+                        <th class="column-title"> Ngày hoàn </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null)
+                    {
+                        <tr class="even pointer">
+                            <td colspan="12" style="text-align:center;">
+                                <i>Không có thông tin để hiển thị</i>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.subject_id" class="even pointer">
+                                <td style="text-align:center">@item.STT</td>
+                                <td class="">@item.Hang</td>
+                                <td class="">@Html.Raw(item.GiaTri)</td>
+                                @if (item.subject_isnew == "1")
+                                {
+                                    <td class="" style="color:red;">@item.ID_Hoan</td>
+                                    <td class=""><a class="VeHoan" style="color:red;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.TenDL</a></td>
+                                }
+                                else
+                                {
+                                    <td class="">@item.ID_Hoan</td>
+                                    <td class=""><a class="VeHoan" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.TenDL</a></td>
+                                }
+                                <td class="">@item.GhiChu</td>
+                                <td class="">@Html.Raw(item.TinhTrang)</td>
+                                @if (item.subject_isnew == "1")
+                                {
+                                    <td class="" style="color:red;">@item.NgayGui </td>
+                                }
+                                else
+                                {
+                                    <td class="">@item.NgayGui </td>
+                                }
+                                <td class="">@item.NguoiXuLy</td>
+                                <td class="">@item.EMD</td>
+                                <td class="">@item.NgayXuLy</td>
+                                <td class="">@item.NgayHoan</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            @if (Model != null)
+            {
+                <nav style="float:right;">
+                    <vc:pager paging-list="@Model"></vc:pager>
+                </nav>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.message != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.message)');
+    </script>
+} *@
+<script src="~/js/phongve/hoanve.js"></script>
+@*<script>
+    $(document).ready(function () {
+        var VeHoan = document.getElementById("gridVeHoan");
+        var lengthVeHoan = VeHoan.rows.length;
+        if (lengthVeHoan > 2) {
+            $('#gridVeHoan').dataTable({
+                "pageLength": 50,
+                "language": {
+                    url: 'http://cdn.datatables.net/plug-ins/1.10.21/i18n/Vietnamese.json'
+                }
+            });
+        }
+    });
+</script>*@
+

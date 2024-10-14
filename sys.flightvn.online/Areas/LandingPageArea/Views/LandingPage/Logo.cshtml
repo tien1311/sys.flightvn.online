@@ -1,0 +1,39 @@
+﻿@model Manager.Model.Models.LandingPage.Logo
+@{
+    ViewData["Title"] = "Landing Page";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+
+
+@Html.Partial("_EnvietOverlay")
+
+<div class="x_panel">
+    <div class="x_content">
+        <form id="submitForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <input name="Id" value="@Model.Id" hidden />
+                    <input name="Image" value="@Model.Image" hidden />
+                    <img style="width:200px; height: 200px" src="@Model.Image" />
+                    <input type="file" name="ImageValue"/>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Chiều rộng</label>
+                    <input type="text" value="@Model.Width" name="Width" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label>Chiều dài</label>
+                    <input type="text" value="@Model.Height" name="Height" class="form-control" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Cập nhật logo</button>
+        </form>
+    </div>
+</div>
+<script src="~/js/logo/logo.js"></script>
+

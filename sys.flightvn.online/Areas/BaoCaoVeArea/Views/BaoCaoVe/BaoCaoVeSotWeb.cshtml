@@ -1,0 +1,280 @@
+﻿
+@model TongQuatMail
+@{
+    ViewData["Title"] = "Báo cáo xuất web";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title> @ViewData["Title"] </title>
+
+<form asp-controller="BaoCaoVe" asp-action="DSVeSot" method="post" enctype="multipart/form-data">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="row">
+                <div class="form-horizontal">
+                    <div class="item col-sm-4 col-md-3">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align col-md-4" for="first-name">
+                                Từ Ngày
+                            </label>
+                            <div class="col-sm-9 col-md-8">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal5" name="cal_from" value='@ViewBag.DateFrom'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    @*Muốn cho trường tháng năm rỗng ko lấy ngày hiện tại vào file custom.min.js dòng 1230*@
+                    <div class="item col-sm-4 col-md-3">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align col-md-4" for="first-name">
+                                Đến Ngày
+                            </label>
+                            <div class="col-sm-9 col-md-8">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal6" name="cal_to" value='@ViewBag.DateTo'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align col-md-4" for="first-name">
+                                Số vé
+                            </label>
+                            <div class="col-sm-9 col-md-8">
+                                <input class="form-control" type="text" id="SoVeSearch" name="SoVeSearch" placeholder="Số vé" value="@ViewBag.SoVe" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-1" style="float:right;">
+                        <button type="submit" class="btn btn-primary" name="buttonclick" value="search_ve">Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="row">
+                <div class="table-responsive">
+                    <table id="gridVeSot" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>STT</th>
+                                <th>Mã Hãng</th>
+                                <th>Mã KH</th>
+                                <th>Mã KH EFF</th>
+                                <th>Code</th>
+                                <th>Nhân Viên</th>
+                                <th>Ngày</th>
+                                <th>PNR</th>
+                                <th>Số Vé</th>
+                                <th>Giá Mua</th>
+                                <th>Phí DV Mua</th>
+                                <th>Loại Phí</th>
+                                <th>Phí Xuất Vé</th>
+                                <th>Phí DV Bán</th>
+                                <th>Phí hoàn</th>
+                                <th>Chiết khấu</th>
+                                <th>Ghi chú</th>
+                                <th>Mã GT</th>
+                                <th>Người GT</th>
+                                @* <th></th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                if (Model.ListChiTietVe != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model.ListChiTietVe)
+                                    {
+                                        if (item.MAKH_EFF != "" && item.MAKH_EFF != null)
+                                        {
+                                            <tr id="@item.ID">
+                                                @{
+                                                    <td><i class="fa fa-ban" style="color:red" aria-hidden="true"></i></td>
+
+                                                }
+                                                <td>@i</td>
+                                                <td>@item.MAHHK</td>
+                                                <td>@item.MAKH</td>
+                                                <td>@item.MAKH_EFF</td>
+                                                <td>@item.CODE</td>
+                                                <td>@item.TenNhanVien</td>
+                                                <td>@item.NGAYSUA</td>
+                                                <td>@item.PNR</td>
+                                                <td>@item.SoVe</td>
+                                                <td>@item.GiaMua</td>
+                                                <td>@item.PhiDVMua</td>
+                                                <td>@item.LoaiPhi</td>
+                                                <td>@item.PhiXuatVe</td>
+                                                <td>@item.PhiDVBan</td>
+                                                <td>@item.PhiHoan</td>
+                                                <td>@item.ChietKhau</td>
+                                                <td>@item.GHICHU</td>
+                                                <td>@item.MAGIOITHIEU</td>
+                                                <td>@item.NGUOIGIOITHIEU</td>
+                                                @*<td></td>*@
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr id="@item.ID">
+                                                @{
+                                                    <td><a class="VeSot" style="color:blue;" data-toggle="modal" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                                }
+
+                                                <td>@i</td>
+                                                <td>@item.MAHHK</td>
+                                                <td>@item.MAKH</td>
+                                                <td>@item.MAKH_EFF</td>
+                                                <td>@item.CODE</td>
+                                                <td>@item.TenNhanVien</td>
+                                                <td>@item.NGAYSUA</td>
+                                                <td>@item.PNR</td>
+                                                <td>@item.SoVe</td>
+                                                <td>@item.GiaMua</td>
+                                                <td>@item.PhiDVMua</td>
+                                                <td>@item.LoaiPhi</td>
+                                                <td>@item.PhiXuatVe</td>
+                                                <td>@item.PhiDVBan</td>
+                                                <td>@item.PhiHoan</td>
+                                                <td>@item.ChietKhau</td>
+                                                <td>@item.GHICHU</td>
+                                                <td>@item.MAGIOITHIEU</td>
+                                                <td>@item.NGUOIGIOITHIEU</td>
+                                                @* <td style="text-align: center;">
+                                <a class="Status" style="color:red;" href="javascript:;" onclick="DeleteBaoCaoVeSot('@item.ID')"><i class="fa fa-trash" style="font-size:14px;" aria-hidden="true"></i></a>
+                                </td>*@
+
+                                            </tr>
+                                        }
+                                        i++;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@* @if (ViewBag.msg != "" && ViewBag.msg != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.msg)');
+    </script>
+} *@
+<script>
+    $("#gridVeSot .VeSot").click(function () {
+        var rowjQuery = $(this).closest("tr");
+        var currentIndex = rowjQuery[0].rowIndex;
+        var ID = String($(this).closest('tr').attr('id'));
+        var MAHHK = document.getElementById("gridVeSot").rows[currentIndex].cells[2].innerHTML;
+        var MAKH = document.getElementById("gridVeSot").rows[currentIndex].cells[3].innerHTML;
+        var PNR = document.getElementById("gridVeSot").rows[currentIndex].cells[8].innerHTML;
+        var SOVE = document.getElementById("gridVeSot").rows[currentIndex].cells[9].innerHTML;
+        var GIAMUA = document.getElementById("gridVeSot").rows[currentIndex].cells[10].innerHTML;
+        var PHIDVMUA = document.getElementById("gridVeSot").rows[currentIndex].cells[11].innerHTML;
+        var LOAIPHI = document.getElementById("gridVeSot").rows[currentIndex].cells[12].innerHTML;
+        var PHIXUATVE = document.getElementById("gridVeSot").rows[currentIndex].cells[13].innerHTML;
+        var PHIDVBAN = document.getElementById("gridVeSot").rows[currentIndex].cells[14].innerHTML;
+        var PHIHOAN = document.getElementById("gridVeSot").rows[currentIndex].cells[15].innerHTML;
+        var CHIETKHAU = document.getElementById("gridVeSot").rows[currentIndex].cells[16].innerHTML;
+        var MAGIOITHIEU = document.getElementById("gridVeSot").rows[currentIndex].cells[18].innerHTML;
+        var NGUOIGIOITHIEU = document.getElementById("gridVeSot").rows[currentIndex].cells[19].innerHTML;
+
+
+
+        var ChiTietVeSot = {};
+        ChiTietVeSot.ID = ID;
+        ChiTietVeSot.MAKH = MAKH;
+        ChiTietVeSot.PNR = PNR;
+        ChiTietVeSot.SoVe = SOVE;
+        ChiTietVeSot.GiaMua = GIAMUA;
+        ChiTietVeSot.PhiDVMua = PHIDVMUA;
+        ChiTietVeSot.LoaiPhi = LOAIPHI;
+        ChiTietVeSot.PhiXuatVe = PHIXUATVE;
+        ChiTietVeSot.PhiDVBan = PHIDVBAN;
+        ChiTietVeSot.PhiHoan = PHIHOAN;
+        ChiTietVeSot.ChietKhau = CHIETKHAU;
+        ChiTietVeSot.MaGioiThieu = MAGIOITHIEU;
+        ChiTietVeSot.NguoiGioiThieu = NGUOIGIOITHIEU;
+        ChiTietVeSot.MAHHK = MAHHK;
+        ChiTietVeSot.RowIndex = currentIndex;
+
+        $.ajax({
+            type: "POST",
+            url: "/@AreaNameConst.AREA_KeToan/KeToan/ChiTietVeSotVoQuy",
+            data: {
+                DataDetail: ChiTietVeSot
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    function CheckStatusEFF(obj) {
+        var table = document.getElementById("gridVeSot");
+        var index = obj.parentNode.parentNode.rowIndex;
+
+        var active = table.rows[index].cells[20].getElementsByTagName("input")[0].checked;
+        var id = table.getElementsByTagName('tr')[index].id;
+
+        $.ajax({
+            type: "POST",
+            url: "/@AreaNameConst.AREA_KeToan/KeToan/KiemTraTinhTrangEFF",
+            data: {
+                Active: active,
+                RowID: id
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Cập nhật thành công");
+                    return;
+                } else {
+                    alert("Thất bại, xin vui lòng thử lại sau");
+                    return;
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>

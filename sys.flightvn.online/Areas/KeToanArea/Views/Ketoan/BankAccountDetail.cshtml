@@ -1,0 +1,71 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.BankAccount.BankAccountDetail>
+
+@{
+    ViewData["Title"] = "Tài khoản ngân hàng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+@Html.Partial("_EnvietOverlay")
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+    <a id="btnDeleteSelected" href="javascript:;" class="btn btn-danger">Xoá các mục đã chọn</a>
+    <a id="btnUndo" href="javascript:;" class="btn btn-warning">Hoàn tác các nội dung đã xoá </a>
+
+    <div class="action_left" style="float:right;">
+        <input type="file" style="display:unset;" id="excelFile" name="excelFile" accept=".xlsx,.xls" />
+        <a id="btnImportExcel" href="javascript:;" class="btn btn-success">Xuất Excel</a>
+        <a id="btnUseExcelFileExample" href="javascript:;" class="btn btn-sm btn-primary" >Sử dụng file mẫu</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Mã KH</label>
+                                <input type="text" name="agentCodes" placeholder="VD: KHxxxxx, KHyyyyy..." class="form-control" id="agentCodes" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Số điện thoại</label>
+                                <input type="text" name="phoneNumbers" placeholder="VD: 0123456789,0987654321......" class="form-control" id="phoneNumbers" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Số tài khoản</label>
+                                <input type="text" name="secondarySerials" placeholder="VD: Số tài khoản" class="form-control" id="secondarySerials" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <div style="margin: 10px 0px;">
+                        <label style="margin-right: 5px;">Hiển thị</label>
+                        <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                            <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                            <option value="25">25</option>
+                            <option selected value="50">50</option>
+                        </select>
+                        <label style="margin-left: 5px;">dòng</label>
+                    </div>
+
+                    <div class="table-responsive" id="table_Pagination">
+                        @await Html.PartialAsync("_TableBankAccountDetailPaginationPatial", Model)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/BankAccount/BankAccountDetail.js"></script>

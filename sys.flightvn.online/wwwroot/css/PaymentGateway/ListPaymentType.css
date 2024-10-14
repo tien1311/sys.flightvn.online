@@ -1,0 +1,214 @@
+﻿.panel-default > .panel-heading {
+    padding: 5px 10px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+.accordion-item .accordion-button {
+    border: 1px solid #dbdbdb;
+}
+
+/* CSS nút switch */
+
+/* Switch container */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+    /* Hide default checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+/* The slider (circle) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+input:checked + .slider {
+    background-color: #f5821f;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #f5821f;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+
+@media only screen and (min-width: 768px) {
+    /*       .paymentTypeNameButton {
+                    width: 180px;
+                    max-width: 200px;
+                } */
+
+
+    label.switch.mb-2 {
+        margin-right: 18px;
+    }
+
+    .updatePaymentTypeImage, .AccordionPaymentType {
+        margin: auto 0;
+        margin-top: 8px;
+    }
+
+    .updatePaymentTypeImageButton {
+        margin-bottom: 8px;
+    }
+
+    .PaymentTypeImage {
+        width: 100px;
+        height: 100px;
+        margin: 8px;
+    }
+
+
+    .switch-paymentType-Button {
+        display: flex;
+        text-align: center;
+        margin-top: 14px !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    a.btn.btn-primary.btn-block.btn-open-accordition {
+        margin-top: 8px;
+    }
+
+    .UpdateImagePaymentTypeRow {
+        padding-left: 16px;
+    }
+
+    .AccordionPaymentType {
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+    .switch {
+        margin-right: 3px;
+        margin-top: 3px;
+    }
+
+    .slider-paymentType.slider {
+        left: -3px;
+    }
+
+    .mobile-button {
+        width: 100px;
+        height: auto;
+        font-size: 12px;
+        margin-left: 80px;
+    }
+
+    .slider-paymentType.slider:before {
+        left: 4px;
+    }
+
+    .slider-paymentType.slider.round:before {
+        border-radius: 50%;
+    }
+
+    input:checked + .slider-paymentType.slider:before {
+        transform: translateX(10px);
+    }
+
+    .mobile-file {
+        width: 140px;
+        height: auto; /* Đảm bảo chiều cao tự động dựa trên nội dung */
+    }
+
+    .switch-paymentType-Button {
+        /* padding-left: 38px; */
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    table th {
+        min-width: 140px;
+    }
+
+    .paymentTypeNameButton {
+    }
+
+    .updatePaymentTypeImage {
+        margin-top: 8px;
+    }
+
+    .updatePaymentTypeImageButton {
+    }
+
+    .PaymentTypeImageContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PaymentTypeImage {
+        width: 50px;
+        height: 50px;
+        margin-left: 13px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    .col-2.col-md-1.switch-paymentType-Button.order-md-last {
+        margin-top: 5px;
+    }
+
+    label.custom-file-upload {
+        margin-bottom: 12px;
+    }
+
+    .col-xs-2.col-md-1.switch-paymentType-Button {
+        margin-top: 14px;
+    }
+}
+

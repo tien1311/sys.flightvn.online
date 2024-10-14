@@ -1,0 +1,52 @@
+﻿@model List<Permission>
+
+@inject IConfiguration _configuration
+
+@{
+    PermissionRepository permission_Rep = new PermissionRepository(_configuration);
+    var listAirlines = permission_Rep.GetListAirline();
+    int i = 0;
+}
+
+<table id="gridTable" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th>Hãng bay</th>
+            <th> <input type="checkbox" id="checkAllRead" /> Read</th>
+            <th> <input type="checkbox" id="checkAllWrite" /> Write</th>
+            <th> <input type="checkbox" id="checkAllDelete" /> Delete</th>
+            <th> <input type="checkbox" id="checkAllExcel" /> Excel</th>
+        </tr>
+    </thead>
+    <tbody id="listPermission">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in listAirlines.Result)
+            {
+                var permission = Model.FirstOrDefault(p => p.PageId == item.ID.ToString());
+                <tr>
+                    <td><input hidden type="text" name="permissions[@i].PageId" value="@item.ID" /> @item.Airline</td>
+                    <td><input type="checkbox" value="1" class="ReadCheckBox"  name="permissions[@i].CanRead" @(permission != null && permission.CanRead == 1 ? "checked" : "") /></td>
+                    <td><input type="checkbox" value="1" class="WriteCheckBox" name="permissions[@i].CanWrite" @(permission != null && permission.CanWrite == 1 ? "checked" : "") /></td>
+                    <td><input type="checkbox" value="1" class="DeleteCheckBox" name="permissions[@i].CanDelete" @(permission != null && permission.CanDelete == 1 ? "checked" : "") /></td>
+                    <td><input type="checkbox" value="1" class="ExportExcelCheckBox" name="permissions[@i].CanExportExcel" @(permission != null && permission.CanExportExcel == 1 ? "checked" : "") /></td>
+                </tr>
+                i++;
+            }
+        }
+        else
+        {
+            foreach (var item in listAirlines.Result)
+            {
+                <tr>
+                    <td><input hidden type="text" name="permissions[@i].PageId" value="@item.ID" /> @item.Airline</td>
+                    <td><input type="checkbox" value="1" class="ReadCheckBox"  name="permissions[@i].CanRead" /></td>
+                    <td><input type="checkbox" value="1" class="WriteCheckBox" name="permissions[@i].CanWrite" /></td>
+                    <td><input type="checkbox" value="1" class="DeleteCheckBox" name="permissions[@i].CanDelete" /></td>
+                    <td><input type="checkbox" value="1" class="ExportExcelCheckBox" name="permissions[@i].CanExportExcel" /></td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,22 @@
+﻿@using Manager.Model.Models.PaginationBase
+@model PaginationBase<Manager.Model.Models.IP.APIPartner>
+
+<table id="gridVisa" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="width: 42px; text-align: center;">STT</th>
+            <th style="width: 150px;">Tên công ty</th>
+            <th style="text-align: center;">Địa chỉ</th>
+            <th style="width: 130px; text-align: center;">Ngày tạo</th>
+            <th style="width: 130px; text-align: center;">Người tạo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("_APIPartnerListPartial", Model)
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @await Html.PartialAsync("_NavPageAPIPartnerListPartial", Model)
+</nav>

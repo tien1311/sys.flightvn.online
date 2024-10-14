@@ -1,0 +1,33 @@
+﻿@model OrderHeaderVoucher
+
+@* Người tiếp nhận *@
+<div class="row">
+    <label class="col-xs-4 control-label bg">Người tiếp nhận</label>
+    <div class="col-xs-8">
+        <span>@Model.Reciever</span>
+    </div>
+</div>
+@* Tình trạng đơn hiện tại *@
+<div class="row">
+    <label class="col-xs-4 control-label bg">Tình trạng</label>
+    <div class="col-xs-8">
+        <span>@Model.Status</span>
+    </div>
+</div>
+@* Ghi chú tình trạng *@
+<div class="row">
+    <label class="col-xs-4 control-label bg">Ghi chú tình trạng</label>
+    <div class="col-xs-8" id="Current_Status" data-current-status-id="@Model.OrderStatusId">
+        <span>@Model.NoteStatus</span>
+    </div>
+</div>
+@* Lý do hủy *@
+@if (!String.IsNullOrEmpty(Model.CancelReason))
+{
+    <div class="row">
+        <label class="col-xs-4 control-label bg">Lý do hủy Booking</label>
+        <div class="col-xs-8">
+            <span>@Model.CancelReason</span>
+        </div>
+    </div>
+}

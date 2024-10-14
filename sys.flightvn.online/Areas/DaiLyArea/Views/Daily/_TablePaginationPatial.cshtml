@@ -1,0 +1,23 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.Post.PostModel>
+
+<table id="gridVisa" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="width: 42px; text-align: center;">STT</th>
+            <th style="width: 150px;">Danh mục</th>
+            <th style="width: 500px; text-align: center;">Tiêu đề</th>
+            <th style="width: 130px; text-align: center;">Mô tả</th>
+            <th>Người đăng</th>
+            <th style="text-align: center;">Ngày đăng</th>
+            <th style="text-align: center;">Hiển thị</th>
+            <th style="text-align: center;">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("_OrderListPartial", Model)
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @await Html.PartialAsync("_NavPageListPartial", Model)
+</nav>

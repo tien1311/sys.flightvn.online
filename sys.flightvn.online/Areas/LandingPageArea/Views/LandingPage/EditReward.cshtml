@@ -1,0 +1,71 @@
+﻿@model Manager.Model.Models.LandingPage.RewardYear
+
+<link href="~/css/hotel/editroomtypehotel.css" rel="stylesheet" />
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="background: #2A3F54;">
+
+        @if (Model != null)
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 style="color:#fff">Chỉnh sửa giải thưởng @Model.Year</h1>
+            </div>
+
+            <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+                <form id="submitForm">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="table-responsive">
+                                <table class="table" id="tableAddRow">
+                                    <thead>
+                                        <tr>
+                                            <th>Giải thưởng</th>
+                                            <th>Hãng</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Rewards)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="RewardName[]" value="@item.RewardName" class="form-control" placeholder="Giải thưởng" />
+                                                    <input type="text" name="YearId" value="@item.YearId" hidden />
+                                                </td>
+
+                                                <td>
+                                                    <input type="text" name="RewardFrom[]" value="@item.RewardFrom" class="form-control" placeholder="Hãng" />
+                                                </td>
+                                                <td>
+                                                    @if (item == Model.Rewards.First())
+                                                    {
+                                                        <a class="btn btn-primary" id="addRowBtn" onclick="CreateRowTable()">+</a>
+                                                        <!-- No button for the first row -->
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="#" class="btn btn-danger remove-row" onclick="DeleteRowTable(this)"> - </a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <button id="btnSave" type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+
+        }
+    </div>
+</div>
+<script src="~/js/landingpage/reward/editreward.js"></script>

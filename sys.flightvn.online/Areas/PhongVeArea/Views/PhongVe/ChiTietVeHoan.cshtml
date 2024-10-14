@@ -1,0 +1,508 @@
+﻿@model SubjectModel
+<!-- bootstrap-daterangepicker -->
+<link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/custom.min.css" type="text/css" />
+
+<style>
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #555;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: #fff !important;
+        font-weight: bold;
+    }
+
+    .popup .table thead th, .popup .table td {
+        padding: 6px 20px !important;
+        text-align: left;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    #home td:first-child {
+        width: 145px;
+        border-right: 1px solid rgba(221,221,221,.78)
+    }
+
+    #home td:last-child {
+        width: calc(100% - 145px);
+    }
+
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1100px;
+        }
+    }
+
+    .content-remark {
+        padding: 10px 5px;
+        border: 1px solid;
+        margin-right: 5px;
+        border-radius: 4px;
+        height: 770px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+
+        .content-remark ul {
+            padding-left: 15px;
+        }
+
+    input[type=checkbox], input[type=radio] {
+        margin: 1px 0 0;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" id="abc">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="tai_lai_trang()">&times;</button>
+            <h1 style="color:red">Thông tin vé hoàn</h1>
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+            <li class="nav-item active">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Thông tin</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Nhật ký</a>
+            </li>
+        </ul>
+        <div class="tab-content popup" id="myTabContent">
+            @if (Model != null)
+            {
+                <div class="tab-pane fade  active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            @using (Html.BeginForm("XuLyVe", "PhongVe", new { i = 3 }, FormMethod.Post))
+                            {
+                                <div class="table-responsive">
+                                    <table class="table jambo_table bulk_action " style="margin-bottom:0">
+                                        <tbody colspan="2">
+                                            <tr class="even pointer " style="color:#fff;font-size:15px;background: rgba(52,73,94,.94);">
+                                                <td class="" colspan="2">
+                                                    <span>Thông tin yêu cầu hoàn vé</span>
+                                                    <span style="float:right;">Refund ID: @Model.code_ticket</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Đại lý</td>
+                                                <td class="" style="color:black;">@Model.subject_name</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Người gửi</td>
+                                                <td class="" style="color:black;">@Model.NguoiGui - @Model.SoDienThoai</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Email</td>
+                                                <td class="" style="color:black;">@Model.subject_code</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Số vé</td>
+                                                <td class="" style="color:black;">@Model.subject_number</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Thông tin kèm theo</td>
+                                                <td class="" style="color:black;">@Model.subject_content</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Ngày gửi</td>
+                                                <td class="" style="color:black;">@Model.subject_date</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Ghi chú</td>
+                                                <td class="" style="color:black;">@Model.subject_picnote</td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Yêu cầu</td>
+                                                <td class="" style="color:black;">
+                                                    <select name="YeuCau" class="form-control">
+                                                        <option id="bt" value="0">Bình thường</option>
+                                                        <option id="dl" value="1">Delay</option>
+                                                        <option id="emd" value="3">EMD</option>
+                                                        <option id="noshow" value="4">Noshow</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="even pointer ">
+                                                <td class="">Nội dung</td>
+                                                <td class="" style="color:red;">@Model.NoiDungHuyHanhTrinh</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" style="margin:10px 0 0 0;">
+                                    <div class="col-md-4">
+                                        <p>Tình trạng</p>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="danhan" value="Đã nhận" checked>Đã nhận
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="dangxuly" value="Đang xử lý">Đang xử lý
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="dahoanchochitien" value="Đã hoàn - chờ Hãng chi tiền hoàn">Đã hoàn - chờ Hãng chi tiền hoàn
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="dabaokhach" value="Đã báo khách đổi yêu cầu khác">Đã báo khách đổi yêu cầu khác
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="dahoanEMD" value="Đã hoàn sang EMD-S">Đã hoàn sang EMD-S
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="chodenngay" value="Chờ đến ngày hoàn">Chờ đến ngày hoàn
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="choSC" value="Đang chờ xin điện SC">Đang chờ xin điện SC
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="choNOGO" value="Đang chờ chuyển NOGO">Đang chờ chuyển NOGO
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="chohang" value="Đang chờ Hãng kiểm tra">Đang chờ Hãng kiểm tra
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="choOK" value="Đang chờ mở OK để hoàn">Đang chờ mở OK để hoàn
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="tinhtrang" id="suco" value="Sự cố">Sự cố
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" rows="5" name="ghichu">@Model.subject_picnote</textarea>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-xs-4">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" name="checkHoan" id="checkHoan">Tình trạng hoàn
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <fieldset class="col-xs-12" style="padding:0px">
+                                                    <div class="control-group">
+                                                        <div class="controls">
+                                                            <div class=" xdisplay_inputx form-group has-feedback" id="">
+                                                                <input type="text" class="form-control has-feedback-right" id="single_cal7" name="ngaybay" value="@Model.NgayBay">
+                                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div class="form-horizontal" role="form">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-xs-6">
+                                                                @if (Model.SoNgayHoan != "")
+                                                                {
+                                                                    <input type="text" class="form-control" name="songay" value="@Model.SoNgayHoan">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="text" class="form-control" name="songay" value="92">
+                                                                }
+                                                            </div>
+                                                            <label class="col-xs-6 control-label" style="text-align:left;">Số ngày</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-xs-4">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="checkEMD" name="checkEMD">Số vé EMD
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <input type="text" class="form-control" name="SoVeEMD" placeholder="EMD" value="@Model.SoVeEMD">
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="form-horizontal" role="form">
+                                                <div class="form-group">
+                                                    <label class="col-xs-4 control-label" style="text-align:left;">Tên khách</label>
+                                                    <div class="col-xs-8">
+                                                        <input type="text" class="form-control" name="TenKhach" placeholder="Tên khách" value="@Model.TenKhachEMD">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:10px;">
+                                            <div class="col-xs-12" style="text-align:right">
+                                                <button type="submit" class="btn btn-primary" name="BtnSave" value="save">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin:10px 0 0 0;">
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>Chuyển danh mục</label>
+                                            <select name="loaive" class="form-control">
+                                                @foreach (var item in Model.listHang)
+                                                {
+                                                    <option value="@item.RefundID">
+                                                        @item.RefundName
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="form-group">
+                                            <label>&nbsp;</label>
+                                            <div><button type="submit" class="btn btn-primary" name="BtnChuyen" value="chuyen">Chuyển</button></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="content-remark" style="">
+                                @Html.Raw(Model.Remark)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="table-responsive">
+                                <table id="gridHoanVe" class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                        <tr class="headings">
+                                            <th class="column-title">Thuộc tính </th>
+                                            <th class="column-title">Giá trị thay đổi </th>
+                                            <th class="column-title">NV sửa </th>
+                                            <th class="column-title">Ngày </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ListNhatKy)
+                                        {
+                                            <tr class="even pointer">
+                                                <td class="">@item.ThuocTinh</td>
+                                                <td class="">@item.GiaTriMoi</td>
+                                                <td class="">@item.NhanVienSua</td>
+                                                <td class="">@item.NgaySua</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="~/js/custom.min.js"></script>
+<script>
+    function tai_lai_trang() {
+        location.replace("http://sys.airline24h.com/PhongVeArea/PhongVe/HoanVe?&i=3")
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        var ignoreClickOnMeElement = document.getElementById('abc');
+        document.addEventListener('click', function (event) {
+            var isClickInsideElement = ignoreClickOnMeElement.contains(event.target);
+            if (!isClickInsideElement) {
+                location.replace("http://sys.airline24h.com/PhongVeArea/PhongVe/HoanVe?&i=3")
+            }
+        });
+    });
+</script>
+@if (Model != null)
+{
+    if (Model.subject_isnew == 0)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#bt").attr("selected", "selected");
+            });
+        </script>
+    }
+    if (Model.subject_isnew == 1)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#dl").attr("selected", "selected");
+            });
+        </script>
+    }
+    if (Model.subject_isnew == 3)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#emd").attr("selected", "selected");
+            });
+        </script>
+    }
+    if (Model.subject_isnew == 4)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#noshow").attr("selected", "selected");
+            });
+        </script>
+    }
+    if (Model.IsCheckEMD == true)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#checkEMD").attr("checked", "checked");
+            });
+        </script>
+    }
+    if (Model.IsCheckHoan == true)
+    {
+        <script>
+            $(document).ready(function () {
+                $("#checkHoan").attr("checked", "checked");
+            });
+        </script>
+    }
+    switch (Model.subject_isshow)
+    {
+        case 2:
+            {
+                if (Model.subject_ishot == 1)
+                {
+                    <script>
+                        $(document).ready(function () {
+                            $("#choSC").attr("checked", "checked");
+                        });
+                    </script>
+                }
+                else if (Model.subject_ishot == 2)
+                {
+                    <script>
+                        $(document).ready(function () {
+                            $("#choNOGO").attr("checked", "checked");
+                        });
+                    </script>
+                }
+                else if (Model.subject_com == 1)
+                {
+                    <script>
+                        $(document).ready(function () {
+                            $("#chohang").attr("checked", "checked");
+                        });
+                    </script>
+                }
+            }
+            break;
+        case 3:
+            <script>
+                $(document).ready(function () {
+                    $("#dahoanchochitien").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 4:
+            <script>
+                $(document).ready(function () {
+                    $("#suco").attr("checked", "checked");
+                });
+            </script>
+            break;
+
+        case 5:
+            <script>
+                $(document).ready(function () {
+                    $("#danhan").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 6:
+            <script>
+                $(document).ready(function () {
+                    $("#hang da chi tien hoan").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 7:
+            <script>
+                $(document).ready(function () {
+                    $("#choOK").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 8:
+            <script>
+                $(document).ready(function () {
+                    $("#chodenngay").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 9:
+            <script>
+                $(document).ready(function () {
+                    $("#dahoanEMD").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 10:
+            <script>
+                $(document).ready(function () {
+                    $("#dabaokhach").attr("checked", "checked");
+                });
+            </script>
+            break;
+        case 11:
+            <script>
+                $(document).ready(function () {
+                    $("#dangxuly").attr("checked", "checked");
+                });
+            </script>
+            break;
+    }
+}

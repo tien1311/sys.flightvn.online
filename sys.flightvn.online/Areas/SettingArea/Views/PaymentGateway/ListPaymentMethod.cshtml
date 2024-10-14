@@ -1,0 +1,115 @@
+﻿@model List<PaymentMethod>
+
+@{
+    ViewData["Title"] = "Danh sách phương thức thanh toán";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>@ViewData["Title"]</title>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<link href="~/css/paymentgateway/listpaymentmethod.css" rel="stylesheet" />
+<link href="~/css/paymentgateway/customfileinput.css" rel="stylesheet" />
+
+<h1>Danh sách phương thức thanh toán</h1>
+<div class="x_panel">
+    <div class="x_content">
+        <div>
+            <a href="/PaymentGateway/AddPaymentMethod?i=12" class="btn btn-primary">Tạo mới</a>
+            <a href="/PaymentGateway/ListPaymentType?i=12" class="btn btn-danger">Danh sách cổng thanh toán Online</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Ảnh đại diện</th>
+                        <th>Tên phương thức</th>
+                        <th>Alias</th>
+                        <th>Chi phí %</th>
+                        <th>Giá trị cố định</th>
+                        <th>Loại</th>
+                        <th>Đổi ảnh</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = 0;
+                        foreach (var item in Model)
+                        {
+                            i++;
+                            <tr>
+                                <td>
+                                    @i
+                                </td>
+                                <td>
+                                    <label class="switch-paymentType switch mb-2">
+                                        <input type="checkbox" data-id="@item.Id" class="btnActive" @(item.IsActived ? "checked" : "") />
+                                        <span class="slider-paymentType slider round"></span>
+                                    </label>
+                                </td>
+                                <td class="text-center">
+                                    <img style="width:40px;height:40px;" src="@item.Image" />
+                                </td>
+                                <td>
+                                    <input value="@item.Name" type="text" class="form-control" id="name" name="name" />
+                                </td>
+                                <td>@item.Alias</td>
+                                <td>
+                                    @if(item.Alias == "online")
+                                    {
+                                        <input value="@item.Percent" hidden type="number" step="any" min="0" class="form-control" id="percent" name="Percent" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@item.Percent" type="number" step="any" min="0" class="form-control" id="percent" name="Percent" />
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Alias == "online")
+                                    {
+                                        <input value="@item.FixedCosts" hidden type="number" step="any" min="0" class="form-control" id="fixedcost" name="FixedCosts" />
+                                    }
+                                    else
+                                    {
+                                        <input value="@item.FixedCosts" type="number" step="any" min="0" class="form-control" id="fixedcost" name="FixedCosts" />
+                                    }
+                                </td>
+                                <td>@item.Source</td>
+                                @*        <td class="custom-file">
+                        <input type="file" class="form-control-file" name="paymentMethodImage" data-id="@item.Id" id="paymentMethodImage" value="@item.Image">
+                        <input type="hidden" name="PaymentId" value="@item.Id" />
+                        </td> *@
+
+                                <td>
+                                    <label for="paymentMethodImage_@item.Id" class="custom-file-upload">
+                                        <i class="fa fa-cloud-upload"></i> Chọn ảnh
+                                    </label>
+                                    <input id="paymentMethodImage_@item.Id" name="paymentMethodImage" data-id="@item.Id" type="file" class="paymentMethodImage" />
+                                </td>
+
+                                <td>
+                                    <button id="btnSavePrice" data-id="@item.Id" class="btn btn-sm btn-success">Lưu giá</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-danger">
+                                Không có dữ liệu
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/paymentgateway/listpaymentmethod.js"></script>

@@ -1,0 +1,320 @@
+﻿@model List<BookingInfoModel>
+@inject IConfiguration _configuration
+
+@{
+    ViewData["Title"] = "Danh sách booking tour quốc tế";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+
+    int currentPage = ViewBag.CurrentPage;
+    int pageSize = ViewBag.PageSize;
+    int totalItems = ViewBag.TotalItems;
+    int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+}
+
+<title>@ViewData["Title"]</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .rounded-text {
+        border-radius: 10px;
+        padding: 5px 10px;
+        color: white;
+    }
+
+    /*Hiệu ứng loading*/
+    #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .loading-spinner {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("BookingTourQT", "Dulich", new { i = 15 }, FormMethod.Post))
+        {
+            <div class="row">
+
+                <div class="form-horizontal">
+                    <div class="item col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Từ Ngày
+                            </label>
+                            <div class="col-sm-9">
+
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx has-feedback">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal2" name="FromDate" value='@ViewBag.DateFrom'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label pad-top-6 col-sm-3 label-align" for="first-name">
+                                Đến Ngày
+                            </label>
+                            <div class="col-sm-9">
+                                <fieldset class="col-xs-12" style="padding:0px">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class=" xdisplay_inputx has-feedback" id="">
+                                                <input type="text" class="form-control has-feedback-right" id="single_cal3" name="ToDate" value='@ViewBag.DateTo'>
+                                                <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                                <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="col-sm-2">
+                            <div style="float:right">
+                                <button type="submit" class="btn btn-primary" name="searchBtn" value="search">Tìm kiếm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridReport" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">STT </th>
+                        <th class="column-title IconTrangThai" style="width: 150px; text-align: center;">Trạng thái</th>
+                        <th class="column-title">Hành trình </th>
+                        <th class="column-title">Code </th>
+                        <th class="column-title">Code triển khai </th>
+                        <th class="column-title">Họ tên </th>
+                        <th class="column-title">Mã KH </th>
+                        <th class="column-title">Số điện thoại </th>
+                        <th class="column-title">Số tiền </th>
+                        <th class="column-title">Hoa hồng </th>
+                        <th class="column-title">Vat </th>
+                        <th class="column-title">Tổng tiền </th>
+                        <th class="column-title">Ngày nhận </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        @foreach (var item in Model)
+                        {
+                            DulichRepository dulichRepository = new DulichRepository(_configuration);
+                            var TourCode = item.TourCode;
+                            var itemBooking = dulichRepository.NewDetailBooking(TourCode);
+                            <tr>
+                                <td class="">@i</td>
+                                <td id="IconTrangThai(@item.TourCode)" style="text-align:center">
+                                    @if (itemBooking.IDStatus == "3")
+                                    {
+                                        <span class="btn-primary rounded-text">
+                                            <span>Đã giữ chỗ</span>
+                                            <input type="hidden" id="tinhtrang" value="3" />
+                                        </span>
+                                    }
+                                    else if (itemBooking.IDStatus == "2")
+                                    {
+                                        <span class="btn-info rounded-text">
+                                            <span>Đã tiếp nhận</span>
+                                            <input type="hidden" id="tinhtrang" value="2" />
+                                        </span>
+                                    }
+                                    else if (itemBooking.IDStatus == "6")
+                                    {
+                                        <span class="btn-dark rounded-text">
+                                            <span>Đã huỷ</span>
+                                            <input type="hidden" id="tinhtrang" value="6" />
+                                        </span>
+                                    }
+                                    else if (itemBooking.IDStatus == "5")
+                                    {
+                                        <span class="btn-success rounded-text">
+                                            <span>Hoàn tất thanh toán</span>
+                                            <input type="hidden" id="tinhtrang" value="5" />
+                                        </span>
+                                    }
+                                    else if (itemBooking.IDStatus == "4")
+                                    {
+                                        <span class="btn-warning rounded-text">
+                                            <span>Đã đặt cọc</span>
+                                            <input type="hidden" id="tinhtrang" value="4" />
+                                        </span>
+                                    }
+                                    else if (itemBooking.IDStatus == "1")
+                                    {
+                                        <span class="btn-danger rounded-text">
+                                            <span>Mới</span>
+                                            <input type="hidden" id="tinhtrang" value="1" />
+                                        </span>
+                                    }
+                                    else if (itemBooking.IDStatus == "7")
+                                    {
+                                        <span class="btn-success rounded-text">
+                                            <span>Đã hoàn thành</span>
+                                            <input type="hidden" id="tinhtrang" value="7" />
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        @* Đoạn này dùng để nhận biết lỗi trường hợp chưa có IDStatus *@
+                                        <span class="btn-danger rounded-text">
+                                            <span>Chưa có giá trị IDStatus</span>
+                                            <input type="hidden" id="tinhtrang" value="0" />
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="">@item.NameTour</td>
+                                <td class=""><a class="Chitiet" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;">@item.TourCode</a></td>
+                                <td class="">@item.codetrienkhai</td>
+                                <td class="">@item.customerName</td>
+                                <td class="">@item.MaKH</td>
+                                <td class="">@item.customerPhone</td>
+                                <td class="" style="color:#1a75e5;">@string.Format("{0:0,0}", item.price)</td>
+                                <td class="" style="color:#28a745;">@string.Format("{0:0,0}", item.commission)</td>
+                                @if (item.vat == 0)
+                                {
+                                    <td class="" style="color:black;">@item.vat</td>
+                                }
+                                else
+                                {
+                                    <td class="" style="color:black;">@string.Format("{0:0,0}", item.vat)</td>
+                                }
+                                <td class="" style="color:#dc3545;">@string.Format("{0:0,0}", item.totalPrice)</td>
+                                <td class="">@DateTime.Parse(item.CreateDate.ToString()).ToString("dd/MM/yyyy hh:mm:ss")</td>
+
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-container" style="text-align:right;">
+            <ul class="pagination">
+                @if (totalPages > 0)
+                {
+                    <li><a href="@Url.Action("BookingTourQT", "Dulich", new { i = 15, page = currentPage > 1 ? currentPage - 1 : 1, pageSize })">&laquo;</a></li>
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        if (i == currentPage)
+                        {
+                            <li class="active"><a href="#">@i</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("BookingTourQT", "Dulich", new { i = 15, page = i, pageSize })">@i</a></li>
+                        }
+                    }
+                    <li><a href="@Url.Action("BookingTourQT", "Dulich", new {  i = 15,page = currentPage < totalPages ? currentPage + 1 : totalPages, pageSize })">&raquo;</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openPopup" role="dialog" style="padding-left: 0px!important;">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+<script>
+    $(document).ready(function () {
+        $('#loading-overlay').hide();
+
+        console.log(tinhtrang);
+        $("#gridReport").on('click', '.Chitiet', function () {
+            $('#loading-overlay').show();
+            var tinhtrang = $(this).closest('tr').find('#tinhtrang').val();
+
+            var tourcode = $(this).closest('tr').find('td:nth-child(5)').text().trim();
+            var tourcodetrienkhai = $(this).closest('tr').find('td:nth-child(4)').text().trim();
+            $.ajax({
+                type: "POST",
+                url: "../Dulich/Chitietbookingtour",
+                data: { tourcode: tourcode, tourcodetrienkhai: tourcodetrienkhai },
+                success: function (response) {
+                    $('#loading-overlay').hide();
+                    $('#openPopup').html(response);
+                    $('#openPopup').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>

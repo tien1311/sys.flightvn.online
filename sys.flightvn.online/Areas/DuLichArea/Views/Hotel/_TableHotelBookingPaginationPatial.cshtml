@@ -1,0 +1,25 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.Hotel.HotelBooking>
+
+<table id="gridHotel" class="table table-striped jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th style="width: 42px; text-align: center;">STT</th>
+            <th style="width: 200px; text-align: center;">Tình trạng</th>
+            <th style="width: 130px; text-align: center;">Mã Booking</th>
+            <th>Tên khách hàng</th>
+            <th>Email</th>
+            <th>Số điện thoại</th>
+            <th style="text-align: center;">Ngày đặt</th>
+            <th style="text-align: center;">Tổng số phòng</th>
+            <th style="text-align: center;">Tổng số người</th>
+            <th style="text-align: center;">Tổng tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @await Html.PartialAsync("_HotelBookingListPartial", Model)
+    </tbody>
+</table>
+@* Phân trang *@
+<nav aria-label="Page navigation">
+    @await Html.PartialAsync("_NavPageHotelBookingListPartial", Model)
+</nav>

@@ -1,0 +1,247 @@
+﻿@model ThongTinXoSoModel
+
+
+<div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" style=" color: #fff;" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">@Model.ListXoSo[0].Title</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Mã KH</label>
+                        <input type="text" class="form-control" id="MaKH" name="MaKH" placeholder="" value="">
+                        <input type="hidden" class="form-control" id="ID" name="ID" placeholder="" value="@Model.ListXoSo[0].ID">
+                    </div>
+                </div><div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="text" class="form-control" id="SoLuong" name="SoLuong" placeholder="" value="0">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button type="button" class="btn btn-success btn-block" onclick="InsertDetail()" name="Save" value="Save">Thêm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>
+                                Danh sách chi tiết
+                            </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content" style="display: block;">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Mã KH</label>
+                                        <input type="text" class="form-control" id="MaKH_Search" name="MaKH_Search" placeholder="" value="">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>&nbsp;</label>
+                                        <div>
+                                            <button type="button" class="btn btn-primary btn-block" onclick="SearchMaKH()" name="Search" value="Search">Tìm kiếm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table id="gridXoSoDetail" class="table table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr>
+                                                <th class="column-title">STT </th>
+                                                <th class="column-title">Mã KH </th>
+                                                <th class="column-title">Số lượng </th>
+                                                <th class="column-title">SL đã chọn </th>
+                                                <th class="column-title"> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                if (Model != null)
+                                                {
+                                                    if (Model.ListXoSoDetail.Count > 0)
+                                                    {
+                                                        int stt = 1;
+                                                        for (int i = 0; i < Model.ListXoSoDetail.Count; i++)
+                                                        {
+                                                            <tr id="@Model.ListXoSoDetail[i].ID">
+                                                                <td>@stt</td>
+                                                                <td>@Model.ListXoSoDetail[i].MaKH</td>
+                                                                <td>@Model.ListXoSoDetail[i].SoLuong</td>
+                                                                <td>@Model.ListXoSoDetail[i].SoLuongDaChon</td>
+                                                                @{
+                                                                    stt = stt + 1;
+                                                                }
+                                                                <td> <a class="Status" style="color:red;" onclick="DeleteDetail(this,@Model.ListXoSoDetail[i].ID)" href="javascript:;"><i class="fa fa-trash" style="font-size:14px;" aria-hidden="true"></i></a></td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            @*<tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            </tr>*@
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function InsertDetail() {
+        var maKH = document.getElementById("MaKH").value;
+        var soLuong = document.getElementById("SoLuong").value;
+        var id = document.getElementById("ID").value;
+        $.ajax({
+            type: "POST",
+            url: "../Data/InsertDetailXoSo",
+            data: {
+                MaKH: maKH,
+                SL: soLuong,
+                ID: id
+            },
+            success: function (response) {
+                if (response == true) {
+                    alert("Lưu thành công !");
+                    document.getElementById("MaKH").value = "";
+                    document.getElementById("SoLuong").value = "";
+                }
+                else {
+                    alert("Mã KH này đã tồn tại !")
+                }
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    };
+    function DeleteDetail(obj, ID) {
+        var index = obj.parentNode.parentNode.rowIndex;
+        let text;
+        text = "Bạn có chắc muốn xóa dòng này ?";
+        if (confirm(text) == true) {
+            $.ajax({
+                type: "POST",
+                url: "../Data/DeleteDetailXoSo",
+                data: {
+                    id: ID
+                },
+                success: function (response) {
+                    if (response == true) {
+                        alert("Xóa thành công !");
+                        document.getElementById("gridXoSoDetail").deleteRow(index);
+                    }
+                    else {
+                        alert("Xóa thất bại !")
+                    }
+                },
+                failure: function (response) {
+                    alert(response);
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        }
+
+    };
+    //function PrintExcel() {
+    //    var ID = document.getElementById("ID").value;
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "/Data/PrintExcel",
+    //        data: {
+    //            id: ID
+    //        },
+    //        success: function (response) {
+    //            var file = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    //            var fileURL = URL.createObjectURL(file);
+    //            window.open(fileURL);
+    //        },
+    //        failure: function (response) {
+    //            alert(response);
+    //        },
+    //        error: function (response) {
+    //            alert(response);
+    //        }
+    //    });
+
+
+    //};
+    function SearchMaKH() {
+        var maKH = document.getElementById("MaKH_Search").value;
+        var id = document.getElementById("ID").value;
+        var tbody = document.querySelector("#gridXoSoDetail tbody");
+        $.ajax({
+            type: "POST",
+            url: "../Data/SearchMaKHDetailXoSo",
+            data: {
+                MAKH: maKH,
+                ID: id
+            },
+            success: function (response) {
+                var table = document.getElementById("gridXoSoDetail");
+                var rowCount = table.rows.length;
+
+                for (var i = rowCount - 1; i > 0; i--) {
+                    table.deleteRow(i);
+                }
+                console.log(response);
+                for (var i = 0; i < response.length; i++) {
+                    var length = table.rows.length;
+                    // Insert a new row at the end of the table
+                    var newRow = tbody.insertRow();
+
+                    // Add cells to the row
+                    var cell1 = newRow.insertCell();
+                    var cell2 = newRow.insertCell();
+                    var cell3 = newRow.insertCell();
+                    var cell4 = newRow.insertCell();
+                    var cell5 = newRow.insertCell();
+
+                    // Set the content of each cell
+                    cell1.textContent = Number(length);
+                    cell2.textContent = response[i].maKH;
+                    cell3.textContent = response[i].soLuong;
+                    cell4.textContent = response[i].soLuongDaChon;
+                    cell5.innerHTML = "<a class='Status' style='color:red;'  onclick='DeleteDetail(this," + response[i].id + ")' href='javascript:;'><i class='fa fa-trash' style='font-size:14px;' aria-hidden='true'></i></a>";
+                }
+
+            },
+            failure: function (response) {
+                alert(response);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+
+
+    };
+</script>

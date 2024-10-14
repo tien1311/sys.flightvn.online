@@ -1,0 +1,420 @@
+﻿@model DanhSachHDDTResponse
+
+@{
+    ViewBag.Title = "Danh sách hóa đơn điện tử";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewBag.Title</title>
+<h2>DANH SÁCH HÓA ĐƠN ĐIỆN TỬ </h2>
+
+@using (Html.BeginForm("DanhSach", "Ketoan", new { i = 5 }, FormMethod.Post))
+{
+    <div class="">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <br>
+                        <form asp-controller="XuatHDDT" asp-action="DanhSach" method="post" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                            <p id="message" style="color: red;"></p>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="col-sm-5 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Từ Ngày
+                                            </label>
+                                            <fieldset class="col-xs-12" style="padding:0px">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                                            <input type="text" name="from_date" value='@ViewBag.DateFrom' class="form-control has-feedback-left" id="single_cal2" placeholder="Từ Ngày">
+                                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-5 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Đến Ngày
+                                            </label>
+                                            <fieldset class="col-xs-12" style="padding:0px">
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                                            <input type="text" name="to_date" value='@ViewBag.DateTo' class="form-control has-feedback-left" id="single_cal3" placeholder="Đến Ngày">
+                                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Ma KH
+                                            </label>
+                                            <div class="col-xs-12" style="padding:0 0 0 10px">
+                                                <input class="form-control" id="MaKH" name="MaKH" value='@ViewBag.MaKH' type="text" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Tình Trạng
+                                            </label>
+                                            <div class="col-xs-12" style="padding-right:0px">
+                                                <select class="required form-control" id="Status" name="Status" style="padding:0 0 0 10px">
+                                                    <option selected value="-100">ALL</option>
+                                                    <option value="0">Hoá đơn chưa có chữ ký số</option>
+                                                    <option value="1">Hoá đơn có chữ ký số</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-6 col-xs-12">
+                                        <label class="col-xs-12">
+                                            &nbsp;
+                                        </label>
+                                        <button type="submit" class="btn btn-success" value="btn_TimDanhSach" name="submitBtn" onclick="myFrom();">Tìm Danh Sách</button>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Số vé
+                                            </label>
+                                            <div class="col-xs-12" style="padding-right:0px">
+
+                                                <input type="text" name="TicketNumber" value='@ViewBag.TicketNumber' class="form-control" id="TicketNumber" placeholder="Số vé" />
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Mã yêu cầu
+                                            </label>
+                                            <div class="col-xs-12" style="padding-right:0px">
+
+                                                <input type="text" name="RequestCode" value='@ViewBag.RequestCode' class="form-control" id="RequestCode" placeholder="Mã yêu cầu" />
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Ikey
+                                            </label>
+                                            <div class="col-xs-12" style="padding-right:0px">
+
+                                                <input type="text" name="IkeySearch" value='@ViewBag.IkeySearch' class="form-control" id="IkeySearch" placeholder="Ikey" />
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="row">
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Số HĐ
+                                            </label>
+                                            <div class="col-xs-12" style="padding:0 0 0 10px">
+                                                <input class="form-control" id="SoHD" name="SoHD" type="text" readonly />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Mẫu Số
+                                            </label>
+                                            <div class="col-xs-12" style="padding:0 0 0 10px">
+                                                <input class="form-control" id="Pattern" name="Pattern" type="text" readonly />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="row">
+                                            <label class="col-xs-12">
+                                                Ký Hiệu
+                                            </label>
+                                            <div class="col-xs-12" style="padding:0 0 0 10px">
+                                                <input class="form-control" id="Serial" name="Serial" type="text" readonly />
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 col-xs-12">
+                                        <label class="col-xs-12">
+                                            &nbsp;
+                                        </label>
+                                        <input type="button" class="btn btn-primary" style="width:100%" value="Xem HĐ" onclick="XemHD();" />
+                                    </div>
+
+                                    @*<div class="col-sm-3 col-xs-12">
+                                <label class="col-xs-12">
+                                &nbsp;
+                                </label>
+                                <button class="btn btn-primary" value="btn_InPDF" name="submitBtn" style="width:100%" type="submit">In PDF</button>
+                                </div>
+
+                                <div class="col-sm-3 col-xs-12">
+                                <label class="col-xs-12">
+                                &nbsp;
+                                </label>
+                                <button class="btn btn-primary" value="btn_InXML" name="submitBtn" style="width:100%" type="submit">In XML</button>
+                                </div>*@
+
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="dashboard_graph x_panel">
+                    <div class="row x_title">
+                        <div class="col-md-6">
+                            <h4>Danh Sách Hóa Đơn</h4>
+                        </div>
+
+                        <div class="col-md-6" style="text-align:right;font-size:15px;">
+
+                            Tra cứu hóa đơn : <a href="http://0304955040hd.softdreams.vn/Account/Logon"> link </a>
+                            <br />
+                            <span style="color:black"> (Tên đăng nhập & mật khẩu trong email hóa đơn) </span>
+                        </div>
+
+                    </div>
+                    <div class="x_content">
+                        <div class="row" style="margin-bottom:10px;text-align:right;padding:0 10px;">
+                            <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="datatable1" class="table table-bordered " role="grid" aria-describedby="datatable_info" style="white-space:nowrap">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 1px;text-align:center;">STT</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Ký Hiệu</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Mẫu Số</th>
+
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">IKey</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Mã Yêu Cầu</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Ngày Chứng Từ</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Ngày Lập</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Mã Số Thuế</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:left;">Địa Chỉ</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Hình Thức Thanh Toán</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Tiền Hàng</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Thuế Suất</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tiền GTGT</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Thuế Phí Khác</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Phí Đổi</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Phí Hoàn</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Phí DV</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Phí DV Sau Thuế</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Cộng Tiền</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">TT Hủy</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Mã KH</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Số Lần In 1</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Số Lần In 2</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Số Lần In 3</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            int i = 1;
+                                            foreach (var item in Model.Result)
+                                            {
+
+                                                if (item.tongQuat.MaYeuCau == "")
+                                                {
+                                                    <tr role="row" onclick="GetDSSoVe();" class="even" style="text-align:center;cursor:pointer;">
+                                                        <td>@i</td>
+                                                        <td>@item.tongQuat.KHHD</td>
+                                                        <td>@item.tongQuat.MAUSO</td>
+
+                                                        <td>@item.tongQuat.iKey</td>
+                                                        <td>@item.tongQuat.MaYeuCau</td>
+                                                        <td>@item.tongQuat.NGAYCT</td>
+                                                        <td>@item.tongQuat.NGAYLAP</td>
+                                                        <td>@item.tongQuat.MAST</td>
+                                                        <td style="text-align:left;">@item.tongQuat.DIACHI</td>
+                                                        <input id="makh" name="makh" type="hidden" readonly />
+
+
+                                                        <td>@item.tongQuat.HTTHANHTOAN</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGTIENHANG)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.THUESUAT)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.THUEGTGT)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGKHONGTHUE)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIDOI)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIHOAN)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIDV)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIDVSAUTHUE)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGCONG)</td>
+
+                                                        <td>@item.tongQuat.TRANGTHAIHUY</td>
+                                                        <td style="text-align:left;">@item.tongQuat.MAKH</td>
+                                                        <td>@item.tongQuat.SOLANIN_LIEN1</td>
+                                                        <td>@item.tongQuat.SOLANIN_LIEN2</td>
+                                                        <td>@item.tongQuat.SOLANIN_LIEN3</td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr role="row" onclick="GetDSSoVe();" class="even" style="text-align:center;cursor:pointer;background-color:cornflowerblue;">
+                                                        <td>@i</td>
+                                                        <td>@item.tongQuat.KHHD</td>
+                                                        <td>@item.tongQuat.MAUSO</td>
+
+                                                        <td>@item.tongQuat.iKey</td>
+                                                        <td>@item.tongQuat.MaYeuCau</td>
+                                                        <td>@item.tongQuat.NGAYCT</td>
+                                                        <td>@item.tongQuat.NGAYLAP</td>
+                                                        <td>@item.tongQuat.MAST</td>
+                                                        <td style="text-align:left;">@item.tongQuat.DIACHI</td>
+
+
+
+                                                        <td>@item.tongQuat.HTTHANHTOAN</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGTIENHANG)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.THUESUAT)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.THUEGTGT)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGKHONGTHUE)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIDOI)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIHOAN)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIDV)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGPHIDVSAUTHUE)</td>
+                                                        <td>@String.Format("{0:0,0}", item.tongQuat.TONGCONG)</td>
+
+                                                        <td>@item.tongQuat.TRANGTHAIHUY</td>
+                                                        <td style="text-align:left;">@item.tongQuat.MAKH</td>
+                                                        <td>@item.tongQuat.SOLANIN_LIEN1</td>
+                                                        <td>@item.tongQuat.SOLANIN_LIEN2</td>
+                                                        <td>@item.tongQuat.SOLANIN_LIEN3</td>
+                                                    </tr>
+                                                }
+                                                i++;
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row x_title">
+                        <div class="col-md-6">
+                            <h4>Danh Sách Số Vé Trong Hóa Đơn</h4>
+                        </div>
+
+                    </div>
+                    <div class="x_content">
+                        <div class="row" style="margin-bottom:10px;text-align:right;padding:0 10px;">
+                            <div class="table-responsive">
+                                <table id="datatable2" class="table table-bordered " role="grid" aria-describedby="datatable_info">
+
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 1px;text-align:center;">STT</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Số Vé</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Hành Trình</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Số Lượng</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Đơn Giá</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Thành Tiền</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">VAT</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Phí Khác</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Phí Đổi</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Phí Hoàn</th>
+                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 100px;text-align:center;">Tổng Cộng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr role="row" class="even" style="text-align:center;">
+                                            <td>1</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id='loader' style='display:none; top: 0; left: 0; position: absolute; width: 100%; height: 100%;'>
+                <img src="~/images/loading.gif" style="width: 30px; position: absolute; top: 50%; left: 46%;" />
+            </div>
+        </div>
+
+
+    </div>
+}
+
+@* @{
+    if (ViewBag.message != null)
+    {
+        <script charset="UTF-8">
+            alert('@Html.Raw(ViewBag.message)');
+        </script>
+    }
+} *@
+
+<script src="~/js/HDDT/Xuat/DanhSach.js"></script>
+
+

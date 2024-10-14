@@ -1,0 +1,129 @@
+﻿@model List<DaiLyEV>
+
+@{
+    ViewData["Title"] = "Tra cứu Signin";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<link href="~/jquery.dataTables.css" rel="stylesheet" />
+<h2 style="text-align: center; font-weight: bold;">TRA CỨU CODE SIGN IN</h2>
+<br />
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    tbody tr:first-child {
+        background-color: #d9edf7;
+    }
+</style>
+<div class="x_panel" style="padding: 10px 17px 0;">
+
+    <div class="x_content">
+        @using (Html.BeginForm("TraCuuSignIn", "Daily", new { i = 8 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="">
+
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+
+                            <select name="DieuKien" class="form-control">
+                                <option value="0">Sign in</option>
+                                <option value="1">Code</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="GiaTri" placeholder="SignIn hoặc Code" />
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-xs-12">
+                        <div class="form-group" style="text-align:right;">
+
+                            <button type="submit" name="search_KH" value="search" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-xs-12">
+                        <p style="color:red; font-size:14px; padding-top:8px;">Lưu ý: dòng màu xanh đại lý đang sử dụng</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="table-responsive">
+                <table id="gridTaiKhoanDaiLy" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">STT</th>
+                            <th style="text-align:center">Mã KH</th>
+                            <th>Tên Đại Lý</th>
+                            <th style="text-align:right">Số Dư</th>
+                            <th style="text-align:center">Kế toán</th>
+                            <th style="text-align:center">Kinh Doanh</th>
+                            <th style="text-align:center">Hãng</th>
+                            <th style="text-align:center">Miền</th>
+                            <th style="text-align:center">Sign In</th>
+                            <th style="text-align:center">Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                double sodu = 0;
+                                if (item.SoDu != "" && item.SoDu != null)
+                                {
+                                    sodu = double.Parse(item.SoDu);
+                                }
+
+                                <tr id="@item.member_kh" class="">
+                                    <td style="text-align:center">@i</td>
+                                    <td style="text-align:center">@item.member_kh</td>
+                                    <td>@item.member_company</td>
+
+                                    @if (item.SoDu != "" && item.SoDu != null)
+                                    {
+                                        @if (sodu > 0)
+                                        {
+                                            <td style="color: blue; text-align: right">@item.SoDu</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="color: red; text-align: right ">@item.SoDu</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td style="color: red; text-align: right">0</td>
+                                    }
+                                    <td style="text-align:center">@item.KeToanEV</td>
+                                    <td style="text-align:center">@item.NhanVienKD</td>
+                                    <td style="text-align:center">@item.HangBay</td>
+                                    <td style="text-align:center">@item.Mien</td>
+                                    <td style="text-align:center">@item.Signin</td>
+                                    <td style="text-align:center">@item.Code</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        @if (ViewBag.ThongBao != null && ViewBag.ThongBao != "")
+                        {
+                            <tr>
+                                <td colspan="9" style="text-align: center; color: red;">@ViewBag.ThongBao</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

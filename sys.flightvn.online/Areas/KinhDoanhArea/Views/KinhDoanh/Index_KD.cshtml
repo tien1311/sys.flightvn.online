@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewData["Title"] = "Kinh Doanh";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+
+<style>
+    .container-login100 {
+        width: 100%;
+        min-height: 100vh;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .img-responsive {
+        border-radius: 7px;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .container-login100 {
+        background-image: url('/images/2.png');
+    }
+
+    .container-content {
+        background: #fff;
+        border-radius: 5px;
+        padding: 0px;
+        text-align: justify;
+    }
+
+    .content-iframe {
+        margin: auto;
+        width: 100%;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+        font-weight: bold;
+    }
+
+    .nav > li.nav-item > a:focus, .nav > li.nav-item > a:hover {
+        color: #000 !important;
+    }
+
+    .content-iframe iframe {
+        height: 800px;
+        width: 100%;
+        border-radius: 7px;
+    }
+
+    .tab-content > .active {
+        opacity: 1;
+    }
+
+    .btn-BSP {
+        color: #fff;
+        background-color: #6c0678;
+        border-color: #6c0678;
+    }
+
+    .nav > li > a {
+        padding: 8px 13px 8px !important;
+    }
+
+    @@media (max-width: 768px) {
+        .logo {
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 30px;
+        }
+
+        .container-login100 {
+            background-image: url('/images/5.jpg');
+            background-position: inherit;
+        }
+
+        .content-iframe {
+            width: 100%;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .modal-dialog {
+            width: 100%;
+            margin: auto;
+        }
+    }
+</style>
+<div class="limiter">
+    <div class="container-login100" style="">
+
+        <div class="content-iframe">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom:10px;">
+                        <li class="nav-item active">
+                            <a class="btn btn-warning" id="KD-tab" data-toggle="tab" href="#KD" role="tab" aria-controls="KD" aria-selected="true">Kinh doanh</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" id="Img-tab" data-toggle="tab" href="#Img" role="tab" aria-controls="Img" aria-selected="true">Hình sự kiện</a>
+                        </li>
+                    </ul>
+                    <div class="modal-body">
+                        <div class="tab-content popup" id="myTabContent">
+                            <div class="tab-pane fade  active" id="KD" role="tabpanel" aria-labelledby="KD-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://docs.google.com/document/d/e/2PACX-1vRtDdQtuK3abORzSE0PdJFZDdgrP479zfZ7tzuJjSx7Lkgl1uptb0qdZYaTuZFQovC50u3TMwycvcrV/pub?embedded=true"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Img" role="tabpanel" aria-labelledby="Img-tab">
+                                <div class="row">
+                                    <div class="col-xs-12 container-content">
+                                        <iframe src="https://drive.google.com/embeddedfolderview?id=1YuY-XMu072FYELXU5Phpxrf11GDsd8P1#grid" style="width:100%;"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

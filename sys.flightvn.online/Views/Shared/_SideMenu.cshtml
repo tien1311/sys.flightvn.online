@@ -1,0 +1,617 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+@{
+    string e = Context.Request.Query["i"].ToString();
+    var maNV = Context.User.Claims.First(claim => claim.Type == "MaNV").Value;
+}
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+    <div class="menu_section">
+
+        <ul class="nav side-menu">
+            @if (e == "1")
+            {
+                <h3>Setting</h3>
+                <li><a href="/@AreaNameConst.AREA_Setting/Setting/profile?&i=1"><i class="fa fa-home"></i><span class="bt">Profile</span><span class="rg">Profile</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Content/Content/ViewContent?&subject_id=148&i=1"><i class="fa fa-home"></i><span class="bt">Sơ đồ Web</span><span class="rg">SĐ Web</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Setting/Setting/EditProfile?&i=1"><i class="fa fa-cogs"></i><span class="bt">SĐT nhận SMS</span><span class="rg">SĐT</span></a></li>
+            }
+            @if (e == "2")
+            {
+                <h3>Hóa đơn</h3>
+                <li><a href="/@AreaNameConst.AREA_Home/Home/Khoaxuathoadondientu?&i=2"><i class="fa fa-home"></i><span class="bt">Khóa xuất hóa đơn điện tử</span><span class="rg">Profile</span></a></li>
+            }
+            @if (e == "12")
+            {
+                if (maNV.Trim().ToUpper() == "NV00293" || maNV.Trim().ToUpper() == "NV00006" || maNV.Trim().ToUpper() == "NV00016")
+                {
+                    <h3>Cấu hình</h3>
+                    <li><a href="/@AreaNameConst.AREA_DuLich/DuLich/Dieuchinhhoahong?&i=12"><i class="fa fa-book"></i><span class="bt">Hoa hồng, VAT sản phẩm</span><span class="rg">Hoa hồng, VAT</span></a></li>
+                    <li><a href="/@AreaNameConst.AREA_DuLich/CarBooking/Discount?&i=12"><i class="fa fa-book"></i><span class="bt">Mã giảm giá xe đưa đón</span><span class="rg">Mã giảm giá xe</span></a></li>
+                    <li><a href="/@AreaNameConst.AREA_Setting/BankInfo/Bank?&i=12"><i class="fa fa-book"></i><span class="bt">Thông tin ngân hàng</span><span class="rg">Bank</span></a></li>
+                    <li><a href="/@AreaNameConst.AREA_Setting/Setting/CapNhatCauHinh?&i=12"><i class="fa fa-book"></i><span class="bt">Cấu hình hóa đơn</span><span class="rg">Cấu hình hóa đơn</span></a></li>
+                    <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/ConfigBalanceAirlines?&i=12"><i class="fa fa-book"></i><span class="bt">Số dư hãng</span><span class="rg">Số dư hãng</span></a></li>
+                    <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/PhanQuyenHangBay?&i=12"><i class="fa fa-user"></i><span class="bt">Phân quyền hãng bay</span><span class="rg">Phân quyền hãng bay</span></a></li>
+                    <li><a href="/@AreaNameConst.AREA_Setting/PaymentGateway/ListPaymentMethod?&i=12"><i class="fa fa-money"></i><span class="bt">Cấu hình PaymentGateway</span><span class="rg">Cấu hình PaymentGateway</span></a></li>
+                    <br />
+                }
+                <h3>Kỹ thuật</h3>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DoanhSoHang?&i=12"><i class="fa fa-book"></i><span class="bt">Doanh số hãng</span><span class="rg">Doanh số hãng</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/DanhSachThanhVien?&i=12"><i class="fa fa-book"></i><span class="bt">Danh sách thành viên</span><span class="rg">Thànhviên</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DangKyThanhVien?&i=12"><i class="fa fa-book"></i><span class="bt">Đăng ký thành viên</span><span class="rg">ĐKTV</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/PhanQuyen?&i=12"><i class="fa fa-book"></i><span class="bt">Phân quyền</span><span class="rg">PQ</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/PhanQuyenMember?&i=12"><i class="fa fa-book"></i><span class="bt">Phân quyền thành viên</span><span class="rg">PQTV</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/Log_SendSMSBCV?&i=12"><i class="fa fa-book"></i><span class="bt">Log SMS báo cáo vé</span><span class="rg">SMS</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/ListAirportCode?&i=12"><i class="fa fa-book"></i><span class="bt">AirportCode</span><span class="rg">Airport</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/ListBankStatement?&i=12"><i class="fa fa-book"></i><span class="bt">Sao kê ngân hàng</span><span class="rg">Sao kê ngân hàng</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DoiChieuThanhToan?&i=12"><i class="fa fa-credit-card"></i><span class="bt">Đối chiếu thanh toán</span><span class="rg">Online Payment</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/IPWhiteList?&i=12"><i class="fa fa-rss"></i><span class="bt">IP WhiteList</span><span class="rg">IP WhiteList</span></a></li>
+
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Điều kiện vé</span><span class="rg">Rule</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_KyThuat/FareRules/Rules_Airlines?&i=12">Hãng</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_KyThuat/FareRules/Rules_Categories?&i=12">Loại</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_KyThuat/FareRules/Rules_Partners?&i=12">Đối tác</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_KyThuat/FareRules/Rules_RuleDetails?&i=12">Điều kiện</a></li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DanhSachGiaoDich?&i=12"><i class="fa fa-list-alt"></i><span class="bt">Danh sách giao dịch</span><span class="rg">DSGD</span></a></li>
+            }
+            @if (e == "13")
+            {
+                <h3>Vé sót</h3>
+                <li><a href="/@AreaNameConst.AREA_BaoCaoVe/BaoCaoVe/BaoCaoVeSotVoQuy?&i=13"><i class="fa fa-book"></i><span class="bt">Nhập báo cáo vé vô quỹ</span><span class="rg">NhậpQuỹ</span> <i class="fa fa-star" style="color:red"></i></a></li>
+                @*<li><a href="/BaoCaoVe/BaoCaoVeSot?&i=13"><i class="fa fa-book"></i><span class="bt">Nhập báo cáo vé</span><span class="rg">NhậpVé</span></a></li>*@
+                <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/VeSot?&i=13"><i class="fa fa-book"></i><span class="bt">Báo cáo vé sót</span><span class="rg">VéSót</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_BaoCaoVe/BaoCaoVe/DSVeSot?&i=13"><i class="fa fa-book"></i><span class="bt">Danh sách báo cáo vé</span><span class="rg">DSBCV</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_BaoCaoVe/BaoCaoVe/BaoCaoVeSotWeb?&i=13"><i class="fa fa-book"></i><span class="bt">Báo cáo xuất web</span><span class="rg">BCVSW</span></a></li>
+            }
+            @if (e == "14")
+            {
+                <h3>Bộ phận đoàn</h3>
+                @* <li><a href="/KyThuat/Flight?&i=14"><i class="fa fa-book"></i><span class="bt">Danh sách hành trình</span><span class="rg">DSHT</span></a></li> *@
+                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/YeuCauDoan?&i=14"><i class="fa fa-book"></i><span class="bt"> Yêu cầu booking</span><span class="rg">YCBK</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_BPDoan/BPDoan/FlightGroup?&i=14"><i class="fa fa-book"></i><span class="bt">Danh sách hành trình đoàn</span><span class="rg">DSHT</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_BPDoan/BPDoan/DanhSachBooking?&i=14"><i class="fa fa-book"></i><span class="bt"> Booking</span><span class="rg">BK</span></a></li>
+            }
+            @if (e == "15")
+            {
+                <h3>Du lịch</h3>
+                <li><a href="/@AreaNameConst.AREA_DuLich/PostsAds/PostsAds?&i=15"><i class="fa fa-book"></i><span class="bt">Bài viết quảng cáo</span><span class="rg">Bài viết</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DuLich/PostsAds/BannerAds?&i=15"><i class="fa fa-book"></i><span class="bt">Banner quảng cáo</span><span class="rg">Banner</span></a></li>
+                <li>
+                    <a href="#level1_1">
+                        <i class="fa fa-car" aria-hidden="true"></i>
+                        <span class="bt">Xe đưa đón</span><span class="rg">Car</span><span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/CarBooking/Index?&i=15">Car Booking</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Tour Hot</span><span class="rg">Tour Nội địa</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/TourHot/BookingTourHot?&i=15">TourHot Booking</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/TourHot/ListTourHot?&i=15">Danh sách Tour</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Tour Nội Địa</span><span class="rg">Tour Nội địa</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/DuLich/BookingTour?&i=15">Tour Booking</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/DuLich/TinhThanh?&i=15">Cấu hình Tỉnh/Thành</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Tour Quốc Tế</span><span class="rg">Tour Nội địa</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/DuLich/BookingTourQT?&i=15">Tour Booking QT</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/DuLich/TinhThanhQT?&i=15">Cấu hình Tỉnh/Thành</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Visa</span><span class="rg">Visa</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Visa/Visa?&i=15">Cấu hình Visa</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Visa/TypeVisa?&i=15">Cấu hình loại Visa</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Visa/VisaBooking?&i=15">Booking Visa</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1">
+                        <i class="fa fa-building" aria-hidden="true"></i>
+                        <span class="bt">Hotel</span><span class="rg">Hotel</span><span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Hotel/Hotel?&i=15">Cấu hình Khách sạn</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Hotel/HotelService?&i=15">Cấu hình dịch vụ Khách sạn</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Hotel/HotelBooking?&i=15">Booking Hotel</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Voucher</span><span class="rg">Voucher</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Voucher/Voucher?&i=15">Cấu hình Voucher</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_DuLich/Voucher/BookingVoucher?&i=15">Booking Voucher</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Điểm tham quan</span><span class="rg">Điểm tham quan</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu">
+                            <a href="/@AreaNameConst.AREA_DuLich/TourLocation/TourLocation?&i=15">Cấu hình điểm tham quan</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_DuLich/ThongKe/Index?&i=15"><i class="fa fa-bar-chart"></i><span class="bt">Thống kê sản phẩm</span><span class="rg">Thống Kê sản phẩm</span></a></li>
+            }
+            @*
+            @if (e == "2")
+            {
+            <h3>Hóa Đơn</h3>
+            <li><a href="#level1_1"><i class="fa fa-book"></i> Danh sách </a></li>
+            }
+            @if (e == "4")
+            {
+            <h3>CA</h3>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>QL khách hàng</a></li>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>Cấu hình doanh số</a></li>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>Nhập Vé</a></li>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>Tổng quan</a></li>
+            }*@
+            @if (e == "3")
+            {
+                @*    <li>
+            <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Bản Tin</span><span class="rg">BảnTin</span><span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="/PhongVe/News?&i=3">Bản tin Phòng Vé</a></li>
+            <li><a href="/PhongVe/QuyDinhPV?&i=3">Quy định Phòng Vé</a></li>
+            </ul>
+            </li>*@
+
+                <h3>Phòng vé</h3>
+                <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/CORPORATE?&i=3"><i class="fa fa-book"></i><span class="bt">Giá CORPORATE BSP</span><span class="rg">Giá CORP</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/HoanVe?&i=3"><i class="fa fa-book"></i><span class="bt">Vé hoàn</span><span class="rg">VeHoan</span></a></li>
+
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Xuất vé - Đổi vé</span><span class="rg">XV-ĐV</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/GuiMailDaiLy?&i=3">Gửi thông tin Xuất - Đổi</a></li>
+                        <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/DanhSachGuiMailDaiLy?&i=3">Báo cáo Xuất - Đổi</a></li>
+                        <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/DanhSachTongGuiMailDaiLy?&i=3">Báo cáo số lượng Xuất - Đổi</a></li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/GuiMailHang?&i=3"><i class="fa fa-book"></i><span class="bt">Gửi Mail Hãng</span><span class="rg">GMH</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/DanhSachGuiMailHang?&i=3"><i class="fa fa-book"></i><span class="bt">Danh Sách Mail Hãng</span><span class="rg">DSGM</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/Booking?&i=3"><i class="fa fa-book"></i><span class="bt">Booking</span><span class="rg">Booking</span></a></li>
+                @*<li><a href="#level1_1"><i class="fa fa-book"></i>Danh sách vé</a></li>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>Vé sót báo cáo</a></li>*@
+            }
+
+            @if (e == "5")
+            {
+                <h3>Kế Toán</h3>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/KhoaCodeDaiLy?&i=5"><i class="fa fa-book"></i><span class="bt">Thông báo đại lý</span><span class="rg">TB ĐL</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/ChinhSachChietKhau?&i=5"><i class="fa fa-book"></i><span class="bt">Chính sách chiết khấu</span><span class="rg">Chính sách</span></a></li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Doanh số</span><span class="rg">DS</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/ImportDoanhSo?&i=5">Upload doanh số</a></li>
+                        <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/TraCuuDoanhSo?&i=5">Tra cứu doanh số</a></li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/BaoCaoSMS?&i=5"><i class="fa fa-book"></i><span class="bt">Báo cáo SMS</span><span class="rg">SMS</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/CongNoDaiLy?&i=5"><i class="fa fa-home"></i><span class="bt">Xác nhận công nợ</span><span class="rg">XNCN</span></a></li>
+
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/DanhSach?&i=5"><i class="fa fa-home"></i><span class="bt">Danh sách hóa đơn</span><span class="rg">DSHD</span></a></li>
+
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/UpdateNgayChungTu?&i=5"><i class="fa fa-book"></i><span class="bt">Update ngày chứng từ</span><span class="rg">UNCT</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/DanhSachVeSot?&i=5"><i class="fa fa-book"></i><span class="bt">Danh sách vé sót đã báo cáo</span><span class="rg">DSVSDBC</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/CongNoQuaHan?&i=5"><i class="fa fa-book"></i><span class="bt">Báo cáo công nợ quá hạn</span><span class="rg">CNQH</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/CauHinhPhiXuat?&i=5"><i class="fa fa-book"></i><span class="bt">Cấu hình phí xuất</span><span class="rg">CHPX</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Data/ReportPaymentChannel?&i=5"><i class="fa fa-book"></i><span class="bt">Báo cáo thanh toán các kênh</span><span class="rg">Report</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/DanhSachThanhToan?&i=5"><i class="fa fa-credit-card"></i><span class="bt">Tra cứu danh sách thanh toán</span><span class="rg">Online Payment</span></a></li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-university"></i><span class="bt">Ngân hàng</span><span class="rg">DS</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/BankAccount?&i=5">Tài khoản ngân hàng</a></li>
+                        <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/BankAccountDetail?&i=5">Chi tiết tài khoản ngân hàng</a></li>
+                    </ul>
+                </li>
+                @*<li><a href="#level1_1"><i class="fa fa-book"></i>Gửi công nợ</a></li>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>Báo cáo vé sót</a></li>
+            <li><a href="#level1_1"><i class="fa fa-book"></i>Công nợ web</a></li>*@
+
+            }
+            @if (e == "6")
+            {
+                <h3>Yến Sào</h3>
+                <li><a href="/@AreaNameConst.AREA_Content/Content/ViewContent?&subject_id=141&i=6"><i class="fa fa-book"></i><span class="bt">Bảng giá đặc biệt</span><span class="rg">Giá.ĐB</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Content/Content/ViewContent?&subject_id=142&i=6"><i class="fa fa-book"></i><span class="bt">Bảng giá khách lẻ</span><span class="rg">Giá lẻ</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Content/Content/ViewContent?&subject_id=169&i=6"><i class="fa fa-book"></i><span class="bt">Yến sào thương mại điện tử</span><span class="rg">TMĐT</span></a></li>
+            }
+            @if (e == "7")
+            {
+
+                <h3>Nội Bộ</h3>
+                <li><a href="/@AreaNameConst.AREA_NoiBo/Noibo/LichLamViec?&i=7"><i class="fa fa-book"></i><span class="bt">Lịch làm việc</span><span class="rg">LịchLV</span></a></li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Bản tin</span><span class="rg">BảnTin</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_NoiBo/Noibo/News?&i=7">Bản tin Flight VN</a></li>
+                        <li><a href="/@AreaNameConst.AREA_NoiBo/NoiBo/KhenThuongKyLuatNoiBo?&i=7">Khen thưởng / Kỷ luật</a></li>
+
+                        @*  <li><a href="/Noibo/BangTinChamCong?&i=7">Bản tin chấm công</a></li>*@
+                    </ul>
+                </li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Quy định</span><span class="rg">QuyĐịnh</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        @* <li class="sub_menu"><a href="/Noibo/QuyDinhOld?&i=7">Quy định chung cũ</a></li> *@
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_NoiBo/Noibo/QuyDinh?&i=7">Quy định chung</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_PhongVe/PhongVe/QuyDinhPV?&i=7 ">Quy định Phòng Vé</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/QuyDinh?&i=7">Quy định P.Kinh Doanh</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_NoiBo/Noibo/QuyDinhKT?&i=7">Quy định P.Kế Toán</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_NoiBo/Noibo/QuyDinhDoan?&i=7">Quy định BP.Đoàn</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_NoiBo/Noibo/QuyDinhDL?&i=7">Quy định P.Du Lịch</a></li>
+                    </ul>
+                </li>
+                <li><a href="http://kyniem.enviet-group.com/" target="_blank"><i class="fa fa-book"></i><span class="bt">Kỷ niệm Flight VN</span><span class="rg">KỷNiệm</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Menu/Menu/KhenThuong_KyLuat?&i=7"><i class="fa fa-book"></i><span class="bt">Danh sách thưởng & phạt</span><span class="rg">T & P</span></a></li>
+                @*<li><a href="/Content/ViewContent?&subject_id=145&i=7"><i class="fa fa-book"></i><span class="bt">Danh sách kỷ luật</span><span class="rg">Phạt</span></a></li>*@
+
+                <li><a href="/@AreaNameConst.AREA_Menu/Menu/NghiepVu?&i=7"><i class="fa fa-book"></i><span class="bt"> Nghiệp vụ</span><span class="rg">NVụ</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Menu/Menu/CSKH?&i=7"><i class="fa fa-book"></i><span class="bt">CSKH</span><span class="rg">CSKH</span></a></li>
+                @*<li><a href="/Menu/TinhNangMoi?&i=7"><i class="fa fa-book"></i><span class="bt">Tính năng mới</span><span class="rg">TNM</span></a></li>*@
+                @*    <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Gửi - SMS <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">SMS - ENVIETCAR</a></li>
+            <li><a href="#">SMS - ENVIETGROUP</a></li>
+            <li><a href="#">SMS - ENVIET.AIR</a></li>
+            <li><a href="#">SMS - CSKH.ENVIET</a></li>
+            <li><a href="#">SMS - ENVIET.TOUR</a></li>
+            <li><a href="#">SMS - TOP.TEAM</a></li>
+            <li><a href="#">SMS - Sinh nhật đại lý</a></li>
+            </ul>
+
+            </li>
+            <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Quản lý - SMS <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">SMS - Mẫu</a></li>
+            <li><a href="#">Danh bạ</a></li>
+            <li><a href="#">Danh bạ đại lý</a></li>
+            <li><a href="#">Quản lý - SMS</a></li>
+            </ul>
+            </li>
+            <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Phản hồi & Ý kiến <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Phản hồi</a></li>
+            <li><a href="#">Thăm dò ý kiến</a></li>
+            </ul>
+
+            </li>
+            <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Nhận xét PV<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Q & A</a></li>
+            <li><a href="#">Kết quả</a></li>
+            </ul>
+
+            </li>*@
+            }
+            @if (e == "8")
+            {
+                <h3>Đại Lý</h3>
+
+                @*<li><a href="/Daily/KhuyenMai?&i=8"><i class="fa fa-book"></i><span class="bt">Chính sách & Khuyến mãi</span><span class="rg">CS&KM</span></a></li>*@
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Quy định & công văn</span><span class="rg">QĐ&CV</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/CongVan?&i=8">Flight VN</a></li>
+                        <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/VietNamAirlines?&i=8">Vietnam Airlines</a></li>
+                        <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/Vietjet?&i=8">Vietjet Air</a></li>
+                        <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/BambooAirway?&i=8">Bamboo Airway</a></li>
+                        <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/VietravelAirlines?&i=8">Vietravel Airlines</a></li>
+                        <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/OtherAir?&i=8">Các hãng quốc tế & GDS</a></li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/CongVanManager?&i=8"><i class="fa fa-book"></i><span class="bt">Công văn riêng Manager</span><span class="rg">Manager</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/ThongTinDaiLy?&i=8"><i class="fa fa-book"></i><span class="bt">Tra cứu đại lý</span><span class="rg">XemĐL</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/TraCuuVeHoan?&i=8"><i class="fa fa-book"></i><span class="bt">Tra cứu vé hoàn</span><span class="rg">TC VH</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/TraCuuSoVe?&i=8"><i class="fa fa-book"></i><span class="bt">Tra cứu số vé</span><span class="rg">TC SV</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/Phieubaolanh?&i=8"><i class="fa fa-book"></i><span class="bt">Phiếu bảo lãnh</span><span class="rg">PhiếuBL</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KeToan/Ketoan/CongNo?&i=8"><i class="fa fa-book"></i><span class="bt">Công nợ</span><span class="rg">CôngNợ</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/TraCuuSignIn?&i=8"><i class="fa fa-book"></i><span class="bt">Tra cứu Code SignIn</span><span class="rg">SignIn</span></a></li>
+                @*<li><a href="/Menu/ChinhSachQN?&i=8"><i class="fa fa-book"></i><span class="bt">Chính sách quốc nội</span><span class="rg">CSQN</span></a></li>
+            <li><a href="/Menu/ChinhSachQT?&i=8"><i class="fa fa-book"></i><span class="bt">Chính sách quốc tế</span><span class="rg">CSQT</span></a></li>
+            <li><a href="/Menu/ChinhSachDB?&i=8"><i class="fa fa-book"></i><span class="bt">Chính sách đặc biệt</span><span class="rg">CSDB</span></a></li>*@
+                <li><a href="/@AreaNameConst.AREA_DaiLy/DaiLy/TraCuuChuyenKhoan?&i=8"><i class="fa fa-book"></i><span class="bt">Tra cứu chuyển khoản</span><span class="rg">TC CK</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/DaiLy/HuongDan?&i=8"><i class="fa fa-book"></i><span class="bt">HD bsp.onlineairticket</span><span class="rg">BSP</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_DaiLy/DaiLy/BaiViet?&i=8"><i class="fa fa-file-text"></i><span class="bt">Bài viết</span><span class="rg">Article</span></a></li>
+                @*<li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Hoàn vé <span class="fa fa-chevron-down"></span> </a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Khóa hoàn vé</a></li>
+            </ul>
+            </li>
+            <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Bài viết <span class="fa fa-chevron-down"></span> </a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Danh sách</a></li>
+            <li><a href="#">Đăng bài</a></li>
+            </ul>
+            </li>
+            <li><a href="#"><i class="fa fa-book"></i>Booker</a></li>
+            <li><a href="#"><i class="fa fa-book"></i>Thăm dò</a></li>
+            <li><a href="#"><i class="fa fa-book"></i>SC</a></li>
+            <li><a href="#"><i class="fa fa-book"></i>Danh mục</a></li>
+            <li><a href="#"><i class="fa fa-book"></i>Quản lý files</a></li>
+            <li><a href="#"><i class="fa fa-book"></i>Phân quyền</a></li>
+            <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Thành viên <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Tạo mới</a></li>
+            <li><a href="/Member/MemberList">Danh sách</a></li>
+            <li><a href="#">Import</a></li>
+            </ul>
+            </li>*@
+
+                @*<li><a href="#"><i class="fa fa-book"></i>Quảng cáo</a></li>
+            <li><a href="#"><i class="fa fa-book"></i>Hóa đơn</a></li>
+            <li>
+            <a href="#level1_1"><i class="fa fa-book"></i>Zalo <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Danh sách tài khoản</a></li>
+            <li><a href="#">Gửi tin nhắn</a></li>
+            </ul>
+            </li>*@
+
+            }
+            @if (e == "9")
+            {
+                <h3>Data</h3>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Tra cứu thông tin</span><span class="rg">TraCứu</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/TraCuuCongVan?&i=9">Công văn</a></li>
+                        <li><a href="/@AreaNameConst.AREA_Data/Data/TraCuuDaiLy?&i=9">Hợp đồng đại lý</a></li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_Data/Data/DSCongViec?&i=9"><i class="fa fa-book"></i><span class="bt">DS công việc</span><span class="rg">DS_CV</span></a></li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">EVBay</span><span class="rg">EVBay</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/MenuNews?&i=9">Menu</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/ContentNews?&i=9">Bài viết</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/Map?&i=9">Map</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/Bus?&i=9">Bus</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/DDBL/QuanlyDDBL?&i=9">Định danh/Bảo lưu</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/ImportChuongTrinhKhuyenMai?&i=9">Import khuyến mãi</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/ChuongTrinhKhuyenMai?&i=9">Chương trình khuyến mãi</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/CreateChuongTrinhXoSo?&i=9">Tạo xổ số</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/CreateBookerClub?&i=9">Booker Club</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/DanhSachIDBooker?&i=9">ID Booker Club</a></li>
+                        <li>
+                            <a href="#level1_1">Sản phẩm<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/SanPham?&i=9">Sản phẩm cha</a></li>
+                                <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/SanPhamChild?&i=9">Sản phẩm con</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#level1_1">Dịch vụ<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="/@AreaNameConst.AREA_Data/Data/DichVu?&i=9">Dịch vụ cha</a></li>
+                                <li><a href="/@AreaNameConst.AREA_Data/Data/DichVuChild?&i=9">Dịch vụ con</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_Data/Data/NhomKH?&i=9"><i class="fa fa-book"></i><span class="bt">Nhóm ĐL</span><span class="rg">NhomDL</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Data/ThongBao?&i=9"><i class="fa fa-book"></i><span class="bt">Thông báo</span><span class="rg">TB</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Popup/UploadPopup?&i=9"><i class="fa fa-book"></i><span class="bt">Upload Img</span><span class="rg">Upload</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Data/DSVeSotKhac?&i=9"><i class="fa fa-book"></i><span class="bt">Danh sách báo cáo vé khác</span><span class="rg">DSBCVK</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Forum/DuyetBaiViet?&i=9"><i class="fa fa-book"></i><span class="bt">Duyệt bài viết</span><span class="rg">DBV</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Lotusmile/Lotusmile?&i=9"><i class="fa fa-book"></i><span class="bt">Lotusmile</span><span class="rg">Lotusmile</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/APIVeDoan/APIVeDoan?&i=9"><i class="fa fa-book"></i><span class="bt">API Vé đoàn</span><span class="rg">VeDoan</span></a></li>
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">QR</span><span class="rg">QR</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/QR/ListAddInfo?&i=9">Nội dung chuyển khoản</a></li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Thông báo đại lý</span><span class="rg">TB</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/ThongBaoDaiLy/TinhTrang?&i=9">Tình trạng</a></li>
+                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/ThongBaoDaiLy/NoiDung?&i=9">Nội dung</a></li>
+                    </ul>
+                </li>
+
+            }
+            @if (e == "10")
+            {
+                <h3>Kinh Doanh</h3>
+                @*     <li>
+            <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Bản Tin</span><span class="rg">BảnTin</span><span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="/KinhDoanh/News?&i=10">Bản tin Kinh Doanh</a></li>
+            <li><a href="/KinhDoanh/QuyDinh?&i=10">Quy định Kinh Doanh</a></li>
+            </ul>
+            </li>*@
+                <li>
+                    <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Tra cứu thông tin</span><span class="rg">TraCứu</span><span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+
+
+                        <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/TraCuuHopDong?&i=10">Hợp đồng đại lý</a></li>
+                    </ul>
+                </li>
+                <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/DaiLy?&i=10"><i class="fa fa-book"></i><span class="bt">Đại lý</span><span class="rg">ĐL</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/Chart?&i=10"><i class="fa fa-book"></i><span class="bt">Biểu đồ DS</span><span class="rg">BĐ DS</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/DoanhSoDaiLy?&i=10"><i class="fa fa-book"></i><span class="bt">Doanh số đại lý</span><span class="rg">DS ĐL</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/GuiMailDaiLy_KD?&i=10"><i class="fa fa-book"></i><span class="bt">Gửi mail đại lý kinh doanh</span><span class="rg">GMKD</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/DanhSachGuiMailKinhDoanh?&i=10"><i class="fa fa-book"></i><span class="bt">Báo cáo gửi mail</span><span class="rg">BCGM</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Data/Data/DanhSachIDBooker?&i=10"><i class="fa fa-book"></i><span class="bt">ID Booker Club</span><span class="rg">IDBC</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_KinhDoanh/KinhDoanh/ThongBaoDaiLy?&i=10"><i class="fa fa-book"></i><span class="bt">Thông báo đại lý</span><span class="rg">TBDL</span></a></li>
+            }
+            @if (e == "11")
+            {
+                <h3>Khách VIP</h3>
+                <li><a href="/@AreaNameConst.AREA_Home/KhachHang/KhachHangVip?&i=11"><i class="fa fa-book"></i><span class="bt">Đối tác VIP</span><span class="rg">VIP</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_Home/KhachHang/NhomDL?&i=11"><i class="fa fa-book"></i><span class="bt">DS nhóm DL</span><span class="rg">VIPDL</span></a></li>
+            }
+            @if (e == "16")
+            {
+                <h3>Flight VN Landing Page</h3>
+                <li><a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Logo?&i=16"><i class="fa fa-picture-o"></i><span class="bt">Logo</span><span class="rg">Logo</span></a></li>
+                <li><a href="/@AreaNameConst.AREA_LandingPage/LandingPage/CompanyInfo?&i=16"><i class="fa fa-briefcase"></i><span class="bt">Thông tin công ty</span><span class="rg">Thông tin công ty</span></a></li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/PartnerBanner?&i=16">
+                        <i class="fa fa-window-maximize" aria-hidden="true"></i>
+                        <span class="bt">Logo các đối tác</span><span class="rg">Logo các đối tác</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Service?&i=16">
+                        <i class="fa fa-th-list" aria-hidden="true"></i>
+                        <span class="bt">Các dịch vụ</span><span class="rg">Các dịch vụ</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/SocialMedia?&i=16">
+                        <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                        <span class="bt">Các mạng xã hội</span><span class="rg">Các mạng xã hội</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Slider?&i=16">
+                        <i class="fa fa-film" aria-hidden="true"></i>
+                        <span class="bt">Slider</span><span class="rg">Slider</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Category?&i=16">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                        <span class="bt">Danh mục</span><span class="rg">Danh mục</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Post?&i=16">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <span class="bt">Bài viết</span><span class="rg">Bài viết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/News?&i=16">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <span class="bt">Tin tức</span><span class="rg">Tin tức</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Subscribe?&i=16">
+                        <i class="fa fa-bell" aria-hidden="true"></i>
+                        <span class="bt">Danh sách đăng ký</span><span class="rg">Danh sách đăng ký</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/CustomerRequest?&i=16">
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                        <span class="bt">Tin nhắn khách hàng</span><span class="rg">Tin nhắn khách hàng</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/CompanyHistory?&i=16">
+                        <i class="fa fa-history" aria-hidden="true"></i>
+                        <span class="bt">Lịch sử Flight VN</span><span class="rg">Lịch sử Flight VN</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Reward?&i=16">
+                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                        <span class="bt">Giải thưởng</span><span class="rg">Giải thưởng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/@AreaNameConst.AREA_LandingPage/LandingPage/Job?&i=16">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                        <span class="bt">Tuyển dụng</span><span class="rg">Tuyển dụng</span>
+                    </a>
+                </li>
+            }
+
+            @*
+            <li>
+            <a><i class="fa fa-book"></i> Vé máy bay <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li><a href="#">Booking</a></li>
+            <li><a href="#">Booking yêu cầu</a></li>
+            <li><a href="#">Vé khuyễn mãi</a></li>
+            <li><a href="#">Thông tin Pax đặt vé</a></li>
+            <li><a href="#">Khách hàng thân thiết</a></li>
+            <li><a href="#">Báo cáo nhân viên</a></li>
+            <li><a href="#">Doanh thu</a></li>
+            <li><a href="#">Doanh số đại lý</a></li>
+            <li><a href="#">Kế toán</a></li>
+            <li><a href="#">Danh mục quà tặng</a></li>
+            <li><a href="#">Báo cáo chuyển khoản</a></li>
+            <li><a href="#">Danh sách khách hàng</a></li>
+            </ul>
+            </li>
+
+
+            <li>
+            <a><i class="fa fa-book"></i> Vận chuyển <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li><a href="#">Tạo Menu</a></li>
+            <li>
+            <a href="#level1_1">Bài viết <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Mới</a></li>
+            <li><a href="#">Danh sách</a></li>
+            </ul>
+            </li>
+            <li><a href="#">Thống kê đội xe</a></li>
+            <li><a href="#">Quản lý xe</a></li>
+            <li><a href="#">Lương tài xe</a></li>
+            <li><a href="#">Danh mục xe</a></li>
+
+            </ul>
+            </li>
+
+
+            <li>
+            <a><i class="fa fa-book"></i> VMB trực tuyến <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li><a href="#">Tạo Menu</a></li>
+            <li>
+            <a href="#level1_1">Bài viết <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+            <li class="sub_menu"><a href="#">Mới</a></li>
+            <li><a href="#">Danh sách</a></li>
+            </ul>
+            </li>
+            <li><a href="#">Thống kê đội xe</a></li>
+            <li><a href="#">Quản lý xe</a></li>
+            <li><a href="#">Lương tài xe</a></li>
+            <li><a href="#">Danh mục xe</a></li>
+
+            </ul>
+            </li>*@
+
+
+
+
+        </ul>
+    </div>
+
+</div>

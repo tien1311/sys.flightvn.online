@@ -1,0 +1,32 @@
+﻿@model GuiMailDaiLytModel
+
+
+
+
+
+<div class="modal-dialog" style="margin-top:100px;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">NỘI DUNG</h1>
+        </div>
+
+        <div class="form-horizontal" role="form">
+            <div class="form-group" style="padding:0 20px;">
+                <label for="" class="col-sm-12 control-label" style="text-align:left; font-size:16px;">Nội dung:</label>
+                <div class="col-sm-12">
+                    @Html.Raw(Model.NOIDUNG)
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+
+
+</div>

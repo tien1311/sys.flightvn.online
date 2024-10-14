@@ -1,0 +1,64 @@
+﻿@using Manager.Common.Helpers.AreaHelpers
+
+@model PagingList<SubjectModel>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+@{
+    ViewData["Title"] = "Công văn Vietjet";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<div>
+    <h2 class="col-sm-8">Vietjet</h2>
+    @using (Html.BeginForm("SearchNews", "Daily", new { i = 8 }, FormMethod.Post))
+    {
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-xs-8">
+                    <input class="form-control" type="text" name="tieude" value="" placeholder="Từ khóa tiêu đề" />
+                    <input type="hidden" name="section_id" value="125" />
+                </div>
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="clearfix">
+
+</div>
+<div class="row ">
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            @foreach (var item in Model)
+            {
+                <div class="x_content change_color" style="padding:0px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div style="height:100%;">
+                                <div class="thumbnail" style="padding:0;float:left;width:82px;height:82px;margin:10px;max-height:100%;">
+                                    <div class="image" style="width:82px;height:82px;">
+                                        <img style="max-width:100%; margin-right:10px; display: block;border:0.6px solid;border-color:#dacfcf" src="@item.Image" alt="image" />
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:10px;">
+
+                                @Html.ActionLink(item.Description, "QuyDinhHang", "Daily", new { area = AreaNameConst.AREA_DaiLy, subject_id = @item.subject_id, i = 8 }, new { style = "font-size:12px;font-weight:700;color:#000" })
+                            </div>
+                            <div>
+                                <span style="margin-top:10px;display:block;font-size:10px;color:blue;">@item.Date</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row" style="float:right;">
+    <vc:pager paging-list="@Model"></vc:pager>
+</div>

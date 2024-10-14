@@ -1,0 +1,78 @@
+﻿@using Manager.Model.Models.Hotel
+@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.Hotel.HotelBooking>
+@inject IConfiguration _configuration
+
+@if (Model != null && Model.ListProduct.Any())
+{
+    HotelRepository hotelRepository = new HotelRepository(_configuration);
+    int stt = 0;
+    foreach (var item in Model.ListProduct)
+    {
+        stt++;
+        string status = hotelRepository.GetStatusStringByStatusId(item.StatusID);
+        <tr id="@item.Id" data-row-booking="row_@item.BookingCode">
+            <td style="text-align: center;">@item.RowNum</td>
+            <td class="text-center" id="status-column_@item.BookingCode">
+                @if (item.StatusID == 1)
+                {
+                    <span style="padding: 5px 10px;border-radius: 15px;" class="btn-danger">@status</span>
+                }
+                @if (item.StatusID == 2)
+                {
+                    <span style="padding: 5px 10px;border-radius: 15px;" class="btn-info">@status</span>
+                }
+                @if (item.StatusID == 3)
+                {
+                    <span style="padding: 5px 10px;border-radius: 15px;" class="btn-primary">@status</span>
+                }
+                @if (item.StatusID == 4)
+                {
+                    <span style="padding: 5px 10px;border-radius: 15px;" class="btn-warning">@status</span>
+                }
+                @if (item.StatusID == 5 || item.StatusID == 6)
+                {
+                    <span style="padding: 5px 10px;border-radius: 15px;" class="btn-success">@status</span>
+                }
+                @if (item.StatusID == 7)
+                {
+                    <span style="padding: 5px 10px;border-radius: 15px;" class="btn-dark">@status</span>
+                }
+            </td>
+
+            <td style="text-align: center;">
+
+                @if (item.StatusID == 1)
+                {
+                    <a class="Detail" style="color:blue;" data-id="@item.BookingCode" data-status-id="@item.StatusID" href="javascript:;">@item.BookingCode</a>
+                }
+                else
+                {
+                    <a class="Detail" style="color:blue;" data-id="@item.BookingCode" href="javascript:;">@item.BookingCode</a>
+                }
+
+            </td>
+            <td>@item.FullName</td>
+            <td>@item.Email</td>
+            <td>@item.Phone</td>
+            <td style="text-align: center;">@item.CreatedDate</td>
+            <td class="text-center">
+                @item.TotalRoom
+            </td>
+            <td class="text-center">
+                @{
+                    int totalPerson = item.Adults + item.Childs + item.Babies;
+                }
+                @totalPerson
+            </td>
+            <td>
+                <span style="color:red; float:right;" id="totalPrice-column_@item.BookingCode"> @Common.FormatNumber(item.TotalPrice, 0)</span>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="4" class="text-danger"> Không có dữ liệu </td>
+    </tr>
+}

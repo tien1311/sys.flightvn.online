@@ -1,0 +1,197 @@
+﻿@model List<Airline>
+@*@{
+        ViewData["Title"] = "Thêm hành trình";
+        Layout = "~/Views/Shared/MasterLayout.cshtml";
+    }*@
+
+@*<title>@ViewData["Title"]</title>
+        <h2 style="color: #000;">Thêm hành trình</h2>
+    <script src="~/vendors/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>*@
+
+
+<!-- bootstrap-daterangepicker -->
+<!--<link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/custom.min.css" type="text/css" />-->
+<!-- jQuery -->
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="~/vendors/moment/min/moment.min.js"></script>
+<script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<link type="text/css" href="~/css/cdn.jsdelivr.net_npm_daterangepicker_daterangepicker.css" rel="stylesheet" />
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 style="color: red; margin: 0px;">Thêm hành trình</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Hãng</label>
+                    <div class="col-sm-10">
+                        <select id="Airline" name="Airline" asp-for="tieude" class="select2_single form-control">
+                            @foreach (var item in Model)
+                            {
+                                <option class="tieude">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Hành trình</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Itinerary" name="Itinerary" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Số lượng chỗ </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="NumberOfGuests" id="NumberOfGuests" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Đơn giá </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" onkeyup="formatNumber('Price');" name="Price" id="Price" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Đơn giá giảm </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" onkeyup="formatNumber('PriceAgent');" name="PriceAgent" id="PriceAgent" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Đơn vị tiền tệ </label>
+                    <div class="col-sm-10">
+
+                        <select id="Donvi" name="Donvi" asp-for="Donvi"  class="select2_single form-control">
+                            <option value="VND">VND</option>
+                            <option value="USD">USD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Số lượng người (Đoàn) </label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" name="Specification" id="Specification" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Loại </label>
+                    <div class="col-sm-10">
+
+                        <select id="KindTrip" name="KindTrip" asp-for="tieude" onchange="KindTripChange()" class="select2_single form-control">
+                            <option value="KH">Khứ hồi</option>
+                            <option value="MC">Một chiều</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Hoạt động </label>
+                    <div class="col-sm-10">
+                        <label style="margin-left: 10px; padding-top: 10px;">
+                            <input id="Active" name="Active" type="checkbox" class="js-switch" data-switchery="true" checked="checked">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="chieudi">
+                    <div class="col-sm-4 col-md-4">
+                        <input type="text" class="form-control" name="FlightNumber1" id="FlightNumber1" placeholder="Mã chuyến bay">
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal1" placeholder="Ngày đi" name="FlightDate1" value=''>
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <input type="time" class="form-control" name="Hour1" id="Hour1" placeholder="Thời gian đi">
+                    </div>
+                </div>
+                <div class="form-group" id="chieuve">
+                    <div class="col-sm-4 col-md-4">
+                        <input type="text" class="form-control" name="FlightNumber2" id="FlightNumber2" placeholder="Mã chuyến bay">
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <input type="text" class="form-control has-feedback-right" id="single_cal2" placeholder="Ngày về" name="FlightDate2" value=''>
+                                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-4">
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="time" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">
+                            </div>
+                        </div>
+                        @*<input type="text" class="form-control" name="Hour2" id="Hour2" placeholder="Thời gian về">*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="" style="text-align:left;" class="col-sm-2 control-label">Điều kiện </label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="Condition" name="Condition"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group" style="text-align:right">
+                    <div class="col-sm-offset-2">
+                        <input id="SaveFlight" type="button" class="btn btn-primary" name="saveBtn" value="Lưu hành trình" />
+                        @*<button type="submit" class="btn btn-danger" name="delBtn" value="delBtn">Xóa</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/vendors/ckeditor/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('Condition', {
+                height: 200,
+                filebrowserUploadUrl: '../Data/UploadCKEditor'
+            });
+        });
+    </script>
+
+    <script src="~/js/kythuat/createflight.js"></script>
+
+    <div class="row">
+
+       @*  @if (ViewBag.thongbao != null)
+        {
+            <script charset="UTF-8">
+
+                      alert('@Html.Raw(ViewBag.thongbao)');
+            </script>
+
+        } *@
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+

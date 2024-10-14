@@ -1,0 +1,81 @@
+﻿@model List<Airport>
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 800px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+</style>
+<script src="~/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Tạo mới tuyến xe buýt</h1>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("SaveCreateBus", "Data", new { i = 9 }, FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Danh mục</label>
+
+                            <select name="Danhmuc" id="Danhmuc" class="form-control">
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.ID">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">Tiêu đề</label>
+                            <input class="form-control" name="Title" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="control-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary" name="searchKH" value="searchBtn">Tạo mới</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <textarea name="CreateContent" id="CreateContent">
+                            
+                        </textarea>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('CreateContent', {
+                height: 200,
+                filebrowserUploadUrl: '/@AreaNameConst.AREA_Data/Data/UploadCKEditor'
+            });
+        });
+    </script>
+</div>

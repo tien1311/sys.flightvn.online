@@ -1,0 +1,82 @@
+﻿@model List<LotusmileModel>
+@{
+    ViewData["Title"] = "Lotusmile";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+<h2>Danh sách đăng ký Lotusmile</h2>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridLotusmile" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th>STT</th>
+                        <th>Danh xưng</th>
+                        <th>Họ</th>
+                        <th>Tên</th>
+                        <th>Giới tính</th>
+                        <th>Ngày sinh</th>
+                        <th>Quốc tịch</th>
+                        <th>Số di động</th>
+                        <th>Email</th>
+                        <th>Ngày tạo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr id="@item.ID">
+                                <td>@i</td>
+                                <td>@item.Title</td>
+                                <td>@item.LastName</td>
+                                <td>@item.FirstName</td>
+                                <td>@item.Gender</td>
+                                <td>@item.BirthdayDate.ToString("dd.MM.yyyy")</td>
+                                <td>@item.Nationality</td>
+                                <td>@item.Tel</td>
+                                <td>@item.Email</td>
+                                <td>@item.CreateDate</td>
+                                <td style="text-align:center"><a class="Delete" style="color:red;" href="javascript:;"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#gridLotusmile .Delete").click(function () {
+        var id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+            url: "../Lotusmile/DeleteLotusmile",
+            data: {
+                ID: id
+            },  
+            success: function (response) {
+                if (response == true) {
+                    alert("Xóa thành công");
+                    window.location.href = '../Lotusmile/Lotusmile?&i=9';
+                }
+                else {
+                    alert("Xóa không thành công");
+                }
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>

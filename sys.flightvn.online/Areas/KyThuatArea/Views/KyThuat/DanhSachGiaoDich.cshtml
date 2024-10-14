@@ -1,0 +1,220 @@
+﻿@model List<PaymentAppota>
+@{
+    ViewData["Title"] = "Danh Sách Giao Dịch";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Danh sách giao dịch</title>
+    <style>
+
+
+        @@media(min-width: 768px) {
+            .modal-dialog {
+                width: 1000px;
+                margin: 30px auto;
+            }
+        }
+
+        .modal-body img {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        .modal-header {
+            padding: 6px 15px;
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Danh sách giao dịch</h1>
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="row">
+                @using (Html.BeginForm("DanhSachGiaoDich", "KyThuat", new { i = 12 }, FormMethod.Post))
+                {
+                    <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Từ Ngày
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <fieldset class="col-xs-12" style="padding:0px">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class="xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal2" name="cal_from" value='@ViewBag.DateFrom'>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Đến Ngày
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <fieldset class="col-xs-12" style="padding:0px">
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <div class="xdisplay_inputx form-group has-feedback">
+                                            <input type="text" class="form-control has-feedback-right" id="single_cal3" name="cal_to" value='@ViewBag.DateTo'>
+                                            <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                                            <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="first-name">
+                            Mã KH
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="xdisplay_inputx form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-right" id="ma_kh" name="ma_kh">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="loai_tt">
+                            Kênh TT
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="xdisplay_inputx form-group has-feedback">
+                                        <select class="form-control" id="kenh_tt" name="kenh_tt">
+                                            <option value=""></option>
+                                            <option value="APPOTAPAY">APPOTAPAY</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="loai_tt">
+                            Trang TT
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="xdisplay_inputx form-group has-feedback">
+                                        <select class="form-control" id="trang_tt" name="trang_tt">
+                                            <option value=""></option>
+                                            <option value="EVBAY">EVBAY</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item form-group col-md-4 col-sm-12 col-xs-12">
+                        <label class="col-form-label pad-top-6 col-md-4 col-sm-4 col-xs-12 label-align" for="loai_tt">
+                            Đơn Hàng
+                        </label>
+                        <div class="col-md-8 col-sm-8 col-xs-8">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="xdisplay_inputx form-group has-feedback">
+                                        <select class="form-control" id="don_hang" name="don_hang">
+                                            <option value=""></option>
+                                            <option value="CongNo">CongNo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item form-group col-md-12 col-sm-3 col-xs-3" style="text-align:right;">
+                        <input type="submit" class="btn btn-primary" value="Search" name="searchBtn" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="table-responsive" style="font-size:12px;">
+                <table id="gridReport" class="table table-striped jambo_table bulk_action">
+                    <thead>
+                        <tr class="headings">
+                            <th class="column-title"></th>
+                            <th class="column-title">Ma KH</th>
+                            <th class="column-title">ID</th>
+                            <th class="column-title">Số tiền</th>
+                            <th class="column-title">Đơn hàng</th>
+                            <th class="column-title">Kênh TT</th>
+                            <th class="column-title">Trang TT</th>
+                            <th class="column-title">Thời gian</th>
+                            <th class="column-title">Nội dung</th>
+
+                        </tr>
+                    </thead>
+                    @foreach (var transaction in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (transaction.Message == "Success")
+                                {
+                                    <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+                                }
+                            </td>
+                            <td>@transaction.TransactionPerson</td>
+                            <td>@transaction.OrderID</td>
+                            <td>@string.Format("{0:N0}", transaction.Amount)</td>
+
+
+                            <td>@transaction.Product</td>
+                            <td>@transaction.PaymentChannel</td>
+                            <td>@transaction.PaymentPage</td>
+                            <td>@transaction.CreatedDate</td>
+                            <td>@transaction.ExtraData</td>
+
+                        </tr>
+
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    function formatNumber(number) {
+        number = number.toFixed(0) + '';
+        x = number.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
+</script>
+
+

@@ -1,0 +1,236 @@
+﻿@model DanhSachDaiLy
+
+@{
+    var acc = ViewBag.ACC;
+    ViewData["Title"] = "Danh sách đại lý";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<link href="~/jquery.dataTables.css" rel="stylesheet" />
+<h2 style="text-align: center; font-weight: bold;">DANH SÁCH ĐẠI LÝ </h2>
+<br />
+<style>
+
+    a.paginate_button.current {
+        background: #2A3F54 !important;
+        color: #fff !important;
+    }
+
+    a.paginate_button:hover {
+        background: #2A3F54 !important;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="x_panel" style="padding: 10px 17px 0;">
+
+    <div class="x_content">
+        @using (Html.BeginForm("SearchDaiLy", "KinhDoanh", new { i = 10 }, FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <div class="form-group">
+
+                        <button type="submit" name="search_ALL" value="ALL" class="btn btn-warning" style=" background-color: #f4811f;">Danh sách đại lý</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="">
+
+                    @if (acc == "NV00293" || acc == "NV00016" || acc == "" || acc == "NV00006" || acc == "NV00001")
+                    {
+                        <div class="col-md-2 col-xs-12">
+                            <div class="form-group">
+
+                                <select name="MaNV" class="form-control">
+                                    @foreach (var item in Model.ListKinhDoanh)
+                                    {
+                                        <option value="@item.MaNV">
+                                            @item.TenNV
+                                        </option>
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+
+                            <select name="DieuKien" class="form-control">
+                                <option value="0">Mã KH</option>
+                                <option value="1">Sign in</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+
+                            <input class="form-control" type="text" name="GiaTri" />
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-xs-12">
+                        <div class="form-group" style="text-align:right;">
+
+                            <button type="submit" name="search_KH" value="search" class="btn btn-primary">Tìm kiếm</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="row">
+            <div class="table-responsive">
+                <table id="gridTaiKhoanDaiLy" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center">STT</th>
+                            <th style="text-align:center">Mã KH</th>
+                            <th>Tên Đại Lý</th>
+                            <th style="text-align:right">Số Dư</th>
+                            <th style="text-align:center">Hạng</th>
+                            <th style="text-align:right">Cho xuất</th>
+                            <th style="text-align:center">Signin</th>
+                            <th style="text-align:center">Kế toán</th>
+                            <th style="width: 165px; text-align: center">Note KT</th>
+                            <th style="text-align:center">Tình trạng</th>
+                            <th style="text-align:center">Doanh số</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ListDaiLy != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.ListDaiLy)
+                            {
+                                double sodu = 0;
+                                if (item.SoDu != "")
+                                {
+                                    sodu = double.Parse(item.SoDu);
+                                }
+
+                                <tr id="@item.member_kh" class="">
+                                    <td style="text-align:center">@i</td>
+                                    <td style="text-align:center">@item.member_kh</td>
+                                    <td>@item.member_company</td>
+
+                                    @if (@item.SoDu != "")
+                                    {
+                                        @if (sodu > 0)
+                                        {
+                                            <td style="color: blue; text-align: right">@item.SoDu</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="color: red; text-align: right ">@item.SoDu</td>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td style="color: red; text-align: right">0</td>
+                                    }
+                                    <td style="text-align:center">@item.Hang</td>
+                                    @if (@item.AmQuyChoPhep != "")
+                                    {
+                                        <td style="text-align:right">@item.AmQuyChoPhep</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="text-align:right">0</td>
+                                    }
+
+                                    <td style="text-align:center"><a class="DSdaily" data-toggle="modal" data-target="#openPopup" href="javascript:;"> @item.CodeSignIn </a></td>
+                                    <td style="text-align:center">@item.KeToanEV</td>
+                                    <td style="text-align:center">@item.NoteKeToan</td>
+                                    <td style="text-align:center">@item.tinhtrang</td>
+                                    <td style="text-align:center"><a class="Doanhso" data-toggle="modal" data-target="#openPopup" href="javascript:;">Xem</a></td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        @if (Model.ThongBao != null && Model.ThongBao != "")
+                        {
+                            <tr>
+                                <td colspan="9" style="text-align: center; color: red;">@Model.ThongBao</td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    $("#gridTaiKhoanDaiLy .DSdaily").click(function () {
+        var subject_id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+
+            url: "../KinhDoanh/ThongTinCodeSignIn",
+            data: { khoachinh: subject_id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+
+    $("#gridTaiKhoanDaiLy .Doanhso").click(function () {
+        var subject_id = String($(this).closest('tr').attr('id'));
+        $.ajax({
+            type: "POST",
+
+            url: "../KinhDoanh/ThongTinDoanhSo",
+            data: { MaKH: subject_id },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal('show');
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        var TaiKhoanDaiLy = document.getElementById("gridTaiKhoanDaiLy");
+        var lengthTaiKhoan = TaiKhoanDaiLy.rows.length;
+
+        if (lengthTaiKhoan > 2) {
+            $('#gridTaiKhoanDaiLy').dataTable({
+                "pageLength": 50,
+                "language": {
+                    url: 'http://cdn.datatables.net/plug-ins/1.10.21/i18n/Vietnamese.json'
+                }
+            });
+        }
+    });
+</script>

@@ -1,0 +1,95 @@
+﻿@model List<CongNoViewModel>
+@{
+    ViewData["Title"] = "Xác nhận công nợ";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+
+
+}
+
+
+<title>@ViewBag.Title</title>
+<h2 style="font-size:18px;"> Xác nhận công nợ  </h2>
+<div class="x_panel">
+    <div class="x_content">
+        @using (Html.BeginForm("CongNoDaiLy", "KeToan", new { i = 5 }, FormMethod.Post))
+        {
+            <div class="row" name="formCongNo">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Tháng</label>
+                        <input class="form-control" type="text" name="Thang" placeholder="@DateTime.Now.AddMonths(-1).Month" />
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Năm</label>
+                        <select class="form-control" name="Nam">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022" selected>2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <div>
+                            <button class="btn btn-success btn-block" name="Search" value="Search" onclick="myFunction()">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="x_content">
+        <p>
+
+            <span style="color: #5A738E;font-weight:600"> XÁC NHẬN CÔNG NỢ HÀNG THÁNG: </span> </br>
+            <span>
+                -	Xác nhận công nợ của tất cả đại lý theo tháng (Chỉ cập nhật đại lý chưa xác nhận)
+            </span> </br>
+
+            <span style="color: #ff0000;">-  Dữ liệu khá nặng , vui lòng đợi   </span>
+
+
+
+        </p>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    function myFunction() {
+        var txt;
+        if (confirm("Bạn có chắc chắn cập nhật tự động!")) {
+            txt = "Chắc chắn!";
+            document.formCongNo.submit();
+        } else {
+            txt = "Hủy!";
+        }
+        document.getElementById("demo").innerHTML = txt;
+    };
+
+
+
+</script>

@@ -1,0 +1,235 @@
+﻿@model GuiMailHang
+
+@{
+    ViewBag.Title = "Gửi mail hãng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>@ViewBag.Title</title>
+<h2>Gửi mail hãng</h2>
+<form asp-controller="PhongVe" asp-action="GuiMailHang" method="post" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <form id="demo-form2" data-parsley-validate="" asp-action="Create" class="form-horizontal form-label-left" novalidate="">
+                    <div class="row">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                            <div>
+                                <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                    To
+                                </label>
+                            </div>
+                            <div class="item form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="hidden" class="form-control ten" id="ten" name="ten" placeholder="" value="ten">
+                                    <select id="ChuDe" name="ChuDe" asp-for="ChuDe" class="select2_single form-control" onchange="getTo()">
+                                        <option value="0">-- Chọn--</option>
+                                        @foreach (var item in Model.ListTo)
+                                        {
+                                            <option value="@item.RowID" class="tieude">@item.Ten</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="text" class="form-control hangtxt" id="hangtxt" asp-for="hangtxt" name="mail" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                            <div>
+                                <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                    CC
+                                </label>
+                            </div>
+                            <div class="item form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="hidden" class="form-control mailccc" id="mailccc" name="mailccc" placeholder="" value="mailccc">
+                                    <select id="CC" name="CC" asp-for="CC" class="select2_single form-control" onchange="getCC()">
+                                        <option value="0">-- Chọn--</option>
+                                        @foreach (var item in Model.ListEV)
+                                        {
+                                            <option value="@item.RowID" class="tieude">@item.Ten</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="text" class="form-control CCtxt" id="CCtxt" asp-for="CCtxt" name="CCC" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                            <div>
+                                <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                    CC khác<label style="color:red;padding-left:3px;">(CC mail được cách nhau bởi dấu ",")</label>
+                                </label>
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <input type="text" id="MAILCC" placeholder="abc@gmail.com,xyz@gmail.com" asp-for="MAILCC" name="CCkhac" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                            <div>
+                                <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                    Chủ Đề
+                                </label>
+                            </div>
+                            <div class="item form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="hidden" class="form-control noidunghtml" id="noidunghtml" name="noidunghtml" placeholder="" value="noidunghtml">
+                                    <select id="tieude" name="tieude" asp-for="tieude" class="select2_single form-control" onchange="getTieuDe()">
+                                        <option value="0">-- Chọn--</option>
+                                        <option value="1">Khác</option>
+                                        @foreach (var item in Model.ListTieuDe)
+                                        {
+                                            <option value="@item.RowID" class="tieude">@item.TieuDe</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="text" class="form-control noidungtxt" id="noidungtxt" asp-for="noidungtxt" name="noidungtxt" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:10px;">
+                            <div>
+                                <label class="col-form-label col-md-12 col-sm-12 col-xs-12">
+                                    File Đính Kèm
+                                </label>
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <input type="file" class="form-control-file btn btn-primary" id="files" name="files" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <textarea name="NoiDung" id="NoiDung">
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" style="">
+                            <div class="col-xs-12" style="text-align:right" color:#00FFFF;">
+                                <button type="submit" style="" class="btn btn-primary" onclick="LuuBaoCao(this);" name="saveBtn" value="saveBtn">Gửi Mail</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+@*@if (ViewBag.msg != null)
+    {
+        <script charset="UTF-8">
+
+            alert('@Html.Raw(ViewBag.msg)');
+        </script>
+    }*@
+
+@* <script src="~/js/PhongVe/GuiMailDaiLyKinhDoanh.js"></script> *@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+    function getTo() {
+
+
+        var id = $('#ChuDe option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "../PhongVe/GetTo",
+            data: { khoachinh: id },
+
+
+            success: function (response) {
+
+                document.getElementById("ten").value = id;
+                document.getElementById("hangtxt").value = response;
+
+            },
+            failure: function (response) {
+
+                alert(response);
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+
+
+        });
+    }
+</script>
+<script type="text/javascript">
+    function getCC() {
+
+
+        var id = $('#CC option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "../PhongVe/GetCC",
+            data: { khoachinh: id },
+
+
+            success: function (response) {
+
+                document.getElementById("mailccc").value = id;
+                document.getElementById("CCtxt").value = response;
+
+            },
+            failure: function (response) {
+
+                alert(response);
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+
+
+        });
+    }
+</script>
+<script type="text/javascript">
+    function getTieuDe() {
+
+
+        var id = $('#tieude option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "../PhongVe/GetTieuDe",
+            data: { khoachinh: id },
+
+
+            success: function (response) {
+
+                document.getElementById("noidunghtml").value = id;
+                document.getElementById("noidungtxt").value = response;
+                if (id == 1) {
+                    document.getElementById('noidungtxt').readOnly = false;
+                }
+                else {
+                    document.getElementById('noidungtxt').readOnly = true;
+                }
+            },
+            failure: function (response) {
+
+                alert(response);
+            },
+            error: function (response) {
+
+                alert(response);
+            }
+
+
+        });
+    }
+</script>

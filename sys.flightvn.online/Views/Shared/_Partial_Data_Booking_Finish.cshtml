@@ -1,0 +1,132 @@
+﻿
+@{
+    Dictionary<string, List<string>> arr = new Dictionary<string, List<string>>();
+    arr["PENDING"] = new List<string>() { "Mới", "btn-danger", "" };
+    arr["ACCEPT"] = new List<string>() { "Đã tiếp nhận", "btn-info", "" };
+    arr["CREATE"] = new List<string>() { "", "btn-warning", "Chờ xử lý" };
+    arr["WAITING"] = new List<string>() { "Đã xác nhận", "btn-primary", "Chờ xác nhận" };
+    arr["CONFIRM"] = new List<string>() { "Đã thanh toán", "btn-success", "Xác nhận chuyến" };
+    arr["COMPLETE"] = new List<string>() { "Đã hoàn thành", "btn-success", "Hoàn thành chuyến" };
+    arr["REJECT"] = new List<string>() { "", "btn-dark", "Hủy chuyến" };
+    arr["CANCEL"] = new List<string>() { "Đã hủy", "btn-dark", "Hủy chuyến" };
+}
+
+<table class="ui celled unstackable lighten-th table" style="border: 1px solid #03558A;">
+    <thead>
+        <tr>
+            <th class="ui center aligned middle aligned">evcode</th>
+            <th class="ui center aligned middle aligned">Mã NCC</th>
+            <th>Hành trình</th>
+            <th>Liên hệ</th>
+            <th class="ui center aligned middle aligned">Loại xe</th>
+            @* <th class="ui center aligned middle aligned">Hóa đơn</th> *@
+            <th class="ui center aligned middle aligned">Thành tiền</th>
+            <th class="ui center aligned middle aligned">Trạng thái</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (ViewBag.pagination_finish != null && ViewBag.pagination_finish.Count > 0)
+        {
+            @foreach (var item in ViewBag.pagination_finish)
+            {
+                <tr>
+                    <td class="ui center aligned middle aligned">@item.evcode</td>
+                    <td class="ui center aligned middle aligned">@item.id</td>
+                    <td class="ui vertically middle aligned">
+                        <div>
+                            <p>Từ: @item.pickup_address</p>
+                            <p>Đến: @item.destination_address</p>
+                            <p>Khởi hành: @DateTime.Parse(item.pickup_time).ToString("M/d/yyyy h:mm tt")</p>
+                        </div>
+                    </td>
+                    <td class="ui vertically middle aligned">
+                        <div>
+                            <p>@item.customer_name</p>
+                            <p>Phone: @item.customer_phone</p>
+                        </div>
+                    </td>
+                    <td class="ui center aligned middle aligned">@item.type_of_car_value</td>
+                    @* <td class="ui center aligned middle aligned">
+                        <i class="eye icon popup" data-html="<p>Công ty cổ phần Flight VN</p><p>Địa chỉ: 16B Sông Đà, Phường 2, Quận Tân Bình, TP.HCM</p><p>MST: 0304955040</p>"></i>
+                    </td> *@
+                    <td class="ui center aligned middle aligned">@string.Format("{0:#,##0} đ", item.price_customer)</td>
+                    <td class="ui center aligned middle aligned">
+                        <button class="mini ui @(arr[item.status][1]) button" style="border-radius:18px;line-height:8px">
+                            @(arr[item.status][0])
+                        </button>
+                    </td>
+                    <td class="ui center aligned middle aligned">
+                        <button class="ui icon button btn_sync_booking">
+                            <i class="sync icon"></i>
+                        </button>
+                        @* <button class="ui icon button btn_hide_booking" data-value="@item.id" data-status="@item.status">
+                            <i class="eye slash icon"></i>
+                        </button> *@         
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>Không có dữ liệu</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+@if (ViewBag.pagination_finish != null && ViewBag.pagination_finish.Count > 0)
+{
+    <div class="ui pagination menu">
+        @if (ViewBag.pagination_finish.HasPreviousPage)
+        {
+            int prev_page = ViewBag.pagination_finish.PageNumber - 1;
+            <a class="item" data-value="@prev_page"><i class="angle double left icon" style="visibility: visible;"></i></a>
+        }
+        else
+        {
+            <a class="item disabled" data-value=""><i class="angle double left icon" style="visibility: visible;"></i></a>
+        }
+
+        @if (ViewBag.pagination_finish.PageNumber > 5)
+        {
+            <a class="item disabled">...</a>
+        }
+
+        @for (int i = 1; i <= ViewBag.pagination_finish.PageCount; i++)
+        {
+            @if (i < ViewBag.pagination_finish.PageNumber + 4)
+            {
+                @if (i > ViewBag.pagination_finish.PageNumber - 4)
+                {
+                    @if (ViewBag.pagination_finish.PageNumber == i)
+                    {
+                        <a class="item active" data-value="@i">@i</a>
+                    }
+                    else
+                    {
+                        <a class="item" data-value="@i">@i</a>
+                    }
+                }
+            }
+        }
+
+        @if (ViewBag.pagination_finish.PageNumber < ViewBag.pagination_finish.PageCount - 4)
+        {
+            <a class="item disabled">...</a>
+        }
+
+        @if (ViewBag.pagination_finish.HasNextPage)
+        {
+            int next_page = ViewBag.pagination_finish.PageNumber + 1;
+            <a class="item" data-value="@next_page"><i class="angle double right icon" style="visibility: visible;"></i></a>
+        }
+        else
+        {
+            <a class="item disabled" data-value=""><i class="angle double right icon" style="visibility: visible;"></i></a>
+        }
+    </div>
+}

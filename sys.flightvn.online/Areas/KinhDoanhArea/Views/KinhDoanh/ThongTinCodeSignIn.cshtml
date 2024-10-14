@@ -1,0 +1,51 @@
+﻿@model List<CodeSignIn>
+
+<style>
+
+</style>
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:red">Code Signin</h1>
+        </div>
+
+        <div class="row" style="margin:0px">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Hãng</th>
+                            <th>Miền</th>
+                            <th>Sign In</th>
+                            <th>Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr class="">
+                                <td>@i</td>
+                                <td>@item.Hang</td>
+                                <td>@item.Mien</td>
+                                <td>@item.Signin</td>
+                                <td>@item.Code</td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+

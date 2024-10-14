@@ -1,0 +1,39 @@
+﻿@model List<Service>
+
+@{
+    ViewData["Title"] = "Cập nhật dịch vụ khách sạn";
+    var allServices = ViewBag.AllServices as List<Service>;
+    var selectedServices = ViewBag.SelectedServices as List<int>;
+}
+<title>@ViewData["Title"]</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" rel="stylesheet">
+<style>
+    div.chosen-container.chosen-container-multi#hotelServiceArray_chosen {
+        width: 100% !important;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style="background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close btnModalClose" data-dismiss="modal">&times;</button>
+            <h5 style="color:#fff">Danh sách dịch vụ của khách sạn @ViewBag.HotelName</h5>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <form id="submitEditForm">
+                <input type="text" name="hotelId" hidden value="@ViewBag.HotelID" />
+                <input type="text" name="hotelCode" hidden value="@ViewBag.HotelCode" />
+                <select name="hotelServiceArray[]" id="hotelServiceArray" multiple class="chosen-select-multi form-control">
+                    @foreach (var service in allServices)
+                    {
+                        <option value="@service.Id" @(selectedServices.Contains(service.Id) ? "selected" : "")>@service.ServiceName</option>
+                    }
+                </select>
+                <button id="btnEditProductHotelService" style="margin-top:12px;" class="btn btn-primary">Lưu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha512-eSeh0V+8U3qoxFnK3KgBsM69hrMOGMBy3CNxq/T4BArsSQJfKVsKb5joMqIPrNMjRQSTl4xG8oJRpgU2o9I7HQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/hotel/editproducthotelservice.js"></script>

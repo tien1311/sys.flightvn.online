@@ -1,0 +1,113 @@
+﻿@model PostForumModel
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1000px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-body img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .category {
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        display: block;
+        float: left;
+        padding: 5px 9px;
+        background: #3ebafa;
+        color: #F1F6F7;
+        margin-right: 5px;
+        font-weight: 500;
+        margin-bottom: 5px;
+        font-family: helvetica;
+        line-height: 1;
+    }
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color: #FFF; font-size: 16px;">Duyệt bài viết</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            @using (Html.BeginForm("ConfirmPost", "Forum", new { i = 9 }, FormMethod.Post))
+            {
+                <div style="font-size:18px;">@Model.Title</div>
+                <input type="hidden" name="ID" value="@Model.Id" />
+                <div>
+                    <span class="category">@Model.Category</span>
+                    @foreach (var item in Model.ListTags)
+                    {
+                        <span class="tag">@item.Name</span>
+                    }
+                </div>
+                <div class="clear"></div>
+                <hr />
+                <div>
+                    @Html.Raw(Model.Description)
+                </div>
+                <hr />
+                <label class="col-form-label pad-top-6 col-md-1 col-sm-2 col-xs-3 label-align">
+                    Tình trạng
+                </label>
+                <div class="col-xs-3">
+                    <fieldset class="col-xs-12" style="padding:0px">
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class=" xdisplay_inputx form-group has-feedback">
+                                    <select id="Status" name="Status" class="select2_single form-control">
+                                        @if (Model.Status == "0")
+                                        {
+                                            <option selected value="0">Đã xóa</option>
+                                            <option value="1">Đã đăng</option>
+                                            <option value="2">Không duyệt</option>
+                                            <option value="3">Chưa duyệt</option>
+                                        }
+                                        @if (Model.Status == "1")
+                                        {
+                                            <option value="0">Đã xóa</option>
+                                            <option selected value="1">Đã đăng</option>
+                                            <option value="2">Không duyệt</option>
+                                            <option value="3">Chưa duyệt</option>
+                                        }
+                                        @if (Model.Status == "2")
+                                        {
+                                            <option value="0">Đã xóa</option>
+                                            <option value="1">Đã đăng</option>
+                                            <option selected value="2">Không duyệt</option>
+                                            <option value="3">Chưa duyệt</option>
+                                        }
+                                        @if (Model.Status == "3")
+                                        {
+                                            <option value="0">Đã xóa</option>
+                                            <option value="1">Đã đăng</option>
+                                            <option value="2">Không duyệt</option>
+                                            <option selected value="3">Chưa duyệt</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="item form-group col-xs-3">
+                    <input type="submit" class="btn btn-primary" name="btnStatus" value="Save">
+                </div>
+                <div>
+                    <textarea class="form-control" name="Note" placeholder="Lý do không duyệt" rows="3">@Model.Note</textarea>
+                </div>
+            }
+        </div>
+    </div>
+</div>

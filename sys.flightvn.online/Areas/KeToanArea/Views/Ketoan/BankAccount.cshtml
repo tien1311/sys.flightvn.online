@@ -1,0 +1,69 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.BankAccount.BankAccount>
+
+@{
+    ViewData["Title"] = "Tài khoản ngân hàng";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+
+@Html.Partial("_EnvietOverlay")
+
+
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+    <a id="btnDeleteSelected" href="javascript:;" class="btn btn-danger">Xoá các mục đã chọn</a>
+    <a id="btnUndo" href="javascript:;" class="btn btn-warning">Hoàn tác các nội dung đã xoá </a>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <form action="" method="post" id="searchForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Mã ngân hàng</label>
+                                <input type="text" name="bankCodes" placeholder="VD: VCB, SCB..." class="form-control" id="bankCodes" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tên ngân hàng</label>
+                                <input type="text" name="bankNames" placeholder="VD: Vietcombank, Techcombank......" class="form-control" id="bankNames" />
+                            </div>
+                            <div class="col-md-4">
+                                <label>Số định danh</label>
+                                <input type="text" name="firstSerials" placeholder="VD: Số định danh" class="form-control" id="firstSerials" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content" id="listHotelData">
+
+                    <div style="margin: 10px 0px;">
+                        <label style="margin-right: 5px;">Hiển thị</label>
+                        <select id="Page_Size" style="padding:6px; border-radius:4px;">
+                            <option style="padding:6px; border-radius:4px;" value="5">5</option>
+                            <option value="25">25</option>
+                            <option selected value="50">50</option>
+                        </select>
+                        <label style="margin-left: 5px;">dòng</label>
+                    </div>
+
+                    <div class="table-responsive" id="table_Pagination">
+                        @await Html.PartialAsync("_TableBankAccountPaginationPatial", Model)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/BankAccount/BankAccount.js"></script>

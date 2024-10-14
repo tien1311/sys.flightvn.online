@@ -1,0 +1,51 @@
+﻿@model Manager.Model.Models.PaginationBase.PaginationBase<Manager.Model.Models.Post.PostModel>
+
+@if (Model != null)
+{
+    int soThuTu = (@Model.CurrentPage - 1) * Model.PageSize;
+    foreach (var item in Model.ListProduct)
+    {
+        <tr id="@item.subject_id" style="@(item.subject_ishot == 1 ? "background-color: pink;" : "")">
+            <td style="text-align: center;">@item.RowNum</td>
+            <td>@item.section_name</td>
+            <td>@item.subject_name</td>
+            <td style="color: #dc3545;">@item.subject_header</td>
+            <td>@item.subject_author</td>
+            <td>@item.subject_date</td>
+            <td class="text-center"> 
+                @if(item.subject_isshow == 1)
+                {
+                    <input type="checkbox" checked class="isShowBtn" data-id="@item.subject_id" />
+                }
+                else
+                {
+                    <input type="checkbox" class="isShowBtn" data-id="@item.subject_id" />
+                }
+            </td>
+            <td style="font-size:16px;">
+                <a href="#" class="editBtn" data-id="@item.subject_id">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="deleteBtn" data-id="@item.subject_id">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </a>
+
+                @if(item.isMail == true)
+                {
+                    <a href="#">
+                        <i class="fa fa-envelope" style="color:green" aria-hidden="true"></i>
+                    </a>
+                }
+                else
+                {
+                    <a href="#" class="mailBtn" data-id="@item.subject_id">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </a>
+                }
+
+              
+            </td>
+
+        </tr>
+    }
+}

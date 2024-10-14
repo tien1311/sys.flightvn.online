@@ -1,0 +1,157 @@
+﻿@model List<DaiLyEV>
+@{
+    ViewData["Title"] = "TraCuuDaiLy";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<style>
+    .form-control-feedback {
+        margin-top: 6px;
+    }
+
+        .form-control-feedback.right {
+            right: 11px;
+        }
+
+    .transform {
+        display: none
+    }
+
+    .transform-active {
+        display: block
+    }
+
+    .list-file {
+        display: none;
+    }
+
+    .open > .list-file {
+        display: block;
+    }
+</style>
+<h2>Tra cứu hợp đồng đại lý</h2>
+<div class="x_panel">
+    @using (Html.BeginForm("TraCuuDaiLy", "Data", FormMethod.Post))
+    {
+        <div class="row">
+
+            <div class="item form-group col-md-10 col-sm-12 col-xs-12">
+
+                <label for="inputEmail3" class="col-sm-2 control-label" style=" margin-top: 8px;">Mã KH</label>
+                <input type="hidden" name="i" value="9" />
+                <div class="col-sm-2">
+                    <select id="DieuKien" name="DieuKien" class="form-control">
+                        <option selected="selected" value="1">Mã KH</option>
+                        <option value="2">Mã NV</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <input type="type" class="form-control" id="" name="GiaTri" placeholder="Mã KH/Mã NV">
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control has-feedback-right" id="single_cal5" name="tungay" placeholder="Từ Ngày">
+                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control has-feedback-right" id="single_cal6" name="denngay" placeholder="Đến Ngày">
+                    <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
+                </div>
+            </div>
+            <div class="item form-group col-md-2 col-sm-12 col-xs-12" style="text-align:left;">
+                <input type="submit" class="btn btn-primary" value="Tìm kiếm" name="searchBtn">
+            </div>
+        </div>
+    }
+    <div class="thongtinDL"
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã KH</th>
+                            <th>Số HĐ</th>
+                            <th>Ngày lập</th>
+                            <th>Tên CTY</th>
+                            <th>NVKD</th>
+                            <th>SL File</th>
+                            <th>Hủy ký lại HĐ</th>
+                            <th>Hủy HĐ</th>
+                            <th>Tình trạng HĐ</th>
+                            <th>Trạng Thái KH</th>
+                            <th>Lý do</th>
+                            <th>Chữ ký</th>
+                            @*<th>HD</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 1; }
+                        @if(Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.member_kh</td>
+                                    <td>@item.member_hd</td>
+                                    <td>@item.ngaylap</td>
+                                    <td>@item.member_company</td>
+                                    <td>@item.NhanVienKD</td>
+                                    <td class="dropdown">
+                                        <a class="actionButton" data-toggle="dropdown" href="#"> @item.member_file </a>
+                                        <ul id="contextMenu" class="list-file" role="menu" style="padding-left:0px;">
+                                            @foreach (var itemFile in item.file)
+                                            {
+                                                <li style="list-style-type:none"><a tabindex="-1" href="http://Manager.airline24h.com/upload/fileHopDong/@itemFile" target="_blank" class="payLink">@itemFile</a></li>
+                                            }
+                                        </ul>
+                                    </td>
+                                    <td style="text-align:center">@item.HuyKyLaiHD</td>
+                                    <td style="text-align:center">@item.HuyHD</td>
+                                    <td>@item.tinhtrang</td>
+                                    <td>@item.trangthai</td>
+                                    <td>@item.lydo</td>
+                                    <td>@item.ChuKy</td>
+                                    @*<td>@item.HD</td>*@
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*<script type="text/javascript">
+        function DL(ctrl) {
+
+            $('.transform').toggleClass('transform-active');
+
+        }
+    </script>*@
+ @* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script type='text/javascript'>
+    //<![CDATA[
+    $(window).load(function () {< !--w  w  w.j  a v a2  s.co m-- >
+        //save the selector so you don't have to do the lookup everytime
+        $dropdown = $("#contextMenu");
+        $(".actionButton").click(function () {
+            //get row ID
+            var id = $(this).closest("tr").children().first().html();
+            //move dropdown menu
+            $(this).after($dropdown);
+            //update links
+            $dropdown.find(".payLink").attr("href", "/transaction/pay?id=" + id);
+            $dropdown.find(".delLink").attr("href", "/transaction/delete?id=" + id);
+            //show dropdown
+            $(this).dropdown();
+        });
+    });//]]>
+</script>

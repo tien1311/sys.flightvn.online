@@ -1,0 +1,280 @@
+﻿@model DDBL
+@{
+    ViewData["Title"] = "Định danh / EMDS";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Quản lý Định Danh/EMDS</h2>
+
+<div class="x_panel">
+    <div class="x_content">
+        <a id="BtnCreate" href="javascript:;" type="button" class="btn btn-primary" style="margin-bottom:10px">Tạo mới</a>
+        <div class="row">
+            @using (Html.BeginForm("SearchDDBL", "DDBL", new { i = 9 }, FormMethod.Post))
+            {
+                <div class="col-sm-2 col-xs-12">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Từ Ngày
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input type="text" name="from_date" value='@ViewBag.DateFrom' class="form-control has-feedback-left" id="single_cal2" placeholder="Từ Ngày">
+                                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-12">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Đến Ngày
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input type="text" name="to_date" value='@ViewBag.DateTo' class="form-control has-feedback-left" id="single_cal3" placeholder="Đến Ngày">
+                                        <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                        <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-12">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Hãng
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <select id="Hang" name="Hang" class="form-control">
+                                            <option selected="selected" value="ALL">Tất cả</option>
+                                            <option value="VU">
+                                                Vietravel Airlines
+                                            </option>
+                                            <option value="QH">
+                                                Bamboo Airways
+                                            </option>
+                                            <option value="VJ">
+                                                VietJet Air
+                                            </option>
+                                            <option value="BSP">
+                                                Quốc Tế Các Hãng Khác
+                                            </option>
+                                            <option value="VN">
+                                                VietnamAirline
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-xs-12">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Loại
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <select id="Dieukien" name="Loai" class="form-control">
+                                            <option selected="selected" value="ALL">Tất cả</option>
+                                            <option value="DD">Định danh</option>
+                                            <option value="BL">EMDS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    <div class="row">
+                        <label class="col-xs-12">
+                            Tên hành khách
+                        </label>
+                        <fieldset class="col-xs-12" style="padding:0px">
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class=" xdisplay_inputx form-group has-feedback" style="padding-left:10px">
+                                        <input class="form-control" type="type" name="tenHK" value="" placeholder="Nhập tên cần tìm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="col-sm-1 col-xs-12" style="text-align:right;">
+                    <label class="col-xs-12">
+                        &nbsp;
+                    </label>
+                    <button class="btn btn-success" value="btn_TimDanhSach" name="submitBtn" type="submit">Tìm kiếm</button>
+
+                </div>
+                <div class="col-sm-12 ">
+                    <p>
+                        <a id="dieukien" onclick="dk()" style="cursor: pointer; font-weight:bold; color:red;">
+                            @Model.DieuKien <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        </a>
+                    </p>
+                    <div id="noidung" style="display:none;">
+                        @Html.Raw(Model.NoiDungDK)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="x_panel">
+    <div class="x_content">
+        <div class="table-responsive" style="font-size:12px;">
+            <table id="gridDanhsachDDBL" class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th></th>
+                        <th>STT</th>
+                        <th>Trạng thái</th>
+                        <th>Loại</th>
+                        <th>Ngày đăng</th>
+                        <th>Hãng</th>
+                        <th>Hành khách</th>
+                        @*<th>Giá gốc</th>
+                        <th>Giá bán</th>*@
+                        <th>Mã KH</th>
+                        <th>Tên NB</th>
+                        <th>Điện thoại</th>
+                        <th>PNR</th>
+                        <th>Số vé</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ListDDBL != null)
+                    {
+                        int i = 1;
+                        foreach (var item in Model.ListDDBL)
+                        {
+                            <tr>
+                                <td style="display:none" class="ID" id="@item.ID"></td>
+                                <td style="text-align:center"><a class="Edit" style="color:red;" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                <td>@i</td>
+                                <td>@item.TrangThai</td>
+                                <td>@item.Loai</td>
+                                <td>@item.NgayDang</td>
+                                <td>@item.Hang</td>
+                                <td><a class="ViewDetail" href="javascript:;">xem chi tiết</a></td>
+                                @*<td>7</td>
+                        <td>8</td>*@
+                                <td>@item.MaKH</td>
+                                <td>@item.TenNB</td>
+                                <td>@item.DienThoaiNB</td>
+                                <td>@item.PNR</td>
+                                <td>@item.SoVe</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="openPopup" role="dialog">
+</div>
+<script src="~/js/jquery.1.7.2.min.js"></script>
+<script src="~/js/jquery-ui.1.8.9.js"></script>
+<link href="~/js/jquery-ui.1.8.9.css" rel="stylesheet" />
+@* @if (ViewBag.ThongBao != null)
+{
+    <script charset="UTF-8">
+        alert('@Html.Raw(ViewBag.ThongBao)');
+    </script>
+} *@
+<script>
+    function dk(clicked_id) {
+        $("#noidung").toggle();
+    }
+</script>
+<script>
+    $("#BtnCreate").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "../DDBL/CreateDDBL",
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridDanhsachDDBL .ViewDetail").click(function () {
+        var id = $(this).closest('tr').find('.ID').attr('id');
+        $.ajax({
+            type: "POST",
+            url: "../DDBL/ViewDetailDDBL",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+    $("#gridDanhsachDDBL .Edit").click(function () {
+        var id = $(this).closest('tr').find('.ID').attr('id');
+        $.ajax({
+            type: "POST",
+            url: "../DDBL/EditDDBL",
+            data: {
+                ID: id
+            },
+            success: function (response) {
+                $('#openPopup').html(response);
+                $('#openPopup').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    });
+</script>
+

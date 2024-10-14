@@ -1,0 +1,311 @@
+﻿@model VisaBookingModel
+
+<style>
+    @@media(min-width: 768px) {
+        .modal-dialog {
+            width: 1200px;
+            margin: 30px auto;
+        }
+    }
+
+    .modal-header {
+        padding: 6px 15px;
+        border-bottom: none;
+    }
+
+    .bg {
+        font-weight: bold;
+        background: #f7f3f3;
+    }
+
+    .borber-table {
+        border: 1px solid #ddd;
+    }
+
+        .borber-table > div > label {
+            border-top: 1px solid #ddd;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .borber-table > div > div {
+            border-top: 1px solid #ddd;
+            margin: 0;
+        }
+
+            .borber-table > div > div > span {
+                padding: 10px;
+                display: block;
+                float: left;
+            }
+
+            .borber-table > div > div input, .borber-table > div > div select {
+                margin-top: 4px;
+            }
+
+    .title-detail-BK {
+        background: #e2e1e1 !important;
+        color: #f76f09 !important;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-size: 14px;
+        display: table;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .modal-header .close {
+        color: #fff;
+    }
+
+    input#linkGateway {
+        margin: 2px 0;
+    }
+
+    #group-payment-action {
+        display: flex;
+    }
+
+    div#group-btn-gateway {
+        margin-top: 4px;
+        margin-left: 8px;
+    }
+
+</style>
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content" style=" background: #2A3F54;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h1 style="color:#fff">CHI TIẾT VISA BOOKING</h1>
+        </div>
+        <div class="modal-body" style="border-radius:8px; background-color:#fff;">
+            <div class="title-detail-BK" style="margin-bottom:10px;">BOOKING: @Model.Code <input type="hidden" id="ID" name="ID" value="@Model.ID" /></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <div class="form-group">
+                                <select id="Tinhtrang" name="Tinhtrang" class="select2_single form-control">
+                                    @for (int i = 0; i < Model.ListVisaStatus.Count; i++)
+                                    {
+                                        if (Model.ListVisaStatus[i].ID == Model.StatusID)
+                                        {
+                                            <option selected value="@Model.ListVisaStatus[i].ID">@Model.ListVisaStatus[i].Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Model.ListVisaStatus[i].ID">@Model.ListVisaStatus[i].Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-5">
+                            <div class="form-group">
+                                @if (Model.StatusID == 8 || Model.StatusID == 9 || Model.StatusID == 10)
+                                {
+                                    <button class="btn btn-primary" disabled onclick="DoiTinhTrang()" value="DoiTrangThai" style="margin-bottom:0px">Đổi tình trạng</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary" onclick="DoiTinhTrang()" value="DoiTrangThai" style="margin-bottom:0px">Đổi tình trạng</button>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-xs-7">
+                            <div class="form-group">
+                                <textarea class="form-control" id="Note" name="Note" placeholder="Ghi chú đổi tình trạng" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ThongTinChiTietBK show">
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px;padding: 0;">
+                        THÔNG TIN BOOKING
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tên Visa</label>
+                            <div class="col-xs-8">
+                                <span>@Model.VisaName</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Giá</label>
+                            <div class="col-xs-8">
+                                <span style="color: #dc3545;">@String.Format("{0:#,0}", Model.Price)</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Tình trạng</label>
+                            <div class="col-xs-8">
+                                <span>@Model.Status</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Loại visa</label>
+                            <div class="col-xs-8">
+                                <span>@Model.VisaType</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Người tiếp nhận</label>
+                            <div class="col-xs-8">
+                                <span>@Model.Reciever </span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Ghi chú tình trạng</label>
+                            <div class="col-xs-8">
+                                <span>@Model.Note </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px;padding: 0;">
+                        THÔNG TIN THANH TOÁN
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Mã thanh toán</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentId</span>
+                            </div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">KH thanh toán</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentAgentCode</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Trạng thái</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentStatus</span>
+                            </div>
+                        </div>
+
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Phương thức</label>
+                            <div class="col-xs-8">
+                                <span>@Model.PaymentMethod</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12 borber-table" style="border-top:unset;">
+                        <div class="row" style="">
+                            <label class="col-xs-2 control-label bg" style="border-top:unset;">Link thanh toán</label>
+                            <div class="col-xs-10" style="border-top:unset;">
+                                <div class="row">
+                                    <div class="col-xs-12">
+
+                                        <div class="group-payment-action" id="group-payment-action">
+                                            <input type="text" class="form-control" id="inputLinkGateway" style="width:300px;" />
+                                            <div class="" id="group-btn-gateway">
+                                                <a href="#" id="copyToClipboard" class="btn btn-sm btn-primary">
+                                                    <i class="fa fa-clone" aria-hidden="true"></i>
+                                                    Copy
+                                                </a>
+                                                <a href="#" id="getLinkGateway" data-orderId="@Model.Code" class="btn btn-sm btn-success">
+                                                    Lấy link
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title-detail-BK">
+                    <div class="" style="line-height: 34px; padding: 0;">
+                        THÔNG TIN LIÊN HỆ
+                    </div>
+                </div>
+                <div class="row" style="padding: 0 10px;">
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Họ tên</label>
+                            <div class="col-xs-8"><span>@Model.FullName</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">SĐT</label>
+                            <div class="col-xs-8"><span>@Model.Phone </span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 borber-table">
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Email</label>
+                            <div class="col-xs-8"><span>@Model.Email</span></div>
+                        </div>
+                        <div class="row" style="">
+                            <label class="col-xs-4 control-label bg">Địa chỉ</label>
+                            <div class="col-xs-8"><span>@Model.Address</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-outline-primary btn-block",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+    function DoiTinhTrang() {
+        id = document.getElementById("ID").value;
+        statusID = document.getElementById("Tinhtrang").value;
+        note = document.getElementById("Note").value;
+        $.ajax({
+            type: "POST",
+            url: "../Visa/ChangeStatus",
+            data: { ID: id, StatusID: statusID, Note: note },
+            success: function (response) {
+                swalWithBootstrapButtons.fire({
+                    imageUrl: "/images/success.png",
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    title: 'Đổi tình trạng thành công',
+                    confirmButtonText: 'Đóng',
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+        });
+    }
+</script>
