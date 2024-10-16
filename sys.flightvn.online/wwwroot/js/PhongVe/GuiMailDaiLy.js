@@ -721,8 +721,7 @@ function FormatPhiDichVu() {
 }
 
 function CheckMaKH(MaKH, TenKH) {
-    console.log(MaKH);
-    console.log(AreaNameScript.AREA_PhongVe);
+
     var makh = document.getElementById(MaKH).value;
     if (makh == '') {
         alert("Mã KH không dc để trống");

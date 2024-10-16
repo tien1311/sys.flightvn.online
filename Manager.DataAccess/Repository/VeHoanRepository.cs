@@ -24,7 +24,7 @@ namespace Manager.DataAccess.Repository
     {
         DBase db = new DBase();
         Mail baoVH = new Mail("EVM_HOANVE");
-        string server_Agent_Main; /*"Data Source=.;Initial Catalog=Agent;User ID=envietsystemagent;Password=SQl_EvGroUp_d4T4_c0nNectIon;";*/
+        string server_Agent_Main; /*"Data Source=.;Initial Catalog=Agent;User ID=sa;Password=Ngominhtien@13;";*/
 
         public VeHoanRepository(IConfiguration configuration)
         {
@@ -544,8 +544,7 @@ namespace Manager.DataAccess.Repository
                         hang = dt.Rows[0]["section_name"].ToString();
                         nguoigui = dtName.Rows[0]["Ten"].ToString();
 
-
-                        SendMail(tenDL, strSender, email, strPhone, hang, tinhtrang, sove, thongtinkemtheo, ghichu, ngaygui, nguoigui, emailCC, IDVeHoan, ngayhuy, skype, sdt, ngayxuly, TenKhach, NgayHoan, EMD);
+                        //SendMail(tenDL, strSender, email, strPhone, hang, tinhtrang, sove, thongtinkemtheo, ghichu, ngaygui, nguoigui, emailCC, IDVeHoan, ngayhuy, skype, sdt, ngayxuly, TenKhach, NgayHoan, EMD);
                     }
                 }
                 else
@@ -841,7 +840,7 @@ namespace Manager.DataAccess.Repository
         {
             string SRefurnd = "";
             string sql = "SELECT * FROM RefundGroup WHERE UserID='" + tendangnhap + "'";
-            DataTable tb = db.ExecuteDataSet(sql, CommandType.Text, "serverEVSYSTEM", null).Tables[0];
+            DataTable tb = db.ExecuteDataSet(sql, CommandType.Text, "server37", null).Tables[0];
             if (tb.Rows.Count > 0)
             {
                 if (tb.Rows[0]["GrFull"].ToString() == "0")
@@ -859,7 +858,7 @@ namespace Manager.DataAccess.Repository
         {
             string SRefurnd = "0";
             string sql = "SELECT * FROM RefundGroup WHERE UserID='" + tendangnhap + "'";
-            DataTable tb = db.ExecuteDataSet(sql, CommandType.Text, "serverEVSYSTEM", null).Tables[0];
+            DataTable tb = db.ExecuteDataSet(sql, CommandType.Text, "server37", null).Tables[0];
             if (tb.Rows.Count > 0)
             {
                 if (tb.Rows[0]["GrFull"].ToString() != "0")

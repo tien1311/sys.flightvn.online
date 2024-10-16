@@ -110,7 +110,7 @@ namespace Manager_EV.Areas.NoiBoArea.Controllers
 
                 ViewBag.tieude = "QUY ĐỊNH Flight VN";
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.QuyDinh();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 
@@ -135,7 +135,7 @@ namespace Manager_EV.Areas.NoiBoArea.Controllers
 
                 ViewBag.tieude = "QUY ĐỊNH Flight VN";
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.QuyDinhOld();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 
@@ -160,7 +160,7 @@ namespace Manager_EV.Areas.NoiBoArea.Controllers
 
                 ViewBag.tieude = "QUY ĐỊNH PHÒNG DU LỊCH";
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.QuyDinhDL();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 
@@ -185,7 +185,7 @@ namespace Manager_EV.Areas.NoiBoArea.Controllers
 
                 ViewBag.tieude = "QUY ĐỊNH BỘ PHẬN ĐOÀN";
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.QuyDinhDoan();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 
@@ -208,7 +208,7 @@ namespace Manager_EV.Areas.NoiBoArea.Controllers
             {
                 ViewBag.tieude = "QUY ĐỊNH PHÒNG KẾ TOÁN";
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.QuyDinhKT();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 

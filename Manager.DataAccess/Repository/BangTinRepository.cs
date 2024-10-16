@@ -35,7 +35,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -62,7 +62,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -89,7 +89,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -114,7 +114,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -141,7 +141,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -166,7 +166,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -191,7 +191,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -216,7 +216,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -397,7 +397,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -424,7 +424,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -451,7 +451,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -478,7 +478,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -505,7 +505,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "http://Manager.airline24h.com/upload/subject/EV - Copy.png";
+                    home.Image = "/images/logoev12.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -555,26 +555,13 @@ namespace Manager.DataAccess.Repository
             {
                 int result_update = 0;
                 SubjectModel home = new SubjectModel();
-                string sql_update_tien = "SP_REPLACE_BAIVIET_CONTENT";
+              
+               
+                string SqlView = "SELECT TIEUDE,NOIDUNG FROM DANGTIN WHERE ROWID = " + subject_id + " ";
+                DataTable dt = db.ExecuteDataSet(SqlView, CommandType.Text, "server37", null).Tables[0];
 
-                using (var conn = new SqlConnection(server_Airline24h))
-                {
-                    var param = new
-                    {
-                        ID = subject_id
-                    };
-                    result_update = conn.Execute(sql_update_tien, param, null, commandType: CommandType.StoredProcedure, commandTimeout: 60);
-                    conn.Dispose();
-                }
-                if (result_update > 0)
-                {
-                    string SqlView = "SELECT TIEUDE,NOIDUNG FROM BAIVIET WHERE ROWID = " + subject_id + " ";
-                    DataTable dt = db.ExecuteDataSet(SqlView, CommandType.Text, "serverAirline24h", null).Tables[0];
-
-                    home.Title = dt.Rows[0]["TIEUDE"].ToString();
-                    home.subject_content = dt.Rows[0]["NOIDUNG"].ToString();
-
-                }
+                home.Title = dt.Rows[0]["TIEUDE"].ToString();
+                home.subject_content = dt.Rows[0]["NOIDUNG"].ToString();
                 return home;
             }
             catch (Exception)

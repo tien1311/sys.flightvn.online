@@ -103,8 +103,10 @@ namespace Manager_EV.Areas.MenuArea.Controllers
         }
         public IActionResult GetLayCongNoNhanVien(string maNV)
         {
-            var result = _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV);
-            return Json(result.Result);
+             CongNoRepository congno_Rep = _unitOfWork_Repository.CongNo_Rep;
+             decimal result = congno_Rep.SoDuCuoiNgayDapper(maNV).Result * -1;
+             //var result = _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV);
+             return Json(result);
         }
         public IActionResult GetDemTBChuaXem(string maNV)
         {

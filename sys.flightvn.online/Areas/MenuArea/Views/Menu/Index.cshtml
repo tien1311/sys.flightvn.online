@@ -857,12 +857,12 @@
                 <p class="name-main-icon">Công Nợ NV</p>
                 </a>
                 </div>*@
-                <div class="col-sm-2 col-xs-3 main-icon">
+               @*  <div class="col-sm-2 col-xs-3 main-icon">
                     <a href="#" class="link-main-icon" id="yensao" data-value="6">
                         <img src="../images/refer.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">Yến Sào</p>
                     </a>
-                </div>
+                </div> *@
                 <div class="col-sm-2 col-xs-3 main-icon">
                     <a href="#" class="link-main-icon" id="VIP" data-value="11">
                         <img src="../images/workflow.png" class="img-responsive" alt="logo" style="display: inline-block;" />
@@ -1178,8 +1178,8 @@
                 if (DuNoDaiLyResult.status === 'fulfilled') {
                     const DuNoDaiLy = DuNoDaiLyResult.value;
                     document.querySelectorAll(".loading_3dot_tongNo").forEach((item) => {
-                        if (DuNoDaiLy && DuNoDaiLy.balance) {
-                            let tongNo = Number(DuNoDaiLy.balance).toLocaleString();
+                        if (DuNoDaiLy) {
+                            let tongNo = Number(DuNoDaiLy).toLocaleString();
                             item.innerHTML = `${tongNo}`;
                         }
                     });

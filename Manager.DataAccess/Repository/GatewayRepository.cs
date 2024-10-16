@@ -526,7 +526,6 @@ namespace Manager.DataAccess.Repository
                 {
                     query.Append(" AND OrderId IN @OrderIds");
                 }
-
                 if (startDate != DateTime.MinValue && endDate != DateTime.MinValue)
                 {
                     query.Append(" AND CreatedDate BETWEEN @StartDate AND @EndDate");

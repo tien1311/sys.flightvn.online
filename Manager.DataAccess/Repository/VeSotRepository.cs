@@ -528,51 +528,17 @@ namespace Manager.DataAccess.Repository
                     LoaiPhi = "";
                 }
                 int result1 = 0;
-                string SqlInsertKT = @"Insert into Life_obj3535(ngay_thc,field12,field13,field14,field1,field6,field8,field17,field11,field5,field9, field15, field16, field4) 
-                               Values( GETDATE() ,'" + NguoiUp.Trim() + "','" + MaKH.Trim() + "','" + Hang.Trim() + "','" + SoVe.Trim() + "'," + GiaMua.Replace(",", "").Replace(".", "").Trim() + "," + PhiMua.Replace(",", "").Replace(".", "").Trim() + "," + PhiXuatVe.Replace(",", "").Replace(".", "").Trim() + "," + PhiHoan.Replace(",", "").Replace(".", "").Trim() + "," + ChietKhau.Replace(",", "").Replace(".", "").Trim() + ",'" + PNR.Trim() + "',N'" + MaGioiThieu.Trim() + "',N'" + NguoiGioiThieu.Trim() + "'," + PhiBan.Replace(",", "").Replace(".", "").Trim() + ")";
-                using (var conn = new SqlConnection(server_KT))
+            
+                string SqlInsert = @"INSERT INTO BAOCAOVESOT (PNR, SOVE, NGUOISUA, NGAYSUA, MAKH, CHIETKHAU, GIAMUA, PHIDVMUA, PHIDVBAN, PHIHOAN, HANG, THUOCTINH, MAGIOITHIEU, NGUOIGIOITHIEU, LOAIPHI, PHIXUATVE, SOLUONG) VALUES('" + PNR.Trim() + "', '" + SoVe.Trim() + "', '" + NguoiUp.Trim() + "', GETDATE(), '" + MaKH.Trim() + "', '" + ChietKhau.Replace(",", "").Replace(".", "").Trim() + "', '" + GiaMua.Replace(",", "").Replace(".", "").Trim() + "', '" + PhiMua.Replace(",", "").Replace(".", "").Trim() + "', '" + PhiBan.Replace(",", "").Replace(".", "").Trim() + "', '" + PhiHoan.Replace(",", "").Replace(".", "").Trim() + "', '" + Hang.Trim() + "',0, '" + MaGioiThieu.Trim() + "', N'" + NguoiGioiThieu.Trim() + "', N'" + LoaiPhi.Trim() + "', " + PhiXuatVe.Replace(",", "").Replace(".", "").Trim() + ", " + SoLuong.Replace(",", "").Replace(".", "").Trim() + " )";
+                int result = db.ExecuteNoneQuery(SqlInsert, CommandType.Text, "server37", null);
+                if (result > 0)
                 {
-                    result1 = conn.Execute(SqlInsertKT, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                    conn.Dispose();
+                    string sqlUpdateTemp = @"UPDATE DANHSACHBAOCAOVE_TEMP SET TINHTRANG = N'Đã báo cáo, chờ KT cập nhật' WHERE PNR = '" + PNR.Trim() + "' and TKNockt = '" + SoVe.Trim() + "' and MaHK = '" + Hang.Trim() + "'";
+                    int y = db.ExecuteNoneQuery(sqlUpdateTemp, CommandType.Text, "server37", null);
+                    x++;
                 }
-                if (result1 > 0)
-                {
-                    string SqlInsert = @"INSERT INTO BAOCAOVESOT (PNR, SOVE, NGUOISUA, NGAYSUA, MAKH, CHIETKHAU, GIAMUA, PHIDVMUA, PHIDVBAN, PHIHOAN, HANG, THUOCTINH, MAGIOITHIEU, NGUOIGIOITHIEU, LOAIPHI, PHIXUATVE, SOLUONG) VALUES('" + PNR.Trim() + "', '" + SoVe.Trim() + "', '" + NguoiUp.Trim() + "', GETDATE(), '" + MaKH.Trim() + "', '" + ChietKhau.Replace(",", "").Replace(".", "").Trim() + "', '" + GiaMua.Replace(",", "").Replace(".", "").Trim() + "', '" + PhiMua.Replace(",", "").Replace(".", "").Trim() + "', '" + PhiBan.Replace(",", "").Replace(".", "").Trim() + "', '" + PhiHoan.Replace(",", "").Replace(".", "").Trim() + "', '" + Hang.Trim() + "',0, '" + MaGioiThieu.Trim() + "', N'" + NguoiGioiThieu.Trim() + "', N'" + LoaiPhi.Trim() + "', " + PhiXuatVe.Replace(",", "").Replace(".", "").Trim() + ", " + SoLuong.Replace(",", "").Replace(".", "").Trim() + " )";
-                    int result = db.ExecuteNoneQuery(SqlInsert, CommandType.Text, "server37", null);
-                    if (result > 0)
-                    {
-                        string sqlUpdateTemp = @"UPDATE DANHSACHBAOCAOVE_TEMP SET TINHTRANG = N'Đã báo cáo, chờ KT cập nhật' WHERE PNR = '" + PNR.Trim() + "' and TKNockt = '" + SoVe.Trim() + "' and MaHK = '" + Hang.Trim() + "'";
-                        int y = db.ExecuteNoneQuery(sqlUpdateTemp, CommandType.Text, "server37", null);
+                
 
-                        string sql_update = "updatethongtinbookernhap";
-                        using (var conn = new SqlConnection(server_KT))
-                        {
-                            conn.Execute(sql_update, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                            conn.Dispose();
-                        }
-                        x++;
-                    }
-                    else
-                    {
-                        string sqldel = @"delete Life_obj3535 where field1 = '" + SoVe.Trim() + "' and field9 = '" + PNR.Trim() + "'";
-                        using (var conn = new SqlConnection(server_KT))
-                        {
-                            conn.Execute(sqldel, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                            conn.Dispose();
-                        }
-                        return x;
-                    }
-
-                }
-                else
-                {
-                    return x;
-                }
-
-                if (x > 0)
-                {
-                    return x;
-                }
                 return x;
             }
             catch (Exception)

@@ -77,7 +77,7 @@ namespace Manager.DataAccess.Repository
             decimal result = 0;
             try
             {
-                //string server_KH_KT = "Data Source=ketoan.enviet-group.com,8134;Initial Catalog=DATATEMP_VE;User ID=ELV_TEMP;Password=tkt@123$456;";
+                //string server_KH_KT = "Data Source=.;Initial Catalog=ManagerAccountant;User ID=ELV_TEMP;Password=tkt@123$456;";
 
                 string res = "0";
                 string ngay = DateTime.ParseExact(dafr, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddDays(-1).ToString("MM/dd/yyyy");
@@ -101,7 +101,7 @@ namespace Manager.DataAccess.Repository
         {
             decimal result = 0;
             string sql = "";
-            sql = $@"SELECT top 1 isnull(SoDu,0) as sodu  FROM [DATATEMP_VE].[dbo].[_DUCUOI_NEW] WITH (NOLOCK) where  ID_Khachhang = '" + maKH + "'";
+            sql = $@"SELECT top 1 isnull(SoDu,0) as sodu  FROM [ManagerAccountant].[dbo].[_DUCUOI_NEW] WITH (NOLOCK) where  ID_Khachhang = '" + maKH + "'";
             DataTable tbl = db.ExecuteDataSet(sql, CommandType.Text, "serverKT", null).Tables[0];
             if (tbl == null)
             {
@@ -124,8 +124,8 @@ namespace Manager.DataAccess.Repository
             string sql = "";
             try
             {
-                //string server_KT = "Data Source=ketoan.enviet-group.com,8134; Initial Catalog = DATATEMP_VE; User ID = ELV_TEMP; Password = tkt@123$456;";
-                sql = $@"SELECT top 1 isnull(SoDu,0) as sodu  FROM [DATATEMP_VE].[dbo].[_DUCUOI_NEW] WITH (NOLOCK) where  ID_Khachhang = '" + maKH + "'";
+                //string server_KT = "Data Source=.; Initial Catalog = ManagerAccountant; User ID = ELV_TEMP; Password = tkt@123$456;";
+                sql = $@"SELECT top 1 isnull(SoDu,0) as sodu  FROM [ManagerAccountant].[dbo].[_DUCUOI_NEW] WITH (NOLOCK) where  ID_Khachhang = '" + maKH + "'";
                 using (var conn = new SqlConnection(SQL_KH_KT))
                 {
                     result = await conn.QueryFirstAsync<decimal>(sql, null, null, commandType: CommandType.Text, commandTimeout: 30);

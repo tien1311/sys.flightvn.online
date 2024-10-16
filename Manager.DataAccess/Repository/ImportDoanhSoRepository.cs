@@ -220,14 +220,14 @@ namespace Manager.DataAccess.Repository
             {
                 sql = @"select  KH.TENCONGTY,DS.MaKH,DS.Tong,DS.VNA,DS.VJ,DS.VU,DS.QH,DS.IATA,DS.Khac,DS.Thang, DS.Nam , NV.Ten from DM_NV NV  
                         left join KHACHHANG_HOPDONG KH on KH.MAKINHDOANH = NV.MaNV 
-                        left join SERVER18.Agent.dbo.DoanhThuDaiLy DS on DS.MaKH COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                        left join Server37.Agent.dbo.DoanhThuDaiLy DS on DS.MaKH COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                         where NV.NVKD = '1' and NV.TinhTrang = '1' and KH.TENTINHTRANGAGENT <> 2 and DS.Thang = '" + Thang + "' and DS.Nam = '" + Nam + "' and DS.ID is not null group by KH.TENCONGTY,DS.MaKH,DS.Tong,DS.VNA,DS.VJ,DS.VU,DS.QH,DS.IATA,DS.Khac,DS.Thang, DS.Nam, NV.Ten order by DS.Tong desc ";
             }
             else
             {
                 sql = @"select KH.TENCONGTY, DS.MaKH,DS.Tong,DS.VNA,DS.VJ,DS.VU,DS.QH,DS.IATA,DS.Khac,DS.Thang, DS.Nam , NV.Ten from DM_NV NV  
                         left join KHACHHANG_HOPDONG KH on KH.MAKINHDOANH = NV.MaNV 
-                        left join SERVER18.Agent.dbo.DoanhThuDaiLy DS on DS.MaKH COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                        left join Server37.Agent.dbo.DoanhThuDaiLy DS on DS.MaKH COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                         where NV.Yahoo = '" + MaNV + "' and KH.TENTINHTRANGAGENT <> 2 and DS.Thang = '" + Thang + "' and DS.Nam = '" + Nam + "' and DS.ID is not null group by KH.TENCONGTY,DS.MaKH,DS.Tong,DS.VNA,DS.VJ,DS.VU,DS.QH,DS.IATA,DS.Khac,DS.Thang, DS.Nam, NV.Ten order by DS.Tong desc ";
             }
 

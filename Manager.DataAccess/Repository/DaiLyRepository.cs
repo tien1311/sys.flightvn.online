@@ -937,7 +937,7 @@ namespace Manager.DataAccess.Repository
                             from DM_NV NV  
                             left join KHACHHANG_HOPDONG KH on KH.MAKINHDOANH = NV.MaNV 
                             left join DM_NV NVKT on KH.MANVKETOAN = NVKT.MaNV
-                            left join DATATEMP_VE.DATATEMP_VE.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                            left join ManagerAccountant.ManagerAccountant.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
 							left join SERVER18.Agent.dbo.member MEM on MEM.member_kh COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                             where NV.Yahoo = '" + MaNV + "' and TENTINHTRANGAGENT <> 2 and KH.MAKETOAN <> '' group by  NVKT.Ten, KH.MAKETOAN,KH.TENCONGTY,SODU.Status, SODU.ChoXuat, SODU.Sodu, SODU.note,MEM.member_isactive order by SODU.Sodu desc";
                 }
@@ -947,7 +947,7 @@ namespace Manager.DataAccess.Repository
                             from DM_NV NV  
                             left join KHACHHANG_HOPDONG KH on KH.MAKINHDOANH = NV.MaNV 
                             left join DM_NV NVKT on KH.MANVKETOAN = NVKT.MaNV
-                            left join DATATEMP_VE.DATATEMP_VE.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                            left join ManagerAccountant.ManagerAccountant.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
 							left join SERVER18.Agent.dbo.member MEM on MEM.member_kh COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                             where NV.Yahoo = '" + MaNV + "' and KH.MAKETOAN like '%" + GiaTri + "%' and TENTINHTRANGAGENT <> 2 and KH.MAKETOAN <> '' group by  NVKT.Ten, KH.MAKETOAN,KH.TENCONGTY,SODU.Status, SODU.ChoXuat, SODU.Sodu, SODU.note,MEM.member_isactive order by SODU.Sodu desc ";
                 }
@@ -957,8 +957,8 @@ namespace Manager.DataAccess.Repository
                             from DM_NV NV  
                             left join KHACHHANG_HOPDONG KH on KH.MAKINHDOANH = NV.MaNV 
                             left join DM_NV NVKT on KH.MANVKETOAN = NVKT.MaNV
-                            left join DATATEMP_VE.DATATEMP_VE.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
-                            left join DATATEMP_VE.DATATEMP_VE.dbo.VIEW_CodeSignIn as CODE on CODE.ma_3025 COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                            left join ManagerAccountant.ManagerAccountant.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                            left join ManagerAccountant.ManagerAccountant.dbo.VIEW_CodeSignIn as CODE on CODE.ma_3025 COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                             left join SERVER18.Agent.dbo.member MEM on MEM.member_kh COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                             where NV.Yahoo = '" + MaNV + "' and CODE.f1_3373 like '%" + GiaTri + "%' and TENTINHTRANGAGENT <> 2 and KH.MAKETOAN <> '' group by   NVKT.Ten,KH.MAKETOAN,KH.TENCONGTY,SODU.Status, SODU.ChoXuat, SODU.Sodu, SODU.note,MEM.member_isactive order by SODU.Sodu desc";
                 }
@@ -1167,7 +1167,7 @@ namespace Manager.DataAccess.Repository
                             from KHACHHANG_HOPDONG KH
                             left join DM_NV NVKT on KH.MANVKETOAN = NVKT.MaNV
 							left join DM_NV NVKD on KH.MAKINHDOANH = NVKD.MaNV
-                            left join DATATEMP_VE.DATATEMP_VE.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
+                            left join ManagerAccountant.ManagerAccountant.dbo._DUCUOI_NEW SODU on SODU.ID_KhachHang COLLATE DATABASE_DEFAULT = KH.MAKETOAN COLLATE DATABASE_DEFAULT
                             where KH.MAKETOAN like '%" + maKT + "%' and KH.MAKETOAN <> '' ";
                             using (var conn = new SqlConnection(SQL_EV_MAIN))
                             {

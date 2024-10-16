@@ -1137,65 +1137,47 @@ namespace Manager_EV.Areas.KeToanArea.Controllers
                 result = khoacodedaily_Rep.DSThongBaoDaiLy(MaPB);
                 if (ret == true)
                 {
-                    bool result_SendMail = khoacodedaily_Rep.SendMailKC(MaKHtxt, tenDLtxt, noiDungKhoatxt, MailCC, Email, IDNoiDungKhoa);
+                    //bool result_SendMail = khoacodedaily_Rep.SendMailKC(MaKHtxt, tenDLtxt, noiDungKhoatxt, MailCC, Email, IDNoiDungKhoa);
 
                     string Title = notify_Rep.GetNotifyTitle(IDNoiDungKhoa);
                     // Đoạn này dùng để bỏ hết thẻ HTML
                     var Content = notify_Rep.RemoveHtmlTags(noiDungKhoatxt);
 
                     List<Member> memberResult = notify_Rep.Chitietmember(MaKHtxt);
-                    var kinhDoanhMember = memberResult.FirstOrDefault(member => member.ListKD.Any(kd => kd.Select == "selected"));
-                    var keToanMember = memberResult.FirstOrDefault(member => member.ListKt.Any(kd => kd.Select == "selected"));
+                    //var kinhDoanhMember = memberResult.FirstOrDefault(member => member.ListKD.Any(kd => kd.Select == "selected"));
+                    //var keToanMember = memberResult.FirstOrDefault(member => member.ListKt.Any(kd => kd.Select == "selected"));
 
                     string MaNVKinhDoanh = "";
                     string MaNVKeToan = "";
-                    if (kinhDoanhMember != null)
-                    {
-                        var selectedKinhDoanhRowIDs = kinhDoanhMember.ListKD
-                            .FirstOrDefault(kd => kd.Select == "selected");
-                        MaNVKinhDoanh = selectedKinhDoanhRowIDs.RowID;
-                    }
-                    if (keToanMember != null)
-                    {
-                        var selectedKeToanRowIDs = keToanMember.ListKt
-                           .FirstOrDefault(kd => kd.Select == "selected");
-                        MaNVKeToan = selectedKeToanRowIDs.RowID;
-                    }
+                    //if (kinhDoanhMember != null)
+                    //{
+                    //    var selectedKinhDoanhRowIDs = kinhDoanhMember.ListKD
+                    //        .FirstOrDefault(kd => kd.Select == "selected");
+                    //    MaNVKinhDoanh = selectedKinhDoanhRowIDs.RowID;
+                    //}
+                    //if (keToanMember != null)
+                    //{
+                    //    var selectedKeToanRowIDs = keToanMember.ListKt
+                    //       .FirstOrDefault(kd => kd.Select == "selected");
+                    //    MaNVKeToan = selectedKeToanRowIDs.RowID;
+                    //}
 
                     if (MaNVKinhDoanh != null && MaNVKinhDoanh != "")
                     {
                         MaNVKinhDoanh = notify_Rep.GetYahooID(MaNVKinhDoanh);
-                        var requestKinhDoanh = new NotifyLisaAgentCodeRequest("[KẾ TOÁN] " + Title, Content, "NOTIFICATION", MaNVKinhDoanh, "");
-                        bool result_SendNotifyKinhDoanh = await _notifyService.SendNotify(requestKinhDoanh);
-                        if (result_SendNotifyKinhDoanh == false)
-                        {
-                            TempData["thongbaoError"] = "Gửi thông báo kinh doanh thất bại";
-                            return View("ThongBaoDaiLy", result);
-                        }
+                        
                     }
                     if (MaNVKeToan != null && MaNVKeToan != "")
                     {
                         MaNVKeToan = notify_Rep.GetYahooID(MaNVKeToan);
-                        var requestKeToan = new NotifyLisaAgentCodeRequest("[KẾ TOÁN] " + Title, Content, "NOTIFICATION", MaNVKeToan, "");
-                        bool result_SendNotifyKeToan = await _notifyService.SendNotify(requestKeToan);
-                        if (result_SendNotifyKeToan == false)
-                        {
-                            TempData["thongbaoError"] = "Gửi thông báo kế toán thất bại";
-                            return View("ThongBaoDaiLy", result);
-                        }
+                       
                     }
-                    var requestDaiLy = new NotifyLisaAgentCodeRequest("[KẾ TOÁN] " + Title, Content, "NOTIFICATION", MaKHtxt, "");
+                    //var requestDaiLy = new NotifyLisaAgentCodeRequest("[KẾ TOÁN] " + Title, Content, "NOTIFICATION", MaKHtxt, "");
 
-                    bool result_SendNotifyDaiLy = await _notifyService.SendNotify(requestDaiLy);
-
-                    if (result_SendMail == true && result_SendNotifyDaiLy == true)
-                    {
-                        TempData["thongbaoSuccess"] = "Đã gửi thông báo đến đại lý";
-                    }
-                    else
-                    {
-                        TempData["thongbaoSuccess"] = "Yêu cầu của bạn đã được tiếp nhận, nhưng lỗi gửi mail do hệ thống quá tải. Xin cảm ơn!";
-                    }
+                    //bool result_SendNotifyDaiLy = await _notifyService.SendNotify(requestDaiLy);
+                   
+                    TempData["thongbaoSuccess"] = "Đã gửi thông báo đến đại lý";
+                    
                 }
                 else TempData["thongbaoError"] = "Gửi thông báo thất bại";
                 return View("KhoaCodeDaiLy", result);

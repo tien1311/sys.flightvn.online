@@ -13,7 +13,7 @@ namespace Manager.DataAccess.Repository
     public class LotusmileRepository
     {
         string SQL_EV_MAIN_V2; /*= "Data Source=.;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";*/
-        string SQL_AIRLINE24h_MAIN; /* = "Data Source=.;Initial Catalog=Airline24h;User ID=envietsystemagent;Password=SQl_EvGroUp_d4T4_c0nNectIon;";*/
+        string SQL_AIRLINE24h_MAIN; /* = "Data Source=.;Initial Catalog=Airline24h;User ID=sa;Password=Ngominhtien@13;";*/
 
         public LotusmileRepository(IConfiguration configuration)
         {

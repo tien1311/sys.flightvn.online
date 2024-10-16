@@ -14,7 +14,7 @@ namespace Manager.DataAccess.Repository
     public class PostsAdsRepository
     {
         string SQL_POSTS; /*= "Data Source=.;Initial Catalog=POSTS;User ID=sa;Password=EnViet@123;";*/
-        string SQL_Agent_MAIN; /*= "Data Source=.;Initial Catalog=Agent;User ID=envietsystemagent;Password=SQl_EvGroUp_d4T4_c0nNectIon;";*/
+        string SQL_Agent_MAIN; /*= "Data Source=.;Initial Catalog=Agent;User ID=sa;Password=Ngominhtien@13;";*/
 
         public PostsAdsRepository(IConfiguration configuration)
         {

@@ -714,7 +714,7 @@ namespace Manager.DataAccess.Repository
         public bool SendMails_DaXuatVe(DetailBooking DetailBooking)
         {
             DetailBooking result = new DetailBooking();
-            //string server_AIRLINE_BOOKING = "Data Source=146.196.65.74;Initial Catalog=AIRLINE_BOOKING;User ID=envietsystemagent;Password=SQl_EvGroUp_d4T4_c0nNectIon;";
+            //string server_AIRLINE_BOOKING = "Data Source=146.196.65.74;Initial Catalog=AIRLINE_BOOKING;User ID=sa;Password=Ngominhtien@13;";
             string slkhach = "";
             string sql = @"select * from BOOKING where Order_ID = '" + DetailBooking.OrderID_SMS + "'";
             using (var conn = new SqlConnection(server_AIRLINE_BOOKING))
@@ -797,7 +797,7 @@ namespace Manager.DataAccess.Repository
         public bool SendMails_DatCho(DetailBooking DetailBooking)
         {
             DetailBooking result = new DetailBooking();
-            //string server_AIRLINE_BOOKING = "Data Source=146.196.65.74;Initial Catalog=AIRLINE_BOOKING;User ID=envietsystemagent;Password=SQl_EvGroUp_d4T4_c0nNectIon;";
+            //string server_AIRLINE_BOOKING = "Data Source=146.196.65.74;Initial Catalog=AIRLINE_BOOKING;User ID=sa;Password=Ngominhtien@13;";
             string slkhach = "";
             string sql = @"select * from BOOKING where Order_ID = '" + DetailBooking.OrderID_SMS + "'";
             using (var conn = new SqlConnection(server_AIRLINE_BOOKING))

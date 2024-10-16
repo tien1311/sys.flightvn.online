@@ -66,7 +66,7 @@ $("#save").click(function () {
         },
         success: function (response) {
             if (response == 1) {
-                document.getElementById("gridVeSot").rows[Index].cells[9].innerHTML = "Đã báo cáo, chờ KT cập nhật";
+                document.getElementById("gridVeSot").rows[Index].cells[10].innerHTML = "Đã báo cáo, chờ KT cập nhật";
                 alert("Bạn đã báo cáo vé thành công");
                 $('#openPopup').modal('hide');
                 return;

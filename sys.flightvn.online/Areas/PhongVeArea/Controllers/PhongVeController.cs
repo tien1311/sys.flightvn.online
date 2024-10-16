@@ -17,7 +17,7 @@ using Manager.DataAccess.Repository;
 using Manager.Common.Helpers.AreaHelpers;
 using Manager.DataAccess.IRepository.IUnitOfWork_Repository;
 
-namespace Manager_EV.Areas.PhongVeArea.Controllers
+namespace sys.flightvn.online.Areas.PhongVeArea.Controllers
 {
     [Area(AreaNameConst.AREA_PhongVe)]
     public class PhongVeController : Controller
@@ -51,7 +51,7 @@ namespace Manager_EV.Areas.PhongVeArea.Controllers
                 //BangTinRepository _unitOfWork_Repository.BangTin_Rep = new BangTinRepository();
 
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTinPV();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 
@@ -77,7 +77,7 @@ namespace Manager_EV.Areas.PhongVeArea.Controllers
                 //BangTinRepository _unitOfWork_Repository.BangTin_Rep = new BangTinRepository();
 
 
-                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.QuyDinhPV();
+                List<SubjectModel> list = _unitOfWork_Repository.BangTin_Rep.BangTin();
 
                 int pageNumber = page ?? 1;
                 //Phân trang 
@@ -505,10 +505,11 @@ namespace Manager_EV.Areas.PhongVeArea.Controllers
             AccountModel acc = AccountManager.GetAccountCurrent(HttpContext);
             VeSotRepository vesot_Rep = _unitOfWork_Repository.VeSot_Rep;
             int result = -3;
-            if (!vesot_Rep.CheckDataMainEFF(SoVe, PNR, server_KH_KT))
-            {
-                result = vesot_Rep.UpdateBaoCaoVeSot(server_KT, server_KH_KT, PNR, Hang, SoVe, MaKH.ToUpper(), GiaMua, PhiMua, PhiBan, PhiHoan, ChietKhau, acc.MaNV, MaGioiThieu, NguoiGioiThieu, ID, LoaiPhi, PhiXuatVe, SoLuong);
-            }
+            result = vesot_Rep.UpdateBaoCaoVeSot(server_KT, server_KH_KT, PNR, Hang, SoVe, MaKH.ToUpper(), GiaMua, PhiMua, PhiBan, PhiHoan, ChietKhau, acc.MaNV, MaGioiThieu, NguoiGioiThieu, ID, LoaiPhi, PhiXuatVe, SoLuong);
+            //if (!vesot_Rep.CheckDataMainEFF(SoVe, PNR, server_KH_KT))
+            //{
+
+            //}
             return Json(result);
         }
         public JsonResult SearchMaKHBaoCaoVeSot(string MaKH)
@@ -710,7 +711,7 @@ namespace Manager_EV.Areas.PhongVeArea.Controllers
                 }
                 else
                 {
-                    if (kq == (StaticDetailVoucher.FAIL + "1"))
+                    if (kq == StaticDetailVoucher.FAIL + "1")
                     {
                         TempData["thongbaoSuccess"] = "Đại lý đã hủy số vé này !";
                     }
@@ -877,7 +878,6 @@ namespace Manager_EV.Areas.PhongVeArea.Controllers
 
             return View(result);
         }
-
 
         [HttpPost]
         public JsonResult CheckMaKH(string MaKH)

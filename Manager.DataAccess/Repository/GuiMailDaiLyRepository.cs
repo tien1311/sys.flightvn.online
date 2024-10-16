@@ -178,25 +178,7 @@ namespace Manager.DataAccess.Repository
                 where += " and BC.Code is null";
                 where_update = " and Code is null";
             }
-            string update_2023 = @" update BAOCAOVESOT_EV_2023
-                                    set MaKH_EFF = (select top 1 EFF.field13 from [KETOAN].[ELV_KETOAN].[dbo].[Life_obj3535]  EFF WITH (NOLOCK) where BAOCAOVESOT_EV_2023.SOVE COLLATE DATABASE_DEFAULT  = EFF.field1 COLLATE DATABASE_DEFAULT  and BAOCAOVESOT_EV_2023.PNR COLLATE DATABASE_DEFAULT  = EFF.field9 COLLATE DATABASE_DEFAULT and EFF.dtime >= '" + TuNgay + @"' ) 
-                                    where NgaySua >= '" + TuNgay + @"' and MaKH_EFF is null " + where_update;
-
-            using (var conn1 = new SqlConnection(Server_EV_V2))
-            {
-                result_update = conn1.Execute(update_2023, null, commandType: CommandType.Text, commandTimeout: 90);
-                conn1.Dispose();
-                conn1.Close();
-            }
-            string update = @" update BAOCAOVESOT
-                                    set MaKH_EFF = (select top 1 EFF.field13 from [KETOAN].[ELV_KETOAN].[dbo].[Life_obj3535]  EFF WITH (NOLOCK) where BAOCAOVESOT.SOVE COLLATE DATABASE_DEFAULT  = EFF.field1 COLLATE DATABASE_DEFAULT  and BAOCAOVESOT.PNR COLLATE DATABASE_DEFAULT  = EFF.field9 COLLATE DATABASE_DEFAULT and EFF.dtime >= '" + TuNgay + @"' ) 
-                                    where NgaySua >= '" + TuNgay + @"' and MaKH_EFF is null " + where_update;
-            using (var conn2 = new SqlConnection(Server_EV))
-            {
-                result_update = conn2.Execute(update, null, commandType: CommandType.Text, commandTimeout: 90);
-                conn2.Dispose();
-                conn2.Close();
-            }
+          
             if (SoVeSearch != null && SoVeSearch != "")
             {
                 where += " and BC.SOVE = '" + SoVeSearch.Trim() + "'";
@@ -704,82 +686,41 @@ namespace Manager.DataAccess.Repository
                         result = chiTietVe[i].MAKH + " không tồn tại";
                         return result;
                     }
-                    string sql1 = sql_EV = @"Insert into BAOCAOVESOT(PNR,SOVE,NGUOISUA,NGAYSUA,MAKH,CHIETKHAU,GIAMUA,PHIDVMUA,PHIXUATVE,PHIDVBAN,PHIHOAN,HANG,GHICHU,THUOCTINH,MAGIOITHIEU,NGUOIGIOITHIEU, LOAIPHI, PHIXUATVE, SOLUONG) OUTPUT Inserted.ID Values('" + chiTietVe[i].PNR.Trim() + "','" + chiTietVe[i].SoVe.Trim() + "','" + MANV.Trim() + "','" + DateTime.Now + "','" + chiTietVe[i].MAKH.Trim() + "'," + chiTietVe[i].ChietKhau + "," + chiTietVe[i].GiaMua + "," + chiTietVe[i].PhiDVMua + "," + chiTietVe[i].PhiXuatVe + ",," + chiTietVe[i].PhiDVBan + "," + chiTietVe[i].PhiHoan + ",'" + chiTietVe[i].MAHHK.Trim() + "',N'" + chiTietVe[i].GHICHU + "',1,N'" + chiTietVe[i].MAGIOITHIEU + "',N'" + chiTietVe[i].NGUOIGIOITHIEU + "',N'" + chiTietVe[i].LoaiPhi + "'," + chiTietVe[i].PhiXuatVe + "," + chiTietVe[i].SoLuong + ")";
-                    int result_sql = 0;
-                    sql = @"Insert into Life_obj3535(ngay_thc,field12,field13,field14,field1,field6,field8,field17,field11,field5,field9,field3,field15,field16, field4) 
-                               Values('" + DateTime.Now + "','" + MANV.Trim() + "','" + chiTietVe[i].MAKH.Trim() + "','" + chiTietVe[i].MAHHK.Trim() + "','" + chiTietVe[i].SoVe.Trim() + "'," + chiTietVe[i].GiaMua + "," + chiTietVe[i].PhiDVMua + "," + chiTietVe[i].PhiXuatVe + "," + chiTietVe[i].PhiHoan + "," + chiTietVe[i].ChietKhau + ",'" + chiTietVe[i].PNR.Trim() + "',N'" + chiTietVe[i].GHICHU + "',N'" + chiTietVe[i].MAGIOITHIEU + "',N'" + chiTietVe[i].NGUOIGIOITHIEU + "', " + chiTietVe[i].PhiDVBan + ")";
-                    using (var conn = new SqlConnection(server_KT))
+                    sql_EV = @"Insert into BAOCAOVESOT(PNR,SOVE,NGUOISUA,NGAYSUA,MAKH,CHIETKHAU,GIAMUA,PHIDVMUA,PHIXUATVE,PHIDVBAN,PHIHOAN,HANG,GHICHU,THUOCTINH,MAGIOITHIEU,NGUOIGIOITHIEU, LOAIPHI, SOLUONG) OUTPUT Inserted.ID Values('" + chiTietVe[i].PNR.Trim() + "','" + chiTietVe[i].SoVe.Trim() + "','" + MANV.Trim() + "','" + DateTime.Now + "','" + chiTietVe[i].MAKH.Trim() + "'," + chiTietVe[i].ChietKhau + "," + chiTietVe[i].GiaMua + "," + chiTietVe[i].PhiDVMua + "," + chiTietVe[i].PhiXuatVe + "," + chiTietVe[i].PhiDVBan + "," + chiTietVe[i].PhiHoan + ",'" + chiTietVe[i].MAHHK.Trim() + "',N'" + chiTietVe[i].GHICHU + "',1,N'" + chiTietVe[i].MAGIOITHIEU + "',N'" + chiTietVe[i].NGUOIGIOITHIEU + "',N'" + chiTietVe[i].LoaiPhi + "'," + chiTietVe[i].SoLuong + ")";
+                    int result_sql_EV = int.Parse(db.ExecuteDataSet(sql_EV, CommandType.Text, "server37", null).Tables[0].Rows[0][0].ToString());
+                    if (result_sql_EV > 0)
                     {
-                        result_sql = conn.Execute(sql, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                        conn.Dispose();
-                    }
-
-                    if (result_sql > 0)
-                    {
-                        sql_EV = @"Insert into BAOCAOVESOT(PNR,SOVE,NGUOISUA,NGAYSUA,MAKH,CHIETKHAU,GIAMUA,PHIDVMUA,PHIXUATVE,PHIDVBAN,PHIHOAN,HANG,GHICHU,THUOCTINH,MAGIOITHIEU,NGUOIGIOITHIEU, LOAIPHI, SOLUONG) OUTPUT Inserted.ID Values('" + chiTietVe[i].PNR.Trim() + "','" + chiTietVe[i].SoVe.Trim() + "','" + MANV.Trim() + "','" + DateTime.Now + "','" + chiTietVe[i].MAKH.Trim() + "'," + chiTietVe[i].ChietKhau + "," + chiTietVe[i].GiaMua + "," + chiTietVe[i].PhiDVMua + "," + chiTietVe[i].PhiXuatVe + "," + chiTietVe[i].PhiDVBan + "," + chiTietVe[i].PhiHoan + ",'" + chiTietVe[i].MAHHK.Trim() + "',N'" + chiTietVe[i].GHICHU + "',1,N'" + chiTietVe[i].MAGIOITHIEU + "',N'" + chiTietVe[i].NGUOIGIOITHIEU + "',N'" + chiTietVe[i].LoaiPhi + "'," + chiTietVe[i].SoLuong + ")";
-                        int result_sql_EV = int.Parse(db.ExecuteDataSet(sql_EV, CommandType.Text, "server37", null).Tables[0].Rows[0][0].ToString());
-                        if (result_sql_EV > 0)
+                        int result_update = 0;
+                        string sql_update = "";
+                           
+                        string sql_update_tien = "SP_INSERT_BIENDONGSODU_TM";
+                        double soTien = double.Parse(chiTietVe[i].GiaMua.Trim()) + double.Parse(chiTietVe[i].PhiDVBan.Trim()) + double.Parse(chiTietVe[i].PhiXuatVe.Trim());
+                        string noiDung = chiTietVe[i].MAHHK + "-" + chiTietVe[i].PNR + "-" + chiTietVe[i].SoVe;
+                        if (chiTietVe[i].PNR == chiTietVe[i].SoVe)
                         {
-                            int result_update = 0;
-                            string sql_update = "updatethongtinbookernhap";
-                            using (var conn = new SqlConnection(server_KT))
-                            {
-                                result_update = conn.Execute(sql_update, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                                conn.Dispose();
-                                result = "";
-                            }
-                            string sql_update_tien = "SP_INSERT_BIENDONGSODU_TM";
-                            double soTien = double.Parse(chiTietVe[i].GiaMua.Trim()) + double.Parse(chiTietVe[i].PhiDVBan.Trim()) + double.Parse(chiTietVe[i].PhiXuatVe.Trim());
-                            string noiDung = chiTietVe[i].MAHHK + "-" + chiTietVe[i].PNR + "-" + chiTietVe[i].SoVe;
-                            if (chiTietVe[i].PNR == chiTietVe[i].SoVe)
-                            {
-                                noiDung = chiTietVe[i].MAHHK + "-" + chiTietVe[i].PNR;
-                            }
-                            var param = new
-                            {
-                                MAKH = chiTietVe[i].MAKH.Trim(),
-                                SOTIEN = soTien,
-                                NOCO = "Nợ",
-                                NOIDUNG = noiDung,
-                                NGAYCK = DateTime.Now,
-                                NGAYNHAN = DateTime.Now,
-                                NGAYGUI = DateTime.Now,
-                                IDBAOCAO = result_sql_EV,
-                                HANG = chiTietVe[i].MAHHK.Trim()
-                            };
-                            using (var conn = new SqlConnection(server_EV))
-                            {
-                                result_update = conn.Execute(sql_update_tien, param, null, commandType: CommandType.StoredProcedure, commandTimeout: 60);
-                                conn.Dispose();
-                                result = "";
-                            }
-                            if (result_update > 0)
-                            {
-                                sql_update = "UpdateThongTinTM";
-                                using (var conn = new SqlConnection(server_KT))
-                                {
-                                    result_update = conn.Execute(sql_update, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                                    conn.Dispose();
-                                    result = "";
-                                }
-                            }
+                            noiDung = chiTietVe[i].MAHHK + "-" + chiTietVe[i].PNR;
                         }
-                        else
+                        var param = new
                         {
-                            string sqldel = @"delete Life_obj3535  where field1 = '" + chiTietVe[i].SoVe.Trim() + "' and field9 = '" + chiTietVe[i].PNR.Trim() + "'";
-                            using (var conn = new SqlConnection(server_KT))
-                            {
-                                conn.Execute(sqldel, null, null, commandType: CommandType.Text, commandTimeout: 30);
-                                conn.Dispose();
-                            }
-                            result = "Báo cáo vé không thành công số vé " + chiTietVe[i].SoVe.Trim();
-                            return result;
+                            MAKH = chiTietVe[i].MAKH.Trim(),
+                            SOTIEN = soTien,
+                            NOCO = "Nợ",
+                            NOIDUNG = noiDung,
+                            NGAYCK = DateTime.Now,
+                            NGAYNHAN = DateTime.Now,
+                            NGAYGUI = DateTime.Now,
+                            IDBAOCAO = result_sql_EV,
+                            HANG = chiTietVe[i].MAHHK.Trim()
+                        };
+                        using (var conn = new SqlConnection(server_EV))
+                        {
+                            result_update = conn.Execute(sql_update_tien, param, null, commandType: CommandType.StoredProcedure, commandTimeout: 60);
+                            conn.Dispose();
+                            result = "";
                         }
+                           
                     }
-                    else
-                    {
-                        result = "Báo cáo vé không thành công";
-                    }
+                       
                 }
                 return result;
             }
@@ -826,16 +767,16 @@ namespace Manager.DataAccess.Repository
             {
                 sql = @"select  NV.MaNV,
                                 NV.Ten,
-                                SLXUATVE=(select COUNT(*) from [SERVER18].[Agent].[dbo].[SendMailAgent] A where A.XuatVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui < '" + DenNgay + "' " + where + @"),
-                                SLDOIVE =(select COUNT(*) from [SERVER18].[Agent].[dbo].[SendMailAgent] A where A.DoiVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui < '" + DenNgay + "' " + where + @")
+                                SLXUATVE=(select COUNT(*) from [Server37].[Agent].[dbo].[SendMailAgent] A where A.XuatVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui < '" + DenNgay + "' " + where + @"),
+                                SLDOIVE =(select COUNT(*) from [Server37].[Agent].[dbo].[SendMailAgent] A where A.DoiVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui < '" + DenNgay + "' " + where + @")
                                 from DM_NV NV";
             }
             else
             {
                 sql = @"select  NV.MaNV,
                                 NV.Ten,
-                                SLXUATVE=(select COUNT(*) from [SERVER18].[Agent].[dbo].[SendMailAgent] A where A.XuatVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui < '" + DenNgay + " 23:59:59' " + where + @"),
-                                SLDOIVE =(select COUNT(*) from [SERVER18].[Agent].[dbo].[SendMailAgent] A where A.DoiVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui< '" + DenNgay + " 23:59:59' " + where + @")
+                                SLXUATVE=(select COUNT(*) from [Server37].[Agent].[dbo].[SendMailAgent] A where A.XuatVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui < '" + DenNgay + " 23:59:59' " + where + @"),
+                                SLDOIVE =(select COUNT(*) from [Server37].[Agent].[dbo].[SendMailAgent] A where A.DoiVe = 1 and NV.TenDangNhap = A.NhanVien and A.NgayGui >= '" + TuNgay + "'  and NgayGui< '" + DenNgay + " 23:59:59' " + where + @")
                                 from DM_NV NV";
             }
 

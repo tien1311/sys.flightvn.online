@@ -42,7 +42,7 @@ namespace Manager.DataAccess.Repository
             {
                 sWhere += " and SoTien = " + SoTien;
             }
-            string sql = @"select (Case when MACK like N'CK%' then 'SMS' else NganHang end) as Type,STT=Row_Number() over (order by NGAYNHAN desc), *, DULIEUEFF = (select top 1 EFF.field47 from [KETOAN].[ELV_KETOAN].[dbo].[LIFE_OBJ3528] EFF where MACK COLLATE DATABASE_DEFAULT = EFF.field47 COLLATE DATABASE_DEFAULT and EFF.field45 > '" + TuNgay + "' and EFF.field45 <= '" + DenNgay + " 23:59:59' )  from BIENDONGSODU where NGAYCK > '" + TuNgay + "' and NGAYCK <= '" + DenNgay + " 23:59:59'" + sWhere;
+            string sql = @"select (Case when MACK like N'CK%' then 'SMS' else NganHang end) as Type,STT=Row_Number() over (order by NGAYNHAN desc), *, DULIEUEFF = 'NV00006'  from BIENDONGSODU where NGAYCK > '" + TuNgay + "' and NGAYCK <= '" + DenNgay + " 23:59:59'" + sWhere;
             DataTable tb = db.ExecuteDataSet(sql, CommandType.Text, "server37", null).Tables[0];
             if (tb != null && tb.Rows.Count > 0)
             {
