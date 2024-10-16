@@ -701,10 +701,10 @@ namespace Manager.DataAccess.Services.CarBooking
                 }
                 booking.status_enviet = status;
                 _context.Requests.Update(booking);
-                if (booking.status_enviet == "WAITING")
-                {
-                    Task.Run(() => SendEmail(booking));
-                }
+                //if (booking.status_enviet == "WAITING")
+                //{
+                //    Task.Run(() => SendEmail(booking));
+                //}
                 await _context.SaveChangesAsync();
             }
         }
@@ -721,7 +721,7 @@ namespace Manager.DataAccess.Services.CarBooking
                 booking.email_cancel = true;
                 _context.Requests.Update(booking);
                 await _context.SaveChangesAsync();
-                Task.Run(() => SendEmail(booking));
+                //Task.Run(() => SendEmail(booking));
             }
             return 1;
         }
@@ -760,13 +760,13 @@ namespace Manager.DataAccess.Services.CarBooking
                 request.payment_status = "Success";
             }
             request.status_enviet = status;
-            if (status != "ACCEPT")
-            {
-                if (!(request.payment_type == "Online" && request.payment_status == "Success"))
-                {
-                    Task.Run(() => SendEmail(request));
-                }
-            }
+            //if (status != "ACCEPT")
+            //{
+            //    if (!(request.payment_type == "Online" && request.payment_status == "Success"))
+            //    {
+            //        Task.Run(() => SendEmail(request));
+            //    }
+            //}
             if (status == "WAITING")
             {
                 request.date_xacnhan = DateTime.Now;
@@ -891,145 +891,145 @@ namespace Manager.DataAccess.Services.CarBooking
             return list_id_booking;
         }
 
-        public async Task<string> SendEmail(Manager.Model.Models.CarBooking.Request result)
-        {
-            Dictionary<string, List<string>> arr = new Dictionary<string, List<string>>();
-            arr["WAITING"] = new List<string>() { "Đã xác nhận", "[XE ĐƯA ĐÓN] XÁC NHẬN ĐƠN HÀNG", "EVM_XACNHANDONHANG_CAR" };
-            arr["CONFIRM"] = new List<string>() { "Đã thanh toán", "[XE ĐƯA ĐÓN] XÁC NHẬN THANH TOÁN", "EVM_CHANGESTATUSCAR" };
-            arr["COMPLETE"] = new List<string>() { "Đã hoàn thành", "[XE ĐƯA ĐÓN] CẢM ƠN QUÝ KHÁCH HÀNG", "EVM_SUCCESSBOOKING" };
-            arr["CANCEL"] = new List<string>() { "Đã hủy", "[XE ĐƯA ĐÓN] XÁC NHẬN ĐÃ HỦY BOOKING", "EVM_CANCELCAR" };
-            var note = GetDescription(result).Result + PostsNote().Description;
+        //public async Task<string> SendEmail(Manager.Model.Models.CarBooking.Request result)
+        //{
+        //    Dictionary<string, List<string>> arr = new Dictionary<string, List<string>>();
+        //    arr["WAITING"] = new List<string>() { "Đã xác nhận", "[XE ĐƯA ĐÓN] XÁC NHẬN ĐƠN HÀNG", "EVM_XACNHANDONHANG_CAR" };
+        //    arr["CONFIRM"] = new List<string>() { "Đã thanh toán", "[XE ĐƯA ĐÓN] XÁC NHẬN THANH TOÁN", "EVM_CHANGESTATUSCAR" };
+        //    arr["COMPLETE"] = new List<string>() { "Đã hoàn thành", "[XE ĐƯA ĐÓN] CẢM ƠN QUÝ KHÁCH HÀNG", "EVM_SUCCESSBOOKING" };
+        //    arr["CANCEL"] = new List<string>() { "Đã hủy", "[XE ĐƯA ĐÓN] XÁC NHẬN ĐÃ HỦY BOOKING", "EVM_CANCELCAR" };
+        //    var note = GetDescription(result).Result + PostsNote().Description;
 
-            Mail mailDb = new Mail(arr[result.status_enviet][2]);
-            MailMessage message = new MailMessage(mailDb.username, result.email);
-            message.Subject = arr[result.status_enviet][1];
-            SmtpClient smtpclient = new SmtpClient(mailDb.host, mailDb.port);
-            string linkGateway = "";
+        //    Mail mailDb = new Mail(arr[result.status_enviet][2]);
+        //    MailMessage message = new MailMessage(mailDb.username, result.email);
+        //    message.Subject = arr[result.status_enviet][1];
+        //    SmtpClient smtpclient = new SmtpClient(mailDb.host, mailDb.port);
+        //    string linkGateway = "";
 
-            if (result.other_fee == null)
-            {
-                result.other_fee = 0;
-            }
-            if (result.status_enviet == "WAITING")
-            {
-                GatewayRepository gateway = new GatewayRepository(_configuration);
-                var productInfo = new[]
-                {
-                new { ProductName = "XE ĐƯA ĐÓN", Quantity = 1, UnitPrice = result.price }
-                };
-                //linkGateway = await gateway.GetLinkToGateway(result.evcode, result.agent_code, result.fullname, result.phone, result.email, result.vat_address, productInfo, result.price, result.discount, result.vat_price, result.other_fee, result.total, result.booking_notes);
-                linkGateway = await gateway.GetLinkToGateway_V2(result.evcode, result.agent_code, result.fullname, result.phone, result.email, result.vat_address, productInfo, result.price, result.discount, result.vat_price, result.other_fee, result.total, result.booking_notes, "https://gateway.envietgroup.com/Home/ChiTietDonHang?orderId=" + result.evcode);
-            }
+        //    if (result.other_fee == null)
+        //    {
+        //        result.other_fee = 0;
+        //    }
+        //    if (result.status_enviet == "WAITING")
+        //    {
+        //        GatewayRepository gateway = new GatewayRepository(_configuration);
+        //        var productInfo = new[]
+        //        {
+        //        new { ProductName = "XE ĐƯA ĐÓN", Quantity = 1, UnitPrice = result.price }
+        //        };
+        //        linkGateway = await gateway.GetLinkToGateway(result.evcode, result.agent_code, result.fullname, result.phone, result.email, result.vat_address, productInfo, result.price, result.discount, result.vat_price, result.other_fee, result.total, result.booking_notes);
+        //        linkGateway = await gateway.GetLinkToGateway_V2(result.evcode, result.agent_code, result.fullname, result.phone, result.email, result.vat_address, productInfo, result.price, result.discount, result.vat_price, result.other_fee, result.total, result.booking_notes, "https://gateway.envietgroup.com/Home/ChiTietDonHang?orderId=" + result.evcode);
+        //    }
 
-            var strSanPham = "";
+        //    var strSanPham = "";
 
-            strSanPham += "<tr>";
-            strSanPham += "<td style='text-align: center;'>" + result.type_car + "</td>";
-            strSanPham += "<td style='text-align: center;'>" + result.location_from + "</td>";
-            strSanPham += "<td style='text-align: center;'>" + result.location_to + "</td>";
-            strSanPham += "<td style='text-align: center;'>" + result.departure + "</td>";
-            string hanhTrinh_Car = "";
-            if (result.type == "0")
-            {
-                hanhTrinh_Car = "Một chiều";
-            }
-            else
-            {
-                hanhTrinh_Car = "Hai chiều";
-            }
-            strSanPham += "<td style='text-align: center;'>" + hanhTrinh_Car + "</td>";
-            strSanPham += "<td style='text-align: center;'>" + result.booking_notes + "</td>";
-            strSanPham += "</tr>";
+        //    strSanPham += "<tr>";
+        //    strSanPham += "<td style='text-align: center;'>" + result.type_car + "</td>";
+        //    strSanPham += "<td style='text-align: center;'>" + result.location_from + "</td>";
+        //    strSanPham += "<td style='text-align: center;'>" + result.location_to + "</td>";
+        //    strSanPham += "<td style='text-align: center;'>" + result.departure + "</td>";
+        //    string hanhTrinh_Car = "";
+        //    if (result.type == "0")
+        //    {
+        //        hanhTrinh_Car = "Một chiều";
+        //    }
+        //    else
+        //    {
+        //        hanhTrinh_Car = "Hai chiều";
+        //    }
+        //    strSanPham += "<td style='text-align: center;'>" + hanhTrinh_Car + "</td>";
+        //    strSanPham += "<td style='text-align: center;'>" + result.booking_notes + "</td>";
+        //    strSanPham += "</tr>";
 
 
 
-            string discountRow = result.discount > 0
-           ? $"<tr id='discount-row'><td style='width: 110px;'> <span class='payment-status_title'>Giảm giá: </span> </td><td class='table-price-value text-success' style='color: #14A44D;'><span id='discount-value'>- {Manager.Common.Helpers.Common.FormatNumber(result.discount, 0)} VNĐ</span></td></tr>"
-                : string.Empty;
+        //    string discountRow = result.discount > 0
+        //   ? $"<tr id='discount-row'><td style='width: 110px;'> <span class='payment-status_title'>Giảm giá: </span> </td><td class='table-price-value text-success' style='color: #14A44D;'><span id='discount-value'>- {Manager.Common.Helpers.Common.FormatNumber(result.discount, 0)} VNĐ</span></td></tr>"
+        //        : string.Empty;
 
-            string otherFeeRow = result.other_fee > 0
-            ? $"<tr id='other-fee-row'><td style='width: 110px;'> <span class='payment-status_title'>Phí khác: </span> </td><td class='table-price-value text-dark' style='color:#332D2D;'> <span id='other-fee-value'>+ {Manager.Common.Helpers.Common.FormatNumber(result.other_fee, 0)} VNĐ ({result.other_fee_reason})</span></td></tr>"
-            : string.Empty;
-            string vatRow = result.vat_price > 0
-            ? $"<tr id='vat-price-row'><td style='width: 110px;'> <span class='payment-status_title'>VAT ({result.vat_percent}%): </span> </td><td class='table-price-value text-dark' style='color:#332D2D;'><span id='vat-price-value'>+ {Manager.Common.Helpers.Common.FormatNumber(result.vat_price, 0)} VNĐ </span></td></tr>"
-            : string.Empty;
+        //    string otherFeeRow = result.other_fee > 0
+        //    ? $"<tr id='other-fee-row'><td style='width: 110px;'> <span class='payment-status_title'>Phí khác: </span> </td><td class='table-price-value text-dark' style='color:#332D2D;'> <span id='other-fee-value'>+ {Manager.Common.Helpers.Common.FormatNumber(result.other_fee, 0)} VNĐ ({result.other_fee_reason})</span></td></tr>"
+        //    : string.Empty;
+        //    string vatRow = result.vat_price > 0
+        //    ? $"<tr id='vat-price-row'><td style='width: 110px;'> <span class='payment-status_title'>VAT ({result.vat_percent}%): </span> </td><td class='table-price-value text-dark' style='color:#332D2D;'><span id='vat-price-value'>+ {Manager.Common.Helpers.Common.FormatNumber(result.vat_price, 0)} VNĐ </span></td></tr>"
+        //    : string.Empty;
 
-            try
-            {
-                MailAddress fromAddress = new MailAddress(mailDb.username, "ENVIET GROUP");
-                message.From = fromAddress;
-                if (result.booking_notes.Trim() != "ENVIETTESTING")
-                {
-                    message.CC.Add("services@enviet-group.com");
-                }
-                StringBuilder mailBody = new StringBuilder();
-                using (var webResponse = System.Net.WebRequest.Create(mailDb.templateUrl).GetResponse())
-                using (var content = webResponse.GetResponseStream())
-                using (var reader = new System.IO.StreamReader(content))
-                {
-                    mailBody.Append(reader.ReadToEnd());
-                }
-                mailBody = mailBody.Replace(result.status_enviet == "COMPLETE" ? "$_Code" : "$_evcode", result.evcode)
-                .Replace("$_evcode", result.evcode)
-                .Replace("$_LocationFrom", result.location_from)
-                .Replace("$_LocationTo", result.location_to)
-                .Replace("$_Type", result.type == "0" ? "Một chiều" : "Hai chiều")
-                .Replace("$_Car", result.type_car)
-                .Replace("$_Departure", result.departure.ToString("dd/MM/yyyy HH:mm tt"))
-                .Replace("$_Price", result.price.ToString("#,0") + " VNĐ")
-                .Replace("$_Discount", result.discount.ToString("#,0") + " VNĐ")
-                .Replace("$_OtherFee", result.other_fee.Value.ToString("#,0") + " VNĐ")
-                .Replace("$_VatPrice", result.vat_price.ToString("#,0") + " VNĐ")
-                .Replace("$_Total", result.total.ToString("#,0") + " VNĐ")
-                .Replace("$_AgentCode", result.agent_code)
-                .Replace("$_Fullname", result.fullname)
-                .Replace("$_Email", result.email)
-                .Replace("$_Phone", result.phone)
-                .Replace("$_StatusEnviet", arr[result.status_enviet][0])
-                .Replace("$_CancellationReason", result.ev_cancellation_reason)
-                .Replace("$_BookingNotes", result.booking_notes)
-                .Replace("$_VatNotes", result.vat_notes)
-                .Replace("$_VatMst", result.vat_mst)
-                .Replace("$_VatAddress", result.vat_address)
-                .Replace("$_VATPercent", result.vat_percent.ToString())
-                .Replace("$_Condition", note)
-                .Replace("$_LinkGateway", linkGateway)
-                .Replace("{{DISCOUNT_ROW}}", discountRow)
-                .Replace("{{OTHER_FEE_ROW}}", otherFeeRow)
-                .Replace("{{VAT_ROW}}", vatRow)
-                .Replace("$_SanPham", strSanPham)
-                .Replace(result.status_enviet == "COMPLETE" ? "$_Ngaygui" : "$_Date", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"));
+        //    try
+        //    {
+        //        MailAddress fromAddress = new MailAddress(mailDb.username, "ENVIET GROUP");
+        //        message.From = fromAddress;
+        //        if (result.booking_notes.Trim() != "ENVIETTESTING")
+        //        {
+        //            message.CC.Add("services@enviet-group.com");
+        //        }
+        //        StringBuilder mailBody = new StringBuilder();
+        //        using (var webResponse = System.Net.WebRequest.Create(mailDb.templateUrl).GetResponse())
+        //        using (var content = webResponse.GetResponseStream())
+        //        using (var reader = new System.IO.StreamReader(content))
+        //        {
+        //            mailBody.Append(reader.ReadToEnd());
+        //        }
+        //        mailBody = mailBody.Replace(result.status_enviet == "COMPLETE" ? "$_Code" : "$_evcode", result.evcode)
+        //        .Replace("$_evcode", result.evcode)
+        //        .Replace("$_LocationFrom", result.location_from)
+        //        .Replace("$_LocationTo", result.location_to)
+        //        .Replace("$_Type", result.type == "0" ? "Một chiều" : "Hai chiều")
+        //        .Replace("$_Car", result.type_car)
+        //        .Replace("$_Departure", result.departure.ToString("dd/MM/yyyy HH:mm tt"))
+        //        .Replace("$_Price", result.price.ToString("#,0") + " VNĐ")
+        //        .Replace("$_Discount", result.discount.ToString("#,0") + " VNĐ")
+        //        .Replace("$_OtherFee", result.other_fee.Value.ToString("#,0") + " VNĐ")
+        //        .Replace("$_VatPrice", result.vat_price.ToString("#,0") + " VNĐ")
+        //        .Replace("$_Total", result.total.ToString("#,0") + " VNĐ")
+        //        .Replace("$_AgentCode", result.agent_code)
+        //        .Replace("$_Fullname", result.fullname)
+        //        .Replace("$_Email", result.email)
+        //        .Replace("$_Phone", result.phone)
+        //        .Replace("$_StatusEnviet", arr[result.status_enviet][0])
+        //        .Replace("$_CancellationReason", result.ev_cancellation_reason)
+        //        .Replace("$_BookingNotes", result.booking_notes)
+        //        .Replace("$_VatNotes", result.vat_notes)
+        //        .Replace("$_VatMst", result.vat_mst)
+        //        .Replace("$_VatAddress", result.vat_address)
+        //        .Replace("$_VATPercent", result.vat_percent.ToString())
+        //        .Replace("$_Condition", note)
+        //        .Replace("$_LinkGateway", linkGateway)
+        //        .Replace("{{DISCOUNT_ROW}}", discountRow)
+        //        .Replace("{{OTHER_FEE_ROW}}", otherFeeRow)
+        //        .Replace("{{VAT_ROW}}", vatRow)
+        //        .Replace("$_SanPham", strSanPham)
+        //        .Replace(result.status_enviet == "COMPLETE" ? "$_Ngaygui" : "$_Date", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"));
 
-                if (string.IsNullOrEmpty(result.other_fee_reason))
-                {
-                    mailBody = mailBody.Replace("$_Reason_OtherFee", "Không có");
-                }
-                else
-                {
-                    mailBody = mailBody.Replace("$_Reason_OtherFee", result.other_fee_reason);
-                }
+        //        if (string.IsNullOrEmpty(result.other_fee_reason))
+        //        {
+        //            mailBody = mailBody.Replace("$_Reason_OtherFee", "Không có");
+        //        }
+        //        else
+        //        {
+        //            mailBody = mailBody.Replace("$_Reason_OtherFee", result.other_fee_reason);
+        //        }
 
-                message.Body = mailBody.ToString();
-                message.IsBodyHtml = true;
-                smtpclient.Host = mailDb.host;  // We use gmail as our smtp client
-                smtpclient.Port = mailDb.port;
-                smtpclient.EnableSsl = Convert.ToBoolean(mailDb.useSSL);
-                smtpclient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpclient.UseDefaultCredentials = false;
-                smtpclient.Credentials = new System.Net.NetworkCredential(mailDb.username, new DBase().Decrypt(mailDb.password, "vodacthe", true));
-                smtpclient.Send(message);
-                return "Successful";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-            finally
-            {
-                message.Dispose();
-                smtpclient.Dispose();
-            }
-        }
+        //        message.Body = mailBody.ToString();
+        //        message.IsBodyHtml = true;
+        //        smtpclient.Host = mailDb.host;  // We use gmail as our smtp client
+        //        smtpclient.Port = mailDb.port;
+        //        smtpclient.EnableSsl = Convert.ToBoolean(mailDb.useSSL);
+        //        smtpclient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //        smtpclient.UseDefaultCredentials = false;
+        //        smtpclient.Credentials = new System.Net.NetworkCredential(mailDb.username, new DBase().Decrypt(mailDb.password, "vodacthe", true));
+        //        smtpclient.Send(message);
+        //        return "Successful";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return ex.Message;
+        //    }
+        //    finally
+        //    {
+        //        message.Dispose();
+        //        smtpclient.Dispose();
+        //    }
+        //}
 
     }
 }

@@ -16,7 +16,6 @@ namespace Manager.Model.Models.HoaDonModels.HDDT
         public string Message { get; set; } = "Success";
         public Response Result { get; set; } = null;
 
-
     }
 
 

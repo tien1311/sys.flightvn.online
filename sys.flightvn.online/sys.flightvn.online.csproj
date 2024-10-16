@@ -26,10 +26,10 @@
 
   <ItemGroup>
     <Reference Include="EasyInvoice.Client">
-      <HintPath>bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
+      <HintPath>..\Manager.Model\bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
     </Reference>
     <Reference Include="EasyInvoice.Json">
-      <HintPath>bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
+      <HintPath>..\Manager.Model\bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
 

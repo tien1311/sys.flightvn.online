@@ -109,7 +109,7 @@ namespace Manager.DataAccess.Repository
         {
             Upload_ImgModel result = new Upload_ImgModel();
             Detail_Img img = new Detail_Img();
-            string sql = @"SELECT top 1 * FROM [Adv] WHERE adv_id = 273";
+            string sql = @"SELECT top 1 * FROM [Adv] WHERE adv_id = 1";
             using (var conn = new SqlConnection(SQL_Agent_MAIN))
             {
                 img = conn.QueryFirst<Detail_Img>(sql, null, commandType: CommandType.Text, commandTimeout: 30);

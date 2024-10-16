@@ -105,10 +105,10 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
             return result;
         }
 
-        public async Task<string> SendEmail(Manager.Model.Models.CarBooking.Request request)
-        {
-            return await taxiServices.SendEmail(request);
-        }
+        //public async Task<string> SendEmail(Manager.Model.Models.CarBooking.Request request)
+        //{
+        //    return await taxiServices.SendEmail(request);
+        //}
 
 
         public async Task<string> AddCoupon([FromBody] JObject data)

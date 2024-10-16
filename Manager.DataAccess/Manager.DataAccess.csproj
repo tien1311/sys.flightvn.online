@@ -36,13 +36,13 @@
 
 	<ItemGroup>
 	  <Reference Include="EasyInvoice.Client">
-	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
+	    <HintPath>..\Manager.Model\bin\Debug\netcoreapp2.1\EasyInvoice.Client.dll</HintPath>
 	  </Reference>
 	  <Reference Include="EasyInvoice.Json">
-	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
+	    <HintPath>..\Manager.Model\bin\Debug\netcoreapp2.1\EasyInvoice.Json.dll</HintPath>
 	  </Reference>
 	  <Reference Include="TangDuLieu">
-	    <HintPath>..\sys.flightvn.online\bin\Debug\netcoreapp2.1\TangDuLieu.dll</HintPath>
+	    <HintPath>bin\Debug\TangDuLieu.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 
