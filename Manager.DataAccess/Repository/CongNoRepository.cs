@@ -34,7 +34,7 @@ namespace Manager.DataAccess.Repository
             CongNoModel CongNo = new CongNoModel();
             List<ChiTietCongNoModel> ListChiTietCongNo = new List<ChiTietCongNoModel>();
 
-            //string server_EV = "Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123";
+            //string server_EV = "Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123";
             string sql = $@"EXEC SP_CHITIET_CONGNO @MaKH='{makh}',@DateFrom='{dafr}',@DateTo='{dato}'";
             using (var conn = new SqlConnection(SQL_EV_MAIN))
             {
@@ -77,7 +77,7 @@ namespace Manager.DataAccess.Repository
             decimal result = 0;
             try
             {
-                //string server_KH_KT = "Data Source=.;Initial Catalog=ManagerAccountant;User ID=ELV_TEMP;Password=tkt@123$456;";
+                //string server_KH_KT = "Data Source=27.71.232.40,1453;Initial Catalog=ManagerAccountant;User ID=ELV_TEMP;Password=tkt@123$456;";
 
                 string res = "0";
                 string ngay = DateTime.ParseExact(dafr, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddDays(-1).ToString("MM/dd/yyyy");
@@ -124,7 +124,7 @@ namespace Manager.DataAccess.Repository
             string sql = "";
             try
             {
-                //string server_KT = "Data Source=.; Initial Catalog = ManagerAccountant; User ID = ELV_TEMP; Password = tkt@123$456;";
+                //string server_KT = "Data Source=27.71.232.40,1453; Initial Catalog = ManagerAccountant; User ID = ELV_TEMP; Password = tkt@123$456;";
                 sql = $@"SELECT top 1 isnull(SoDu,0) as sodu  FROM [ManagerAccountant].[dbo].[_DUCUOI_NEW] WITH (NOLOCK) where  ID_Khachhang = '" + maKH + "'";
                 using (var conn = new SqlConnection(SQL_KH_KT))
                 {

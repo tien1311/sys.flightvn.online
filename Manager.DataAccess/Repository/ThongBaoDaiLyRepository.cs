@@ -11,8 +11,8 @@ namespace Manager.DataAccess.Repository
 {
     public class ThongBaoDaiLyRepository
     {
-        private string SQL_EV_MAIN_V2; /* = "Data Source=.;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";*/
-        private string SQL_EV_MAIN; /*= "Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
+        private string SQL_EV_MAIN_V2; /* = "Data Source=27.71.232.40,1453;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";*/
+        private string SQL_EV_MAIN; /*= "Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
         public ThongBaoDaiLyRepository(IConfiguration configuration)
         {
             SQL_EV_MAIN_V2 = configuration.GetConnectionString("SQL_EV_MAIN_V2");

@@ -819,7 +819,7 @@ SELECT * FROM [file];";
                   FROM tours  
                   WHERE tour_id LIKE @searchPattern 
                   ORDER BY createdate DESC";
-                //string server_EV_SERVICES = "Data Source=.;Initial Catalog=TOURHOT;User ID=sa;Password=EnViet@123;";
+                //string server_EV_SERVICES = "Data Source=27.71.232.40,1453;Initial Catalog=TOURHOT;User ID=sa;Password=EnViet@123;";
                 using (var connection = new SqlConnection(_connectionStringTourhot))
                 {
                     connection.Open();

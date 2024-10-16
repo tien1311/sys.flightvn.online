@@ -23,7 +23,7 @@ namespace Manager.DataAccess.Repository
     public class LoginRepository : WebClient
     {
         static DBase db = new DBase();
-        private string SQL_EV_MAIN; /*"Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
+        private string SQL_EV_MAIN; /*"Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
 
         public LoginRepository(IConfiguration configuration)
         {

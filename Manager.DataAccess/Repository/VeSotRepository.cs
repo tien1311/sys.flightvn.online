@@ -14,7 +14,7 @@ namespace Manager.DataAccess.Repository
 {
     public class VeSotRepository
     {
-        string server_EV_MAIN; /*= "Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
+        string server_EV_MAIN; /*= "Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
         DBase db = new DBase();
 
         public VeSotRepository(IConfiguration configuration)

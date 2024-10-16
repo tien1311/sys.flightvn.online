@@ -12,7 +12,7 @@ namespace Manager.DataAccess.Repository
 {
     public class ForumRepository
     {
-        private string SQL_FORUM; /*"Data Source=.;Initial Catalog=FORUM;User ID=sa;Password=EnViet@123;";*/
+        private string SQL_FORUM; /*"Data Source=27.71.232.40,1453;Initial Catalog=FORUM;User ID=sa;Password=EnViet@123;";*/
         public ForumRepository(IConfiguration configuration)
         {
             SQL_FORUM = configuration.GetConnectionString("SQL_FORUM");

@@ -13,8 +13,8 @@ namespace Manager.DataAccess.Repository
 {
     public class PostsAdsRepository
     {
-        string SQL_POSTS; /*= "Data Source=.;Initial Catalog=POSTS;User ID=sa;Password=EnViet@123;";*/
-        string SQL_Agent_MAIN; /*= "Data Source=.;Initial Catalog=Agent;User ID=sa;Password=Ngominhtien@13;";*/
+        string SQL_POSTS; /*= "Data Source=27.71.232.40,1453;Initial Catalog=POSTS;User ID=sa;Password=EnViet@123;";*/
+        string SQL_Agent_MAIN; /*= "Data Source=27.71.232.40,1453;Initial Catalog=Agent;User ID=sa;Password=Dv2UAxZz8LKNgqSX5r4TBm;";*/
 
         public PostsAdsRepository(IConfiguration configuration)
         {

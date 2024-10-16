@@ -24,7 +24,7 @@ namespace Manager.DataAccess.Repository
     {
         DBase db = new DBase();
         Mail baoVH = new Mail("EVM_HOANVE");
-        string server_Agent_Main; /*"Data Source=.;Initial Catalog=Agent;User ID=sa;Password=Ngominhtien@13;";*/
+        string server_Agent_Main; /*"Data Source=27.71.232.40,1453;Initial Catalog=Agent;User ID=sa;Password=Dv2UAxZz8LKNgqSX5r4TBm;";*/
 
         public VeHoanRepository(IConfiguration configuration)
         {

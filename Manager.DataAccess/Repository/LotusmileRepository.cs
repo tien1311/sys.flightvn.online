@@ -12,8 +12,8 @@ namespace Manager.DataAccess.Repository
 {
     public class LotusmileRepository
     {
-        string SQL_EV_MAIN_V2; /*= "Data Source=.;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";*/
-        string SQL_AIRLINE24h_MAIN; /* = "Data Source=.;Initial Catalog=Airline24h;User ID=sa;Password=Ngominhtien@13;";*/
+        string SQL_EV_MAIN_V2; /*= "Data Source=27.71.232.40,1453;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";*/
+        string SQL_AIRLINE24h_MAIN; /* = "Data Source=27.71.232.40,1453;Initial Catalog=Airline24h;User ID=sa;Password=Dv2UAxZz8LKNgqSX5r4TBm;";*/
 
         public LotusmileRepository(IConfiguration configuration)
         {

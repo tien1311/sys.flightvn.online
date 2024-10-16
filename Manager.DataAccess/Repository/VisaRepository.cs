@@ -25,8 +25,8 @@ namespace Manager.DataAccess.Repository
 {
     public class VisaRepository
     {
-        string SQL_VISA; /*= "Data Source=.;Initial Catalog=VISA;User ID=sa;Password=EnViet@123;";*/
-        string SQL_EV_MAIN; /* = "Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
+        string SQL_VISA; /*= "Data Source=27.71.232.40,1453;Initial Catalog=VISA;User ID=sa;Password=EnViet@123;";*/
+        string SQL_EV_MAIN; /* = "Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
         Mail mailDb = new Mail("EVM_CHANGESTATUSVISA");
         Mail mailDbSuccess = new Mail("EVM_SUCCESSBOOKING");
         Mail mailDbXacNhanDonHang = new Mail("EVM_XACNHANDONHANG_VISA");

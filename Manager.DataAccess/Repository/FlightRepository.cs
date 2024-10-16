@@ -90,7 +90,7 @@ namespace Manager.DataAccess.Repository
         public List<FlightModel> ListFlight()
         {
             UpdateFlightEndDate();
-            //string Server = "Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";
+            //string Server = "Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";
             List<FlightModel> result = new List<FlightModel>();
             string sql = @"select F.*  from Flight F left join FlightDetail FD on F.ID = FD.FlightID where F.status = 1 and F.Active =1 and FD.KindFlight = 1 order by FD.ID asc";
             using (var conn = new SqlConnection(SQL_EV_MAIN))
@@ -342,7 +342,7 @@ namespace Manager.DataAccess.Repository
 
         public YeuCauVeDoan ChiTietYeuCauDoan(string code)
         {
-            //string connectionString = "Data Source=.;Initial Catalog=GROUP_BOOKING;User ID=sa;Password=EnViet@123;";
+            //string connectionString = "Data Source=27.71.232.40,1453;Initial Catalog=GROUP_BOOKING;User ID=sa;Password=EnViet@123;";
             YeuCauVeDoan chiTietYeuCauDoan = new YeuCauVeDoan();
             string sql = @"
                             SELECT 
@@ -397,7 +397,7 @@ namespace Manager.DataAccess.Repository
 
         public string GetAirportName(string code)
         {
-            string connectionString = "Data Source=.;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";
+            string connectionString = "Data Source=27.71.232.40,1453;Initial Catalog=Manager_V2;User ID=sa;Password=EnViet@123;";
 
             string AirportName = string.Empty;
             string sql = @"
@@ -428,7 +428,7 @@ namespace Manager.DataAccess.Repository
                 dateTo = DateTime.Now;
             }
             List<YeuCauVeDoan> listYeuCauVeDoan = null;
-            //string connectionString = "Data Source=.;Initial Catalog=GROUP_BOOKING;User ID=sa;Password=EnViet@123;";
+            //string connectionString = "Data Source=27.71.232.40,1453;Initial Catalog=GROUP_BOOKING;User ID=sa;Password=EnViet@123;";
             string sql = @"
                          WITH RequestCTE AS (
                             SELECT 
@@ -639,7 +639,7 @@ namespace Manager.DataAccess.Repository
             List<PaymentAppota> ListPayment = new List<PaymentAppota>();
 
 
-            //string connectionString = "Data Source=.;Initial Catalog=EV_SERVICES;User ID=sa;Password=EnViet@123;";
+            //string connectionString = "Data Source=27.71.232.40,1453;Initial Catalog=EV_SERVICES;User ID=sa;Password=EnViet@123;";
 
             using (IDbConnection dbConnection = new SqlConnection(SQL_EV_SERVICE))
             {
@@ -655,7 +655,7 @@ namespace Manager.DataAccess.Repository
         {
             List<PaymentAppota> ListPayment = new List<PaymentAppota>();
 
-            //string connectionString = "Data Source=.;Initial Catalog=EV_SERVICES;User ID=sa;Password=EnViet@123;";
+            //string connectionString = "Data Source=27.71.232.40,1453;Initial Catalog=EV_SERVICES;User ID=sa;Password=EnViet@123;";
 
             using (IDbConnection dbConnection = new SqlConnection(SQL_EV_SERVICE))
             {

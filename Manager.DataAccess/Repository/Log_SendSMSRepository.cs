@@ -13,7 +13,7 @@ namespace Manager.DataAccess.Repository
 {
     public class Log_SendSMSRepository
     {
-        string SQL_EV_MAIN; /*= "Data Source=.;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
+        string SQL_EV_MAIN; /*= "Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
         public Log_SendSMSRepository(IConfiguration configuration)
         {
             SQL_EV_MAIN = configuration.GetConnectionString("SQL_EV_MAIN");
