@@ -77,17 +77,34 @@ namespace Manager.DataAccess.Repository
             decimal result = 0;
             try
             {
+                List<ChiTietCongNoModel> ListChiTietCongNo = new List<ChiTietCongNoModel>();
                 //string server_KH_KT = "Data Source=27.71.232.40,1453;Initial Catalog=ManagerAccountant;User ID=ELV_TEMP;Password=tkt@123$456;";
-
-                string res = "0";
-                string ngay = DateTime.ParseExact(dafr, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddDays(-1).ToString("MM/dd/yyyy");
-                string sql = $@"SELECT isnull(Sum(SoDu),0) as sodu FROM [fTinhSodu]('{ngay}','{maKH}') group by id_khachhang";
-                //DataTable tbl = db.ExecuteDataSet(sql, CommandType.Text, "serverKT", null).Tables[0];
-                using (var conn = new SqlConnection(SQL_KH_KT))
+                string sql = $@"EXEC SP_CHITIET_CONGNO @MaKH='{maKH}',@DateFrom='2020-01-01',@DateTo='{dafr}'";
+                using (var conn = new SqlConnection(SQL_EV_MAIN))
                 {
-                    result = conn.QueryFirst<decimal>(sql, null, null, commandType: CommandType.Text, commandTimeout: 30);
+
+                    ListChiTietCongNo = (List<ChiTietCongNoModel>)conn.Query<ChiTietCongNoModel>(sql, null, null, true, commandType: CommandType.Text, commandTimeout: 30);
                     conn.Dispose();
                 }
+
+                double TongNo = 0;
+                double TongCo = 0;
+                foreach (ChiTietCongNoModel item in ListChiTietCongNo)
+                {
+                    TongNo += item.No;
+                    TongCo += item.Co;
+                }
+                decimal.TryParse((TongNo - TongCo).ToString(), out result);
+
+                //string res = "0";
+                //string ngay = DateTime.ParseExact(dafr, "yyyy-MM-dd", CultureInfo.InvariantCulture).AddDays(-1).ToString("MM/dd/yyyy");
+                //string sql = $@"SELECT isnull(Sum(SoDu),0) as sodu FROM [fTinhSodu]('{ngay}','{maKH}') group by id_khachhang";
+                ////DataTable tbl = db.ExecuteDataSet(sql, CommandType.Text, "serverKT", null).Tables[0];
+                //using (var conn = new SqlConnection(SQL_KH_KT))
+                //{
+                //    result = conn.QueryFirst<decimal>(sql, null, null, commandType: CommandType.Text, commandTimeout: 30);
+                //    conn.Dispose();
+                //}
                 return result;
             }
             catch (Exception)
