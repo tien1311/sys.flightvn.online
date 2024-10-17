@@ -10,7 +10,7 @@
             @if (e == "1")
             {
                 <h3>Setting</h3>
-                <li><a href="/@AreaNameConst.AREA_Setting/Setting/profile?&i=1"><i class="fa fa-home"></i><span class="bt">Profile</span><span class="rg">Profile</span></a></li>
+                @* <li><a href="/@AreaNameConst.AREA_Setting/Setting/profile?&i=1"><i class="fa fa-home"></i><span class="bt">Profile</span><span class="rg">Profile</span></a></li> *@
                 <li><a href="/@AreaNameConst.AREA_Content/Content/ViewContent?&subject_id=148&i=1"><i class="fa fa-home"></i><span class="bt">Sơ đồ Web</span><span class="rg">SĐ Web</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_Setting/Setting/EditProfile?&i=1"><i class="fa fa-cogs"></i><span class="bt">SĐT nhận SMS</span><span class="rg">SĐT</span></a></li>
             }
@@ -27,24 +27,21 @@
                     <li><a href="/@AreaNameConst.AREA_DuLich/DuLich/Dieuchinhhoahong?&i=12"><i class="fa fa-book"></i><span class="bt">Hoa hồng, VAT sản phẩm</span><span class="rg">Hoa hồng, VAT</span></a></li>
                     <li><a href="/@AreaNameConst.AREA_DuLich/CarBooking/Discount?&i=12"><i class="fa fa-book"></i><span class="bt">Mã giảm giá xe đưa đón</span><span class="rg">Mã giảm giá xe</span></a></li>
                     <li><a href="/@AreaNameConst.AREA_Setting/BankInfo/Bank?&i=12"><i class="fa fa-book"></i><span class="bt">Thông tin ngân hàng</span><span class="rg">Bank</span></a></li>
-                    <li><a href="/@AreaNameConst.AREA_Setting/Setting/CapNhatCauHinh?&i=12"><i class="fa fa-book"></i><span class="bt">Cấu hình hóa đơn</span><span class="rg">Cấu hình hóa đơn</span></a></li>
                     <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/ConfigBalanceAirlines?&i=12"><i class="fa fa-book"></i><span class="bt">Số dư hãng</span><span class="rg">Số dư hãng</span></a></li>
                     <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/PhanQuyenHangBay?&i=12"><i class="fa fa-user"></i><span class="bt">Phân quyền hãng bay</span><span class="rg">Phân quyền hãng bay</span></a></li>
-                    <li><a href="/@AreaNameConst.AREA_Setting/PaymentGateway/ListPaymentMethod?&i=12"><i class="fa fa-money"></i><span class="bt">Cấu hình PaymentGateway</span><span class="rg">Cấu hình PaymentGateway</span></a></li>
+                  
                     <br />
                 }
                 <h3>Kỹ thuật</h3>
                 <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DoanhSoHang?&i=12"><i class="fa fa-book"></i><span class="bt">Doanh số hãng</span><span class="rg">Doanh số hãng</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_DaiLy/Daily/DanhSachThanhVien?&i=12"><i class="fa fa-book"></i><span class="bt">Danh sách thành viên</span><span class="rg">Thànhviên</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DangKyThanhVien?&i=12"><i class="fa fa-book"></i><span class="bt">Đăng ký thành viên</span><span class="rg">ĐKTV</span></a></li>
+               
                 <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/PhanQuyen?&i=12"><i class="fa fa-book"></i><span class="bt">Phân quyền</span><span class="rg">PQ</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/PhanQuyenMember?&i=12"><i class="fa fa-book"></i><span class="bt">Phân quyền thành viên</span><span class="rg">PQTV</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/Log_SendSMSBCV?&i=12"><i class="fa fa-book"></i><span class="bt">Log SMS báo cáo vé</span><span class="rg">SMS</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/ListAirportCode?&i=12"><i class="fa fa-book"></i><span class="bt">AirportCode</span><span class="rg">Airport</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/ListBankStatement?&i=12"><i class="fa fa-book"></i><span class="bt">Sao kê ngân hàng</span><span class="rg">Sao kê ngân hàng</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/DoiChieuThanhToan?&i=12"><i class="fa fa-credit-card"></i><span class="bt">Đối chiếu thanh toán</span><span class="rg">Online Payment</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_KyThuat/KyThuat/IPWhiteList?&i=12"><i class="fa fa-rss"></i><span class="bt">IP WhiteList</span><span class="rg">IP WhiteList</span></a></li>
-
+             
                 <li>
                     <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Điều kiện vé</span><span class="rg">Rule</span><span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -368,7 +365,7 @@
                     </ul>
                 </li>
                 <li><a href="/@AreaNameConst.AREA_Data/Data/DSCongViec?&i=9"><i class="fa fa-book"></i><span class="bt">DS công việc</span><span class="rg">DS_CV</span></a></li>
-                <li>
+              @*   <li>
                     <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">EVBay</span><span class="rg">EVBay</span><span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/Data/MenuNews?&i=9">Menu</a></li>
@@ -396,14 +393,14 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> *@
                 <li><a href="/@AreaNameConst.AREA_Data/Data/NhomKH?&i=9"><i class="fa fa-book"></i><span class="bt">Nhóm ĐL</span><span class="rg">NhomDL</span></a></li>
                 <li><a href="/@AreaNameConst.AREA_Data/Data/ThongBao?&i=9"><i class="fa fa-book"></i><span class="bt">Thông báo</span><span class="rg">TB</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_Data/Popup/UploadPopup?&i=9"><i class="fa fa-book"></i><span class="bt">Upload Img</span><span class="rg">Upload</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_Data/Data/DSVeSotKhac?&i=9"><i class="fa fa-book"></i><span class="bt">Danh sách báo cáo vé khác</span><span class="rg">DSBCVK</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_Data/Forum/DuyetBaiViet?&i=9"><i class="fa fa-book"></i><span class="bt">Duyệt bài viết</span><span class="rg">DBV</span></a></li>
+              @*   <li><a href="/@AreaNameConst.AREA_Data/Popup/UploadPopup?&i=9"><i class="fa fa-book"></i><span class="bt">Upload Img</span><span class="rg">Upload</span></a></li> *@
+               @*  <li><a href="/@AreaNameConst.AREA_Data/Data/DSVeSotKhac?&i=9"><i class="fa fa-book"></i><span class="bt">Danh sách báo cáo vé khác</span><span class="rg">DSBCVK</span></a></li> *@
+                @*   <li><a href="/@AreaNameConst.AREA_Data/Forum/DuyetBaiViet?&i=9"><i class="fa fa-book"></i><span class="bt">Duyệt bài viết</span><span class="rg">DBV</span></a> </li>*@
                 <li><a href="/@AreaNameConst.AREA_Data/Lotusmile/Lotusmile?&i=9"><i class="fa fa-book"></i><span class="bt">Lotusmile</span><span class="rg">Lotusmile</span></a></li>
-                <li><a href="/@AreaNameConst.AREA_Data/APIVeDoan/APIVeDoan?&i=9"><i class="fa fa-book"></i><span class="bt">API Vé đoàn</span><span class="rg">VeDoan</span></a></li>
+               @*  <li><a href="/@AreaNameConst.AREA_Data/APIVeDoan/APIVeDoan?&i=9"><i class="fa fa-book"></i><span class="bt">API Vé đoàn</span><span class="rg">VeDoan</span></a></li> *@
                 <li>
                     <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">QR</span><span class="rg">QR</span><span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -416,7 +413,7 @@
                     <a href="#level1_1"><i class="fa fa-book"></i><span class="bt">Thông báo đại lý</span><span class="rg">TB</span><span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/ThongBaoDaiLy/TinhTrang?&i=9">Tình trạng</a></li>
-                        <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/ThongBaoDaiLy/NoiDung?&i=9">Nội dung</a></li>
+@*                         <li class="sub_menu"><a href="/@AreaNameConst.AREA_Data/ThongBaoDaiLy/NoiDung?&i=9">Nội dung</a></li> *@
                     </ul>
                 </li>
 

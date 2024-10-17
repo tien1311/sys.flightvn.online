@@ -24,9 +24,7 @@ namespace Manager.DataAccess.Repository
     public class TourHotRepository
     {
 
-        Mail baoNS_BookingTourStatus = new Mail("EVM_CHANGESTATUSBOOKINGTOUR");
-        Mail baoNS_CancelBookingTour = new Mail("EVM_CANCELBOOKINGTOUR");
-        Mail baoNS_SuccessBooking = new Mail("EVM_SUCCESSBOOKING");
+
         private readonly string _connectionString;
         private readonly string _connectionStringTour;
         private readonly string _connectionStringTourhot;
@@ -230,169 +228,86 @@ SELECT * FROM [file];";
             }
         }
 
-        public bool SendMailBookingTourHot(string trienkhai_id, string tour_id, string name, string phone, string email, string note, string tieuchuan, string sl_lon, string sl_tre_em, string sl_em_be, string tourname, string ngaydi, string ngayve, string tourcode, decimal hoahong, decimal tongtien, string ghichu, string LoaiTour, decimal price, decimal vat)
-        {
+        //public bool SendMailBookingTourHot(string trienkhai_id, string tour_id, string name, string phone, string email, string note, string tieuchuan, string sl_lon, string sl_tre_em, string sl_em_be, string tourname, string ngaydi, string ngayve, string tourcode, decimal hoahong, decimal tongtien, string ghichu, string LoaiTour, decimal price, decimal vat)
+        //{
 
-            MailMessage mail = new MailMessage(baoNS_BookingTourStatus.username, email);
-            mail.From = new MailAddress(baoNS_BookingTourStatus.username, "ENVIET GROUP");
-            SmtpClient client = new SmtpClient();
-            client.EnableSsl = true;
-            client.Port = baoNS_BookingTourStatus.port;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential(baoNS_BookingTourStatus.username, new DBase().Decrypt(baoNS_BookingTourStatus.password, "vodacthe", true));
-            client.Host = baoNS_BookingTourStatus.host;
-            string Dieukien = "";
-            PostsAdsModel postsAdsModel = DieuKienNoiDia();
-            Dieukien = postsAdsModel.Description;
-            LoaiTour = "[TOUR Flight VN]";
+        //    MailMessage mail = new MailMessage(baoNS_BookingTourStatus.username, email);
+        //    mail.From = new MailAddress(baoNS_BookingTourStatus.username, "ENVIET GROUP");
+        //    SmtpClient client = new SmtpClient();
+        //    client.EnableSsl = true;
+        //    client.Port = baoNS_BookingTourStatus.port;
+        //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //    client.UseDefaultCredentials = false;
+        //    client.Credentials = new NetworkCredential(baoNS_BookingTourStatus.username, new DBase().Decrypt(baoNS_BookingTourStatus.password, "vodacthe", true));
+        //    client.Host = baoNS_BookingTourStatus.host;
+        //    string Dieukien = "";
+        //    PostsAdsModel postsAdsModel = DieuKienNoiDia();
+        //    Dieukien = postsAdsModel.Description;
+        //    LoaiTour = "[TOUR Flight VN]";
 
-            string subject = LoaiTour + " XÁC NHẬN GIỮ CHỖ ";
+        //    string subject = LoaiTour + " XÁC NHẬN GIỮ CHỖ ";
 
-            try
-            {
-                string mailCC = baoNS_BookingTourStatus.CC;
+        //    try
+        //    {
+        //        string mailCC = baoNS_BookingTourStatus.CC;
 
-                if (note == "ENVIETTESTING")
-                {
-                    mail.CC.Add("it05@enviet-group.com");
-                }
-                else
-                {
-                    mail.CC.Add(mailCC);
-                }
-            }
-            catch { }
-
-
-
-
-            mail.Subject = subject;
-
-            string mailBody;
-
-            var webRequest = WebRequest.Create(baoNS_BookingTourStatus.templateUrl);
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            using (var reader = new StreamReader(content))
-            { mailBody = reader.ReadToEnd(); }
-            mailBody = mailBody.Replace("$_TenTour", tourname);
-            mailBody = mailBody.Replace("$_MaTour", trienkhai_id);
-            mailBody = mailBody.Replace("$_Ngaygui", DateTime.Now.ToString("dd/MM/yyyy"));
-            mailBody = mailBody.Replace("$_Fullname", name);
-            mailBody = mailBody.Replace("$_ProductName", tourname);
-            mailBody = mailBody.Replace("$_Code", tourcode);
-            mailBody = mailBody.Replace("$_TinhTrang", "đã đặt");
-            mailBody = mailBody.Replace("$_NgayDi", ngaydi);
-            mailBody = mailBody.Replace("$_NgayVe", ngayve);
-            mailBody = mailBody.Replace("$_hotelTour", tieuchuan);
-            mailBody = mailBody.Replace("$_adult", sl_lon);
-            mailBody = mailBody.Replace("$_child", sl_tre_em);
-            mailBody = mailBody.Replace("$_kid", sl_em_be);
-            mailBody = mailBody.Replace("$_GhiChu", note);
-            mailBody = mailBody.Replace("$_price", string.Format("{0:0,0}", price).Replace(".", ","));
-            mailBody = mailBody.Replace("$_commission", string.Format("{0:0,0}", hoahong).Replace(".", ","));
-            mailBody = mailBody.Replace("$_totalprice", string.Format("{0:0,0}", tongtien).Replace(".", ","));
-            mailBody = mailBody.Replace("$_Dieukien", Dieukien);
-            if (vat == 0)
-            {
-                mailBody = mailBody.Replace("$_vat", "0");
-            }
-            else
-            {
-                mailBody = mailBody.Replace("$_vat", string.Format("{0:0,0}", vat).Replace(".", ","));
-            }
-            mail.Body = mailBody;
-            mail.IsBodyHtml = true;
-            client.Send(mail);
-            return true;
-        }
-
-
-        public bool MailCancelBoookingTourHot(string LoaiTour, string customerName, string TourCode, string NameTour, string tourID, string ngaydi, string ngayve, string tieuchuan, string adultQuantity, string childQuantity, string kidQuantity, string Namecompany, string MaKH, string customerPhone, string customerEmail, string customerNote, decimal commission, decimal totalPrice, string MaSoThue, string TenCaNhanToChuc, string DiaChi, decimal price, decimal vat, string lido)
-        {
-
-            MailMessage mail = new MailMessage(baoNS_CancelBookingTour.username, customerEmail);
-            mail.From = new MailAddress(baoNS_CancelBookingTour.username, "ENVIET GROUP");
-            SmtpClient client = new SmtpClient();
-            client.EnableSsl = true;
-            client.Port = baoNS_CancelBookingTour.port;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential(baoNS_CancelBookingTour.username, new DBase().Decrypt(baoNS_CancelBookingTour.password, "vodacthe", true));
-            client.Host = baoNS_CancelBookingTour.host;
-
-
-            LoaiTour = "[TOUR Flight VN]";
-
-            string subject = LoaiTour + " XÁC NHẬN HUỶ BOOKING";
-
-            try
-            {
-                string mailCC = baoNS_BookingTourStatus.CC;
-
-                if (customerNote == "ENVIETTESTING")
-                {
-                    mail.CC.Add("it05@enviet-group.com");
-                }
-                else
-                {
-                    mail.CC.Add(mailCC);
-                }
-            }
-            catch { }
+        //        if (note == "ENVIETTESTING")
+        //        {
+        //            mail.CC.Add("it05@enviet-group.com");
+        //        }
+        //        else
+        //        {
+        //            mail.CC.Add(mailCC);
+        //        }
+        //    }
+        //    catch { }
 
 
 
 
-            mail.Subject = subject;
+        //    mail.Subject = subject;
 
-            string mailBody;
+        //    string mailBody;
 
-            var webRequest = WebRequest.Create(baoNS_CancelBookingTour.templateUrl);
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            using (var reader = new StreamReader(content))
-            { mailBody = reader.ReadToEnd(); }
-            mailBody = mailBody.Replace("$_TenTour", NameTour);
-            mailBody = mailBody.Replace("$_MaTour", tourID);
-            mailBody = mailBody.Replace("$_Ngaygui", DateTime.Now.ToString("dd/MM/yyyy"));
-            mailBody = mailBody.Replace("$_HoTen", customerName);
-            mailBody = mailBody.Replace("$_Namecompany", Namecompany);
-            mailBody = mailBody.Replace("$_Code", TourCode);
-            mailBody = mailBody.Replace("$_TinhTrang", "đã đặt");
-            mailBody = mailBody.Replace("$_NgayDi", ngaydi);
-            mailBody = mailBody.Replace("$_NgayVe", ngayve);
-            mailBody = mailBody.Replace("$_hotelTour", tieuchuan);
-            mailBody = mailBody.Replace("$_adult", adultQuantity);
-            mailBody = mailBody.Replace("$_child", childQuantity);
-            mailBody = mailBody.Replace("$_kid", kidQuantity);
-            mailBody = mailBody.Replace("$_GhiChu", customerNote);
-            mailBody = mailBody.Replace("$_MaKH", MaKH);
-            mailBody = mailBody.Replace("$_Email", customerEmail);
-            mailBody = mailBody.Replace("$_DienThoai", customerPhone);
-            mailBody = mailBody.Replace("$_GhiChu", customerNote);
-            mailBody = mailBody.Replace("$_MaSoThue", MaSoThue);
-            mailBody = mailBody.Replace("$_TenCongTi", TenCaNhanToChuc);
-            mailBody = mailBody.Replace("$_DiaChi", DiaChi);
-            mailBody = mailBody.Replace("$_lido", lido);
-            mailBody = mailBody.Replace("$_price", string.Format("{0:0,0}", price).Replace(".", ","));
-            mailBody = mailBody.Replace("$_commission", string.Format("{0:0,0}", commission).Replace(".", ","));
-            mailBody = mailBody.Replace("$_totalprice", string.Format("{0:0,0}", totalPrice).Replace(".", ","));
-            if (vat == 0)
-            {
-                mailBody = mailBody.Replace("$_vat", "0");
-            }
-            else
-            {
-                mailBody = mailBody.Replace("$_vat", string.Format("{0:0,0}", vat).Replace(".", ","));
-            }
-            mail.Body = mailBody;
-            mail.IsBodyHtml = true;
-            client.Send(mail);
-            return true;
-        }
+        //    var webRequest = WebRequest.Create(baoNS_BookingTourStatus.templateUrl);
+        //    using (var response = webRequest.GetResponse())
+        //    using (var content = response.GetResponseStream())
+        //    using (var reader = new StreamReader(content))
+        //    { mailBody = reader.ReadToEnd(); }
+        //    mailBody = mailBody.Replace("$_TenTour", tourname);
+        //    mailBody = mailBody.Replace("$_MaTour", trienkhai_id);
+        //    mailBody = mailBody.Replace("$_Ngaygui", DateTime.Now.ToString("dd/MM/yyyy"));
+        //    mailBody = mailBody.Replace("$_Fullname", name);
+        //    mailBody = mailBody.Replace("$_ProductName", tourname);
+        //    mailBody = mailBody.Replace("$_Code", tourcode);
+        //    mailBody = mailBody.Replace("$_TinhTrang", "đã đặt");
+        //    mailBody = mailBody.Replace("$_NgayDi", ngaydi);
+        //    mailBody = mailBody.Replace("$_NgayVe", ngayve);
+        //    mailBody = mailBody.Replace("$_hotelTour", tieuchuan);
+        //    mailBody = mailBody.Replace("$_adult", sl_lon);
+        //    mailBody = mailBody.Replace("$_child", sl_tre_em);
+        //    mailBody = mailBody.Replace("$_kid", sl_em_be);
+        //    mailBody = mailBody.Replace("$_GhiChu", note);
+        //    mailBody = mailBody.Replace("$_price", string.Format("{0:0,0}", price).Replace(".", ","));
+        //    mailBody = mailBody.Replace("$_commission", string.Format("{0:0,0}", hoahong).Replace(".", ","));
+        //    mailBody = mailBody.Replace("$_totalprice", string.Format("{0:0,0}", tongtien).Replace(".", ","));
+        //    mailBody = mailBody.Replace("$_Dieukien", Dieukien);
+        //    if (vat == 0)
+        //    {
+        //        mailBody = mailBody.Replace("$_vat", "0");
+        //    }
+        //    else
+        //    {
+        //        mailBody = mailBody.Replace("$_vat", string.Format("{0:0,0}", vat).Replace(".", ","));
+        //    }
+        //    mail.Body = mailBody;
+        //    mail.IsBodyHtml = true;
+        //    client.Send(mail);
+        //    return true;
+        //}
 
+
+       
         public bool SaveLationReasonTourHot(string tourID, string lydohuy)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionStringTourhot))
@@ -1050,57 +965,57 @@ SELECT * FROM [file];";
                 return booking;
             }
         }
-        public bool SendMailSuccessBookingTourHot(string email, string TourCode, string LoaiTour, string note)
-        {
+        //public bool SendMailSuccessBookingTourHot(string email, string TourCode, string LoaiTour, string note)
+        //{
 
-            MailMessage mail = new MailMessage(baoNS_SuccessBooking.username, email);
-            mail.From = new MailAddress(baoNS_SuccessBooking.username, "ENVIET GROUP");
-            SmtpClient client = new SmtpClient();
-            client.EnableSsl = true;
-            client.Port = baoNS_SuccessBooking.port;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential(baoNS_SuccessBooking.username, new DBase().Decrypt(baoNS_SuccessBooking.password, "vodacthe", true));
-            client.Host = baoNS_SuccessBooking.host;
+        //    MailMessage mail = new MailMessage(baoNS_SuccessBooking.username, email);
+        //    mail.From = new MailAddress(baoNS_SuccessBooking.username, "ENVIET GROUP");
+        //    SmtpClient client = new SmtpClient();
+        //    client.EnableSsl = true;
+        //    client.Port = baoNS_SuccessBooking.port;
+        //    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //    client.UseDefaultCredentials = false;
+        //    client.Credentials = new NetworkCredential(baoNS_SuccessBooking.username, new DBase().Decrypt(baoNS_SuccessBooking.password, "vodacthe", true));
+        //    client.Host = baoNS_SuccessBooking.host;
 
-            LoaiTour = "[TOUR Flight VN]";
+        //    LoaiTour = "[TOUR Flight VN]";
 
-            string subject = LoaiTour + " CẢM ƠN QUÝ KHÁCH HÀNG";
+        //    string subject = LoaiTour + " CẢM ƠN QUÝ KHÁCH HÀNG";
 
-            try
-            {
-                string mailCC = baoNS_BookingTourStatus.CC;
+        //    try
+        //    {
+        //        string mailCC = baoNS_BookingTourStatus.CC;
 
-                if (note == "ENVIETTESTING")
-                {
-                    mail.CC.Add("it05@enviet-group.com");
-                }
-                else
-                {
-                    mail.CC.Add(mailCC);
-                }
-            }
-            catch { }
-
-
+        //        if (note == "ENVIETTESTING")
+        //        {
+        //            mail.CC.Add("it05@enviet-group.com");
+        //        }
+        //        else
+        //        {
+        //            mail.CC.Add(mailCC);
+        //        }
+        //    }
+        //    catch { }
 
 
-            mail.Subject = subject;
 
-            string mailBody;
 
-            var webRequest = WebRequest.Create(baoNS_SuccessBooking.templateUrl);
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            using (var reader = new StreamReader(content))
-            { mailBody = reader.ReadToEnd(); }
-            mailBody = mailBody.Replace("$_Ngaygui", DateTime.Now.ToString("dd/MM/yyyy"));
-            mailBody = mailBody.Replace("$_Code", TourCode);
-            mail.Body = mailBody;
-            mail.IsBodyHtml = true;
-            client.Send(mail);
-            return true;
-        }
+        //    mail.Subject = subject;
+
+        //    string mailBody;
+
+        //    var webRequest = WebRequest.Create(baoNS_SuccessBooking.templateUrl);
+        //    using (var response = webRequest.GetResponse())
+        //    using (var content = response.GetResponseStream())
+        //    using (var reader = new StreamReader(content))
+        //    { mailBody = reader.ReadToEnd(); }
+        //    mailBody = mailBody.Replace("$_Ngaygui", DateTime.Now.ToString("dd/MM/yyyy"));
+        //    mailBody = mailBody.Replace("$_Code", TourCode);
+        //    mail.Body = mailBody;
+        //    mail.IsBodyHtml = true;
+        //    client.Send(mail);
+        //    return true;
+        //}
         public bool ChangeActiveTourHot(int ID, int Active)
         {
             int x = 0;

@@ -566,45 +566,7 @@ namespace Manager.DataAccess.Services.CarBooking
                 {
                     token = await GetToken();
                 }
-                string apiUrl = "api/v1/Taxi/SendBooking";
-                var data = new Dictionary<string, string>
-                {
-                    { "start_point", obj.location_from },
-                    { "end_point", obj.location_to },
-                    { "roundtrip", obj.type },
-                    { "is_have_bill", obj.vat },
-                    { "your_name", obj.fullname },
-                    { "your_phone", obj.phone },
-                    { "ngaydatxe", obj.departure.ToString("yyyy-MM-dd") },
-                    { "loai_xe", obj.type_car },
-                    { "price", obj.price.ToString() },
-                    { "note", obj.booking_notes },
-                    { "token", "-fXENCKulUwRCf2GDfswob2CA7ttdqYnnvknPme2XxI2lZdZqsNnv2H3wZg4CL7W" },
-                };
-
-                // Create form content
-                var content = new FormUrlEncodedContent(data);
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                var response = await _client.PostAsync(apiUrl, content).ConfigureAwait(false);
-                if (response.IsSuccessStatusCode)
-                {
-                    string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    dynamic responseData = JsonConvert.DeserializeObject(responseContent);
-                    var request = await GetRequests(obj.id);
-                    if (request != null)
-                    {
-                        request.email_send = true;
-                        request.status_booking = responseData.data.status;
-                        request.id_booking = responseData.data.id;
-                        _context.Requests.Update(request);
-                        await _context.SaveChangesAsync();
-                    }
-                    return "Đặt xe thành công!";
-                }
-                else
-                {
-                    return "Error: " + response.StatusCode;
-                }
+                return "Đặt xe thành công!";
             }
             catch (Exception ex)
             {
@@ -675,7 +637,7 @@ namespace Manager.DataAccess.Services.CarBooking
         {
             int id = int.Parse(data["id"].ToString());
             var request = await GetRequests(id);
-            string gateway_url = "https://gateway.envietgroup.com/Home/ChiTietDonHang?orderId=" + request.evcode;
+            string gateway_url = "https://www.google.com/";
             return gateway_url;
         }
         public async Task UpdateStatusBooking(string idbooking, string status)

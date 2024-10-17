@@ -29,7 +29,6 @@ namespace Manager.DataAccess.Repository
             List<SubjectModel> list = new List<SubjectModel>();
             try
             {
-
                 string SqlView = "SELECT top 1000 TIEUDE,NGAYDANG,ROWID FROM DANGTIN WHERE BANTIN = 1 and BANTINCHAMCONG = 0 and HIENTHI = 1 ORDER BY ROWID DESC  ";
                 DataTable dt = db.ExecuteDataSet(SqlView, CommandType.Text, "server37", null).Tables[0];
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -41,13 +40,10 @@ namespace Manager.DataAccess.Repository
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
                     list.Add(home);
                 }
-
-
                 return list;
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -56,7 +52,6 @@ namespace Manager.DataAccess.Repository
             List<SubjectModel> list = new List<SubjectModel>();
             try
             {
-
                 string SqlView = "SELECT top 1000 TIEUDE,NGAYDANG,ROWID FROM DANGTIN WHERE KHENTHUONGKYLUAT = 1 and HIENTHI = 1 ORDER BY ROWID DESC  ";
                 DataTable dt = db.ExecuteDataSet(SqlView, CommandType.Text, "server37", null).Tables[0];
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -68,8 +63,6 @@ namespace Manager.DataAccess.Repository
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
                     list.Add(home);
                 }
-
-
                 return list;
             }
             catch (Exception)
@@ -83,7 +76,6 @@ namespace Manager.DataAccess.Repository
             List<SubjectModel> list = new List<SubjectModel>();
             try
             {
-
                 string SqlView = "SELECT top 1000 TIEUDE,NGAYDANG=Convert(nvarchar(10),NGAYLAP,103),ROWID FROM BAIVIET WHERE ID = 51  ORDER BY ROWID DESC ";
                 DataTable dt = db.ExecuteDataSet(SqlView, CommandType.Text, "serverAirline24h", null).Tables[0];
                 for (int i = 0; i < dt.Rows.Count; i++)

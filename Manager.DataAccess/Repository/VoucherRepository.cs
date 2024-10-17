@@ -623,24 +623,9 @@ namespace Manager.DataAccess.Repository
                                 OrderHeaderVoucher = GetOrderHeaderVoucherById(orderHeaderVoucher.Id, locationRepository),
                                 OrderVouchers = GetAllOrderVoucherById(orderHeaderVoucher.Id),
                             };
-                            // Send Mail
-                            string subject = string.Empty;
-                            string isSendMailSuccess = string.Empty;
-                            if (orderHeaderVoucher.OrderStatusId == StaticDetailVoucher.OrderStatusId_COMPLETED)
-                            {
-                                subject = $"[VOUCHER] CẢM ƠN QUÝ KHÁCH";
-                                isSendMailSuccess = SendMailUpdateStatus(orderVM, StaticDetailVoucher.Email_ProgramId_COMPLETED, subject);
-                            }
-                            else
-                            {
-                                subject = $"[VOUCHER] XÁC NHẬN {orderVM.OrderHeaderVoucher.Status.ToUpper()}";
-                                isSendMailSuccess = SendMailUpdateStatus(orderVM, StaticDetailVoucher.Email_ProgramId_CHANGESTATUS, subject);
-                            }
-                            if (isSendMailSuccess == StaticDetailVoucher.SUCCESS)
-                            {
-                                conn.Close();
-                                return StaticDetailVoucher.SUCCESS;
-                            }
+                            
+                              return StaticDetailVoucher.SUCCESS;
+                            
                         }
                         conn.Close();
                         return StaticDetailVoucher.FAIL;
@@ -657,73 +642,7 @@ namespace Manager.DataAccess.Repository
                 return "Bạn không thuộc phòng ban Du Lịch.";
             }
         }
-        public string SendMailUpdateStatus(OrderVM orderVM, string programId, string subject)
-        {
-            bool isSuccess = false;
-            EVMailRepository email_Rep = new EVMailRepository(_configuration);
-            EVEmail ev_Email = new EVEmail();
-            ev_Email = email_Rep.GetEVEMailContentByProgram(programId);
-            string VATContent = templateVAT(orderVM.OrderHeaderVoucher);
-            string postCondition = GetPostDescription().GetAwaiter().GetResult();
-            try
-            {
-                if (postCondition == StaticDetailVoucher.FAIL)
-                {
-                    return StaticDetailVoucher.FAIL;
-                }
-                ///-------- Start of mail body ------------
-                string mailBody;
-                var webRequest = System.Net.WebRequest.Create(ev_Email.templateUrl);
-                using (var response = webRequest.GetResponse())
-                using (var content = response.GetResponseStream())
-                using (var reader = new System.IO.StreamReader(content))
-                { mailBody = reader.ReadToEnd(); }
-                // Nếu trong trạng thái COMPLETED
-                if (orderVM.OrderHeaderVoucher.OrderStatusId == StaticDetailVoucher.OrderStatusId_COMPLETED)
-                {
-                    mailBody = mailBody.Replace("$_evcode", orderVM.OrderHeaderVoucher.BookingCode);
-                    mailBody = mailBody.Replace("$_Ngaygui", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"));
-                }
-                else
-                {
-                    mailBody = mailBody.Replace("$_Date", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"));
-                    mailBody = mailBody.Replace("$_Fullname", $"{orderVM.OrderHeaderVoucher.Name.ToUpper()}");
-                    mailBody = mailBody.Replace("$_evcode", orderVM.OrderHeaderVoucher.BookingCode);
-                    mailBody = mailBody.Replace("$_ProductName", orderVM.OrderVouchers.FirstOrDefault().VoucherName);
-                    mailBody = mailBody.Replace("$_VatPrice", orderVM.OrderHeaderVoucher.PriceVAT.ToString("#,0"));
-                    mailBody = mailBody.Replace("$_Price", string.Format("{0:#,0}", orderVM.OrderHeaderVoucher.CurrentPrice));
-                    mailBody = mailBody.Replace("$_Total", orderVM.OrderHeaderVoucher.Total.ToString("#,0"));
-                    mailBody = mailBody.Replace("{{VATContent}}", VATContent);
-                    mailBody = mailBody.Replace("$_Phone", orderVM.OrderHeaderVoucher.Phone);
-                    mailBody = mailBody.Replace("$_Email", orderVM.OrderHeaderVoucher.Email);
-                    mailBody = mailBody.Replace("$_BookingNotes", $"{orderVM.OrderHeaderVoucher.Note}");
-                    mailBody = mailBody.Replace("$_Note", $"{orderVM.OrderHeaderVoucher.NoteStatus}");
-                    mailBody = mailBody.Replace("$_Condition", postCondition);
-                    mailBody = mailBody.Replace("$_ThisYear ", DateTime.Now.Year.ToString());
-                    // Nếu trong trạng thái CANCELLED
-                    if (orderVM.OrderHeaderVoucher.OrderStatusId == StaticDetailVoucher.OrderStatusId_CANCELLED)
-                    {
-                        mailBody = mailBody.Replace("$_CancellationReason", orderVM.OrderHeaderVoucher.CancelReason);
-                    }
-                    // Nếu khác trạng thái CANCELLED
-                    if (orderVM.OrderHeaderVoucher.OrderStatusId != StaticDetailVoucher.OrderStatusId_CANCELLED)
-                    {
-                        mailBody = mailBody.Replace("$_StatusEnviet", orderVM.OrderHeaderVoucher.Status);
-                    }
-                }
-
-                isSuccess = Manager.Common.Helpers.Common.SendMail("ENVIET GROUP", subject, mailBody, orderVM.OrderHeaderVoucher.Email, ev_Email.username, ev_Email.password, ev_Email.hostName, ev_Email.port, ev_Email.useSSL, ev_Email.CC, ev_Email.BCC, isCC: false, isBCC: false);
-                if (isSuccess == true)
-                {
-                    return StaticDetailVoucher.SUCCESS;
-                }
-                return StaticDetailVoucher.FAIL;
-            }
-            catch (Exception ex)
-            {
-                return StaticDetailVoucher.FAIL;
-            }
-        }
+     
         // Cancell Booking
         public string CancelBooking(OrderHeaderVoucher orderHeaderVoucher, AccountModel currentAccount, LocationRepository locationRepository = null)
         {
@@ -754,12 +673,7 @@ namespace Manager.DataAccess.Repository
                             };
                             // SendMail to Customer
                             string subject = $"[VOUCHER] XÁC NHẬN HỦY BOOKING";
-                            string isSendMailSuccess = SendMailUpdateStatus(orderVM, StaticDetailVoucher.Email_ProgramId_CANCELVOUCHER, subject);
-                            if (isSendMailSuccess == StaticDetailVoucher.SUCCESS)
-                            {
-                                conn.Close();
-                                return StaticDetailVoucher.SUCCESS;
-                            }
+                           
                             return StaticDetailVoucher.SUCCESS;
                         }
                         return StaticDetailVoucher.FAIL;
@@ -775,50 +689,7 @@ namespace Manager.DataAccess.Repository
                 return "Bạn không thuộc phòng ban Du Lịch.";
             }
         }
-        public string templateVAT(OrderHeaderVoucher orderHeader)
-        {
-            string VATContent = string.Empty;
-            if (!orderHeader.PriceVAT.Equals(0))
-            {
-                // Có xuất VAT 
-                VATContent += $@"
-                    <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                        <tr style='color:#fff; background-color: #006886; padding:5px 10px; font-size: 15px;'>
-                            <td colspan='4' style='width:200px;'>Thông tin xuất hóa đơn</td>
-                        </tr>
-                    </table>
-                    <div style='padding:5px 10px;color:#3f3d33;'>
-                        <div class='row'>
-                            <div class='col-sm-6'>
-                                <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                                    <tr>
-                                        <td style='width: 110px;'>Mã số thuế:</td>
-                                        <td colspan='3'><strong>{orderHeader.MaSoThue}</strong></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class='col-sm-6'>
-                                <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                                    <tr>
-                                        <td style='width: 110px;'>Tên công ty:</td>
-                                        <td colspan='3'><strong>{orderHeader.CompanyName}</strong></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class='col-sm-6'>
-                                <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                                    <tr>
-                                        <td style='width: 110px;'>Địa chỉ:</td>
-                                        <td colspan='3'><strong>{orderHeader.Address}</strong></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>";
-                return VATContent;
-            }
-            return "";
-        }
+  
         public Task<string> GetPostDescription()
         {
             try

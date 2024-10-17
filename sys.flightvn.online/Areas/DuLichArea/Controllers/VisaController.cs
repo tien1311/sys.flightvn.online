@@ -43,13 +43,7 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
             data.Name = Name;
             data.VisaType = VisaType;
             data.ShortDescription = ShortDescription;
-            for (int i = 0; i < mainImages.Count; i++)
-            {
-                Image img = new Image();
-                img.MainImage = mainImages[i];
-                img.ImageURL = UploadImg(imageFiles[i]);
-                ListImg.Add(img);
-            }
+         
             data.ListImages = ListImg;
             AccountModel acc = AccountManager.GetAccountCurrent(HttpContext);
             bool ret = await _unitOfWork_Repository.Visa_Rep.SaveCreateVisa(data, acc.MaNV);
@@ -70,14 +64,7 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
             data.Name = Name;
             data.VisaType = VisaType;
             data.ShortDescription = ShortDescription;
-            for (int i = 0; i < imageFiles.Count; i++)
-            {
-                Image img = new Image();
-                img.MainImage = mainImages[i];
-                img.ImageURL = UploadImg(imageFiles[i]); ;
-                ListImg.Add(img);
-            }
-
+          
             for (int i = 0; i < imagesURL.Count; i++)
             {
                 Image img = new Image();
@@ -140,24 +127,7 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
             List<TypeVisa> result = _unitOfWork_Repository.Visa_Rep.TypeVisa();
             return View("TypeVisa", result);
         }
-        public string UploadImg(IFormFile imageFiles)
-        {
-            string ftpServerUrl = "ftp://Manager.airline24h.com";
-            string username = "envietDuLich";
-            string password = "enviet@123";
-            // Create FtpWebRequest object
-            var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + imageFiles.FileName;
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpServerUrl + "/" + filename);
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.Credentials = new NetworkCredential(username, password);
-            // Upload the file to the FTP server
-            using (Stream ftpStream = request.GetRequestStream())
-            {
-                imageFiles.CopyTo(ftpStream);
-            }
-            string http = "https://Manager.airline24h.com/upload/dulich/" + filename;
-            return http;
-        }
+     
         public JsonResult DeleteImg(int id)
         {
             bool result = _unitOfWork_Repository.Visa_Rep.DeleteImg(id);

@@ -39,8 +39,6 @@ namespace Manager_EV.Areas.HomeArea.Controllers
             bool ret = _unitOfWork_Repository.KhachHang_Rep.SaveKHV( name, Chucvu, hang, mien, NGT, phone, birthday, address, IsHotro, ngaytang, gift, note, nhom, nvkd, tennv);         
             return Json(ret);
         }
-
-
         public JsonResult EditKhachHangVip(string ID, string name, string Chucvu, string hang, bool block, string mien, string NGT, string phone, string birthday, string address, string ngaytang, string gift, string note, string nhom, string nvkd)
         {
             

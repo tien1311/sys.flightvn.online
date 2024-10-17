@@ -173,7 +173,6 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                     ImageVoucher img = new ImageVoucher
                     {
                         isMainImage = file.FileName == mainImageName,
-                        imageUrl = UploadImg(file)
                     };
                     imageVouchers.Add(img);
                 }
@@ -377,24 +376,7 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
         }
         #endregion
 
-        public string UploadImg(IFormFile imageFiles)
-        {
-            string ftpServerUrl = "ftp://Manager.airline24h.com";
-            string username = "envietDuLich";
-            string password = "enviet@123";
-            // Create FtpWebRequest object
-            var filename = DateTime.Now.ToString("yyyyMMddHHmmss") + imageFiles.FileName;
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpServerUrl + "/" + filename);
-            request.Method = WebRequestMethods.Ftp.UploadFile;
-            request.Credentials = new NetworkCredential(username, password);
-            // Upload the file to the FTP server
-            using (Stream ftpStream = request.GetRequestStream())
-            {
-                imageFiles.CopyTo(ftpStream);
-            }
-            string http = "https://Manager.airline24h.com/upload/dulich/" + filename;
-            return http;
-        }
+       
 
         [HttpPost]
         public IActionResult ChangeActiveVoucher(int ID, int Active)

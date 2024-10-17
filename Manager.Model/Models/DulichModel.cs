@@ -67,9 +67,9 @@ namespace Manager.Model.Models
 
     public class Sale
     {
-        public string name { get; set; }
-        public string email { get; set; }
-        public string phone { get; set; }
+        public string name { get; set; } = "";
+        public string email { get; set; } = "";
+        public string phone { get; set; } = "";
     }
 
     public class Label
@@ -93,9 +93,9 @@ namespace Manager.Model.Models
         public object note { get; set; }
         public object chuyen_bay { get; set; }
         public string diem_den { get; set; }
-        public int so_ngay { get; set; }
-        public int so_dem { get; set; }
-        public string code_tour { get; set; }
+        public int so_ngay { get; set; } = 0;
+        public int so_dem { get; set; } = 0;
+        public string code_tour { get; set; } = "";
         public List<File> file { get; set; }
     }
 

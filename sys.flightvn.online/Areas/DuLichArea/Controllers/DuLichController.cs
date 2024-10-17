@@ -134,69 +134,69 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                 DulichRepository dulichRepository = _unitOfWork_Repository.Dulich_Rep;
                 var itemBooking = dulichRepository.NewDetailBooking(tourcodetrienkhai);
                 string token = await GetEnVietToken();
-                using (HttpClient client = new HttpClient())
-                {
-                    string apiUrl = "https://api.envietgroup.com/api/v1/DatViet/Tour/GetDetail";
+                //using (HttpClient client = new HttpClient())
+                //{
+                //    string apiUrl = "https://api.envietgroup.com/api/v1/DatViet/Tour/GetDetail";
 
-                    string api_token = "OWMxams3NXVkaWFoenJuNGY4eDN0cHd5c2wyZW1v";
-                    string urlWithParams = $"{apiUrl}?trienkhai_id={tourcode}&api_token={api_token}";
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                //    string api_token = "OWMxams3NXVkaWFoenJuNGY4eDN0cHd5c2wyZW1v";
+                //    string urlWithParams = $"{apiUrl}?trienkhai_id={tourcode}&api_token={api_token}";
+                //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                    var response = await client.GetAsync(urlWithParams);
+                //    var response = await client.GetAsync(urlWithParams);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        List<ListNhanVienDuLich> DSdulich = dulichRepository.DSDuLich();
-                        foreach (var danhSach in DSdulich)
-                        {
-                            if (danhSach.Ten == acc.HoTen)
-                            {
-                                if (response.IsSuccessStatusCode == true)
-                                {
+                //    if (response.IsSuccessStatusCode)
+                //    {
+                //        List<ListNhanVienDuLich> DSdulich = dulichRepository.DSDuLich();
+                //        foreach (var danhSach in DSdulich)
+                //        {
+                //            if (danhSach.Ten == acc.HoTen)
+                //            {
+                //                if (response.IsSuccessStatusCode == true)
+                //                {
 
-                                    if (itemBooking.IDStatus == "1")
-                                    {
-                                        TempData["thongbaoInfo"] = "Mới";
-                                        ViewBag.code = tourcodetrienkhai;
-                                        itemBooking.IDStatus = "2"; // Status = 2 là Đã tiếp nhận (Dựa vào bảng Status của Database TOUR) 
-                                        dulichRepository.ChangeBookingStatus(itemBooking.IDStatus, tourcodetrienkhai);
-                                        var isAddSuccess = dulichRepository.AddNguoiNhan(itemBooking.TourCode, acc.HoTen, "");
-                                        itemBooking.NguoiNhan = acc.HoTen;
-                                    }
-                                }
-                            }
-                        }
+                //                    if (itemBooking.IDStatus == "1")
+                //                    {
+                //                        TempData["thongbaoInfo"] = "Mới";
+                //                        ViewBag.code = tourcodetrienkhai;
+                //                        itemBooking.IDStatus = "2"; // Status = 2 là Đã tiếp nhận (Dựa vào bảng Status của Database TOUR) 
+                //                        dulichRepository.ChangeBookingStatus(itemBooking.IDStatus, tourcodetrienkhai);
+                //                        var isAddSuccess = dulichRepository.AddNguoiNhan(itemBooking.TourCode, acc.HoTen, "");
+                //                        itemBooking.NguoiNhan = acc.HoTen;
+                //                    }
+                //                }
+                //            }
+                //        }
 
-                        string responseBody = await response.Content.ReadAsStringAsync();
-                        DetailTourModel apiData = JsonConvert.DeserializeObject<DetailTourModel>(responseBody);
+                        //string responseBody = await response.Content.ReadAsStringAsync();
+                        //DetailTourModel apiData = JsonConvert.DeserializeObject<DetailTourModel>(responseBody);
 
                         // Dùng reflection để cập nhật thuộc tính của itemBooking từ apiData
-                        foreach (PropertyInfo property in apiData.GetType().GetProperties())
-                        {
-                            if (property.CanRead)
-                            {
-                                var value = property.GetValue(apiData, null);
-                                if (value != null) // chỉ cập nhật các giá trị từ apiData
-                                {
-                                    if (property.Name == "code_trienkhai" || property.Name == "ghi_chu" || property.Name == "gia_1s"
-                                        || property.Name == "gia_2s" || property.Name == "gia_3s" || property.Name == "gia_4s" || property.Name == "gia_5s"
-                                        || property.Name == "sale" || property.Name == "tour_info" || property.Name == "so_khach" || property.Name == "booked_seat"
-                                        || property.Name == "reservation_seat" || property.Name == "gia_rs3s" || property.Name == "gia_rs4s" || property.Name == "gia_rs5s"
-                                        )
-                                    {
-                                        itemBooking.GetType().GetProperty(property.Name).SetValue(itemBooking, value, null);
-                                    }
-                                }
-                            }
-                        }
+                        //foreach (PropertyInfo property in apiData.GetType().GetProperties())
+                        //{
+                        //    if (property.CanRead)
+                        //    {
+                        //        var value = property.GetValue(apiData, null);
+                        //        if (value != null) // chỉ cập nhật các giá trị từ apiData
+                        //        {
+                        //            if (property.Name == "code_trienkhai" || property.Name == "ghi_chu" || property.Name == "gia_1s"
+                        //                || property.Name == "gia_2s" || property.Name == "gia_3s" || property.Name == "gia_4s" || property.Name == "gia_5s"
+                        //                || property.Name == "sale" || property.Name == "tour_info" || property.Name == "so_khach" || property.Name == "booked_seat"
+                        //                || property.Name == "reservation_seat" || property.Name == "gia_rs3s" || property.Name == "gia_rs4s" || property.Name == "gia_rs5s"
+                        //                )
+                        //            {
+                        //                itemBooking.GetType().GetProperty(property.Name).SetValue(itemBooking, value, null);
+                        //            }
+                        //        }
+                        //    }
+                        //}
 
                         return View(itemBooking);
-                    }
-                    else
-                    {
-                        return BadRequest($"Lỗi: {response.StatusCode}");
-                    }
-                }
+                    //}
+                    //else
+                    //{
+                    //    return BadRequest($"Lỗi: {response.StatusCode}");
+                    //}
+                //}
             }
             catch (Exception ex)
             {

@@ -423,25 +423,14 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                 DetailTourModel dulichData = TourHot_Rep.NewDetailBookingTourHot(TourCode);
                 if (dulichData.tourID != "" && dulichData.tourID != null)
                 {
-                    bool sendmail = TourHot_Rep.SendMailBookingTourHot(dulichData.tourSP, dulichData.tourID, dulichData.customerName, dulichData.customerPhone, dulichData.customerEmail, dulichData.customerNote, dulichData.hotelTour, dulichData.adultQuantity, dulichData.childQuantity, dulichData.kidQuantity, dulichData.TourName, dulichData.ngaydi, dulichData.ngayve, dulichData.tourID, dulichData.commission, dulichData.totalPrice, dulichData.ghi_chu, dulichData.LoaiTour, dulichData.price, dulichData.Vat);
-                    if (sendmail)
-                    {
-                        dulichData.IDStatus = "3";
-                        TourHot_Rep.ChangeBookingStatusTourHot(dulichData.IDStatus, TourCode);
-                        return Json(new { success = true, message = "Gửi booking thành công", idStatus = dulichData.IDStatus });
-
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "Gửi booking thất bại" });
-                    }
+                    dulichData.IDStatus = "3";
+                    TourHot_Rep.ChangeBookingStatusTourHot(dulichData.IDStatus, TourCode);
+                    return Json(new { success = true, message = "Gửi booking thành công", idStatus = dulichData.IDStatus });
                 }
                 else
                 {
                     return Json(new { success = false, message = "Gửi booking thất bại" });
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -465,33 +454,31 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                     {
                         if (IDStatus == "7")
                         {
-                            SendMailSuccess = TourHot_Rep.SendMailSuccessBookingTourHot(itemBooking.customerEmail, itemBooking.TourCode, itemBooking.LoaiTour, itemBooking.customerNote);
-                            if (SendMailSuccess)
-                            {
+                            //SendMailSuccess = TourHot_Rep.SendMailSuccessBookingTourHot(itemBooking.customerEmail, itemBooking.TourCode, itemBooking.LoaiTour, itemBooking.customerNote);
+                            //if (SendMailSuccess)
+                            //{
                                 return Json(new { success = true, message = "Bạn đã đổi trạng thái thành công!" });
-                            }
-                            else
-                            {
-                                return Json(new { success = true, message = "Gửi mail thất bại!" });
-                            }
+                            //}
+                            //else
+                            //{
+                            //    return Json(new { success = true, message = "Gửi mail thất bại!" });
+                            //}
                         }
                         if (IDStatus == "3")
                         {
 
 
                             DetailTourModel dulichData = TourHot_Rep.NewDetailBookingTourHot(TourCode);
-                            bool sendmail = TourHot_Rep.SendMailBookingTourHot(dulichData.tourSP, dulichData.tourID, dulichData.customerName, dulichData.customerPhone, dulichData.customerEmail, dulichData.customerNote, dulichData.hotelTour, dulichData.adultQuantity, dulichData.childQuantity, dulichData.kidQuantity, dulichData.TourName, dulichData.ngaydi, dulichData.ngayve, dulichData.tourID, dulichData.commission, dulichData.totalPrice, dulichData.ghi_chu, dulichData.LoaiTour, dulichData.price, dulichData.Vat);
-                            if (sendmail)
-                            {
-
+                            //bool sendmail = TourHot_Rep.SendMailBookingTourHot(dulichData.tourSP, dulichData.tourID, dulichData.customerName, dulichData.customerPhone, dulichData.customerEmail, dulichData.customerNote, dulichData.hotelTour, dulichData.adultQuantity, dulichData.childQuantity, dulichData.kidQuantity, dulichData.TourName, dulichData.ngaydi, dulichData.ngayve, dulichData.tourID, dulichData.commission, dulichData.totalPrice, dulichData.ghi_chu, dulichData.LoaiTour, dulichData.price, dulichData.Vat);
+                            //if (sendmail)
+                            //{
                                 TourHot_Rep.ChangeBookingStatusTourHot(dulichData.IDStatus, TourCode);
                                 return Json(new { success = true, message = "Gửi booking thành công", idStatus = dulichData.IDStatus });
-
-                            }
-                            else
-                            {
-                                return Json(new { success = false, message = "Gửi booking thất bại" });
-                            }
+                            //}
+                            //else
+                            //{
+                            //    return Json(new { success = false, message = "Gửi booking thất bại" });
+                            //}
                         }
                         else
                         {
@@ -525,68 +512,38 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                 AccountModel acc = AccountManager.GetAccountCurrent(HttpContext);
                 string tenNhanVienHienTai = acc.HoTen;
                 var itemBooking = dulichData;
-                bool resuft = TourHot_Rep.MailCancelBoookingTourHot(
-                    dulichData.LoaiTour,
-                    dulichData.customerName,
-                    dulichData.TourCode,
-                    dulichData.TourName,
-                    dulichData.tourID,
-                    dulichData.ngaydi,
-                    dulichData.ngayve,
-                    dulichData.hotelTour,
-                    dulichData.adultQuantity,
-                    dulichData.childQuantity,
-                    dulichData.kidQuantity,
-                    dulichData.Namecompany,
-                    dulichData.MaKH,
-                    dulichData.customerPhone,
-                    dulichData.customerEmail,
-                    dulichData.customerNote,
-                    dulichData.commission,
-                    dulichData.totalPrice,
-                    dulichData.MaSoThue,
-                    dulichData.TenCaNhanToChuc,
-                    dulichData.DiaChi,
-                    dulichData.price,
-                    dulichData.Vat,
-                    cancellationReason
-                );
+             
                 bool saveLationReason = TourHot_Rep.SaveLationReasonTourHot(TourCode, cancellationReason);
-                if (resuft)
+                
+                if (itemBooking != null)
                 {
-                    if (itemBooking != null)
+                    bool success = false;
+
+
+                    itemBooking.IDStatus = "6"; // Trạng thái huỷ booking có status = 6
+
+                    var isChangeSuccess = TourHot_Rep.ChangeBookingStatusTourHot(itemBooking.IDStatus, TourCode);
+                    var isAddSuccess = TourHot_Rep.AddNguoiNhanTourHot(TourCode, itemBooking.NguoiNhan, tenNhanVienHienTai);
+
+                    if (isChangeSuccess && isAddSuccess)
                     {
-                        bool success = false;
+                        success = true;
+                    }
 
-
-                        itemBooking.IDStatus = "6"; // Trạng thái huỷ booking có status = 6
-
-                        var isChangeSuccess = TourHot_Rep.ChangeBookingStatusTourHot(itemBooking.IDStatus, TourCode);
-                        var isAddSuccess = TourHot_Rep.AddNguoiNhanTourHot(TourCode, itemBooking.NguoiNhan, tenNhanVienHienTai);
-
-                        if (isChangeSuccess && isAddSuccess)
-                        {
-                            success = true;
-                        }
-
-                        if (success)
-                        {
-                            return Json(new { success = true, message = "Bạn đã hủy tour booking thành công!", itemBooking.IDStatus });
-                        }
-                        else
-                        {
-                            return Json(new { success = false, message = "Bạn đã hủy tour booking thất bại." });
-                        }
+                    if (success)
+                    {
+                        return Json(new { success = true, message = "Bạn đã hủy tour booking thành công!", itemBooking.IDStatus });
                     }
                     else
                     {
-                        return Json(new { success = false, message = "Không tìm thấy dữ liệu đặt tour." });
+                        return Json(new { success = false, message = "Bạn đã hủy tour booking thất bại." });
                     }
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Gửi mail bị lỗi vui lòng liên hệ IT." });
+                    return Json(new { success = false, message = "Không tìm thấy dữ liệu đặt tour." });
                 }
+                
             }
             catch (Exception ex)
             {

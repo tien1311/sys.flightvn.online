@@ -1815,7 +1815,7 @@ namespace Manager.DataAccess.Repository
                 {
                     hotelBooking.StatusID = statusId;
                     isSuccess = true;
-                    _ = Task.Run(() => SendMailHotel(hotelBooking));
+                    //_ = Task.Run(() => SendMailHotel(hotelBooking));
                 }
             }
             return isSuccess;
@@ -1847,7 +1847,7 @@ namespace Manager.DataAccess.Repository
                     hotelBooking.Canceller = canceller;
                     hotelBooking.CancelReason = cancelReason;
                     isSuccess = true;
-                    _ = Task.Run(() => SendMailHotel(hotelBooking));
+                    //_ = Task.Run(() => SendMailHotel(hotelBooking));
                 }
             }
             return isSuccess;
@@ -1880,154 +1880,154 @@ namespace Manager.DataAccess.Repository
             return isSuccess;
         }
 
-        public Task<bool> SendMailHotel(HotelBooking request)
-        {
-            string programId = string.Empty;
-            bool isSuccess = false;
-            if (request.StatusID != 7)
-            {
-                programId = "EVM_CHANGESTATUSHOTEL";
-            }
-            if (request.StatusID == 7)
-            {
-                programId = "EVM_CANCELHOTEL";
-            }
+        //public Task<bool> SendMailHotel(HotelBooking request)
+        //{
+        //    string programId = string.Empty;
+        //    bool isSuccess = false;
+        //    if (request.StatusID != 7)
+        //    {
+        //        programId = "EVM_CHANGESTATUSHOTEL";
+        //    }
+        //    if (request.StatusID == 7)
+        //    {
+        //        programId = "EVM_CANCELHOTEL";
+        //    }
 
-            string subject = "[HOTEL] " + GetStatusStringByStatusId(request.StatusID).ToUpper();
-
-
-            EVEmail evEmail = new EVEmail();
-            EVMailRepository evMailRepository = new EVMailRepository();
-            evEmail = evMailRepository.GetEVEMailContentByProgram(programId);
-            var postsAdsModel = GetDieuKienKhachSan().Result;
-            if (evEmail != null)
-            {
-                string contentEmail = "";
-                string strSanPham = "";
-                string VATPriceContent = "";
-                string OtherFeeContent = "";
-                string VATContent = "";
-
-                foreach (var roomItem in request.BookingDetails)
-                {
-                    strSanPham += "<tr>";
-                    strSanPham += "<td>" + roomItem.LoaiPhong + "</td>";
-                    strSanPham += "<td>" + roomItem.SoLuong + "</td>";
-                    strSanPham += "<td>" + Manager.Common.Helpers.Common.FormatNumber(roomItem.SoTien, 0) + " VND </td>";
-                    strSanPham += "</tr>";
-                }
-
-                if (request.IsVAT == true)
-                {
-                    VATPriceContent += $@"
-                                      <div class='col-sm-6'>
-                                                        <table style='width: 100%;''cellspacing='0' cellpadding='7' border='0'>
-                                                            <tr>
-                                                                <td style='width: 110px;'>VAT ({GetHotelVATRates()}%):</td>
-                                                                <td colspan='2'><strong>{Manager.Common.Helpers.Common.FormatNumber(request.VAT, 0)} VND</strong></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                    ";
-
-                    VATContent += $@"
-                    <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                        <tr style='color:#fff; background-color: #006886; padding:5px 10px; font-size: 15px;'>
-                            <td colspan='4' style='width:200px;'>Thông tin xuất hóa đơn</td>
-                        </tr>
-                    </table>
-                    <div style='padding:5px 10px;color:#3f3d33;'>
-                        <div class='row'>
-                            <div class='col-sm-6'>
-                                <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                                    <tr>
-                                        <td style='width: 110px;'>Mã số thuế:</td>
-                                        <td colspan='3'><strong>{request.HotelVAT.MaSoThue}</strong></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class='col-sm-6'>
-                                <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                                    <tr>
-                                        <td style='width: 110px;'>Tên công ty:</td>
-                                        <td colspan='3'><strong>{request.HotelVAT.TenCongTy}</strong></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class='col-sm-6'>
-                                <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
-                                    <tr>
-                                        <td style='width: 110px;'>Địa chỉ:</td>
-                                        <td colspan='3'><strong>{request.HotelVAT.DiaChi}</strong></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>";
-                }
-
-                if (request.OtherFee > 0)
-                {
-                    OtherFeeContent += $@"
-                                      <div class='col-sm-6'>
-                                                        <table style='width: 100%;''cellspacing='0' cellpadding='7' border='0'>
-                                                            <tr>
-                                                                <td style='width: 110px;'>Phí khác: </td>
-                                                                <td colspan='2'><strong>{Manager.Common.Helpers.Common.FormatNumber(request.OtherFee, 0)} ({request.OtherFeeReason}) VND</strong></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                    ";
-                }
+        //    string subject = "[HOTEL] " + GetStatusStringByStatusId(request.StatusID).ToUpper();
 
 
-                var webRequest = WebRequest.Create(evEmail.templateUrl);
-                using (var response = webRequest.GetResponse())
-                using (var content = response.GetResponseStream())
-                using (var reader = new StreamReader(content))
-                { contentEmail = reader.ReadToEnd(); }
-                contentEmail = contentEmail.Replace("$_Date", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
-                contentEmail = contentEmail.Replace("$_Fullname", request.FullName);
-                contentEmail = contentEmail.Replace("$_evcode", request.BookingCode);
-                contentEmail = contentEmail.Replace("$_StatusEnviet", GetStatusStringByStatusId(request.StatusID));
-                contentEmail = contentEmail.Replace("$_TenTour", request.HotelInfo.Name); // tên khách sạn
-                contentEmail = contentEmail.Replace("$_MaTour", request.HotelInfo.Code); // mã khách sạn
-                contentEmail = contentEmail.Replace("$_NgayDi", request.CheckinDate.ToString("dd/MM/yyyy"));
-                contentEmail = contentEmail.Replace("$_NgayVe", request.CheckoutDate.ToString("dd/MM/yyyy"));
-                contentEmail = contentEmail.Replace("$_adult", request.Adults.ToString());
-                contentEmail = contentEmail.Replace("$_child", request.Childs.ToString());
-                contentEmail = contentEmail.Replace("$_kid", request.Babies.ToString());
-                contentEmail = contentEmail.Replace("{{SanPham}}", strSanPham);
-                contentEmail = contentEmail.Replace("$_Email", request.Email);
-                contentEmail = contentEmail.Replace("$_Phone", request.Phone);
-                contentEmail = contentEmail.Replace("$_BookingNotes", request.OtherRequestFromCustomer);
-                contentEmail = contentEmail.Replace("$_Price", Manager.Common.Helpers.Common.FormatNumber(request.SoTien, 0) + " VND");
-                contentEmail = contentEmail.Replace("$_Discount", Manager.Common.Helpers.Common.FormatNumber(request.Commission, 0) + " VND");
-                contentEmail = contentEmail.Replace("{{VATPriceContent}}", VATPriceContent);
-                contentEmail = contentEmail.Replace("{{OtherFeeContent}}", OtherFeeContent);
-                contentEmail = contentEmail.Replace("$_Total", Manager.Common.Helpers.Common.FormatNumber(request.TotalPrice, 0) + " VND");
-                contentEmail = contentEmail.Replace("{{SanPham}}", strSanPham);
-                contentEmail = contentEmail.Replace("{{VATContent}}", VATContent);
-                contentEmail = contentEmail.Replace("{{OtherFeeContent}}", OtherFeeContent);
-                contentEmail = contentEmail.Replace("$_Condition", postsAdsModel.Description);
-                contentEmail = contentEmail.Replace("$_ThisYear", DateTime.Now.Year.ToString());
-                if (!string.IsNullOrEmpty(request.CancelReason) && request.StatusID == 7) // Huỷ
-                {
-                    contentEmail = contentEmail.Replace("$_CancellationReason", request.CancelReason);
-                }
+        //    EVEmail evEmail = new EVEmail();
+        //    EVMailRepository evMailRepository = new EVMailRepository();
+        //    evEmail = evMailRepository.GetEVEMailContentByProgram(programId);
+        //    var postsAdsModel = GetDieuKienKhachSan().Result;
+        //    if (evEmail != null)
+        //    {
+        //        string contentEmail = "";
+        //        string strSanPham = "";
+        //        string VATPriceContent = "";
+        //        string OtherFeeContent = "";
+        //        string VATContent = "";
 
-                bool isCC = true;
-                bool isBCC = true;
-                if (!string.IsNullOrEmpty(request.OtherRequestFromCustomer) && request.OtherRequestFromCustomer.Trim() == "ENVIETTESTING")
-                {
-                    isCC = false;
-                    isBCC = false;
-                }
-                isSuccess = Manager.Common.Helpers.Common.SendMail("ENVIET GROUP", subject, contentEmail, request.Email, evEmail.username, evEmail.password, evEmail.hostName, evEmail.port, evEmail.useSSL, evEmail.CC, evEmail.BCC, isCC, isBCC);
+        //        foreach (var roomItem in request.BookingDetails)
+        //        {
+        //            strSanPham += "<tr>";
+        //            strSanPham += "<td>" + roomItem.LoaiPhong + "</td>";
+        //            strSanPham += "<td>" + roomItem.SoLuong + "</td>";
+        //            strSanPham += "<td>" + Manager.Common.Helpers.Common.FormatNumber(roomItem.SoTien, 0) + " VND </td>";
+        //            strSanPham += "</tr>";
+        //        }
 
-            }
+        //        if (request.IsVAT == true)
+        //        {
+        //            VATPriceContent += $@"
+        //                              <div class='col-sm-6'>
+        //                                                <table style='width: 100%;''cellspacing='0' cellpadding='7' border='0'>
+        //                                                    <tr>
+        //                                                        <td style='width: 110px;'>VAT ({GetHotelVATRates()}%):</td>
+        //                                                        <td colspan='2'><strong>{Manager.Common.Helpers.Common.FormatNumber(request.VAT, 0)} VND</strong></td>
+        //                                                    </tr>
+        //                                                </table>
+        //                                            </div>
+        //                            ";
 
-            return Task.FromResult(isSuccess);
-        }
+        //            VATContent += $@"
+        //            <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
+        //                <tr style='color:#fff; background-color: #006886; padding:5px 10px; font-size: 15px;'>
+        //                    <td colspan='4' style='width:200px;'>Thông tin xuất hóa đơn</td>
+        //                </tr>
+        //            </table>
+        //            <div style='padding:5px 10px;color:#3f3d33;'>
+        //                <div class='row'>
+        //                    <div class='col-sm-6'>
+        //                        <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
+        //                            <tr>
+        //                                <td style='width: 110px;'>Mã số thuế:</td>
+        //                                <td colspan='3'><strong>{request.HotelVAT.MaSoThue}</strong></td>
+        //                            </tr>
+        //                        </table>
+        //                    </div>
+        //                    <div class='col-sm-6'>
+        //                        <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
+        //                            <tr>
+        //                                <td style='width: 110px;'>Tên công ty:</td>
+        //                                <td colspan='3'><strong>{request.HotelVAT.TenCongTy}</strong></td>
+        //                            </tr>
+        //                        </table>
+        //                    </div>
+        //                    <div class='col-sm-6'>
+        //                        <table style='width: 100%;' cellspacing='0' cellpadding='7' border='0'>
+        //                            <tr>
+        //                                <td style='width: 110px;'>Địa chỉ:</td>
+        //                                <td colspan='3'><strong>{request.HotelVAT.DiaChi}</strong></td>
+        //                            </tr>
+        //                        </table>
+        //                    </div>
+        //                </div>
+        //            </div>";
+        //        }
+
+        //        if (request.OtherFee > 0)
+        //        {
+        //            OtherFeeContent += $@"
+        //                              <div class='col-sm-6'>
+        //                                                <table style='width: 100%;''cellspacing='0' cellpadding='7' border='0'>
+        //                                                    <tr>
+        //                                                        <td style='width: 110px;'>Phí khác: </td>
+        //                                                        <td colspan='2'><strong>{Manager.Common.Helpers.Common.FormatNumber(request.OtherFee, 0)} ({request.OtherFeeReason}) VND</strong></td>
+        //                                                    </tr>
+        //                                                </table>
+        //                                            </div>
+        //                            ";
+        //        }
+
+
+        //        var webRequest = WebRequest.Create(evEmail.templateUrl);
+        //        using (var response = webRequest.GetResponse())
+        //        using (var content = response.GetResponseStream())
+        //        using (var reader = new StreamReader(content))
+        //        { contentEmail = reader.ReadToEnd(); }
+        //        contentEmail = contentEmail.Replace("$_Date", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+        //        contentEmail = contentEmail.Replace("$_Fullname", request.FullName);
+        //        contentEmail = contentEmail.Replace("$_evcode", request.BookingCode);
+        //        contentEmail = contentEmail.Replace("$_StatusEnviet", GetStatusStringByStatusId(request.StatusID));
+        //        contentEmail = contentEmail.Replace("$_TenTour", request.HotelInfo.Name); // tên khách sạn
+        //        contentEmail = contentEmail.Replace("$_MaTour", request.HotelInfo.Code); // mã khách sạn
+        //        contentEmail = contentEmail.Replace("$_NgayDi", request.CheckinDate.ToString("dd/MM/yyyy"));
+        //        contentEmail = contentEmail.Replace("$_NgayVe", request.CheckoutDate.ToString("dd/MM/yyyy"));
+        //        contentEmail = contentEmail.Replace("$_adult", request.Adults.ToString());
+        //        contentEmail = contentEmail.Replace("$_child", request.Childs.ToString());
+        //        contentEmail = contentEmail.Replace("$_kid", request.Babies.ToString());
+        //        contentEmail = contentEmail.Replace("{{SanPham}}", strSanPham);
+        //        contentEmail = contentEmail.Replace("$_Email", request.Email);
+        //        contentEmail = contentEmail.Replace("$_Phone", request.Phone);
+        //        contentEmail = contentEmail.Replace("$_BookingNotes", request.OtherRequestFromCustomer);
+        //        contentEmail = contentEmail.Replace("$_Price", Manager.Common.Helpers.Common.FormatNumber(request.SoTien, 0) + " VND");
+        //        contentEmail = contentEmail.Replace("$_Discount", Manager.Common.Helpers.Common.FormatNumber(request.Commission, 0) + " VND");
+        //        contentEmail = contentEmail.Replace("{{VATPriceContent}}", VATPriceContent);
+        //        contentEmail = contentEmail.Replace("{{OtherFeeContent}}", OtherFeeContent);
+        //        contentEmail = contentEmail.Replace("$_Total", Manager.Common.Helpers.Common.FormatNumber(request.TotalPrice, 0) + " VND");
+        //        contentEmail = contentEmail.Replace("{{SanPham}}", strSanPham);
+        //        contentEmail = contentEmail.Replace("{{VATContent}}", VATContent);
+        //        contentEmail = contentEmail.Replace("{{OtherFeeContent}}", OtherFeeContent);
+        //        contentEmail = contentEmail.Replace("$_Condition", postsAdsModel.Description);
+        //        contentEmail = contentEmail.Replace("$_ThisYear", DateTime.Now.Year.ToString());
+        //        if (!string.IsNullOrEmpty(request.CancelReason) && request.StatusID == 7) // Huỷ
+        //        {
+        //            contentEmail = contentEmail.Replace("$_CancellationReason", request.CancelReason);
+        //        }
+
+        //        bool isCC = true;
+        //        bool isBCC = true;
+        //        if (!string.IsNullOrEmpty(request.OtherRequestFromCustomer) && request.OtherRequestFromCustomer.Trim() == "ENVIETTESTING")
+        //        {
+        //            isCC = false;
+        //            isBCC = false;
+        //        }
+        //        isSuccess = Manager.Common.Helpers.Common.SendMail("ENVIET GROUP", subject, contentEmail, request.Email, evEmail.username, evEmail.password, evEmail.hostName, evEmail.port, evEmail.useSSL, evEmail.CC, evEmail.BCC, isCC, isBCC);
+
+        //    }
+
+        //    return Task.FromResult(isSuccess);
+        //}
     }
 }
