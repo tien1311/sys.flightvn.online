@@ -34,13 +34,13 @@
         var htmlContent = string.Empty;
         if (maNV == "NV00006" || maNV == "NV00016" || maNV == "NV00001" || maNV == "NV00035" || maNV == "NV00391")
         {
-            htmlContent = $@"<a href='/{AreaNameConst.AREA_Menu}/Hang/SoDuHang?&i=99' target='_blank'>  <img src='/images/Logo ev-none br.png' class='img-responsive logophu' style='display: none;'/></a>
-                            <a href='/{AreaNameConst.AREA_Menu}/Hang/SoDuHang?&i=99' target='_blank'><img style='width: 100px' src='/images/Logo ev-none br.png' class='img-responsive logochinh' /> </a>";
+            htmlContent = $@"<a href='/{AreaNameConst.AREA_Menu}/Hang/SoDuHang?&i=99' target='_blank'>  <img src='/images/logoflightnone.png' class='img-responsive logophu' style='display: none;'/></a>
+                            <a href='/{AreaNameConst.AREA_Menu}/Hang/SoDuHang?&i=99' target='_blank'><img style='width: 100px' src='/images/logoflightnone.png' class='img-responsive logochinh' /> </a>";
         }
         else
         {
-            htmlContent = @"<img src='/images/Logo ev-none br.png' class='img-responsive logophu' style='display: none;' />
-                            <img style='width: 100px' src='/images/Logo ev-none br.png' class='img-responsive logochinh' />";
+            htmlContent = @"<img src='/images/logoflightnone.png' class='img-responsive logophu' style='display: none;' />
+                            <img style='width: 100px' src='/images/logoflightnone.png' class='img-responsive logochinh' />";
         }
         return new HtmlString(htmlContent);
     }
@@ -355,13 +355,13 @@
 
                    @*  @if (maNV == "NV00006" || maNV == "NV00016" || maNV == "NV00001" || maNV == "NV00035")
                     {
-                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank">  <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" /> </a>
-                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank"><img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" /> </a>
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank">  <img src="/images/logoflightnone.png" class="img-responsive logophu" style="display: none;" /> </a>
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank"><img style="width: 100px" src="/images/logoflightnone.png" class="img-responsive logochinh" /> </a>
                     }
                     else
                     {
-                        <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" />
-                        <img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" />
+                        <img src="/images/logoflightnone.png" class="img-responsive logophu" style="display: none;" />
+                        <img style="width: 100px" src="/images/logoflightnone.png" class="img-responsive logochinh" />
                     } *@
                     <div style="margin-top:5px">
                         <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachDB?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="DB">ĐB</a>
@@ -412,12 +412,7 @@
                     </div>*@
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px; margin-bottom: 10px;">
-                <div class="contain-thongbao thongbao-ve">
-                    @RenderThongBaoVe()
-                    @*<p>Bạn có <span style="color:red; font-weight:bold">@SLVeSotBCCTC</span> số vé báo cáo chưa thành công. Vui lòng liên hệ kế toán. <a href="/BaoCaoVe/VeSotBCCTC?&i=13">Chi tiết</a></p>*@
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="contain-thongbao" style="padding: 5px 0px; max-height: 130px;">
                     <div class="col-sm-12 col-xs-12" style="padding-left:10px;">
@@ -476,35 +471,7 @@
                     <div class="render_SD_Hang"></div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                <div class="contain-thongbao" style="padding: 5px 0px;">
-                    @* <p style="padding-left: 10px;">Công nợ NV @DateTime.Parse(CNNV[0].CREATEDATE).ToString("dd/MM/yyyy hh:mm:ss"). <a id="CNNV1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
-                    <p style="padding-left: 10px;">Công nợ NV @RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNNV_Ngay", styleName: "width: 30px;") <a id="CNNV1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
-                    <div class="render_CNNV"></div>
-                    @*  @for (int i = 0; i <= 3; i++)
-                    {
-                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@CNNV[i].MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@CNNV[i].SoTienNo))</span></div>
-                    } *@
-                </div>
-            </div>
-            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                <div class="contain-thongbao" style="padding: 5px 0px;">
-                    @* <p style="padding-left: 10px;">@CNQH.TieuDe tháng @CNQH.Thang. <a id="CNQH1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
-                    <p style="padding-left: 10px;">@RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNQH_Ngay", styleName: "width: 30px;") <a id="CNQH1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
-                    <div class="render_CNQH"></div>
-                    @*  @foreach (var item in CNQH.ListCongNoNVQuaHan)
-                    {
-                    if (item.TenNV == "" && item.MaNV == "")
-                    {
-                    <div class="col-xs-12" style="padding: 0 10px;"><span style="color: #0023F5; font-weight: bold;">TUẦN NÀY KHÔNG CÓ NHÂN VIÊN NỢ QUÁ HẠN. GOOD TEAM</span></div>
-                    }
-                    else
-                    {
-                    <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@item.MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@item.SoTienNo))</span></div>
-                    }
-                    } *@
-                </div>
-            </div>
+          
             @* <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
             <div class="contain-thongbao" style="padding: 5px 0px;">
             <p style="padding-left: 10px;">Có <span style="color:red;font-weight:bold;">@SoLuong_BVForum</span> bài viết Forum chưa được duyệt. <a href="/Forum/DuyetBaiViet?&i=9">Chi tiết</a></p>
@@ -517,13 +484,13 @@
                     @RenderSoDuHang(maNV)
                     @* @if (maNV == "NV00006" || maNV == "NV00016" || maNV == "NV00001" || maNV == "NV00035")
                     {
-                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank">  <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" /> </a>
-                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank"><img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" /> </a>
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank">  <img src="/images/logoflightnone.png" class="img-responsive logophu" style="display: none;" /> </a>
+                        <a href="/@AreaNameConst.AREA_Menu/Hang/SoDuHang?&i=99" target="_blank"><img style="width: 100px" src="/images/logoflightnone.png" class="img-responsive logochinh" /> </a>
                     }
                     else
                     {
-                        <img src="/images/Logo ev-none br.png" class="img-responsive logophu" style="display: none;" />
-                        <img style="width: 100px" src="/images/Logo ev-none br.png" class="img-responsive logochinh" />
+                        <img src="/images/logoflightnone.png" class="img-responsive logophu" style="display: none;" />
+                        <img style="width: 100px" src="/images/logoflightnone.png" class="img-responsive logochinh" />
                     } *@
                     <div style="margin-top:5px"> 
                         <a href="/@AreaNameConst.AREA_Menu/Menu/ChinhSachDB?&i=8" style="color: #fff !important; padding: 9px 0px 0px !important;"><span class="DB">ĐB</a>
@@ -532,33 +499,6 @@
                     </div>
                 </div>
                 <div class="col-xs-6">
-                    <div class="row" style="margin-top: 5px; margin-bottom: 10px;">
-                        <div class="contain-thongbao thongbao-ve">
-                            @RenderThongBaoVe()
-                            @*     <p>
-                            Bạn có <span class="SoLuongVeSot" style="color:red; font-weight:bold">
-                            <span class='loading_3dot_SoLuongVeSot'>
-                            <img src="~/images/Loading/loading_3dot.gif" style="width: 20px;  " />
-                            </span>
-                            </span> vé sót chưa báo cáo.
-                            <a href="/@AreaNameConst.AREA_PhongVe/PhongVe/VeSot?&i=13">Chi tiết</a>
-                            </p>
-                            <p>
-                            Hiện tại có <span class="SoLuongVeHoan" style="color:red; font-weight:bold">
-                            <span class='loading_3dot_SoLuongVeHoan'>
-                            <img src="~/images/Loading/loading_3dot.gif" style="width: 20px;  " />
-                            </span>
-                            </span> vé hoàn đang ở tình trạng <span style="color: red; font-weight: bold;">"MỚI"</span>.  <a class="chiTietVeHoanLink" href="#">Chi tiết</a>
-                            </p>
-                            <p>
-                            Hiện tại có <span class="SoLuongVeDangHoan" style="color:red; font-weight:bold">
-                            <span class='loading_3dot_SoLuongVeDangHoan'>
-                            <img src="~/images/Loading/loading_3dot.gif" style="width: 20px;  " />
-                            </span>
-                            </span> vé hoàn đang ở tình trạng <span style="color: red; font-weight: bold;">"ĐANG HOÀN"</span>. <a class="chiTietVeDangHoanLink" href="#">Chi tiết</a>
-                            </p> *@
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="contain-thongbao" style="padding: 5px 0px; max-height: 130px;">
                             <div class="col-sm-12 col-xs-12" style="padding-left:10px;">
@@ -686,35 +626,8 @@
 
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                        <div class="contain-thongbao" style="padding: 5px 0px;">
-                            @* <p style="padding-left: 10px;">Công nợ NV @DateTime.Parse(CNNV[0].CREATEDATE).ToString("dd/MM/yyyy hh:mm:ss"). <a id="CNNV" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
-                            <p style="padding-left: 10px;">Công nợ NV @RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNNV_Ngay", styleName: "width: 30px;") <a id="CNNV1" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
-                            <div class="render_CNNV"></div>
-                            @*  @for (int i = 0; i <= 3; i++)
-                            {
-                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@CNNV[i].MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@CNNV[i].SoTienNo))</span></div>
-                            } *@
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                        <div class="contain-thongbao" style="padding: 5px 0px;">
-                            @* <p style="padding-left: 10px;">@CNQH.TieuDe tháng @CNQH.Thang. <a id="CNQH" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p> *@
-                            <p style="padding-left: 10px;">@RenderLoading3Dot(tagName: "span", className: "loading_3dot_CNQH_Ngay", styleName: "width: 30px;") <a id="CNQH" data-toggle="modal" data-target="#openPopup" href="javascript:;">Chi tiết</a></p>
-                            <div class="render_CNQH"></div>
-                            @* @foreach (var item in CNQH.ListCongNoNVQuaHan)
-                            {
-                            if (item.TenNV == "" && item.MaNV == "")
-                            {
-                            <div class="col-xs-12" style="padding: 0 10px;"><span style="color: #0023F5; font-weight: bold;">TUẦN NÀY KHÔNG CÓ NHÂN VIÊN NỢ QUÁ HẠN. GOOD TEAM</span></div>
-                            }
-                            else
-                            {
-                            <div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">@item.MaNV:</span> <span style="color: red;">@string.Format("{0:0,0}", double.Parse(@item.SoTienNo))</span></div>
-                            }
-                            } *@
-                        </div>
-                    </div>
+                  
+                  
                     @* <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
                     <div class="contain-thongbao" style="padding: 5px 0px;">
                     <p style="padding-left: 10px;">Có <span style="color:red;font-weight:bold;">@SoLuong_BVForum</span> bài viết Forum chưa được duyệt. <a href="/Forum/DuyetBaiViet?&i=9">Chi tiết</a></p>
@@ -768,13 +681,6 @@
         <div class="container">
             <div class="row" style="text-align: center;">
                 <div class="col-sm-2 col-xs-3 main-icon">
-                    <a href="#" class="link-main-icon" id="tinhnang" data-value="7">
-                        <img src="../images/base.png" class="img-responsive" alt="logo" style="display: inline-block;" />
-                        <p class="name-main-icon">Marketing</p>
-                    </a>
-                    <span class="thongbao">Mới</span>
-                </div>
-                <div class="col-sm-2 col-xs-3 main-icon">
                     <a href="#" class="link-main-icon" id="thongbao">
                         <img src="../images/message.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">Thông Báo</p>
@@ -825,7 +731,7 @@
                         <p class="name-main-icon">Phòng Vé</p>
                     </a>
                 </div>
-                <div class="col-sm-2 col-xs-3 main-icon">
+              @*   <div class="col-sm-2 col-xs-3 main-icon">
                     <a href="#" class="link-main-icon" id="doan" data-value="14">
                         <img src="../images/wework.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">BP Đoàn</p>
@@ -849,7 +755,7 @@
                         <img src="../images/drive.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">Corprate</p>
                     </a>
-                </div>
+                </div> *@
 
                 @*<div class="col-sm-2 col-xs-3 main-icon">
                 <a href="#" class="link-main-icon" id="congno" data-value="6">
@@ -863,7 +769,7 @@
                         <p class="name-main-icon">Yến Sào</p>
                     </a>
                 </div> *@
-                <div class="col-sm-2 col-xs-3 main-icon">
+               @*  <div class="col-sm-2 col-xs-3 main-icon">
                     <a href="#" class="link-main-icon" id="VIP" data-value="11">
                         <img src="../images/workflow.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">CS</p>
@@ -880,13 +786,8 @@
                         <img src="../images/account.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">Setting</p>
                     </a>
-                </div>
-                <div class="col-sm-2 col-xs-3 main-icon">
-                    <a href="#" class="link-main-icon" id="kythuat" data-value="12">
-                        <img src="../images/kythuat.png" class="img-responsive" alt="logo" style="display: inline-block;" />
-                        <p class="name-main-icon">Kỹ thuật</p>
-                    </a>
-                </div>
+                </div> *@
+             
               @*   <div class="col-sm-2 col-xs-3 main-icon">
                     <a href="#" class="link-main-icon" id="landingpage" data-value="16">
                         <img src="../images/wework.png" class="img-responsive" alt="logo" style="display: inline-block;" />

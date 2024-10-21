@@ -34,7 +34,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -57,7 +57,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -81,7 +81,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -106,7 +106,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -133,7 +133,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -158,7 +158,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -183,7 +183,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -208,7 +208,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -389,7 +389,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -416,7 +416,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -443,7 +443,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -470,7 +470,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
@@ -497,7 +497,7 @@ namespace Manager.DataAccess.Repository
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     SubjectModel home = new SubjectModel();
-                    home.Image = "/images/logoev12.png";
+                    home.Image = "/images/logoflight.png";
                     home.Title = dt.Rows[i]["TIEUDE"].ToString();
                     home.Date = " Ngày cập nhật cuối: " + dt.Rows[i]["NGAYDANG"].ToString();
                     home.subject_id = int.Parse(dt.Rows[i]["ROWID"].ToString());
