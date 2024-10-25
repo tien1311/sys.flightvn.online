@@ -41,29 +41,28 @@ namespace Manager.DataAccess.Repository
             {
                 int result_insert = 0;
 
-                string store = "SP_INSERT_DM_NV";
-                using (var con = new SqlConnection(_connectionString))
-                {
-                    var param = new
-                    {
-                        IDGroupPermission = employee.Position,
-                        MaNV = employee.EmployeeCode,
-                        IDTen = "",
-                        TEN = employee.FirstName + " " + employee.LastName,
-                        HOLOT = employee.FirstName,
-                        TENNV = employee.LastName,
-                        TRUONGBOPHAN = false,
-                        GioiTinh = employee.Gender,
-                        ChiNhanh = "MIỀN NAM",
-                        SinhNhat = employee.DateOfBirth,
-                        DiaChiThuongTru = employee.PermanentAddress,
-                        DiaChiTamTru = employee.TemporaryAddress,
-                        DienThoai = employee.
+                //string store = "SP_INSERT_DM_NV";
+                //using (var con = new SqlConnection(_connectionString))
+                //{
+                //    var param = new
+                //    {
+                //        IDGroupPermission = employee.Position,
+                //        MaNV = employee.EmployeeCode,
+                //        IDTen = "",
+                //        TEN = employee.FirstName + " " + employee.LastName,
+                //        HOLOT = employee.FirstName,
+                //        TENNV = employee.LastName,
+                //        TRUONGBOPHAN = false,
+                //        GioiTinh = employee.Gender,
+                //        ChiNhanh = "MIỀN NAM",
+                //        SinhNhat = employee.DateOfBirth,
+                //        DiaChiThuongTru = employee.PermanentAddress,
+                //        DiaChiTamTru = employee.TemporaryAddress,
+                //        DienThoai = employee.PersonalPhone
+                //    };
 
-
-                    };
-                    result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
-                }
+                //    result_insert = await con.QueryAsync<SelectOption>(store, null, commandType: CommandType.Text, commandTimeout: 30);
+                //}
 
                 //string sql = "INSERT INTO [PHIEUBAOLANH] ([ID_KhachHang] ,[BaoLanh],[GhiChu] ,[NgayLap] ,[NhanVienLap] ,[NgaySua] ,[NhanVienSua] ,[NgayXoa],[NhanVienXoa],[TinhTrang],[TenDaiLy],[MaPhieu],[SoPhut]) VALUES ( @MaKH,@baolanh,@ghichu,GETDATE(),@tenNV,null,null,null,null,@tinhtrang,@tenDL,@MaPBL,@thoigian)";
                 //List<DBase.AddParameters> Param = new List<DBase.AddParameters>();
