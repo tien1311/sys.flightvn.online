@@ -222,7 +222,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>EV Manager</title>
+    <title>Trip Data</title>
     <link rel="stylesheet" type="text/css" href="~/vendors/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="~/css/style-menu.css">
     <link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -831,8 +831,7 @@
     <script>
         function getAirlineCodeSD_Hang(hang) {
             hang = hang.trim();
-            if (hang.includes("FHQ")) return "FHQ";
-            if (hang.includes("UJU")) return "UJU";
+            if (hang.includes("FHQ")) return "VNA";
             if (hang.includes("LXQ")) return "LXQ";
             if (hang.includes("JPQ")) return "JPQ";
             return hang;
@@ -856,7 +855,7 @@
         function RenderAirlineAmounts_SD_HangVN_HangInter(SD_HangVN, SD_HangInter) {
             let htmlContent = '';
             SD_HangVN.forEach(item => {
-                if (item.hang.includes("UJU") || item.hang.includes("LXQ")) {
+                if (item.hang.includes("LXQ")) {
                     let Hang = item.hang.substring(0, 3);
                     let formattedHtml = getFormattedAmount(item.soTien, item.warningAmount);
                     let container = document.createElement('div');
@@ -885,7 +884,7 @@
             for (let i = 0; i < SD_Hang.length; i++) {
                 const hang = i < 4 ? getAirlineCodeSD_Hang(SD_Hang[i].hang) : SD_Hang[i].hang.trim();
                 if (!hang.includes("BAMBOO AIRWAYS MT")) {
-                    if (hang != "UJU" && hang != "LXQ") {
+                    if ( hang != "LXQ") {
                         const formattedAmount = getFormattedAmount(SD_Hang[i].soTien, SD_Hang[i].warningAmount);
                         htmlContent += `<div class="col-sm-3 col-xs-6" style="padding: 0 10px;"><span style="font-weight:bold;">${hang}:</span> ${formattedAmount}</div>`;
                     }
