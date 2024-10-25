@@ -27,5 +27,6 @@ namespace Manager.Common.Helpers.AreaHelpers
         public const string AREA_Setting = "Setting" + suffix_name;
         public const string AREA_ThongBao = "ThongBao" + suffix_name;
         public const string AREA_LandingPage = "LandingPage" + suffix_name;
+        public const string AREA_HCNS = "HCNS" + suffix_name;
     }
 }

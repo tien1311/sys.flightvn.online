@@ -1,0 +1,226 @@
+﻿@model List<Manager.Model.Models.HCNS.Employee>
+
+@{
+    ViewData["Title"] = "Tạo nhân viên";
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+<title>@ViewData["Title"]</title>
+<h2>Nhân viên</h2>
+
+
+<style>
+    #avatarPreview {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        border: 1px solid #ddd;
+        padding: 5px;
+        margin-top: 10px;
+    }
+</style>
+
+
+<div>
+    @using (Html.BeginForm("CreateEmployee", "Employee", new { i = 14 }, FormMethod.Post))
+    {
+        <div class="x_panel">
+            <div class="x_content">
+                <div class="container mt-5">
+                    <div class="row" style="line-height: 25px;">
+                        <!-- Left Column: Employee Information -->
+                        <div class="col-md-8">
+                            <form>
+                                <!-- Row 1: Employee ID, Last Name, First Name -->
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="employeeCode" class="form-label">Mã Nhân viên</label>
+                                        <input type="text" class="form-control" id="employeeCode" placeholder="Enter employee code">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="lastName" class="form-label">Họ lót</label>
+                                        <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="firstName" class="form-label">Tên</label>
+                                        <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Gender, Date of Birth, Personal Phone -->
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="gender" class="form-label ">Giới tính</label>
+                                        <select class="form-select form-control" id="gender">
+                                            <option selected>Select gender</option>
+                                            <option value="male">Nam</option>
+                                            <option value="female">Nữ</option>
+                                            <option value="other">Khác</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="dob" class="form-label">Ngày sinh</label>
+                                        <input type="date" class="form-control" id="dob">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="personalPhone" class="form-label">SĐT Cá nhân</label>
+                                        <input type="tel" class="form-control" id="personalPhone" placeholder="Enter personal phone">
+                                    </div>
+                                </div>
+
+                                <!-- Row 3: Permanent Address, Temporary Address -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="permanentAddress" class="form-label">Địa chỉ thường trú</label>
+                                        <input type="text" class="form-control" id="permanentAddress" placeholder="Enter permanent address">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="temporaryAddress" class="form-label">Địa chỉ tạm trú</label>
+                                        <input type="text" class="form-control" id="temporaryAddress" placeholder="Enter temporary address">
+                                    </div>
+                                </div>
+
+                                <!-- Row 4: ID/CCCD, Issued By, Issue Date -->
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="cccd" class="form-label">CCCD</label>
+                                        <input type="text" class="form-control" id="cccd" placeholder="Enter CCCD">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="issuedBy" class="form-label">Nơi cấp</label>
+                                        <input type="text" class="form-control" id="issuedBy" placeholder="Enter issuing authority">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="issueDate" class="form-label">Ngày cấp</label>
+                                        <input type="date" class="form-control" id="issueDate">
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Additional fields for department, login credentials, etc. -->
+                                <!-- (Omitted for brevity, you can include as needed) -->
+                            </form>
+                        </div>
+
+                        <!-- Right Column: Avatar Upload and Preview -->
+                        <div class="col-md-4 text-center">
+                            <h4>Upload Avatar</h4>
+                            <div class="mb-3">
+                                <label for="avatar" class="form-label">Choose Avatar</label>
+                                <input type="file" class="form-control" id="avatar" accept="image/*" onchange="previewAvatar()">
+                            </div>
+                            <img id="avatarPreview" src="https://via.placeholder.com/200" alt="Avatar Preview">
+                        </div>
+                    </div>
+                    <div class="row" style="line-height: 25px;">
+                        <div class="col-md-12">
+                            <!-- Row 5: Department, Division, Position -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="department" class="form-label">Phòng ban</label>
+                                    <input type="text" class="form-control" id="department" placeholder="Enter department">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="division" class="form-label">Bộ phận</label>
+                                    <input type="text" class="form-control" id="division" placeholder="Enter division">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="position" class="form-label">Chức vụ</label>
+                                    <input type="text" class="form-control" id="position" placeholder="Enter position">
+                                </div>
+                            </div>
+                            <!-- Row 6: Username, Password, Email -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="username" class="form-label">Tên đăng nhập</label>
+                                    <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="password" class="form-label">Mật khẩu</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Enter password">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                </div>
+                            </div>
+
+                            <!-- Row 7: Company Phone, Accountant Code, EXT -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="companyPhone" class="form-label">SĐT Công ty</label>
+                                    <input type="tel" class="form-control" id="companyPhone" placeholder="Enter company phone">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="accountantCode" class="form-label">Mã kế toán</label>
+                                    <input type="text" class="form-control" id="accountantCode" placeholder="Enter accountant code">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="ext" class="form-label">EXT</label>
+                                    <input type="text" class="form-control" id="ext" placeholder="Enter extension number">
+                                </div>
+                            </div>
+
+                            <!-- Row 8: Personal Tax Code, Issue Date of Tax Code -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="personalTaxCode" class="form-label">MST cá nhân</label>
+                                    <input type="text" class="form-control" id="personalTaxCode" placeholder="Enter personal tax code">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="taxIssueDate" class="form-label">Ngày cấp MST</label>
+                                    <input type="date" class="form-control" id="taxIssueDate">
+                                </div>
+                            </div>
+
+                            <!-- Row 9: Joining Date, Vacation Calculation Date, Leaving Date -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="joiningDate" class="form-label">Ngày vào làm</label>
+                                    <input type="date" class="form-control" id="joiningDate">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="vacationDate" class="form-label">Ngày tính phép</label>
+                                    <input type="date" class="form-control" id="vacationDate">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="leavingDate" class="form-label">Ngày nghỉ việc</label>
+                                    <input type="date" class="form-control" id="leavingDate">
+                                </div>
+                            </div>
+
+                            <!-- Row 10: Work Regime, Work Status, Job Permissions -->
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="workRegime" class="form-label">Chế độ làm việc</label>
+                                    <input type="text" class="form-control" id="workRegime" placeholder="Enter work regime">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="workStatus" class="form-label">Trạng thái làm việc</label>
+                                    <input type="text" class="form-control" id="workStatus" placeholder="Enter work status">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="jobPermissions" class="form-label">Quyền hạn công việc</label>
+                                    <input type="text" class="form-control" id="jobPermissions" placeholder="Enter job permissions">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Submit Button (Place wherever suitable) -->
+                    <div class="row mt-4" style="float: right;margin-top: 10px;">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script> *@
+
+
+
+

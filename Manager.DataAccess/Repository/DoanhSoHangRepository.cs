@@ -143,7 +143,7 @@ namespace Manager.DataAccess.Repository
             List<ChiTietSoDuHangModel> result = new List<ChiTietSoDuHangModel>();
             try
             {
-                string sql = "select top 8 *, WarningAmount=isnull(B.Amount,0) from SODUHANG_DETAIL Detail left join SODUHANG on Detail.IDSODUHANG = SODUHANG.ID left join [SERVER37].[Manager_V2].[dbo].[CONFIG_BALANCE_AIRLINE] B on B.Airline = Detail.HANG where STATUS = 1 order by Detail.IDSODUHANG desc";
+                string sql = "select top 6 *, WarningAmount=isnull(B.Amount,0) from SODUHANG_DETAIL Detail left join SODUHANG on Detail.IDSODUHANG = SODUHANG.ID left join [SERVER37].[Manager_V2].[dbo].[CONFIG_BALANCE_AIRLINE] B on B.Airline = Detail.HANG where STATUS = 1 order by Detail.IDSODUHANG desc";
                 using (var conn = new SqlConnection(server_EV_MAIN))
                 {
                     result = (List<ChiTietSoDuHangModel>)conn.Query<ChiTietSoDuHangModel>(sql, null, commandType: CommandType.Text, commandTimeout: 90);

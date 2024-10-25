@@ -137,83 +137,6 @@
     string KThuatTV = GetClaimValue("KThuatTV");
     string DulichTV = GetClaimValue("DulichTV");
 
-    // var tasks = new List<Task>
-    // {
-    //     _unitOfWork_Repository.Login_Rep.GetActiveUserAsync(maNV),
-    //     _unitOfWork_Repository.VeSot_Rep.SoLuongVeSotAsync(maNV),
-    //     _unitOfWork_Repository.VeHoan_Rep.SoLuongVeHoanAsync(),
-    //     _unitOfWork_Repository.VeHoan_Rep.SoLuongVeDangHoanAsync(),
-    //     _unitOfWork_Repository.GuiMail_DaiLy_Rep.SLVeSotBCCTCAsync(maNV),
-    //     _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangIndexAsync(),
-    //     _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangVNIndexAsync(),
-    //     _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangAirInternationIndexAsync(),
-    //     _unitOfWork_Repository.ThongTinDaiLy_Rep.CongNoNVAsync(),
-    //     _unitOfWork_Repository.CongNoQuaHan_Rep.DSCongNoNVQuaHanAsync(),
-    //     _unitOfWork_Repository.Forum_Rep.SoLuongBaiVietAsync(),
-    //     _unitOfWork_Repository.Popup_Rep.LoadPopup(),
-    //     _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV)
-    // };
-
-    //  Task.WhenAll(tasks);
-    // Khởi tạo các task mà không chờ đợi
-    // var taskActiveUser = Task.Run(() => _unitOfWork_Repository.Login_Rep.GetActiveUserAsync(maNV));
-    // var taskSoLuongVeSot = Task.Run(() => _unitOfWork_Repository.VeSot_Rep.SoLuongVeSotAsync(maNV));
-    // var taskSLVeSotBCCTC = Task.Run(() => _unitOfWork_Repository.GuiMail_DaiLy_Rep.SLVeSotBCCTCAsync(maNV));
-    // var taskDuNoDaiLy = Task.Run(() => _unitOfWork_Repository.ThongTinDaiLy_Rep.LayCongNoNhanVien(maNV));
-    // var taskDemTBChuaXem = Task.Run(() => _unitOfWork_Repository.ThongBao_Rep.DemTBChuaXem(maNV));
-    // var taskSoLuongVeHoan = Task.Run(() => _unitOfWork_Repository.VeHoan_Rep.SoLuongVeHoanAsync());
-    // var taskSoLuongVeDangHoan = Task.Run(() => _unitOfWork_Repository.VeHoan_Rep.SoLuongVeDangHoanAsync());
-    // var taskSD_Hang = Task.Run(() => _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangIndexAsync());
-    // var taskSD_HangVN = Task.Run(() => _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangVNIndexAsync());
-    // var taskSD_HangAir_Inter = Task.Run(() => _unitOfWork_Repository.DoanhSoHang_Rep.SD_HangAirInternationIndexAsync());
-    // var taskCNNV = Task.Run(() => _unitOfWork_Repository.ThongTinDaiLy_Rep.CongNoNVAsync());
-    // var taskCNQH = Task.Run(() => _unitOfWork_Repository.CongNoQuaHan_Rep.DSCongNoNVQuaHanAsync());
-    // var taskSoLuong_BVForum = Task.Run(() => _unitOfWork_Repository.Forum_Rep.SoLuongBaiVietAsync());
-    // var taskPopup = Task.Run(() => _unitOfWork_Repository.Popup_Rep.LoadPopup());
-
-    // string Active = "0";
-    // string SLVeSotBCCTC = "...";
-    // string SoLuongVeSot = "...";
-    // string SoLuongVeHoan = "...";
-    // string SoLuongVeDangHoan = "...";
-    // int SoLuong_BVForum = 0;
-    // string popup = "...";
-
-    // var SD_Hang = taskSD_Hang.Result;
-    // var SD_HangVN = taskSD_HangVN.Result;
-    // var SD_HangAir_Inter = taskSD_HangAir_Inter.Result;
-    // var CNNV = taskCNNV.Result;
-    // var CNQH = taskCNQH.Result;
-    // var duNoDaiLy = taskDuNoDaiLy.Result;
-    // Khi các task hoàn thành, cập nhật kết quả
-
-    // Active = taskActiveUser.Result;
-    // SLVeSotBCCTC = taskSLVeSotBCCTC.Result;
-    // SoLuongVeSot = taskSoLuongVeSot.Result;
-    // SoLuongVeHoan = taskSoLuongVeHoan.Result;
-    // SoLuongVeDangHoan = taskSoLuongVeDangHoan.Result;
-    // SoLuong_BVForum = taskSoLuong_BVForum.Result;
-    // popup = taskPopup.Result;
-    // var demTBChuaXem = taskDemTBChuaXem.Result;
-
-    // string tongNo = "...";
-
-    // if (!String.IsNullOrEmpty(popup))
-    // {
-    //     Html.Partial("Popup", popup);
-    // }
-
-    // if (duNoDaiLy != null)
-    // {
-    //     if (duNoDaiLy.Balance != null && duNoDaiLy.Balance != "")
-    //     {
-    //         tongNo = string.Format("{0:0,0}", double.Parse(duNoDaiLy.Balance));
-    //         if (double.Parse(duNoDaiLy.Balance) > 0)
-    //         {
-    //             tongNo = "+" + tongNo;
-    //         }
-    //     }
-    // }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -729,6 +652,12 @@
                     <a href="#" class="link-main-icon" id="phongve" data-value="3">
                         <img src="../images/booking.png" class="img-responsive" alt="logo" style="display: inline-block;" />
                         <p class="name-main-icon">Phòng Vé</p>
+                    </a>
+                </div>
+                <div class="col-sm-2 col-xs-3 main-icon">
+                    <a href="#" class="link-main-icon" id="hcns" data-value="14">
+                        <img src="../images/wework.png" class="img-responsive" alt="logo" style="display: inline-block;" />
+                        <p class="name-main-icon">HCNS</p>
                     </a>
                 </div>
               @*   <div class="col-sm-2 col-xs-3 main-icon">
@@ -1363,11 +1292,11 @@
                 myFunction();
             }
         });
-        $("#doan").click(function () {
+        $("#hcns").click(function () {
             var manv = document.getElementById('MANV').value;
-            if (@BPDoan== true || @BPDoanTV== true) {
+            if (@BPDoan == true || @BPDoanTV == true) {
                 i = $(this).data("value");
-                window.open('/@AreaNameConst.AREA_BPDoan/BPDoan/Index_DOAN?' + "&i=" + i, "_self");
+                window.open('/@AreaNameConst.AREA_HCNS/Employee/CreateEmployee?' + "&i=" + i, "_self");
             }
             else {
                 myFunction();
