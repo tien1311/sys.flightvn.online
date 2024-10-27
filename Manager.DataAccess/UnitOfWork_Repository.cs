@@ -152,10 +152,15 @@ namespace Manager.DataAccess
 
         #region KEY_WORD: E
         private EVMailRepository _eVMailRepository;
+        private EmployeeRepository _employeeRepository;
 
         public EVMailRepository EVMail_Rep
         {
             get => GetOrCreate(ref _eVMailRepository, () => new EVMailRepository(_configuration));
+        }
+        public EmployeeRepository Employee_Rep
+        {
+            get => GetOrCreate(ref _employeeRepository, () => new EmployeeRepository(_configuration));
         }
 
         #endregion

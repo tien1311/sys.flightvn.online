@@ -33,7 +33,7 @@ namespace Manager.DataAccess.Repository
         public EmployeeRepository(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = configuration.GetConnectionString("SQL_EV_TOUR");
+            _connectionString = configuration.GetConnectionString("SQL_EV_MAIN");
         }
         public async Task<bool> CreateEmployee(Employee employee)
         {
@@ -95,10 +95,21 @@ namespace Manager.DataAccess.Repository
             }
         }
 
+        public async Task<IEnumerable<SelectOption>> GetDivision()
+        {
+            IEnumerable<SelectOption> result;
+            string sql  = "select * from DEPARTMENT where STATUS=1 order by NAME";
+            using (var con = new SqlConnection(_connectionString))
+            {
+                result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+            }
+
+            return result;
+        }
         public async Task<IEnumerable<SelectOption>> GetDepartment()
         {
             IEnumerable<SelectOption> result;
-            string sql  = "select * from PHONGBAN where TINHTRANG=1 order by Ten";
+            string sql = "select Code = ID, Name = Ten from PHONGBAN where TINHTRANG=1 order by Ten";
             using (var con = new SqlConnection(_connectionString))
             {
                 result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
@@ -106,10 +117,12 @@ namespace Manager.DataAccess.Repository
 
             return result;
         }
+
+
         public async Task<IEnumerable<SelectOption>> GetPosition()
         {
             IEnumerable<SelectOption> result;
-            string sql = "select * from CHUCVU where TINHTRANG=1 order by Ten";
+            string sql = "select Code = ID, Name = Ten from CHUCVU where TINHTRANG=1 order by Ten";
             using (var con = new SqlConnection(_connectionString))
             {
                 result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
@@ -117,5 +130,33 @@ namespace Manager.DataAccess.Repository
 
             return result;
         }
+
+        public async Task<string> GetEmployeeCode()
+        {
+            string result = "";
+            string sql = @"SELECT top 1 convert(int,right(MaNV,len(MaNV)-2)) as ma
+                        FROM [DM_NV] order by convert(int,right(MaNV,len(MaNV)-2)) desc";
+
+            using (var con = new SqlConnection(_connectionString))
+            {
+                result = await con.QueryFirstAsync<string>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+            }
+            if (result != "")
+            {
+                int ma = int.Parse(result);
+                ma++;
+                if (ma.ToString().Length == 1)
+                    result = "NV00" + ma.ToString();
+                if (ma.ToString().Length == 2)
+                    result = "NV0" + ma.ToString();
+                if (ma.ToString().Length == 3)
+                    result = "NV" + ma.ToString();
+            }
+            else
+                result = "NV001";
+
+            return result;
+        }
+       
     }
 }

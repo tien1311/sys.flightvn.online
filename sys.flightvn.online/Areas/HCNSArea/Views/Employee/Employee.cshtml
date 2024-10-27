@@ -34,7 +34,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="employeeCode" class="form-label">Mã Nhân viên</label>
-                                        <input type="text" class="form-control" id="employeeCode" placeholder="Enter employee code">
+                                        <input type="text" class="form-control" id="employeeCode" value="@ViewBag.EmployeesCode" disabled placeholder="Enter employee code">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="lastName" class="form-label">Họ lót</label>
@@ -118,15 +118,35 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="department" class="form-label">Phòng ban</label>
-                                    <input type="text" class="form-control" id="department" placeholder="Enter department">
+                                    <select class="form-control" id="department" name="department">
+                                        <option value="">-- Chọn Phòng Ban --</option>
+                                        @foreach (var department in ViewBag.Departments)
+                                        {
+                                            <option value="@department.Code">@department.Name</option>
+                                        }
+                                    </select>
+                                  
                                 </div>
                                 <div class="col-md-4">
                                     <label for="division" class="form-label">Bộ phận</label>
-                                    <input type="text" class="form-control" id="division" placeholder="Enter division">
+                                    <select class="form-control" id="division" name="division">
+                                        <option value="">-- Chọn Bộ Phận --</option>
+                                        @foreach (var division in ViewBag.Divisions)
+                                        {
+                                            <option value="@division.Code">@division.Name</option>
+                                        }
+                                    </select>
+
                                 </div>
                                 <div class="col-md-4">
                                     <label for="position" class="form-label">Chức vụ</label>
-                                    <input type="text" class="form-control" id="position" placeholder="Enter position">
+                                    <select class="form-control" id="position" name="position">
+                                        <option value="">-- Chọn Chức Vụ --</option>
+                                        @foreach (var position in ViewBag.Positions)
+                                        {
+                                            <option value="@position.Code">@position.Name</option>
+                                        }
+                                    </select>
                                 </div>
                             </div>
                             <!-- Row 6: Username, Password, Email -->

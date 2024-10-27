@@ -37,6 +37,7 @@ namespace Manager.DataAccess.IRepository.IUnitOfWork_Repository
 
         #region KEY_WORD: E 
         EVMailRepository EVMail_Rep { get; }
+        EmployeeRepository Employee_Rep { get; }
         #endregion
 
         #region KEY_WORD: F 
