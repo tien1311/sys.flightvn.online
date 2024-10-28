@@ -35,7 +35,7 @@ namespace Manager.DataAccess.Repository
             _configuration = configuration;
             _connectionString = configuration.GetConnectionString("SQL_EV_MAIN");
         }
-        public async Task<bool> CreateEmployee(Employee employee)
+        public async Task<bool> CreateEmployee(EmployeeModel employee)
         {
             try
             {

@@ -1,4 +1,4 @@
-﻿@model List<Manager.Model.Models.HCNS.Employee>
+﻿@model List<Manager.Model.Models.HCNS.EmployeeModel>
 
 @{
     ViewData["Title"] = "Tạo nhân viên";
@@ -17,12 +17,20 @@
         padding: 5px;
         margin-top: 10px;
     }
+
+    .error-message {
+        color: red;
+        font-size: 0.9em;
+        margin-left: 5px;
+    }
+
 </style>
 
 
 <div>
-    @using (Html.BeginForm("CreateEmployee", "Employee", new { i = 14 }, FormMethod.Post))
+    @using (Html.BeginForm("CreateEmployee", "Employee", new { i = 14 }, FormMethod.Post, false, new { id = "employeeForm", onsubmit = "return handleFormSubmit(event)" }))
     {
+       
         <div class="x_panel">
             <div class="x_content">
                 <div class="container mt-5">
@@ -33,65 +41,75 @@
                                 <!-- Row 1: Employee ID, Last Name, First Name -->
                                 <div class="row mb-3">
                                     <div class="col-md-4">
-                                        <label for="employeeCode" class="form-label">Mã Nhân viên</label>
+                                        <label for="employeeCode" class="form-label">Mã Nhân viên <span style="color:red;"> * </span> </label>
                                         <input type="text" class="form-control" id="employeeCode" value="@ViewBag.EmployeesCode" disabled placeholder="Enter employee code">
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="lastName" class="form-label">Họ lót</label>
+                                        <label for="lastName" class="form-label">Họ lót <span style="color:red;"> * </span></label>
                                         <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                                        <span class="error-message" id="lastNameError"></span>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="firstName" class="form-label">Tên</label>
+                                        <label for="firstName" class="form-label">Tên <span style="color:red;"> * </span></label>
                                         <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                                        <span class="error-message" id="firstNameError"></span>
                                     </div>
                                 </div>
 
                                 <!-- Row 2: Gender, Date of Birth, Personal Phone -->
                                 <div class="row mb-3">
                                     <div class="col-md-4">
-                                        <label for="gender" class="form-label ">Giới tính</label>
+                                        <label for="gender" class="form-label ">Giới tính <span style="color:red;"> * </span></label>
                                         <select class="form-select form-control" id="gender">
-                                            <option selected>Select gender</option>
+                                            <option value="0" selected>-- Chọn Giới Tính --</option>
                                             <option value="male">Nam</option>
                                             <option value="female">Nữ</option>
                                             <option value="other">Khác</option>
                                         </select>
+                                        <span class="error-message" id="genderError"></span>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="dob" class="form-label">Ngày sinh</label>
-                                        <input type="date" class="form-control" id="dob">
+                                        <label for="birthDate" class="form-label">Ngày sinh <span style="color:red;"> * </span></label>
+                                        <input type="date" class="form-control" id="birthDate">
+                                        <span class="error-message" id="birthDateError"></span>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="personalPhone" class="form-label">SĐT Cá nhân</label>
+                                        <label for="personalPhone" class="form-label">SĐT Cá nhân <span style="color:red;"> * </span></label>
                                         <input type="tel" class="form-control" id="personalPhone" placeholder="Enter personal phone">
+                                        <span class="error-message" id="personalPhoneError"></span>
                                     </div>
                                 </div>
 
                                 <!-- Row 3: Permanent Address, Temporary Address -->
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="permanentAddress" class="form-label">Địa chỉ thường trú</label>
+                                        <label for="permanentAddress" class="form-label">Địa chỉ thường trú <span style="color:red;"> * </span></label>
                                         <input type="text" class="form-control" id="permanentAddress" placeholder="Enter permanent address">
+                                        <span class="error-message" id="permanentAddressError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="temporaryAddress" class="form-label">Địa chỉ tạm trú</label>
+                                        <label for="temporaryAddress" class="form-label">Địa chỉ tạm trú <span style="color:red;"> * </span></label>
                                         <input type="text" class="form-control" id="temporaryAddress" placeholder="Enter temporary address">
+                                        <span class="error-message" id="temporaryAddressError"></span>
                                     </div>
                                 </div>
 
                                 <!-- Row 4: ID/CCCD, Issued By, Issue Date -->
                                 <div class="row mb-3">
                                     <div class="col-md-4">
-                                        <label for="cccd" class="form-label">CCCD</label>
+                                        <label for="cccd" class="form-label">CCCD <span style="color:red;"> * </span></label>
                                         <input type="text" class="form-control" id="cccd" placeholder="Enter CCCD">
+                                        <span class="error-message" id="cccdError"></span>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="issuedBy" class="form-label">Nơi cấp</label>
+                                        <label for="issuedBy" class="form-label">Nơi cấp <span style="color:red;"> * </span></label>
                                         <input type="text" class="form-control" id="issuedBy" placeholder="Enter issuing authority">
+                                        <span class="error-message" id="issuedByError"></span>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="issueDate" class="form-label">Ngày cấp</label>
+                                        <label for="issueDate" class="form-label">Ngày cấp <span style="color:red;"> * </span></label>
                                         <input type="date" class="form-control" id="issueDate">
+                                        <span class="error-message" id="issueDateError"></span>
                                     </div>
                                 </div>
 
@@ -106,10 +124,11 @@
                         <div class="col-md-4 text-center">
                             <h4>Upload Avatar</h4>
                             <div class="mb-3">
-                                <label for="avatar" class="form-label">Choose Avatar</label>
-                                <input type="file" class="form-control" id="avatar" accept="image/*" onchange="previewAvatar()">
+                                <label for="avatar" class="form-label">Choose Avatar <span style="color:red;"> * </span> </label>
+                                <input type="file" class="file-button btn btn-primary col-md-12" id="avatar" accept="image/*" onchange="previewAvatar()">
                             </div>
-                            <img id="avatarPreview" src="https://via.placeholder.com/200" alt="Avatar Preview">
+                            <img id="avatarPreview" src="https://placehold.co/200x200?text=Avatar" alt="Avatar Preview">
+                            <span class="error-message" id="avatarPreviewError"></span>
                         </div>
                     </div>
                     <div class="row" style="line-height: 25px;">
@@ -117,7 +136,7 @@
                             <!-- Row 5: Department, Division, Position -->
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <label for="department" class="form-label">Phòng ban</label>
+                                    <label for="department" class="form-label">Phòng ban <span style="color:red;"> * </span> </label>
                                     <select class="form-control" id="department" name="department">
                                         <option value="">-- Chọn Phòng Ban --</option>
                                         @foreach (var department in ViewBag.Departments)
@@ -125,23 +144,26 @@
                                             <option value="@department.Code">@department.Name</option>
                                         }
                                     </select>
-                                  
+                                    <span class="error-message" id="departmentError"></span>
+
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="division" class="form-label">Bộ phận</label>
+                                    <label for="division" class="form-label">Bộ phận <span style="color:red;"> * </span> </label>
                                     <select class="form-control" id="division" name="division">
-                                        <option value="">-- Chọn Bộ Phận --</option>
+                                        <option value="0">-- Chọn Bộ Phận --</option>
                                         @foreach (var division in ViewBag.Divisions)
                                         {
                                             <option value="@division.Code">@division.Name</option>
                                         }
+                                        
                                     </select>
+                                    <span class="error-message" id="divisionError"></span>
 
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="position" class="form-label">Chức vụ</label>
+                                    <label for="position" class="form-label">Chức vụ <span style="color:red;"> * </span></label>
                                     <select class="form-control" id="position" name="position">
-                                        <option value="">-- Chọn Chức Vụ --</option>
+                                        <option value="0">-- Chọn Chức Vụ --</option>
                                         @foreach (var position in ViewBag.Positions)
                                         {
                                             <option value="@position.Code">@position.Name</option>
@@ -152,16 +174,19 @@
                             <!-- Row 6: Username, Password, Email -->
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <label for="username" class="form-label">Tên đăng nhập</label>
+                                    <label for="username" class="form-label">Tên đăng nhập <span style="color:red;"> * </span></label>
                                     <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                    <span class="error-message" id="usernameError"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="password" class="form-label">Mật khẩu</label>
+                                    <label for="password" class="form-label">Mật khẩu <span style="color:red;"> * </span></label>
                                     <input type="password" class="form-control" id="password" placeholder="Enter password">
+                                    <span class="error-message" id="passwordError"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="email" class="form-label">Email</label>
+                                    <label for="email" class="form-label">Email <span style="color:red;"> * </span></label>
                                     <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                    <span class="error-message" id="emailError"></span>
                                 </div>
                             </div>
 
@@ -172,12 +197,14 @@
                                     <input type="tel" class="form-control" id="companyPhone" placeholder="Enter company phone">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="accountantCode" class="form-label">Mã kế toán</label>
+                                    <label for="accountantCode" class="form-label">Mã kế toán <span style="color:red;"> * </span></label>
                                     <input type="text" class="form-control" id="accountantCode" placeholder="Enter accountant code">
+                                    <span class="error-message" id="accountantCodeError"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="ext" class="form-label">EXT</label>
                                     <input type="text" class="form-control" id="ext" placeholder="Enter extension number">
+
                                 </div>
                             </div>
 
@@ -212,16 +239,19 @@
                             <!-- Row 10: Work Regime, Work Status, Job Permissions -->
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <label for="workRegime" class="form-label">Chế độ làm việc</label>
+                                    <label for="workRegime" class="form-label">Chế độ làm việc <span style="color:red;"> * </span> </label>
                                     <input type="text" class="form-control" id="workRegime" placeholder="Enter work regime">
+                                    <span class="error-message" id="workRegimeError"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="workStatus" class="form-label">Trạng thái làm việc</label>
+                                    <label for="workStatus" class="form-label">Trạng thái làm việc <span style="color:red;"> * </span> </label>
                                     <input type="text" class="form-control" id="workStatus" placeholder="Enter work status">
+                                    <span class="error-message" id="workStatusError"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="jobPermissions" class="form-label">Quyền hạn công việc</label>
+                                    <label for="jobPermissions" class="form-label">Quyền hạn công việc <span style="color:red;"> * </span></label>
                                     <input type="text" class="form-control" id="jobPermissions" placeholder="Enter job permissions">
+                                    <span class="error-message" id="jobPermissionsError"></span>
                                 </div>
                             </div>
                         </div>
@@ -229,7 +259,9 @@
                     <!-- Submit Button (Place wherever suitable) -->
                     <div class="row mt-4" style="float: right;margin-top: 10px;">
                         <div class="col-md-12 text-center">
-                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="submit" class="btn btn-primary btn-md">
+                                <i class="glyphicon glyphicon-floppy-save"></i> Lưu
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -239,7 +271,13 @@
     }
 </div>
 
+<script src="~/js/HCNS/CreateEmployee.js"></script>
 @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script> *@
+
+
+
+
+
 
 
 

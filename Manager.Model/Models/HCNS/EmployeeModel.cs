@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Manager.Model.Models.HCNS
 {
-    public class Employee
+    public class EmployeeModel
     {
         // Basic Information
         public string EmployeeCode { get; set; }
