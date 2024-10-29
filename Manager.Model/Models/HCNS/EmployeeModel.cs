@@ -4,14 +4,15 @@ using System.Text;
 
 namespace Manager.Model.Models.HCNS
 {
-    public class Employee
+    public class EmployeeModel
     {
+        public int EmployeeID { get; set; }
         // Basic Information
         public string EmployeeCode { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime BirthDate { get; set; }
         public string PersonalPhone { get; set; }
 
         // Address Information
@@ -45,9 +46,9 @@ namespace Manager.Model.Models.HCNS
         public DateTime TaxIssueDate { get; set; }
 
         // Employment Dates
-        public DateTime StartDate { get; set; }
-        public DateTime VacationCalculationDate { get; set; }
-        public DateTime? TerminationDate { get; set; }
+        public DateTime JoiningDate { get; set; }
+        public DateTime VacationDate { get; set; }
+        public DateTime? LeavingDate { get; set; }
 
         // Work Conditions
         public string WorkRegime { get; set; }

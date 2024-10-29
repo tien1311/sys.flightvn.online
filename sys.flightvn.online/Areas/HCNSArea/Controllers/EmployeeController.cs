@@ -7,6 +7,7 @@ using Manager.DataAccess.Services.CarBooking;
 using Manager.Model.Models;
 using Manager.Model.Models.CarBooking;
 using Manager.Model.Models.CarBooking.Result;
+using Manager.Model.Models.HCNS;
 using Manager.Model.Models.Other;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,8 +44,13 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                 return new Dictionary<string, int> { { "record", 10 } };
             }
         }
-        [HttpGet]
         public async Task<IActionResult> Employee()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateEmployee()
         {
             ViewBag.EmployeesCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
             ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition();
@@ -55,7 +61,7 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEmployee()
+        public async Task<IActionResult> CreateEmployee(EmployeeModel employee)
         {
             ViewBag.EmployeesCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
             ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition();

@@ -35,7 +35,7 @@ namespace Manager.DataAccess.Repository
             _configuration = configuration;
             _connectionString = configuration.GetConnectionString("SQL_EV_MAIN");
         }
-        public async Task<bool> CreateEmployee(Employee employee)
+        public async Task<bool> CreateEmployee(EmployeeModel employee)
         {
             try
             {
@@ -95,6 +95,29 @@ namespace Manager.DataAccess.Repository
             }
         }
 
+        public async Task<IEnumerable<EmployeeModel>> GetEmployees()
+        {
+            IEnumerable<EmployeeModel> result;
+            string sql = @"select 
+	                       EmployeeID = RowID,
+	                       EmployeeCode = MANV,
+	                       FirstName = TenNV,
+	                       LastName = HOLOT,
+	                       Gender = GioiTinh,
+	                       BirthDate = SinhNhat,
+	                       PermanentAddress = DiachiThuongTru,
+	                       CCCD = CMND,
+	                       PersonalPhone = DienThoai,
+	                       CompanyPhone = DienThoaiCN
+                    from DM_NV
+                    where TinhTrang = 1";
+            using (var con = new SqlConnection(_connectionString))
+            {
+                result = await con.QueryAsync<EmployeeModel>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+            }
+
+            return result;
+        }
         public async Task<IEnumerable<SelectOption>> GetDivision()
         {
             IEnumerable<SelectOption> result;
