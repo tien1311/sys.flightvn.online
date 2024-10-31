@@ -66,13 +66,10 @@ namespace Manager_EV.Areas.KeToanArea.Controllers
             _unitOfWork_Repository = unitOfWork_Repository;
             InitializeDeletionTimer();
         }
-
-
         private void InitializeDeletionTimer()
         {
             deletionTimer = new Timer(CheckAndRemoveExpiredItems, null, 1000, 1000);
         }
-
         private static void CheckAndRemoveExpiredItems(object state)
         {
             var now = DateTime.Now;

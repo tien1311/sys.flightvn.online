@@ -35,7 +35,7 @@ class Employee {
         employeeCode, lastName, firstName, gender, birthDate, personalPhone,
         permanentAddress, temporaryAddress, cccd, issuedBy,
         issueDate, department, division, username, password, email,
-        accountantCode, workRegime, workStatus, jobPermissions, avatarPreview
+        accountantCode, workRegime, workStatus, jobPermissions, avatar
     }) {
         this.employeeCode = employeeCode;
         this.lastName = lastName;
@@ -57,44 +57,142 @@ class Employee {
         this.workRegime = workRegime;
         this.workStatus = workStatus;
         this.jobPermissions = jobPermissions;
-        this.avatarPreview = avatarPreview;
+        this.avatar = avatar.files.length;
     }
 
     validate() {
-        const errors = [];
+        var errors = [];
+       
 
-        if (!this.employeeCode) document.getElementById("employeeCodeError").innerText = "Mã nhân viên là bắt buộc."; errors.push("++");
-        if (!this.lastName) document.getElementById("lastNameError").innerText = "Họ lót là bắt buộc."; errors.push("++");
-        if (!this.firstName) document.getElementById("firstNameError").innerText = "Tên là bắt buộc."; errors.push("++");
-        if (this.gender === "0")  document.getElementById("genderError").innerText = "Giới tính là bắt buộc."; errors.push("++");
-        if (!this.birthDate) document.getElementById("birthDateError").innerText = "Ngày sinh là bắt buộc."; errors.push("++");
-        if (!this.personalPhone) document.getElementById("personalPhoneError").innerText = "SĐT cá nhân là bắt buộc."; errors.push("++");
-        if (!this.permanentAddress) document.getElementById("permanentAddressError").innerText = "Địa chỉ thường trú là bắt buộc."; errors.push("++");
-        if (!this.temporaryAddress) document.getElementById("temporaryAddressError").innerText = "Địa chỉ tạm trú là bắt buộc."; errors.push("++");
-        if (!this.cccd) document.getElementById("cccdError").innerText = "CCCD là bắt buộc."; errors.push("++");
-        if (!this.issuedBy) document.getElementById("issuedByError").innerText = "Nơi cấp là bắt buộc."; errors.push("++");
-        if (!this.issueDate) document.getElementById("issueDateError").innerText = "Ngày cấp là bắt buộc."; errors.push("++");
-        
-        if (!this.username) document.getElementById("usernameError").innerText = "Tên đăng nhập là bắt buộc."; errors.push("++");
-        if (!this.password) document.getElementById("passwordError").innerText = "Mật khẩu là bắt buộc."; errors.push("++");
-        if (!this.email) document.getElementById("emailError").innerText = "Email là bắt buộc."; errors.push("++");
-        if (!this.accountantCode) document.getElementById("accountantCodeError").innerText = "Mã kế toán là bắt buộc."; errors.push("++");
-        if (!this.workRegime) document.getElementById("workRegimeError").innerText = "Chế độ làm việc là bắt buộc."; errors.push("++");
-        if (!this.workStatus) document.getElementById("workStatusError").innerText = "Trạng thái làm việc là bắt buộc."; errors.push("++");
-        if (!this.jobPermissions) document.getElementById("jobPermissionsError").innerText = "Quyền hạn công việc là bắt buộc."; errors.push("++");
-        if (!this.avatarPreview) document.getElementById("avatarPreviewError").innerText = "Upload avatar là bắt buộc."; errors.push("++");
-        if (this.department === 0) document.getElementById("departmentError").innerText = "Phòng ban là bắt buộc."; errors.push("++");
-        if (!this.division === 0) document.getElementById("divisionError").innerText = "Bộ phận là bắt buộc."; errors.push("++");
+        if (!this.lastName) {
+            document.getElementById("lastNameError").innerText = "Họ lót là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("lastNameError").innerText = "";
+        }
+        if (!this.firstName) {
+            document.getElementById("firstNameError").innerText = "Tên là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("firstNameError").innerText = "";
+        }
+        if (this.gender === "0") {
+            document.getElementById("genderError").innerText = "Giới tính là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("genderError").innerText = "";
+        }
+        if (!this.birthDate) {
+            document.getElementById("birthDateError").innerText = "Ngày sinh là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("birthDateError").innerText = "";
+        }
+        if (!this.personalPhone) {
+            document.getElementById("personalPhoneError").innerText = "SĐT cá nhân là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("personalPhoneError").innerText = ""
+        }
+        if (!this.permanentAddress) {
+            document.getElementById("permanentAddressError").innerText = "Địa chỉ thường trú là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("permanentAddressError").innerText = ""
+        }
+        if (!this.temporaryAddress) {
+            document.getElementById("temporaryAddressError").innerText = "Địa chỉ tạm trú là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("temporaryAddressError").innerText = "";
+        }
+        if (!this.cccd) {
+            document.getElementById("cccdError").innerText = "CCCD là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("cccdError").innerText = "";
+        }
+        if (!this.issuedBy) {
+            document.getElementById("issuedByError").innerText = "Nơi cấp là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("issuedByError").innerText = "";
+        }
+        if (!this.issueDate) {
+            document.getElementById("issueDateError").innerText = "Ngày cấp là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("issueDateError").innerText = "";
+        }
+        if (!this.username) {
+            document.getElementById("usernameError").innerText = "Tên đăng nhập là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("usernameError").innerText = "";
+        }
+        if (!this.password) {
+            document.getElementById("passwordError").innerText = "Mật khẩu là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("passwordError").innerText = "";
+        }
+        if (!this.email) {
+            document.getElementById("emailError").innerText = "Email là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("emailError").innerText = "";
+        }
+        if (!this.accountantCode) {
+            document.getElementById("accountantCodeError").innerText = "Mã kế toán là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("accountantCodeError").innerText = "";
+        }
+        if (!this.workRegime) {
+            document.getElementById("workRegimeError").innerText = "Chế độ làm việc là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("workRegimeError").innerText = "";
+        }
+        if (!this.workStatus) {
+            document.getElementById("workStatusError").innerText = "Trạng thái làm việc là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("workStatusError").innerText = "";
+        }
+        if (!this.jobPermissions) {
+            document.getElementById("jobPermissionsError").innerText = "Quyền hạn công việc là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("jobPermissionsError").innerText = "";
+        }
+        if (this.avatar === 0) {
+            document.getElementById("avatarPreviewError").innerText = "Upload avatar là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("avatarPreviewError").innerText = "";
+        }
+        if (this.department === 0) {
+            document.getElementById("departmentError").innerText = "Phòng ban là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("departmentError").innerText = "";
+        }
+        if (!this.division === 0) {
+            document.getElementById("divisionError").innerText = "Bộ phận là bắt buộc."; errors.push("++");
+        }
+        else {
+            document.getElementById("divisionError").innerText = "";
+        }
 
         return errors;
     }
 }
 
-function handleFormSubmit(event) {
-    console.log(document.getElementById("gender").value);
-    // Ngăn chặn gửi form
-    event.preventDefault();
-    // Lấy giá trị từ các input
+
+$('body').on('submit', '#employeeForm', function (e) {
+    e.preventDefault();
+
     const employee = new Employee({
         employeeCode: document.getElementById('employeeCode').value,
         lastName: document.getElementById('lastName').value,
@@ -116,12 +214,39 @@ function handleFormSubmit(event) {
         workRegime: document.getElementById('workRegime').value,
         workStatus: document.getElementById('workStatus').value,
         jobPermissions: document.getElementById('jobPermissions').value,
-        avatarPreview: document.getElementById('avatarPreview').value
+        avatar: document.getElementById('avatar')
     });
 
     // Kiểm tra tính hợp lệ
     const errors = employee.validate();
-    if (errors.length <= 0) {
-        document.getElementById("employeeForm").submit();
+   
+    if (errors.length > 0) {
+        CustomSweetAlert_Error("Xin nhập đúng giá trị."); // Example error handling
+        return; // Exit the function early if there are errors
     }
-}
+
+    $('#loadingOverlay').css('display', 'flex');
+    var submitButton = $('#employeeForm').find('button[type="submit"]');
+    submitButton.prop('disabled', true); // Disable the submit button
+
+    var formData = new FormData(this);
+
+    $.ajax({
+        type: 'POST',
+        url: '../Employee/CreateEmployee',
+        data: formData,
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting content type
+        success: function (response) {
+            $('#loadingOverlay').css('display', 'none');
+            submitButton.prop('disabled', false);
+            console.log(response);
+            if (response.success) {
+                CustomSweetAlert_Success_ReloadPage(response.message);
+            }
+            else {
+                CustomSweetAlert_Error(response.message);
+            }
+        }
+    })
+})

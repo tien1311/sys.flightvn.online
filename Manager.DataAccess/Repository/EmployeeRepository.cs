@@ -22,83 +22,258 @@ using Manager.Model.Models.HCNS;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using System.Data.Common;
 using System.Drawing.Printing;
+using System.Net.WebSockets;
+using EasyInvoice.Client;
 
 namespace Manager.DataAccess.Repository
 {
-   
+
     public class EmployeeRepository
     {
         private IConfiguration _configuration;
         private string _connectionString;
+        private readonly string _uploadsFolder;
+        private DBase db = new DBase();
         public EmployeeRepository(IConfiguration configuration)
         {
             _configuration = configuration;
             _connectionString = configuration.GetConnectionString("SQL_EV_MAIN");
+            _uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+            if (!Directory.Exists(_uploadsFolder))
+            {
+                Directory.CreateDirectory(_uploadsFolder);
+            }
         }
-        public async Task<bool> CreateEmployee(EmployeeModel employee)
+        public bool CreateEmployee(EmployeeModel employee)
+        {
+            int result_insert = 0;
+
+            string store = "SP_INSERT_DM_NV";
+            using (var con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                using (var transaction = con.BeginTransaction())
+                {
+                    try
+                    {
+                        var fileName = UploadFileAsync(employee.Avatar, employee.EmployeeCode).Result;
+                        var param = new
+                        {
+                            IDGroupPermission = 1,
+                            MaNV = employee.EmployeeCode,
+                            IDTen = "",
+                            TEN = employee.LastName + " " + employee.FirstName,
+                            HOLOT = employee.FirstName,
+                            TENNV = employee.LastName,
+                            GioiTinh = employee.Gender,
+                            ChiNhanh = "MIỀN NAM",
+                            SinhNhat = employee.BirthDate,
+                            DiaChiThuongTru = employee.PermanentAddress,
+                            DiaChiTamTru = employee.TemporaryAddress,
+                            DienThoai = employee.PersonalPhone,
+                            ChucVu = employee.Position,
+                            NgayCap = employee.IssueDate,
+                            NoiCap = employee.IssuedBy,
+                            CCCD = employee.CCCD,
+                            NgayLamViec = employee.JoiningDate,
+                            NgayTinhPhep = employee.VacationDate,
+                            NgayNghiViec = employee.LeavingDate,
+                            Email = employee.Email,
+                            PhongBan = employee.Department,
+                            TenDangNhap = employee.Username,
+                            MatKhau = db.Encrypt(employee.Password, "tranquocquan", true),
+                            TinhTrang = true,
+                            CheDoLamViec = employee.WorkRegime,
+                            TrangThaiLamViec = employee.WorkStatus,
+                            QuyenHanCongViec = employee.JobPermissions,
+                            TenHinh = fileName
+                        };
+                        result_insert = con.Execute(store, param, transaction, commandType: CommandType.StoredProcedure, commandTimeout: 30);
+                        transaction.Commit();
+                        if (result_insert > 0)
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                    return false;
+                }
+            }
+
+        }
+        public bool DeleteEmployeeID(int EmployeeID)
+        {
+            int result_delete = 0;
+            using (var con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                using (var transaction = con.BeginTransaction())
+                {
+                    try
+                    {
+                        string sql_delete = "Update DM_NV set TinhTrang = 0 where RowID = @EmployeeID";
+                        var param = new
+                        {
+                            EmployeeID = EmployeeID
+                        };
+                        result_delete = con.Execute(sql_delete, param, transaction, commandType: CommandType.Text, commandTimeout: 30);
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+            }
+            return true;
+
+        }
+
+        public async Task<EmployeeModel> GetEmployeeID(int ID)
         {
             try
             {
-                int result_insert = 0;
-
-                //string store = "SP_INSERT_DM_NV";
-                //using (var con = new SqlConnection(_connectionString))
-                //{
-                //    var param = new
-                //    {
-                //        IDGroupPermission = employee.Position,
-                //        MaNV = employee.EmployeeCode,
-                //        IDTen = "",
-                //        TEN = employee.FirstName + " " + employee.LastName,
-                //        HOLOT = employee.FirstName,
-                //        TENNV = employee.LastName,
-                //        TRUONGBOPHAN = false,
-                //        GioiTinh = employee.Gender,
-                //        ChiNhanh = "MIỀN NAM",
-                //        SinhNhat = employee.DateOfBirth,
-                //        DiaChiThuongTru = employee.PermanentAddress,
-                //        DiaChiTamTru = employee.TemporaryAddress,
-                //        DienThoai = employee.PersonalPhone
-                //    };
-
-                //    result_insert = await con.QueryAsync<SelectOption>(store, null, commandType: CommandType.Text, commandTimeout: 30);
-                //}
-
-                //string sql = "INSERT INTO [PHIEUBAOLANH] ([ID_KhachHang] ,[BaoLanh],[GhiChu] ,[NgayLap] ,[NhanVienLap] ,[NgaySua] ,[NhanVienSua] ,[NgayXoa],[NhanVienXoa],[TinhTrang],[TenDaiLy],[MaPhieu],[SoPhut]) VALUES ( @MaKH,@baolanh,@ghichu,GETDATE(),@tenNV,null,null,null,null,@tinhtrang,@tenDL,@MaPBL,@thoigian)";
-                //List<DBase.AddParameters> Param = new List<DBase.AddParameters>();
-                //Param.Add(new DBase.AddParameters("@MaKH", MaKH));
-                //Param.Add(new DBase.AddParameters("@tenDL", tenDL));
-                //Param.Add(new DBase.AddParameters("@ghichu", ghichu));
-                //Param.Add(new DBase.AddParameters("@baolanh", baolanh));
-                //Param.Add(new DBase.AddParameters("@tenNV", tenNV));
-                //Param.Add(new DBase.AddParameters("@MaPBL", MaPBL));
-                //Param.Add(new DBase.AddParameters("@tinhtrang", "1"));
-                //Param.Add(new DBase.AddParameters("@ngaysua", ""));
-                //Param.Add(new DBase.AddParameters("@nhanviensua", ""));
-                //Param.Add(new DBase.AddParameters("@ngayxoa", ""));
-                //Param.Add(new DBase.AddParameters("@nhanvienxoa", ""));
-                //Param.Add(new DBase.AddParameters("@thoigian", thoigian));
-
-                //int i = db.ExecuteNoneQuery(sql, CommandType.Text, "server37", Param);
-
-                if (result_insert > 0)
+                EmployeeModel result = new EmployeeModel();
+                string sql = @"select 
+                        EmployeeID = RowID,
+                        EmployeeCode = MANV,
+                        FirstName = TenNV,
+                        Gender = GioiTinh,
+                        LastName = HOLOT,
+                        BirthDate = SinhNhat,
+                        PersonalPhone = DienThoaiCN,
+                        PermanentAddress = DiachiThuongTru,
+                        TemporaryAddress = DiachiTamTru,
+                        CCCD = CMND,
+                        IssuedBy = NoiCap,
+                        IssueDate = NgayCap,
+                        Department = MaPhongBan,
+                        Division = MABOPHAN,
+                        Position = MaChucVu,
+                        Username = TenDangNhap,
+                        Passowrd = MatKhau,
+                        Email = email,
+                        CompanyPhone = DienThoai,
+                        AccountantCode = Yahoo,
+                        Extension = '',
+                        PersonalTaxCode = MaSoThue,
+                        TaxIssueDate = NgayCapMST,
+                        JoiningDate = NgayLamViec,
+                        VacationDate = NgayTinhPhep,
+                        LeavingDate = NgayNghiViec,
+                        WorkRegime = CheDoLamViec,
+                        WorkStatus = TinhTrang,
+                        JobPermissions = '',
+                        CompanyPhone = DienThoaiCN,
+                        AvatarPreview = TenHinh
+                        from DM_NV
+                        where TinhTrang = 1 and RowID = @ID
+                        ";
+                using (var con = new SqlConnection(_connectionString))
                 {
-                    return true;
+                    var param = new
+                    {
+                        ID = ID
+                    };
+                    result = await con.QueryFirstAsync<EmployeeModel>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
                 }
-                else
-                    return false;
+
+                return result;
             }
             catch (Exception)
             {
 
                 throw;
             }
+
+        }
+        public async Task<IEnumerable<EmployeeModel>> GetEmployees()
+        {
+            try
+            {
+                IEnumerable<EmployeeModel> result;
+                string sql = @"select 
+                        EmployeeID = RowID,
+                        EmployeeCode = MANV,
+                        FirstName = TenNV,
+                        Gender = GioiTinh,
+                        LastName = HOLOT,
+                        BirthDate = SinhNhat,
+                        PersonalPhone = DienThoaiCN,
+                        PermanentAddress = DiachiThuongTru,
+                        TemporaryAddress = DiachiTamTru,
+                        CCCD = CMND,
+                        IssuedBy = NoiCap,
+                        IssueDate = NgayCap,
+                        Department = MaPhongBan,
+                        Division = MABOPHAN,
+                        Position = MaChucVu,
+                        Username = TenDangNhap,
+                        Passowrd = MatKhau,
+                        Email = email,
+                        CompanyPhone = DienThoai,
+                        AccountantCode = Yahoo,
+                        Extension = '',
+                        PersonalTaxCode = MaSoThue,
+                        TaxIssueDate = NgayCapMST,
+                        JoiningDate = NgayLamViec,
+                        VacationDate = NgayTinhPhep,
+                        LeavingDate = NgayNghiViec,
+                        WorkRegime = CheDoLamViec,
+                        WorkStatus = TinhTrang,
+                        JobPermissions = '',
+                        CompanyPhone = DienThoaiCN,
+                        AvatarPreview = TenHinh
+                        from DM_NV
+                        order by TinhTrang desc
+                        ";
+                using (var con = new SqlConnection(_connectionString))
+                {
+                    result = await con.QueryAsync<EmployeeModel>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
+        #region Upload File
+
+        public async Task<string> UploadFileAsync(IFormFile file, string EmployeeCode)
+        {
+            if (file == null || file.Length == 0)
+            {
+                throw new ArgumentException("No file uploaded.");
+            }
+            // Get file extension
+            var fileExtension = Path.GetExtension(file.FileName);
+
+            // Generate a unique file name using a GUID
+            var newFileName = $"{EmployeeCode}{fileExtension}";
+            // Lưu file vào server
+            var filePath = Path.Combine(_uploadsFolder, newFileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            return newFileName;
+        }
+
+        #endregion
+
+        #region Department, Division, Position
         public async Task<IEnumerable<SelectOption>> GetDivision()
         {
             IEnumerable<SelectOption> result;
-            string sql  = "select * from DEPARTMENT where STATUS=1 order by NAME";
+            string sql = "select * from DEPARTMENT where STATUS=1 order by NAME";
             using (var con = new SqlConnection(_connectionString))
             {
                 result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
@@ -117,8 +292,6 @@ namespace Manager.DataAccess.Repository
 
             return result;
         }
-
-
         public async Task<IEnumerable<SelectOption>> GetPosition()
         {
             IEnumerable<SelectOption> result;
@@ -130,6 +303,8 @@ namespace Manager.DataAccess.Repository
 
             return result;
         }
+
+        #endregion
 
         public async Task<string> GetEmployeeCode()
         {
@@ -157,6 +332,6 @@ namespace Manager.DataAccess.Repository
 
             return result;
         }
-       
+
     }
 }

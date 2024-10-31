@@ -1,0 +1,77 @@
+﻿@model List<Manager.Model.Models.HCNS.EmployeeModel>
+@addTagHelper *,ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Danh sách nhân viên"; 
+    Layout = "~/Views/Shared/MasterLayout.cshtml";
+}
+
+<title>@ViewData["Title"]</title>
+@Html.Partial("_EnvietOverlay")
+<div>
+    <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
+    @* <a id="btnDeleteSelected" href="javascript:;" class="btn btn-danger">Xoá các mục đã chọn</a>
+    <a id="btnUndo" href="javascript:;" class="btn btn-warning">Hoàn tác các nội dung đã xoá </a> *@
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="table-responsive" id="table_Pagination">
+                        <table id="gridItem" class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:center;"></th>
+                                    <th style="text-align:center;">Mã NV</th>
+                                    <th style="text-align:center;">Họ lót</th>
+                                    <th style="text-align:center;">Tên</th>
+                                    <th style="text-align: center;">Giới tính</th>
+                                    <th style="text-align: center;">Ngày sinh</th>
+                                    <th>SĐT Cá nhân</th>
+                                    <th>SĐT Công ty</th>
+                                    <th>CCCD</th>
+                                    <th>Địa chỉ</th>
+                                    <th style="text-align:center;"></th>
+                                </tr>
+                            </thead>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr id="@item.EmployeeID">
+                                        <td style="text-align: center;">
+                                            <a class="Edit" data-id="@item.EmployeeID" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                        </td>
+                                        <td style="text-align: center;">@item.EmployeeCode</td>
+                                        <td style="text-align: center;">@item.LastName</td>
+                                        <td>@item.FirstName</td>
+                                        <td>@item.Gender</td>
+                                        <td>@item.BirthDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        <td>@item.PersonalPhone</td>
+                                        <td>@item.CompanyPhone</td>
+                                        <td>@item.CCCD</td>
+                                        <td>@item.PermanentAddress</td>
+                                        <td>
+                                            <a class="btnDelete" style="color:red;" data-id="@item.EmployeeID" onclick="DeleteEmployeeID(`@item.EmployeeID`)" id="BtnDelete" href="#">
+                                                <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <div class="modal fade" id="openPopup" role="dialog">
+</div> *@
+
+
+<script src="~/js/HCNS/Employee.js"></script>

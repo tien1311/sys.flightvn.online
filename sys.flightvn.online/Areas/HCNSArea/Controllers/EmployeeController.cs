@@ -11,6 +11,7 @@ using Manager.Model.Models.HCNS;
 using Manager.Model.Models.Other;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using X.PagedList;
@@ -44,29 +45,63 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
                 return new Dictionary<string, int> { { "record", 10 } };
             }
         }
-        [HttpGet]
+        public async Task<IActionResult> Employee()
+        {
+            var result = await _unitOfWork_Rep.Employee_Rep.GetEmployees();
+            return View(result);
+        }
         public async Task<IActionResult> CreateEmployee()
         {
-            ViewBag.EmployeesCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
             ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition();
             ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment();
             ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision();
-
             return View();
         }
-
         [HttpPost]
-        public async Task<IActionResult> CreateEmployee(EmployeeModel employee)
+        public async Task<IActionResult> EditEmployee(EmployeeModel employee)
         {
-            ViewBag.EmployeesCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
             ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition();
             ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment();
             ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision();
+            bool isSuccess = _unitOfWork_Rep.Employee_Rep.CreateEmployee(employee);
 
-            return View();
+            if (isSuccess == true)
+            {
+                return Json(new { success = true, message = "Sửa thành công" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Sửa thất bại" });
+            }
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployee([FromForm] EmployeeModel employee)
+        {
+            employee.EmployeeCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
+            bool isSuccess =  _unitOfWork_Rep.Employee_Rep.CreateEmployee(employee);
+           
+            if (isSuccess == true)
+            {
+                return Json(new { success = true, message = "Lưu thành công" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Lưu thất bại" });
+            }
+        }
+        [HttpPost]
+        public IActionResult DeleteEmployeeID(int EmployeeID)
+        {
+            bool isSuccess =  _unitOfWork_Rep.Employee_Rep.DeleteEmployeeID(EmployeeID);
 
-
-
+            if (isSuccess == true)
+            {
+                return Json(new { success = true, message = "Xóa thành công" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Xóa thất bại" });
+            }
+        }
     }
 }
