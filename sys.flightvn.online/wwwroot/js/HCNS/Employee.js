@@ -23,6 +23,40 @@
     });
 });
 
+$('body').on('click', '.Edit', function () {
+    $('#loadingOverlay').css('display', 'flex');
+    console.log("OK1");
+    var id = $(this).data("id");
+    
+    $.ajax({
+        type: "Get",
+        url: "../Employee/EditEmployee",
+        data: {
+            id: id
+        },
+        success: function (response) {
+            $('#loadingOverlay').css('display', 'none');
+            $('#openPopup').html(response);
+            $('#openPopup').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        },
+        failure: function (response) {
+            $('#loadingOverlay').css('display', 'none');
+            alert(response.responseText);
+        },
+        error: function (response) {
+            $('#loadingOverlay').css('display', 'none');
+            alert(response.responseText);
+        }
+    });
+});
+
+
+
+
 function DeleteEmployeeID(id) {
 
     CustomSweetAlert_Confirm('Bạn thực sự muốn xoá?', 'Sau khi xoá thì chỉ có thể hoàn tác trong vòng 5s').then((result) => {

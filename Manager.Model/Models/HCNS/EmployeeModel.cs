@@ -62,11 +62,13 @@ namespace Manager.Model.Models.HCNS
         public string SalesEmployeeID { get; set; }
         // Avatar (Path or Base64 string)
         public IFormFile Avatar { get; set; }
+        public string AvatarPreview { get; set; }
     }
     public class SelectOption
     {
         public string Code { get; set; }
         public string Name { get; set; }
+        public string Selected { get; set; } = "";
     }
     
 }

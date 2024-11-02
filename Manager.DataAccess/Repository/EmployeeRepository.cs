@@ -44,6 +44,75 @@ namespace Manager.DataAccess.Repository
                 Directory.CreateDirectory(_uploadsFolder);
             }
         }
+        public bool EditEmployee(EmployeeModel employee)
+        {
+            int result_insert = 0;
+
+            string store = "SP_UPDATE_DM_NV";
+            using (var con = new SqlConnection(_connectionString))
+            {
+                con.Open();
+                using (var transaction = con.BeginTransaction())
+                {
+                    try
+                    {
+                        if(employee.Avatar != null)
+                        {
+                            var fileName = UploadFileAsync(employee.Avatar, employee.EmployeeCode).Result;
+                        }    
+                        var param = new
+                        {
+                            IDGroupPermission = 1,
+                            MaNV = employee.EmployeeCode,
+                            IDTen = "",
+                            TEN = employee.LastName + " " + employee.FirstName,
+                            HOLOT = employee.FirstName,
+                            TENNV = employee.LastName,
+                            GioiTinh = employee.Gender,
+                            ChiNhanh = "MIỀN NAM",
+                            SinhNhat = employee.BirthDate,
+                            DiaChiThuongTru = employee.PermanentAddress,
+                            DiaChiTamTru = employee.TemporaryAddress,
+                            DienThoai = employee.PersonalPhone,
+                            DienThoaiCN = employee.CompanyPhone,
+                            MaChucVu = employee.Position,
+                            NgayCap = employee.IssueDate,
+                            NoiCap = employee.IssuedBy,
+                            CCCD = employee.CCCD,
+                            NgayLamViec = employee.JoiningDate,
+                            NgayTinhPhep = employee.VacationDate,
+                            NgayNghiViec = employee.LeavingDate,
+                            Email = employee.Email,
+                            MaPhongBan = employee.Department,
+                            MaBoPhan = employee.Division,
+                            TenDangNhap = employee.Username,
+                            MatKhau = db.Encrypt(employee.Password, "tranquocquan", true),
+                            TinhTrang = true,
+                            CheDoLamViec = employee.WorkRegime,
+                            TrangThaiLamViec = employee.WorkStatus,
+                            QuyenHanCongViec = employee.JobPermissions,
+                            MaSoThue = employee.PersonalTaxCode,
+                            MaKeToan = employee.AccountantCode,
+                            NgayCapMST = employee.TaxIssueDate,
+                            EXT = employee.Extension
+                        };
+                        result_insert = con.Execute(store, param, transaction, commandType: CommandType.StoredProcedure, commandTimeout: 30);
+                        transaction.Commit();
+                        if (result_insert > 0)
+                        {
+                            return true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                    return false;
+                }
+            }
+
+        }
         public bool CreateEmployee(EmployeeModel employee)
         {
             int result_insert = 0;
@@ -71,7 +140,8 @@ namespace Manager.DataAccess.Repository
                             DiaChiThuongTru = employee.PermanentAddress,
                             DiaChiTamTru = employee.TemporaryAddress,
                             DienThoai = employee.PersonalPhone,
-                            ChucVu = employee.Position,
+                            DienThoaiCN = employee.CompanyPhone,
+                            MaChucVu = employee.Position,
                             NgayCap = employee.IssueDate,
                             NoiCap = employee.IssuedBy,
                             CCCD = employee.CCCD,
@@ -79,13 +149,18 @@ namespace Manager.DataAccess.Repository
                             NgayTinhPhep = employee.VacationDate,
                             NgayNghiViec = employee.LeavingDate,
                             Email = employee.Email,
-                            PhongBan = employee.Department,
+                            MaPhongBan = employee.Department,
+                            MaBoPhan = employee.Division,
                             TenDangNhap = employee.Username,
                             MatKhau = db.Encrypt(employee.Password, "tranquocquan", true),
                             TinhTrang = true,
                             CheDoLamViec = employee.WorkRegime,
                             TrangThaiLamViec = employee.WorkStatus,
                             QuyenHanCongViec = employee.JobPermissions,
+                            MaSoThue = employee.PersonalTaxCode,
+                            MaKeToan = employee.AccountantCode,
+                            EXT = employee.Extension,
+                            NgayCapMST = employee.TaxIssueDate,
                             TenHinh = fileName
                         };
                         result_insert = con.Execute(store, param, transaction, commandType: CommandType.StoredProcedure, commandTimeout: 30);
@@ -115,7 +190,7 @@ namespace Manager.DataAccess.Repository
                 {
                     try
                     {
-                        string sql_delete = "Update DM_NV set TinhTrang = 0 where RowID = @EmployeeID";
+                        string sql_delete = "Update DM_NV set TinhTrang = 0, TinhTrangLamViec = 3 where RowID = @EmployeeID";
                         var param = new
                         {
                             EmployeeID = EmployeeID
@@ -149,18 +224,19 @@ namespace Manager.DataAccess.Repository
                         PersonalPhone = DienThoaiCN,
                         PermanentAddress = DiachiThuongTru,
                         TemporaryAddress = DiachiTamTru,
-                        CCCD = CMND,
+                        CCCD = CCCD,
+                        CMND = CMND,
                         IssuedBy = NoiCap,
                         IssueDate = NgayCap,
                         Department = MaPhongBan,
                         Division = MABOPHAN,
                         Position = MaChucVu,
                         Username = TenDangNhap,
-                        Passowrd = MatKhau,
+                        Password = MatKhau,
                         Email = email,
                         CompanyPhone = DienThoai,
                         AccountantCode = Yahoo,
-                        Extension = '',
+                        Extension = Extension,
                         PersonalTaxCode = MaSoThue,
                         TaxIssueDate = NgayCapMST,
                         JoiningDate = NgayLamViec,
@@ -168,11 +244,11 @@ namespace Manager.DataAccess.Repository
                         LeavingDate = NgayNghiViec,
                         WorkRegime = CheDoLamViec,
                         WorkStatus = TinhTrang,
-                        JobPermissions = '',
+                        JobPermissions = QuyenHanCongViec,
                         CompanyPhone = DienThoaiCN,
                         AvatarPreview = TenHinh
                         from DM_NV
-                        where TinhTrang = 1 and RowID = @ID
+                        where RowID = @ID
                         ";
                 using (var con = new SqlConnection(_connectionString))
                 {
@@ -180,7 +256,9 @@ namespace Manager.DataAccess.Repository
                     {
                         ID = ID
                     };
-                    result = await con.QueryFirstAsync<EmployeeModel>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+                    result = await con.QueryFirstAsync<EmployeeModel>(sql, param, commandType: CommandType.Text, commandTimeout: 30);
+
+                    result.Password = db.Decrypt(result.Password, "tranquocquan", true);
                 }
 
                 return result;
@@ -207,7 +285,7 @@ namespace Manager.DataAccess.Repository
                         PersonalPhone = DienThoaiCN,
                         PermanentAddress = DiachiThuongTru,
                         TemporaryAddress = DiachiTamTru,
-                        CCCD = CMND,
+                        CCCD = CCCD,
                         IssuedBy = NoiCap,
                         IssueDate = NgayCap,
                         Department = MaPhongBan,
@@ -227,7 +305,7 @@ namespace Manager.DataAccess.Repository
                         WorkRegime = CheDoLamViec,
                         WorkStatus = TinhTrang,
                         JobPermissions = '',
-                        CompanyPhone = DienThoaiCN,
+                        CompanyPhone = DienThoai,
                         AvatarPreview = TenHinh
                         from DM_NV
                         order by TinhTrang desc
@@ -270,35 +348,47 @@ namespace Manager.DataAccess.Repository
         #endregion
 
         #region Department, Division, Position
-        public async Task<IEnumerable<SelectOption>> GetDivision()
+        public async Task<IEnumerable<SelectOption>> GetDivision(string Key)
         {
             IEnumerable<SelectOption> result;
-            string sql = "select * from DEPARTMENT where STATUS=1 order by NAME";
+            string sql = "select *, Selected = (case when Code = @Key then 'Selected' else '' end ) from DEPARTMENT where STATUS=1 order by NAME";
             using (var con = new SqlConnection(_connectionString))
             {
-                result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+                var param = new
+                {
+                    Key = Key
+                };
+                result = await con.QueryAsync<SelectOption>(sql, param, commandType: CommandType.Text, commandTimeout: 30);
             }
 
             return result;
         }
-        public async Task<IEnumerable<SelectOption>> GetDepartment()
+        public async Task<IEnumerable<SelectOption>> GetDepartment(string Key)
         {
             IEnumerable<SelectOption> result;
-            string sql = "select Code = ID, Name = Ten from PHONGBAN where TINHTRANG=1 order by Ten";
+            string sql = "select Code = ID, Name = Ten, Selected = (case when ID = @Key then 'Selected' else '' end ) from PHONGBAN where TINHTRANG=1 order by Ten";
             using (var con = new SqlConnection(_connectionString))
             {
-                result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+                var param = new
+                {
+                    Key = Key
+                };
+                result = await con.QueryAsync<SelectOption>(sql, param, commandType: CommandType.Text, commandTimeout: 30);
             }
 
             return result;
         }
-        public async Task<IEnumerable<SelectOption>> GetPosition()
+        public async Task<IEnumerable<SelectOption>> GetPosition(string Key)
         {
             IEnumerable<SelectOption> result;
-            string sql = "select Code = ID, Name = Ten from CHUCVU where TINHTRANG=1 order by Ten";
+            string sql = "select Code = ID, Name = Ten, Selected = (case when ID = @Key then 'Selected' else '' end ) from CHUCVU where TINHTRANG=1 order by Ten";
             using (var con = new SqlConnection(_connectionString))
             {
-                result = await con.QueryAsync<SelectOption>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
+                var param = new
+                {
+                    Key = Key
+                };
+                result = await con.QueryAsync<SelectOption>(sql, param, commandType: CommandType.Text, commandTimeout: 30);
             }
 
             return result;

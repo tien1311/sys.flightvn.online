@@ -52,18 +52,45 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
         }
         public async Task<IActionResult> CreateEmployee()
         {
-            ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition();
-            ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment();
-            ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision();
+            ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition("");
+            ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment("");
+            ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision("");
             return View();
         }
+        public async Task<IActionResult> EditEmployee(int ID)
+        {
+            var employee = await _unitOfWork_Rep.Employee_Rep.GetEmployeeID(ID);
+
+            ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition(employee.Position);
+            ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment(employee.Department);
+            ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision(employee.Division);
+
+            return View(employee);
+        }
+      
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployee([FromForm] EmployeeModel employee)
+        {
+            employee.EmployeeCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
+            bool isSuccess =  _unitOfWork_Rep.Employee_Rep.CreateEmployee(employee);
+            
+            if (isSuccess == true)
+            {
+                return Json(new { success = true, message = "Lưu thành công" });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Lưu thất bại" });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> EditEmployee(EmployeeModel employee)
         {
-            ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition();
-            ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment();
-            ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision();
-            bool isSuccess = _unitOfWork_Rep.Employee_Rep.CreateEmployee(employee);
+            ViewBag.Positions = await _unitOfWork_Rep.Employee_Rep.GetPosition("");
+            ViewBag.Departments = await _unitOfWork_Rep.Employee_Rep.GetDepartment("");
+            ViewBag.Divisions = await _unitOfWork_Rep.Employee_Rep.GetDivision("");
+            bool isSuccess = _unitOfWork_Rep.Employee_Rep.EditEmployee(employee);
 
             if (isSuccess == true)
             {
@@ -72,21 +99,6 @@ namespace Manager_EV.Areas.DuLichArea.Controllers
             else
             {
                 return Json(new { success = false, message = "Sửa thất bại" });
-            }
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateEmployee([FromForm] EmployeeModel employee)
-        {
-            employee.EmployeeCode = await _unitOfWork_Rep.Employee_Rep.GetEmployeeCode();
-            bool isSuccess =  _unitOfWork_Rep.Employee_Rep.CreateEmployee(employee);
-           
-            if (isSuccess == true)
-            {
-                return Json(new { success = true, message = "Lưu thành công" });
-            }
-            else
-            {
-                return Json(new { success = false, message = "Lưu thất bại" });
             }
         }
         [HttpPost]

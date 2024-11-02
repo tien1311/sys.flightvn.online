@@ -31,7 +31,7 @@
     <div class="modal-content" style=" background: #2A3F54;">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h1 style="color:#fff">Thêm nhân viên</h1>
+            <h1 style="color:#fff">Sửa nhân viên</h1>
         </div>
         <div class="modal-body" style="border-radius:8px; background-color:#fff;">
             @using (Html.BeginForm("CreateEmployee", "Employee", new { i = 14 }, FormMethod.Post, true, new { enctype = "multipart/form-data", id = "employeeForm" }))
@@ -47,16 +47,16 @@
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="employeeCode" class="form-label">Mã Nhân viên <span style="color:red;"> * </span> </label>
-                                                <input type="text" class="form-control" id="employeeCode" name="employeeCode" value="@ViewBag.EmployeeCode" readonly placeholder="Enter employee code">
+                                                <input type="text" class="form-control" id="employeeCode" name="employeeCode" value="@Model.EmployeeCode" readonly placeholder="Enter employee code">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="lastName" class="form-label">Họ lót <span style="color:red;"> * </span></label>
-                                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter last name">
+                                                <input type="text" class="form-control" id="lastName" name="lastName" value="@Model.LastName" placeholder="Enter last name">
                                         <span class="error-message" id="lastNameError"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="firstName" class="form-label">Tên <span style="color:red;"> * </span></label>
-                                                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter first name">
+                                                <input type="text" class="form-control" id="firstName" name="firstName" value="@Model.FirstName" placeholder="Enter first name">
                                         <span class="error-message" id="firstNameError"></span>
                                     </div>
                                 </div>
@@ -65,21 +65,30 @@
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="gender" class="form-label ">Giới tính <span style="color:red;"> * </span></label>
-                                                <select class="form-select form-control" name="gender" id="gender">
-                                            <option value="0" selected>-- Chọn Giới Tính --</option>
-                                            <option value="Nam">Nam</option>
-                                            <option value="Nữ">Nữ</option>
+                                             <select class="form-select form-control" name="gender" id="gender">
+                                            <option value="0" >-- Chọn Giới Tính --</option>
+                                            @if(Model.Gender == "Nam")
+                                            {
+                                                    <option value="Nam" selected>Nam</option>
+                                                    <option value="Nữ">Nữ</option>
+                                            }
+                                            else
+                                            {
+                                                    <option value="Nam">Nam</option>
+                                                    <option value="Nữ" selected>Nữ</option>
+                                            }
+
                                         </select>
                                         <span class="error-message" id="genderError"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="birthDate" class="form-label">Ngày sinh <span style="color:red;"> * </span></label>
-                                        <input type="date"  class="form-control" name="birthDate" id="birthDate">
+                                        <input type="date"  class="form-control" value="@Model.BirthDate.ToString("yyyy-MM-dd")" name="birthDate" id="birthDate">
                                         <span class="error-message" id="birthDateError"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="personalPhone" class="form-label">SĐT Cá nhân <span style="color:red;"> * </span></label>
-                                                <input type="tel" class="form-control" name="personalPhone" id="personalPhone" placeholder="Enter personal phone">
+                                                <input type="tel" class="form-control" value="@Model.PersonalPhone" name="personalPhone" id="personalPhone" placeholder="Enter personal phone">
                                         <span class="error-message" id="personalPhoneError"></span>
                                     </div>
                                 </div>
@@ -88,12 +97,12 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label for="permanentAddress" class="form-label">Địa chỉ thường trú <span style="color:red;"> * </span></label>
-                                                <input type="text" class="form-control" name="permanentAddress" id="permanentAddress" placeholder="Enter permanent address">
+                                                <input type="text" class="form-control" name="permanentAddress" value="@Model.PermanentAddress" id="permanentAddress" placeholder="Enter permanent address">
                                         <span class="error-message" id="permanentAddressError"></span>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="temporaryAddress" class="form-label">Địa chỉ tạm trú <span style="color:red;"> * </span></label>
-                                                <input type="text" class="form-control" name="temporaryAddress" id="temporaryAddress" placeholder="Enter temporary address">
+                                                <input type="text" class="form-control" name="temporaryAddress" value="@Model.TemporaryAddress" id="temporaryAddress" placeholder="Enter temporary address">
                                         <span class="error-message" id="temporaryAddressError"></span>
                                     </div>
                                 </div>
@@ -102,17 +111,17 @@
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label for="cccd" class="form-label">CCCD <span style="color:red;"> * </span></label>
-                                        <input type="text" class="form-control" id="cccd" name="cccd" placeholder="Enter CCCD">
+                                                <input type="text" class="form-control" id="cccd" name="cccd" value="@Model.CCCD" placeholder="Enter CCCD">
                                         <span class="error-message" id="cccdError"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="issuedBy" class="form-label">Nơi cấp <span style="color:red;"> * </span></label>
-                                                <input type="text" class="form-control" id="issuedBy" name="issuedBy" placeholder="Enter issuing authority">
+                                       <input type="text" class="form-control" id="issuedBy" name="issuedBy" value="@Model.IssuedBy" placeholder="Enter issuing authority">
                                         <span class="error-message" id="issuedByError"></span>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="issueDate" class="form-label">Ngày cấp <span style="color:red;"> * </span></label>
-                                                <input type="date" class="form-control" id="issueDate" name="issueDate">
+                                                <input type="date" class="form-control" id="issueDate" name="issueDate" value="@Model.IssueDate.ToString("yyyy-MM-dd")">
                                         <span class="error-message" id="issueDateError"></span>
                                     </div>
                                 </div>
@@ -129,7 +138,7 @@
                                 <label for="avatar"  class="form-label">Choose Avatar <span style="color:red;"> * </span> </label>
                                  <input type="file" asp-for="avatar" class="file-button btn btn-primary col-md-12" name="avatar" id="avatar" accept="image/*" onchange="previewAvatar()">
                             </div>
-                            <img id="avatarPreview" name="avatarPreview" src="https://placehold.co/200x200?text=Avatar" alt="Avatar Preview">
+                             <img id="avatarPreview" name="avatarPreview" src="~/uploads/@Model.AvatarPreview" alt="Avatar Preview">
                             <span class="error-message" id="avatarPreviewError"></span>
                         </div>
                     </div>
@@ -139,11 +148,11 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="department" class="form-label">Phòng ban <span style="color:red;"> * </span> </label>
-                                            <select class="form-control" name="department" id="department" name="department">
+                                        <select class="form-control" name="department" id="department" >
                                         <option value="0">-- Chọn Phòng Ban --</option>
                                         @foreach (var department in ViewBag.Departments)
                                         {
-                                            <option value="@department.Code">@department.Name</option>
+                                            <option @department.Selected value="@department.Code">@department.Name</option>
                                         }
                                     </select>
                                     <span class="error-message" id="departmentError"></span>
@@ -151,24 +160,23 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="division" class="form-label">Bộ phận <span style="color:red;"> * </span> </label>
-                                            <select class="form-control" name="division" id="division" name="division">
+                                            <select class="form-control" name="division" id="division" >
                                         <option value="0">-- Chọn Bộ Phận --</option>
                                         @foreach (var division in ViewBag.Divisions)
                                         {
-                                            <option value="@division.Code">@division.Name</option>
+                                            <option @division.Selected  value="@division.Code">@division.Name</option>
                                         }
-                                        
                                     </select>
                                     <span class="error-message" id="divisionError"></span>
 
                                 </div>
                                 <div class="col-md-4">
                                     <label for="position" class="form-label">Chức vụ <span style="color:red;"> * </span></label>
-                                            <select class="form-control" name="position" id="position" name="position">
+                                            <select class="form-control" name="position" id="position" >
                                         <option value="0">-- Chọn Chức Vụ --</option>
                                         @foreach (var position in ViewBag.Positions)
                                         {
-                                            <option value="@position.Code">@position.Name</option>
+                                                <option @position.Selected value="@position.Code">@position.Name</option>
                                         }
                                     </select>
                                 </div>
@@ -177,17 +185,17 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="username" class="form-label">Tên đăng nhập <span style="color:red;"> * </span></label>
-                                            <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                                            <input type="text" class="form-control" name="username" value="@Model.Username" id="username" placeholder="Enter username">
                                     <span class="error-message" id="usernameError"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="password" class="form-label">Mật khẩu <span style="color:red;"> * </span></label>
-                                            <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
+                                            <input type="password" class="form-control" name="password" value="@Model.Password" id="password" placeholder="Enter password">
                                     <span class="error-message" id="passwordError"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="email" class="form-label">Email <span style="color:red;"> * </span></label>
-                                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email">
+                                            <input type="email" class="form-control" name="email" id="email" value="@Model.Email" placeholder="Enter email">
                                     <span class="error-message" id="emailError"></span>
                                 </div>
                             </div>
@@ -196,16 +204,16 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="companyPhone" class="form-label">SĐT Công ty</label>
-                                            <input type="tel" class="form-control" name="companyPhone" id="companyPhone" placeholder="Enter company phone">
+                                            <input type="tel" class="form-control" name="companyPhone" value="@Model.CompanyPhone" id="companyPhone" placeholder="Enter company phone">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="accountantCode" class="form-label">Mã kế toán <span style="color:red;"> * </span></label>
-                                            <input type="text" class="form-control" name="accountantCode" id="accountantCode" placeholder="Enter accountant code">
+                                            <input type="text" class="form-control" name="accountantCode" value="@Model.AccountantCode" id="accountantCode" placeholder="Enter accountant code">
                                     <span class="error-message" id="accountantCodeError"></span>
                                 </div>
                                 <div class="col-md-4">
                                         <label for="ext" class="form-label">EXT</label>
-                                        <input type="text" class="form-control" name="ext" id="ext" placeholder="Enter extension number">
+                                            <input type="text" class="form-control" name="extension" value="@Model.Extension" id="extension" placeholder="Enter extension number">
                                 </div>
                             </div>
 
@@ -213,11 +221,11 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="personalTaxCode" class="form-label">MST cá nhân</label>
-                                            <input type="text" class="form-control" name="personalTaxCode" id="personalTaxCode" placeholder="Enter personal tax code">
+                                            <input type="text" class="form-control" name="personalTaxCode" value="@Model.PersonalTaxCode" id="personalTaxCode" placeholder="Enter personal tax code">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="taxIssueDate" class="form-label">Ngày cấp MST</label>
-                                            <input type="date" class="form-control" name="taxIssueDate" id="taxIssueDate">
+                                            <input type="date" class="form-control" name="taxIssueDate" value="@Model.TaxIssueDate.ToString("yyyy-MM-dd")" id="taxIssueDate">
                                 </div>
                             </div>
 
@@ -225,15 +233,15 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="joiningDate" class="form-label">Ngày vào làm</label>
-                                            <input type="date" class="form-control" name="joiningDate" id="joiningDate">
+                                            <input type="date" class="form-control" name="joiningDate" value="@Model.JoiningDate.ToString("yyyy-MM-dd")" id="joiningDate">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="vacationDate" class="form-label">Ngày tính phép</label>
-                                            <input type="date" class="form-control" name="vacationDate" id="vacationDate">
+                                            <input type="date" class="form-control" name="vacationDate" value="@Model.VacationDate.ToString("yyyy-MM-dd")" id="vacationDate">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="leavingDate" class="form-label">Ngày nghỉ việc</label>
-                                            <input type="date" class="form-control" name="leavingDate" id="leavingDate">
+                                            <input type="date" class="form-control" name="leavingDate" value="@Model.LeavingDate?.ToString("yyyy-MM-dd")" id="leavingDate">
                                 </div>
                             </div>
 
@@ -242,24 +250,24 @@
                                 <div class="col-md-4">
                                     <label for="workRegime" class="form-label">Chế độ làm việc <span style="color:red;"> * </span> </label>
                                     <select class="form-control" id="workRegime" name="workRegime">
-                                        <option value="0">Biên chế</option>
-                                        <option value="1">Thử việc</option>
-                                        <option value="2">Thực tập</option>
+                                        <option value="0" selected="@(@Model.WorkRegime == 0 ? "selected" : "")" >Biên chế</option>
+                                                <option value="1" selected="@(@Model.WorkRegime == 1 ? "selected" : "")">Thử việc</option>
+                                                <option value="2" selected="@(@Model.WorkRegime == 2 ? "selected" : "")">Thực tập</option>
                                     </select>
                                     <span class="error-message" id="workRegimeError"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="workStatus" class="form-label">Trạng thái làm việc <span style="color:red;"> * </span> </label>
                                     <select class="form-control" id="workStatus" name="workStatus">
-                                        <option value="0">Đang làm việc</option>
-                                        <option value="1">Nghỉ thai sản</option>
-                                        <option value="2">Nghỉ việc</option>
+                                                <option value="0" selected="@(@Model.WorkStatus == 1 ? "selected" : "")">Đang làm việc</option>
+                                                <option value="1" selected="@(@Model.WorkStatus == 1 ? "selected" : "")">Nghỉ thai sản</option>
+                                                <option value="2" selected="@(@Model.WorkStatus == 1 ? "selected" : "")">Nghỉ việc</option>
                                     </select>
                                     <span class="error-message" id="workStatusError"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="jobPermissions" class="form-label">Quyền hạn công việc <span style="color:red;"> * </span></label>
-                                            <input type="text" class="form-control" id="jobPermissions" name="jobPermissions" placeholder="Enter job permissions">
+                                            <input type="text" class="form-control" id="jobPermissions" value="@Model.JobPermissions" name="jobPermissions" placeholder="Enter job permissions">
                                     <span class="error-message" id="jobPermissionsError"></span>
                                 </div>
                             </div>
@@ -284,7 +292,7 @@
     </div>
 </div>
 
-<script src="~/js/HCNS/CreateEmployee.js"></script>
+<script src="~/js/HCNS/EditEmployee.js"></script>
 
 
 
