@@ -15,6 +15,7 @@ namespace Manager.Model.Models.HCNS
         public string Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public string PersonalPhone { get; set; }
+        public string NickName { get; set; }
 
         // Address Information
         public string PermanentAddress { get; set; }
@@ -44,11 +45,11 @@ namespace Manager.Model.Models.HCNS
 
         // Tax Information
         public string PersonalTaxCode { get; set; }
-        public DateTime TaxIssueDate { get; set; }
+        public DateTime? TaxIssueDate { get; set; }
 
         // Employment Dates
-        public DateTime JoiningDate { get; set; }
-        public DateTime VacationDate { get; set; }
+        public DateTime? JoiningDate { get; set; }
+        public DateTime? VacationDate { get; set; }
         public DateTime? LeavingDate { get; set; }
 
         // Work Conditions

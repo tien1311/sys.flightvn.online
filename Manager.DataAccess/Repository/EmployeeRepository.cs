@@ -56,15 +56,16 @@ namespace Manager.DataAccess.Repository
                 {
                     try
                     {
-                        if(employee.Avatar != null)
+                        var FileName = "";
+                        if (employee.Avatar != null)
                         {
-                            var fileName = UploadFileAsync(employee.Avatar, employee.EmployeeCode).Result;
+                            FileName = UploadFileAsync(employee.Avatar, employee.EmployeeCode).Result;
                         }    
                         var param = new
                         {
                             IDGroupPermission = 1,
                             MaNV = employee.EmployeeCode,
-                            IDTen = "",
+                            IDTen = employee.NickName,
                             TEN = employee.LastName + " " + employee.FirstName,
                             HOLOT = employee.FirstName,
                             TENNV = employee.LastName,
@@ -73,8 +74,8 @@ namespace Manager.DataAccess.Repository
                             SinhNhat = employee.BirthDate,
                             DiaChiThuongTru = employee.PermanentAddress,
                             DiaChiTamTru = employee.TemporaryAddress,
-                            DienThoai = employee.PersonalPhone,
-                            DienThoaiCN = employee.CompanyPhone,
+                            DienThoai = employee.CompanyPhone,
+                            DienThoaiCN = employee.PersonalPhone,
                             MaChucVu = employee.Position,
                             NgayCap = employee.IssueDate,
                             NoiCap = employee.IssuedBy,
@@ -94,7 +95,8 @@ namespace Manager.DataAccess.Repository
                             MaSoThue = employee.PersonalTaxCode,
                             MaKeToan = employee.AccountantCode,
                             NgayCapMST = employee.TaxIssueDate,
-                            EXT = employee.Extension
+                            EXT = employee.Extension,
+                            TenHinh = FileName
                         };
                         result_insert = con.Execute(store, param, transaction, commandType: CommandType.StoredProcedure, commandTimeout: 30);
                         transaction.Commit();
@@ -130,7 +132,7 @@ namespace Manager.DataAccess.Repository
                         {
                             IDGroupPermission = 1,
                             MaNV = employee.EmployeeCode,
-                            IDTen = "",
+                            IDTen = employee.NickName,
                             TEN = employee.LastName + " " + employee.FirstName,
                             HOLOT = employee.FirstName,
                             TENNV = employee.LastName,
@@ -190,7 +192,7 @@ namespace Manager.DataAccess.Repository
                 {
                     try
                     {
-                        string sql_delete = "Update DM_NV set TinhTrang = 0, TinhTrangLamViec = 3 where RowID = @EmployeeID";
+                        string sql_delete = "Update DM_NV set TinhTrang = 0, TrangThaiLamViec = 3 where RowID = @EmployeeID";
                         var param = new
                         {
                             EmployeeID = EmployeeID
@@ -217,9 +219,9 @@ namespace Manager.DataAccess.Repository
                 string sql = @"select 
                         EmployeeID = RowID,
                         EmployeeCode = MANV,
-                        FirstName = TenNV,
+                        FirstName = HOLOT,
                         Gender = GioiTinh,
-                        LastName = HOLOT,
+                        LastName = TenNV,
                         BirthDate = SinhNhat,
                         PersonalPhone = DienThoaiCN,
                         PermanentAddress = DiachiThuongTru,
@@ -243,10 +245,10 @@ namespace Manager.DataAccess.Repository
                         VacationDate = NgayTinhPhep,
                         LeavingDate = NgayNghiViec,
                         WorkRegime = CheDoLamViec,
-                        WorkStatus = TinhTrang,
+                        WorkStatus = TrangThaiLamViec,
                         JobPermissions = QuyenHanCongViec,
-                        CompanyPhone = DienThoaiCN,
-                        AvatarPreview = TenHinh
+                        AvatarPreview = TenHinh,
+                        NickName = IDTen
                         from DM_NV
                         where RowID = @ID
                         ";
@@ -286,34 +288,43 @@ namespace Manager.DataAccess.Repository
                         PermanentAddress = DiachiThuongTru,
                         TemporaryAddress = DiachiTamTru,
                         CCCD = CCCD,
+                        CMND = CMND,
                         IssuedBy = NoiCap,
                         IssueDate = NgayCap,
                         Department = MaPhongBan,
                         Division = MABOPHAN,
                         Position = MaChucVu,
                         Username = TenDangNhap,
-                        Passowrd = MatKhau,
+                        Password = MatKhau,
                         Email = email,
                         CompanyPhone = DienThoai,
                         AccountantCode = Yahoo,
-                        Extension = '',
+                        Extension = Extension,
                         PersonalTaxCode = MaSoThue,
                         TaxIssueDate = NgayCapMST,
                         JoiningDate = NgayLamViec,
                         VacationDate = NgayTinhPhep,
                         LeavingDate = NgayNghiViec,
                         WorkRegime = CheDoLamViec,
-                        WorkStatus = TinhTrang,
-                        JobPermissions = '',
-                        CompanyPhone = DienThoai,
-                        AvatarPreview = TenHinh
+                        WorkStatus = TrangThaiLamViec,
+                        JobPermissions = QuyenHanCongViec,
+                        AvatarPreview = TenHinh,
+                        NickName = IDTen
                         from DM_NV
-                        order by TinhTrang desc
+                        order by TinhTrang Desc, TenNV
                         ";
                 using (var con = new SqlConnection(_connectionString))
                 {
                     result = await con.QueryAsync<EmployeeModel>(sql, null, commandType: CommandType.Text, commandTimeout: 30);
                 }
+                if(result != null)
+                {
+                    foreach (var item in result)
+                    {
+                        var department = GetDepartment("").Result;
+                        item.Department = department.Where(x => x.Code  == item.Department).FirstOrDefault()?.Name;
+                    }
+                }    
                 return result;
             }
             catch (Exception ex)
