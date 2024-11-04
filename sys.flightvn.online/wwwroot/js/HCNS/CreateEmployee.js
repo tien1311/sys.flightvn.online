@@ -235,7 +235,7 @@ $('body').on('submit', '#employeeForm', function (e) {
 
     $.ajax({
         type: 'POST',
-        url: '../Employee/EditEmployee',
+        url: '../Employee/CreateEmployee',
         data: formData,
         processData: false, // Prevent jQuery from processing the data
         contentType: false, // Prevent jQuery from setting content type
