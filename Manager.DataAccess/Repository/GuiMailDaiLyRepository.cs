@@ -914,7 +914,7 @@ namespace Manager.DataAccess.Repository
                 string url = "";
                 if (files.Length > 0)
                 {
-                    url = "http://sys.airline24h.com/UploadFile/" + files[0].FileName;
+                    url = "https://hr.tripdata.vn/UploadFile/" + files[0].FileName;
                 }
 
                 Param.Add(new DBase.AddParameters("@URL", url));
@@ -982,7 +982,7 @@ namespace Manager.DataAccess.Repository
                 string url = "";
                 if (files.Length > 0)
                 {
-                    url = "http://sys.airline24h.com/UploadFile/" + files[0].FileName;
+                    url = "https://hr.tripdata.vn/UploadFile/" + files[0].FileName;
                 }
 
                 Param.Add(new DBase.AddParameters("@URL", url));
@@ -1415,7 +1415,7 @@ namespace Manager.DataAccess.Repository
                 string url = "";
                 if (files.Length > 0)
                 {
-                    url = "http://daily.airline24h.com/upload/GuiSC/" + files[0].FileName;
+                    url = "https://hr.tripdata.vn/upload/GuiSC/" + files[0].FileName;
                 }
 
                 Param.Add(new DBase.AddParameters("@FileDinhKem", url));

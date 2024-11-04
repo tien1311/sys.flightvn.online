@@ -5,9 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Update="Repository\LoginRepository.cs">
-			<SubType>Component</SubType>
-		</Compile>
+		<Compile Update="Repository\LoginRepository.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

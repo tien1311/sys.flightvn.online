@@ -55,6 +55,7 @@ namespace Manager.DataAccess
         private BookerClubRepository _bookerClubRepository;
         private BookingRepository _bookingRepository;
 
+
         public BangTinRepository BangTin_Rep
         {
             get => GetOrCreate(ref _bangTinRepository, () => new BangTinRepository(_configuration));

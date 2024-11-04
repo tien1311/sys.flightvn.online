@@ -64,9 +64,7 @@ namespace sys.flightvn.online
             services.AddScoped<HotelRepository>();
             services.AddScoped<PermissionRepository>();
 
-            services.AddDbContext<CarDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("SQL_EV_CAR")));
-            services.Configure<FtpSettings>(Configuration.GetSection("FtpSettings"));
+           
 
             services.AddScoped<IUnitOfWork_Repository, UnitOfWork_Repository>();
             //services.AddScoped<FeedbackRepository>();
@@ -91,26 +89,7 @@ namespace sys.flightvn.online
             services.AddHttpContextAccessor();
             services.AddSession();
 
-            // Đăng ký HttpClient cho các service khác
-            services.AddHttpClient("tour-service", client =>
-            {
-                client.BaseAddress = new Uri(Configuration["API_Tour:URL"]);
-            });
-
-            services.AddHttpClient("invoice-service", (service, client) =>
-            {
-                client.BaseAddress = new System.Uri(Configuration["InvoiceService:ApiHost"]);
-                client.DefaultRequestHeaders.Add("x-functions-key", Configuration["InvoiceService:ApiKey"]);
-            });
-
-            services.AddScoped<IEInvoiceService, EInvoiceService>();
-
-            services.AddHttpClient("enviet-service", (service, client) =>
-            {
-                client.BaseAddress = new System.Uri(Configuration["EnVietService:ApiHost"]);
-                client.DefaultRequestHeaders.Add("x-master-key", Configuration["EnVietService:ApiKey"]);
-            });
-
+           
             services.AddScoped<IAirportService, AirportService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<INotifyService, NotifyService>();

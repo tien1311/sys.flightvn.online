@@ -3,7 +3,7 @@
     string url = "";
     if (Context.User.Claims.First(claim => claim.Type == "TenHinh").Value != "")
     {
-        url = "http://daily.airline24h.com/upload/hinhnv/" + Context.User.Claims.First(claim => claim.Type == "TenHinh").Value;
+        url = "https://hr.tripdata.vn/upload/hinhnv/" + Context.User.Claims.First(claim => claim.Type == "TenHinh").Value;
     }
     else
     {

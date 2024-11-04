@@ -47,7 +47,7 @@ namespace Manager.DataAccess.Repository
                     result.PhongBan = tb.Rows[0]["PhongBan"].ToString();
                     if (tb.Rows[0]["TenHinh"].ToString() != "")
                     {
-                        result.TenHinh = "http://daily.airline24h.com/upload/hinhnv/" + tb.Rows[0]["TenHinh"].ToString();
+                        result.TenHinh = "https://hr.tripdata.vn/upload/hinhnv/" + tb.Rows[0]["TenHinh"].ToString();
                     }
                     else
                     {
