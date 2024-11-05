@@ -21,6 +21,7 @@ using Manager.Model.Models;
 using Manager.DataAccess.Repository;
 using Manager.Common.Helpers.AreaHelpers;
 using Manager_EV.Areas.MenuArea.Controllers;
+using Microsoft.Extensions.Configuration;
 
 namespace Manager_EV.Areas.LoginArea.Controllers
 {
@@ -28,7 +29,7 @@ namespace Manager_EV.Areas.LoginArea.Controllers
     public class LoginController : Controller
     {
         // GET: Login
-
+        private IConfiguration _configuration;
         public IActionResult Index()
         {
             return View();
@@ -41,9 +42,10 @@ namespace Manager_EV.Areas.LoginArea.Controllers
 
         private readonly IJwtTokenGenerator tokenGenerator;
 
-        public LoginController(IJwtTokenGenerator tokenGenerator)
+        public LoginController(IJwtTokenGenerator tokenGenerator, IConfiguration configuration)
         {
             this.tokenGenerator = tokenGenerator;
+            this._configuration = configuration;
         }
 
         [HttpPost]
@@ -52,7 +54,8 @@ namespace Manager_EV.Areas.LoginArea.Controllers
         {
             try
             {
-                AccountModel acc = LoginRepository.Login(model.UserName, model.Password);
+                string SQL_EV_MAIN = _configuration.GetConnectionString("SQL_EV_MAIN");
+                AccountModel acc = LoginRepository.Login(model.UserName, model.Password, SQL_EV_MAIN);
                 if (acc != null && acc.MaNV != null)
                 {
                     if (acc.ThongBao != "" && acc.ThongBao != null)

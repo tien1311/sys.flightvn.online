@@ -20,7 +20,7 @@ using TangDuLieu;
 
 namespace Manager.DataAccess.Repository
 {
-    public class LoginRepository : WebClient
+    public class LoginRepository
     {
         static DBase db = new DBase();
         private string SQL_EV_MAIN; /*"Data Source=27.71.232.40,1453;Initial Catalog=Manager;User ID=sa;Password=EnViet@123;";*/
@@ -30,612 +30,104 @@ namespace Manager.DataAccess.Repository
             SQL_EV_MAIN = configuration.GetConnectionString("SQL_EV_MAIN");
         }
         //Kiểm tra đăng nhập
-        public static AccountModel Login(string UserName, string Password)
+        public static AccountModel Login(string userName, string password, string SQL_EV_MAIN)
         {
+
             AccountModel result = new AccountModel();
-            //Mã hóa password
-            string StrPassword = db.Encrypt(Password, "tranquocquan", true);
-            string s = db.Encrypt("Manager.airline24h.com", "tranquocquan", true);
-            string sql = "select * from DM_NV where TENDANGNHAP='" + UserName + "'";
-            DataTable tb = db.ExecuteDataSet(sql, CommandType.Text, "server37", null).Tables[0];
-            if (tb.Rows.Count > 0)
+
+            // Encrypt password
+            string encryptedPassword = db.Encrypt(password, "tranquocquan", true);
+
+            // Define the connection string and SQL query
+            using (IDbConnection dbConnection = new SqlConnection(SQL_EV_MAIN))
             {
-                string strMatKhau = tb.Rows[0]["MATKHAU"].ToString();
-                if (StrPassword == strMatKhau)
+                string sql = "SELECT * FROM DM_NV WHERE TENDANGNHAP = @UserName";
+
+                // Execute the query using Dapper
+                var account = dbConnection.QueryFirstOrDefault(sql, new { UserName = userName });
+
+                if (account != null)
                 {
-                    if (bool.Parse(tb.Rows[0]["TINHTRANG"].ToString()) == true)
+                    // Check if password matches
+                    if (account.MatKhau == encryptedPassword)
                     {
-                        result.RowID = Convert.ToInt32(tb.Rows[0]["RowID"].ToString());
-                        result.MaNV = tb.Rows[0]["Yahoo"].ToString();
-                        result.NgaySinh = DateTime.Parse(tb.Rows[0]["SinhNhat"].ToString());
-                        result.HoTen = tb.Rows[0]["Ten"].ToString();
-                        string[] Ten = tb.Rows[0]["Ten"].ToString().Split(' ');
-                        if (tb.Rows[0]["GioiTinh"].ToString() == "Nam")
+                        if (bool.Parse(account.TinhTrang.ToString()))
                         {
-                            result.Ten = "Mr." + Ten[Ten.Length - 1];
-                        }
-                        else
-                        {
-                            result.Ten = "Ms." + Ten[Ten.Length - 1];
-                        }
+                            // Populate result object with account data
+                            result.RowID = Convert.ToInt32(account.RowID);
+                            result.MaNV = account.Yahoo;
+                            result.NgaySinh = DateTime.Parse(account.SinhNhat.ToString());
+                            result.HoTen = account.Ten;
+                            string[] nameParts = account.Ten.ToString().Split(' ');
 
-                        result.ChiNhanh = tb.Rows[0]["ChiNhanh"].ToString();
-                        result.DiaChiThuongTru = tb.Rows[0]["DiaChiThuongTru"].ToString();
-                        result.DienThoai = tb.Rows[0]["DienThoai"].ToString();
-                        result.Email = tb.Rows[0]["Email"].ToString();
-                        result.PhongBan = tb.Rows[0]["PhongBan"].ToString();
-                        result.MaPhongBan = tb.Rows[0]["MaPhongBan"].ToString();
-                        result.TenHinh = tb.Rows[0]["TenHinh"].ToString();
-                        result.Per_Group = tb.Rows[0]["IDGroupPermison"].ToString();
-                        result.TenDangNhap = tb.Rows[0]["TenDangNhap"].ToString();
-                        if (tb.Rows[0]["Yahoo_Status"].ToString() == "3")
-                        {
-                            result.Active = "1";
-                        }
-                        else
-                        {
-                            result.Active = "0";
-                        }
-                        string TNMoi = "";
-                        string TBao = "";
-                        string BCVe = "";
-                        string NBo = "";
-                        string DLi = "";
-                        string KToan = "";
-                        string KDoanh = "";
-                        string PVe = "";
-                        string BPDoan = "";
-                        string HDon = "";
-                        string CA = "";
-                        string YSao = "";
-                        string CS = "";
-                        string DTa = "";
-                        string STing = "";
-                        string KThuat = "";
-                        string Dulich = "";
+                            result.Ten = (account.GioiTinh.ToString() == "Nam" ? "Mr. " : "Ms. ") + nameParts[nameParts.Length - 1];
+                            result.ChiNhanh = account.ChiNhanh;
+                            result.DiaChiThuongTru = account.DiaChiThuongTru;
+                            result.DienThoai = account.DienThoai;
+                            result.Email = account.Email;
+                            result.PhongBan = account.PhongBan;
+                            result.MaPhongBan = account.MaPhongBan;
+                            result.TenHinh = account.TenHinh;
+                            result.Per_Group = account.IDGroupPermison.ToString();
+                            result.TenDangNhap = account.TenDangNhap;
 
+                            result.Active = account.Yahoo_Status.ToString() == "3" ? "1" : "0";
 
-                        string TNMoiTV = "";
-                        string TBaoTV = "";
-                        string BCVeTV = "";
-                        string NBoTV = "";
-                        string DLiTV = "";
-                        string KToanTV = "";
-                        string KDoanhTV = "";
-                        string PVeTV = "";
-                        string BPDoanTV = "";
-                        string HDonTV = "";
-                        string CATV = "";
-                        string YSaoTV = "";
-                        string CSTV = "";
-                        string DTaTV = "";
-                        string STingTV = "";
-                        string KThuatTV = "";
-                        string DulichTV = "";
+                            // Fetch permissions
+                            string permissionSql = "SELECT * FROM PERMISION_SYS_NV WHERE MANV = @MaNV";
+                            var permissions = dbConnection.Query(permissionSql, new { MaNV = account.Yahoo });
 
-                        string sql_KTTV = "select * from PERMISION_SYS_NV where MANV = '" + tb.Rows[0]["Yahoo"].ToString() + "'";
-                        DataTable dtktTV = db.ExecuteDataSet(sql_KTTV, CommandType.Text, "server37", null).Tables[0];
-                        if (dtktTV.Rows.Count > 0)
-                        {
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
+                            foreach (var permission in permissions)
                             {
-                                if ("1" == dtktTV.Rows[i]["FeatureID"].ToString())
+                                // Check and set each permission in the result object
+                                switch (permission.FeatureID.ToString())
                                 {
-                                    TNMoiTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    TNMoiTV = "false";
-                                }
-
-                            }
-                            result.TNMoiTV = TNMoiTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("2" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    TBaoTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    TBaoTV = "false";
+                                    case "1": result.TNMoi = "true"; break;
+                                    case "2": result.TBao = "true"; break;
+                                    case "3": result.BCVe = "true"; break;
+                                    case "4": result.NBo = "true"; break;
+                                    case "5": result.DLi = "true"; break;
+                                    case "6": result.KToan = "true"; break;
+                                    case "7": result.KDoanh = "true"; break;
+                                    case "8": result.PVe = "true"; break;
+                                    case "9": result.BPDoan = "true"; break;
+                                    case "10": result.HDon = "true"; break;
+                                    case "11": result.CA = "true"; break;
+                                    case "12": result.YSao = "true"; break;
+                                    case "13": result.CS = "true"; break;
+                                    case "14": result.DTa = "true"; break;
+                                    case "15": result.STing = "true"; break;
+                                    case "16": result.KThuat = "true"; break;
+                                    case "98": result.Dulich = "true"; break;
+                                    default: break;
                                 }
                             }
-                            result.TBaoTV = TBaoTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("3" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    BCVeTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    BCVeTV = "false";
-                                }
-                            }
-                            result.BCVeTV = BCVeTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("4" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    NBoTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    NBoTV = "false";
-                                }
-                            }
-                            result.NBoTV = NBoTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("5" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    DLiTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    DLiTV = "false";
-                                }
-                            }
-                            result.DLiTV = DLiTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("6" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    KToanTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    KToanTV = "false";
-                                }
-                            }
-                            result.KToanTV = KToanTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("7" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    KDoanhTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    KDoanhTV = "false";
-                                }
-                            }
-                            result.KDoanhTV = KDoanhTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("8" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    PVeTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    PVeTV = "false";
-                                }
-                            }
-                            result.PVeTV = PVeTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("9" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    BPDoanTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    BPDoanTV = "false";
-                                }
-                            }
-                            result.BPDoanTV = BPDoanTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("10" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    HDonTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    HDonTV = "false";
-                                }
-                            }
-                            result.HDonTV = HDonTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("11" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    CATV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    CATV = "false";
-                                }
-                            }
-                            result.CATV = CATV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("12" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    YSaoTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    YSaoTV = "false";
-                                }
-                            }
-                            result.YSaoTV = YSaoTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("13" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    CSTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    CSTV = "false";
-                                }
-
-                            }
-                            result.CSTV = CSTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("14" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    DTaTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    DTaTV = "false";
-                                }
-
-                            }
-                            result.DTaTV = DTaTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-
-                                if ("15" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    STingTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    STingTV = "false";
-                                }
-                            }
-                            result.STingTV = STingTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("16" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    KThuatTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    KThuatTV = "false";
-                                }
-                            }
-                            result.KThuatTV = KThuatTV;
-                            for (int i = 0; i < dtktTV.Rows.Count; i++)
-                            {
-                                if ("98" == dtktTV.Rows[i]["FeatureID"].ToString())
-                                {
-                                    DulichTV = "true";
-                                    break;
-                                }
-                                else
-                                {
-                                    DulichTV = "false";
-                                }
-                            }
-                            result.DulichTV = DulichTV;
-
-                            result.TNMoi = "false";
-                            result.TBao = "false";
-                            result.BCVe = "false";
-                            result.NBo = "false";
-                            result.DLi = "false";
-                            result.KToan = "false";
-                            result.KDoanh = "false";
-                            result.PVe = "false";
-                            result.BPDoan = "false";
-                            result.HDon = "false";
-                            result.CA = "false";
-                            result.YSao = "false";
-                            result.CS = "false";
-                            result.DTa = "false";
-                            result.STing = "false";
-                            result.KThuat = "false";
-                            result.Dulich = "false";
-
-                        }
-                        else
-                        {
-                            string sql_KT = "select * from PERMISSION_SYS where PositionID = '" + tb.Rows[0]["IDGroupPermison"].ToString() + "'";
-                            DataTable dtkt = db.ExecuteDataSet(sql_KT, CommandType.Text, "server37", null).Tables[0];
-                            if (dtkt != null)
-                            {
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("1" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        TNMoi = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        TNMoi = "false";
-                                    }
-                                }
-                                result.TNMoi = TNMoi;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("2" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        TBao = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        TBao = "false";
-                                    }
-                                }
-                                result.TBao = TBao;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("3" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        BCVe = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        BCVe = "false";
-                                    }
-                                }
-                                result.BCVe = BCVe;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-
-                                    if ("4" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        NBo = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        NBo = "false";
-                                    }
-                                }
-                                result.NBo = NBo;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("5" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        DLi = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        DLi = "false";
-                                    }
-                                }
-                                result.DLi = DLi;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("6" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        KToan = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        KToan = "false";
-                                    }
-                                }
-                                result.KToan = KToan;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-
-                                    if ("7" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        KDoanh = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        KDoanh = "false";
-                                    }
-                                }
-                                result.KDoanh = KDoanh;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-
-                                    if ("8" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        PVe = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        PVe = "false";
-                                    }
-                                }
-                                result.PVe = PVe;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-
-                                    if ("9" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        BPDoan = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        BPDoan = "false";
-                                    }
-                                }
-                                result.BPDoan = BPDoan;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("10" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        HDon = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        HDon = "false";
-                                    }
-                                }
-                                result.HDon = HDon;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("11" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        CA = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        CA = "false";
-                                    }
-                                }
-                                result.CA = CA;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-
-                                    if ("12" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        YSao = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        YSao = "false";
-                                    }
-                                }
-                                result.YSao = YSao;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-
-                                    if ("13" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        CS = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        CS = "false";
-                                    }
-
-                                }
-                                result.CS = CS;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("14" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        DTa = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        DTa = "false";
-                                    }
-
-                                }
-                                result.DTa = DTa;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("15" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        STing = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        STing = "false";
-                                    }
-                                }
-                                result.STing = STing;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("16" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        KThuat = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        KThuat = "false";
-                                    }
-                                }
-                                result.KThuat = KThuat;
-                                for (int i = 0; i < dtkt.Rows.Count; i++)
-                                {
-                                    if ("98" == dtkt.Rows[i]["FeatureID"].ToString())
-                                    {
-                                        Dulich = "true";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        Dulich = "false";
-                                    }
-                                }
-                                result.Dulich = Dulich;
-
-                                result.TNMoiTV = "false";
-                                result.TBaoTV = "false";
-                                result.BCVeTV = "false";
-                                result.NBoTV = "false";
-                                result.DLiTV = "false";
-                                result.KToanTV = "false";
-                                result.KDoanhTV = "false";
-                                result.PVeTV = "false";
-                                result.BPDoanTV = "false";
-                                result.HDonTV = "false";
-                                result.CATV = "false";
-                                result.YSaoTV = "false";
-                                result.CSTV = "false";
-                                result.DTaTV = "false";
-                                result.STingTV = "false";
-                                result.KThuatTV = "false";
-                                result.DulichTV = "false";
-
-                            }
+                            result.TNMoiTV = "false";
+                            result.TBaoTV = "false";
+                            result.BCVeTV = "false";
+                            result.NBoTV = "false";
+                            result.DLiTV = "false";
+                            result.KToanTV = "false";
+                            result.KDoanhTV = "false";
+                            result.PVeTV = "false";
+                            result.BPDoanTV = "false";
+                            result.HDonTV = "false";
+                            result.CATV = "false";
+                            result.YSaoTV = "false";
+                            result.CSTV = "false";
+                            result.DTaTV = "false";
+                            result.STingTV = "false";
+                            result.KThuatTV = "false";
+                            result.DulichTV = "false";
                         }
                     }
-
-                }
-
-
-                else
-                {
-                    result.ThongBao = "Mật khẩu không đúng!";
-
+                    else
+                    {
+                        result.ThongBao = "Mật khẩu không đúng!";
+                    }
                 }
             }
+
             return result;
         }
 

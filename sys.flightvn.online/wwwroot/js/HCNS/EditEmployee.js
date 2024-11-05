@@ -166,24 +166,17 @@ class Employee {
         else {
             document.getElementById("jobPermissionsError").innerText = "";
         }
-        if (this.avatar === 0) {
-            document.getElementById("avatarPreviewError").innerText = "Upload avatar là bắt buộc."; errors.push("++");
-        }
-        else {
-            document.getElementById("avatarPreviewError").innerText = "";
-        }
         
         if (this.department == 0) {
-           
             document.getElementById("departmentError").innerText = "Phòng ban là bắt buộc."; errors.push("++");
         }
         else {
             document.getElementById("departmentError").innerText = "";
         }
-       
+
         if (this.division == 0) {
             document.getElementById("divisionError").innerText = "Bộ phận là bắt buộc."; errors.push("++");
-        }
+        } 
         else {
             document.getElementById("divisionError").innerText = "";
         }
@@ -235,7 +228,7 @@ $('body').on('submit', '#employeeForm', function (e) {
 
     $.ajax({
         type: 'POST',
-        url: '../Employee/CreateEmployee',
+        url: '../Employee/EditEmployee',
         data: formData,
         processData: false, // Prevent jQuery from processing the data
         contentType: false, // Prevent jQuery from setting content type

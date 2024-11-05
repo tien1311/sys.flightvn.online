@@ -33,9 +33,8 @@ namespace Manager.DataAccess.Services
             var newDayMorning = new DateTime(now.Year, now.Month, now.Day, 7, 0, 0).AddDays(1);
             var timeToNextRunJobActive = newDay - now;
             var timeToNextRunBirthday = newDayMorning - now;
-            _timer = new Timer(async _ => await CheckBookingStatus_CAR(), null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
-            _timer = new Timer(async _ => await CheckJobActived(), null, timeToNextRunJobActive, TimeSpan.FromDays(1));
-            _timer = new Timer(async _ => await CheckBirthday(), null, timeToNextRunBirthday, TimeSpan.FromDays(1));
+            //_timer = new Timer(async _ => await CheckJobActived(), null, timeToNextRunJobActive, TimeSpan.FromDays(1));
+            //_timer = new Timer(async _ => await CheckBirthday(), null, timeToNextRunBirthday, TimeSpan.FromDays(1));
 
             return Task.CompletedTask;
         }

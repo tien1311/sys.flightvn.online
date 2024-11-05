@@ -7,12 +7,11 @@
 }
 
 <title>@ViewData["Title"]</title>
-@Html.Partial("_EnvietOverlay");
+@Html.Partial("_EnvietOverlay")
 <div>
     <a id="BtnCreate" href="javascript:;" class="btn btn-primary">Tạo mới</a>
-    <a id="btnDeleteSelected" href="javascript:;" class="btn btn-danger">Xoá các mục đã chọn</a>
-    <a id="btnUndo" href="javascript:;" class="btn btn-warning">Hoàn tác các nội dung đã xoá </a>
-
+    @* <a id="btnDeleteSelected" href="javascript:;" class="btn btn-danger">Xoá các mục đã chọn</a>
+    <a id="btnUndo" href="javascript:;" class="btn btn-warning">Hoàn tác các nội dung đã xoá </a> *@
 </div>
 
 <div class="container">
@@ -24,7 +23,6 @@
                         <table id="gridItem" class="table table-striped jambo_table bulk_action">
                             <thead>
                                 <tr>
-                                
                                     <th style="text-align:center;"></th>
                                     <th style="text-align:center;">Mã NV</th>
                                     <th style="text-align:center;">Họ lót</th>
@@ -34,36 +32,52 @@
                                     <th>SĐT Cá nhân</th>
                                     <th>SĐT Công ty</th>
                                     <th>CCCD</th>
-                                    <th>Địa chỉ</th>
+                                    <th>Phòng ban</th>
+                                    <th>Tình trạng</th>
                                     <th style="text-align:center;"></th>
                                 </tr>
-                                @if (Model != null)
-                                {
-                                    foreach (var item in Model)
-                                    {
-                                        <tr id="@item.EmployeeID">
-                                            <td style="text-align: center;">
-                                                <a class="Edit" data-id="@item.EmployeeID" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                            </td>
-                                            <td style="text-align: center;">@item.EmployeeCode</td>
-                                            <td style="text-align: center;">@item.LastName</td>
-                                            <td>@item.FirstName</td>
-                                            <td>@item.Gender</td>
-                                            <td>@item.BirthDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
-                                            <td>@item.PersonalPhone</td>
-                                            <td>@item.CompanyPhone</td>
-                                            <td>@item.CCCD</td>
-                                            <td>@item.PermanentAddress</td>
-                                            <td>
-                                                <a class="btnDelete" style="color:red;" data-id="@item.EmployeeID" id="btnDelete" href="#">
-                                                    <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-
                             </thead>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr id="@item.EmployeeID">
+                                        <td style="text-align: center;">
+                                            <a class="Edit" data-id="@item.EmployeeID" style="color:blue;" data-toggle="modal" data-target="#openPopup" href="javascript:;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                        </td>
+                                        <td style="text-align: center;">@item.EmployeeCode</td>
+                                        <td style="text-align: center;">@item.FirstName</td>
+                                        <td>@item.LastName</td>
+                                        <td>@item.Gender</td>
+                                        <td>@item.BirthDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.PersonalPhone</td>
+                                        <td>@item.CompanyPhone</td>
+                                        <td>@item.CCCD</td>
+                                        <td>@item.Department</td>
+                                        @switch (item.WorkStatus)
+                                        {
+                                            case 1:
+                                                <td style="color:red">Đang làm việc</td>
+                                                break;
+                                            case 2:
+                                                <td>Nghỉ thai sản</td>
+                                                break;
+                                            case 3:
+                                                <td>Nghỉ việc</td>
+                                                break;
+                                            default :
+                                                <td></td>
+                                                break;
+                                        }
+                                        <td>
+                                            <a class="btnDelete" style="color:red;" data-id="@item.EmployeeID" onclick="DeleteEmployeeID(`@item.EmployeeID`)" id="BtnDelete" href="#">
+                                                <i class="fa fa-trash Action_Icon" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                       
+                                    </tr>
+                                }
+                            }
                         </table>
                     </div>
                 </div>
@@ -72,6 +86,8 @@
     </div>
 </div>
 
+@* <div class="modal fade" id="openPopup" role="dialog">
+</div> *@
 
 
 <script src="~/js/HCNS/Employee.js"></script>
